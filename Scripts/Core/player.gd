@@ -1,81 +1,140 @@
 extends CharacterBody3D
+# Camera script that provides smooth camera movement through interpolation.
+# Hierarchy: CharacterBody3D -> Node3D -> SpringArm3D -> Camera3D
 
-# Declare all the variables from the image with appropriate types
+# References
 @onready var spring_arm: SpringArm3D = $CamOrigin/SpringArm3D
 
+# Zoom variables
 var Zoom_Desired: float
 var Zoom_Min: float
 var Zoom_Max: float
 var Zoom_Speed: float
 var Zoom_Interp: float
 
-# Location
+# Location variables
 var Location_Desired: Vector3
 var Location_Speed: float
 var Location_Interp: float
 
-# Rotation
+# Rotation variables
 var Rotation_Desired: Vector3
 var Angle_Rotation_Desired: Vector3
 var Rotation_Speed: float
 var Rotation_Interp: float
 
+# Smoothing speed for camera interpolation
+var smooth_speed = 7
+
+# Vertical rotation clamping (prevents flipping the camera vertically)
+var vertical_min = deg_to_rad(-80)  # Maximum downward rotation
+var vertical_max = deg_to_rad(80)   # Maximum upward rotation
+
+# Initialization
 func _ready():
-	# Initialize the variables with default values if needed
+	# Initialize zoom parameters
 	Zoom_Desired = 10
 	Zoom_Min = 5.0
-	Zoom_Max = 3000.0
-	Zoom_Speed = 10.0
+	Zoom_Max = 100.0
+	Zoom_Speed = 5.0
 	Zoom_Interp = 5
-
-	# Set the desired location to the current position of the CharacterBody3D
+	
+	# Initialize location and rotation to the current transform of the CharacterBody3D
 	Location_Desired = transform.origin
 	Location_Speed = 1.0
 	Location_Interp = 5
-
-	# Set the desired rotation to the current rotation of the CharacterBody3D
+	
 	Rotation_Desired = rotation
 	Angle_Rotation_Desired = spring_arm.rotation
-	Rotation_Speed = 1.0
+	Rotation_Speed = 5.0
 	Rotation_Interp = 5
 
+# Function to calculate the shortest angle between two angles
+func shortest_angle_between(current_angle: float, target_angle: float) -> float:
+	var difference = target_angle - current_angle
+	difference = wrapf(difference, -PI, PI)  # Keep angle between -π and π
+	return current_angle + difference
+
+# Main camera update function
 func _physics_process(delta: float):
-	# Update Zoom (SpringArm Length)
+	# Handle zoom (SpringArm Length interpolation)
+	update_zoom(delta)
+	
+	# Interpolate the actor's location
+	update_location(delta)
+
+	# Interpolate rotation using shortest path
+	update_rotation(delta)
+
+	# Handle player movement
+	handle_movement()
+
+	# Handle zoom input
+	handle_zoom_input()
+
+	# Handle rotation input
+	handle_rotation_input()
+
+# Update the camera's zoom level
+func update_zoom(delta: float):
 	var current_length = spring_arm.spring_length
 	var new_length = lerp(current_length, Zoom_Desired, clamp(delta * Zoom_Interp, 0, 1))
 	spring_arm.spring_length = new_length
-	# Interpolate rotation
-	var current_rotation = spring_arm.rotation
-	var new_rotation = current_rotation.lerp(Angle_Rotation_Desired, clamp(delta * Rotation_Interp, 0, 1))
-	spring_arm.rotation = new_rotation
 
-	# Interpolate actor location
-	global_transform.origin = global_transform.origin.lerp(Location_Desired, clamp(delta * Location_Interp, 0, 1))
+# Update the actor's position smoothly
+func update_location(delta: float):
+	global_transform.origin = global_transform.origin.lerp(Location_Desired, smooth_speed * delta)
 
-	# Interpolate actor rotation
-	rotation = rotation.lerp(Rotation_Desired, clamp(delta * Rotation_Interp, 0, 1))
-	
-	# Handle movement (forward/backward) using the "Forward" axis
+# Update rotation of the camera smoothly using the shortest path
+func update_rotation(delta: float):
+	# Horizontal (Y) Rotation
+	var current_actor_y_rotation = rotation.y
+	var new_actor_y_rotation = shortest_angle_between(current_actor_y_rotation, Rotation_Desired.y)
+	rotation.y = lerp(current_actor_y_rotation, new_actor_y_rotation, clamp(delta * Rotation_Interp, 0, 1))
+
+	# Vertical (X) Rotation
+	var current_actor_x_rotation = rotation.x
+	var new_actor_x_rotation = shortest_angle_between(current_actor_x_rotation, Rotation_Desired.x)
+	rotation.x = lerp(current_actor_x_rotation, new_actor_x_rotation, clamp(delta * Rotation_Interp, 0, 1))
+
+	# Clamp vertical rotation to prevent camera flipping
+	Rotation_Desired.x = clamp(Rotation_Desired.x, vertical_min, vertical_max)
+
+	# Wrap horizontal rotation to keep it between -π and π
+	Rotation_Desired.y = wrapf(Rotation_Desired.y, -PI, PI)
+
+# Handle player movement input (forward/backward, left/right)
+func handle_movement():
+	# Forward/backward movement (Z-axis)
 	var forward_input = Input.get_axis("back", "forward") * Location_Speed
-	Location_Desired += transform.basis.z * -forward_input  # Move forward/backward along the Z-axis
+	Location_Desired += transform.basis.z * -forward_input
 
-	# Handle movement (right/left) using the "Right" axis
+	# Left/right movement (X-axis)
 	var right_input = Input.get_axis("left", "right") * Location_Speed
-	Location_Desired += transform.basis.x * right_input  # Move right/left along the X-axis
-	
-	#var zoom_input = Input.get_axis("zoom_in", "zoom_out")
-	#var zoom_clamp = Zoom_Desired + (zoom_input * Zoom_Speed)
-	#Zoom_Desired = clamp(zoom_clamp, Zoom_Min, Zoom_Max)
+	Location_Desired += transform.basis.x * right_input
+
+# Handle zoom input (zoom in/out)
+func handle_zoom_input():
+	if Input.is_action_just_pressed("zoom_out"):
+		var zoom_input = Zoom_Speed
+		var zoom_clamp = Zoom_Desired + zoom_input
+		Zoom_Desired = clamp(zoom_clamp, Zoom_Min, Zoom_Max)
 
 	if Input.is_action_just_pressed("zoom_in"):
-		var zoom_input = Input.get_action_strength("zoom_in") * Zoom_Speed
-		var zoom_clamp = Zoom_Desired + zoom_input
-		print(zoom_clamp)
-		Zoom_Desired = clamp(Zoom_Desired, Zoom_Min, Zoom_Max)
+		var zoom_input = Zoom_Speed
+		var zoom_clamp = Zoom_Desired - zoom_input
+		Zoom_Desired = clamp(zoom_clamp, Zoom_Min, Zoom_Max)
 
-
-	# Handle rotation (left/right) using actions "rotate_left" and "rotate_right"
+# Handle camera rotation input (horizontal and vertical rotation)
+func handle_rotation_input():
+	# Handle horizontal rotation (left/right)
 	if Input.is_action_just_pressed("rotate_right"):
-		Rotation_Desired.y -= deg_to_rad(45)  # Rotate right by 45 degrees
+		Rotation_Desired.y += deg_to_rad(45)  # Rotate right by 45 degrees
 	if Input.is_action_just_pressed("rotate_left"):
-		Rotation_Desired.y += deg_to_rad(45)  # Rotate left by 45 degrees
+		Rotation_Desired.y -= deg_to_rad(45)  # Rotate left by 45 degrees
+
+	# Handle vertical rotation (up/down)
+	if Input.is_action_just_pressed("rotate_down"):
+		Rotation_Desired.x -= deg_to_rad(20)  # Rotate down by 20 degrees
+	if Input.is_action_just_pressed("rotate_up"):
+		Rotation_Desired.x += deg_to_rad(20)  # Rotate up by 20 degrees
