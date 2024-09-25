@@ -1,0 +1,74 @@
+[gd_scene load_steps=10 format=3 uid="uid://dl3he0bj1hlla"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="1_jg7jc"]
+
+[sub_resource type="GDScript" id="GDScript_teh1w"]
+script/source = "extends Node3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ser1n"]
+albedo_color = Color(0.393086, 0.393086, 0.393085, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fnkdd"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_bqs5n"]
+
+[sub_resource type="Sky" id="Sky_wsc4c"]
+sky_material = SubResource("PhysicalSkyMaterial_bqs5n")
+
+[sub_resource type="Environment" id="Environment_suifr"]
+background_mode = 2
+sky = SubResource("Sky_wsc4c")
+glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pqthu"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_tljmp"]
+
+[node name="Level" type="Node3D"]
+script = SubResource("GDScript_teh1w")
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.942601, 0.133816, 0.305936, -0.320232, 0.102604, 0.941766, 0.094633, -0.98568, 0.139567, -3.91412, 2.41204, 0)
+light_energy = 3.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(938.156, 0, 0, 0, 938.156, 0, 0, 0, 938.156, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_ser1n")
+mesh = SubResource("PlaneMesh_fnkdd")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_suifr")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.06028, 0)
+script = ExtResource("1_jg7jc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("BoxShape3D_pqthu")
+
+[node name="CamOrigin" type="Node3D" parent="Player"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Player/CamOrigin"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+collision_mask = 2
+spring_length = 20.0
+
+[node name="Camera3D" type="Camera3D" parent="Player/CamOrigin/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.194658, 0.834436, -2.82371)
+mesh = SubResource("BoxMesh_tljmp")
