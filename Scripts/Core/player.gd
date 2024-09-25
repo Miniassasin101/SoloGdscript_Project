@@ -41,8 +41,9 @@ func _ready():
 
 func _physics_process(delta: float):
 	# Update Zoom (SpringArm Length)
-	spring_arm.spring_length = lerp(spring_arm.spring_length, Zoom_Desired, Zoom_Interp * delta)
-
+	var current_length = spring_arm.spring_length
+	var new_length = lerp(current_length, Zoom_Desired, clamp(delta * Zoom_Interp, 0, 1))
+	spring_arm.spring_length = new_length
 	# Interpolate rotation
 	var current_rotation = spring_arm.rotation
 	var new_rotation = current_rotation.lerp(Angle_Rotation_Desired, clamp(delta * Rotation_Interp, 0, 1))
@@ -54,18 +55,6 @@ func _physics_process(delta: float):
 	# Interpolate actor rotation
 	rotation = rotation.lerp(Rotation_Desired, clamp(delta * Rotation_Interp, 0, 1))
 	
-	
-
-	# Handle zoom input
-	if Input.is_action_pressed("zoom_in"):
-		var zoom_input = Input.get_action_strength("zoom_in") * Zoom_Speed
-		Zoom_Desired += -zoom_input
-		Zoom_Desired = clamp(Zoom_Desired, Zoom_Min, Zoom_Max)
-	if Input.is_action_pressed("zoom_out"):
-		var zoom_input = Input.get_action_strength("zoom_out") * Zoom_Speed
-		Zoom_Desired += zoom_input
-		Zoom_Desired = clamp(Zoom_Desired, Zoom_Min, Zoom_Max)
-
 	# Handle movement (forward/backward) using the "Forward" axis
 	var forward_input = Input.get_axis("back", "forward") * Location_Speed
 	Location_Desired += transform.basis.z * -forward_input  # Move forward/backward along the Z-axis
@@ -73,6 +62,17 @@ func _physics_process(delta: float):
 	# Handle movement (right/left) using the "Right" axis
 	var right_input = Input.get_axis("left", "right") * Location_Speed
 	Location_Desired += transform.basis.x * right_input  # Move right/left along the X-axis
+	
+	#var zoom_input = Input.get_axis("zoom_in", "zoom_out")
+	#var zoom_clamp = Zoom_Desired + (zoom_input * Zoom_Speed)
+	#Zoom_Desired = clamp(zoom_clamp, Zoom_Min, Zoom_Max)
+
+	if Input.is_action_just_pressed("zoom_in"):
+		var zoom_input = Input.get_action_strength("zoom_in") * Zoom_Speed
+		var zoom_clamp = Zoom_Desired + zoom_input
+		print(zoom_clamp)
+		Zoom_Desired = clamp(Zoom_Desired, Zoom_Min, Zoom_Max)
+
 
 	# Handle rotation (left/right) using actions "rotate_left" and "rotate_right"
 	if Input.is_action_just_pressed("rotate_right"):
