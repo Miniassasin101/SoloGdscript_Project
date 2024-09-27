@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=4 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=20 format=4 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/S_Unit.gd" id="1_4kkys"]
 [ext_resource type="Material" uid="uid://bx8qt36yrfiib" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot_celshaded.tres" id="2_ijfhd"]
 [ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="3_pd4ts"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_Grid_08.png" id="4_t0r05"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="5_p11j4"]
+[ext_resource type="Script" path="res://Hero_Game/Scenes/mouse_world.gd" id="6_y3qe8"]
 
 [sub_resource type="GDScript" id="GDScript_teh1w"]
 script/source = "extends Node3D
@@ -19,6 +20,37 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 "
+
+[sub_resource type="Gradient" id="Gradient_3xus0"]
+offsets = PackedFloat32Array(0, 0.117647, 0.819005, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.0645, 0.091575, 0.15, 1, 0.86, 0.786613, 0.7224, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_40odu"]
+gradient = SubResource("Gradient_3xus0")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2xono"]
+sky_top_color = Color(0.307572, 0.472605, 0.669074, 1)
+sky_horizon_color = Color(0.440581, 0.62455, 0.66912, 1)
+energy_multiplier = 4.69
+
+[sub_resource type="Sky" id="Sky_wsc4c"]
+sky_material = SubResource("ProceduralSkyMaterial_2xono")
+
+[sub_resource type="Environment" id="Environment_suifr"]
+background_mode = 2
+sky = SubResource("Sky_wsc4c")
+ambient_light_sky_contribution = 0.26
+ambient_light_energy = 0.0
+reflected_light_source = 1
+tonemap_mode = 2
+tonemap_exposure = 0.18
+ssao_enabled = true
+ssil_enabled = true
+ssil_radius = 1.88
+sdfgi_enabled = true
+sdfgi_energy = 0.385
+adjustment_enabled = true
+adjustment_color_correction = SubResource("GradientTexture1D_40odu")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_b7p4i"]
 resource_name = "Scene"
@@ -204,56 +236,23 @@ shader_parameter/grid_texture = ExtResource("4_t0r05")
 [sub_resource type="PlaneMesh" id="PlaneMesh_fnkdd"]
 material = SubResource("ShaderMaterial_vphwt")
 
-[sub_resource type="Gradient" id="Gradient_3xus0"]
-offsets = PackedFloat32Array(0, 0.117647, 0.819005, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.0645, 0.091575, 0.15, 1, 0.86, 0.786613, 0.7224, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_40odu"]
-gradient = SubResource("Gradient_3xus0")
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2xono"]
-sky_top_color = Color(0.307572, 0.472605, 0.669074, 1)
-sky_horizon_color = Color(0.440581, 0.62455, 0.66912, 1)
-energy_multiplier = 4.69
-
-[sub_resource type="Sky" id="Sky_wsc4c"]
-sky_material = SubResource("ProceduralSkyMaterial_2xono")
-
-[sub_resource type="Environment" id="Environment_suifr"]
-background_mode = 2
-sky = SubResource("Sky_wsc4c")
-ambient_light_sky_contribution = 0.26
-ambient_light_energy = 0.0
-reflected_light_source = 1
-tonemap_mode = 2
-tonemap_exposure = 0.18
-ssao_enabled = true
-ssil_enabled = true
-ssil_radius = 1.88
-sdfgi_enabled = true
-sdfgi_energy = 0.385
-adjustment_enabled = true
-adjustment_color_correction = SubResource("GradientTexture1D_40odu")
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_vv6bh"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pqthu"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_tljmp"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_27bco"]
-material = ExtResource("2_ijfhd")
-
 [node name="Level" type="Node3D"]
 script = SubResource("GDScript_teh1w")
 
-[node name="Unit" type="Node3D" parent="."]
-script = ExtResource("1_4kkys")
+[node name="Lighting" type="Node3D" parent="."]
 
-[node name="Character_Dummy_Female_01_1" type="MeshInstance3D" parent="Unit"]
-mesh = SubResource("ArrayMesh_b7p4i")
-skin = SubResource("Skin_nhj3y")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting"]
+environment = SubResource("Environment_suifr")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.550407, -0.587545, 0.593164, -0.358336, 0.475453, 0.803455, -0.754087, -0.654779, 0.0511538, -5.0404, 2.34293, -0.615594)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(0.550407, -0.587545, 0.593164, -0.358336, 0.475453, 0.803455, -0.754087, -0.654779, 0.0511535, -5.0404, 2.34293, -0.615594)
 light_energy = 6.943
 light_volumetric_fog_energy = 2.0
 shadow_enabled = true
@@ -262,14 +261,23 @@ shadow_normal_bias = 5.87
 shadow_blur = 0.209
 directional_shadow_max_distance = 18.8
 
+[node name="Unit" type="Node3D" parent="."]
+script = ExtResource("1_4kkys")
+
+[node name="Character_Dummy_Female_01_1" type="MeshInstance3D" parent="Unit"]
+mesh = SubResource("ArrayMesh_b7p4i")
+skin = SubResource("Skin_nhj3y")
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("PlaneMesh_fnkdd")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_suifr")
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_vv6bh")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.06028, 0)
@@ -291,6 +299,5 @@ spring_length = 20.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.04805, 1.08465, -3.22367)
 mesh = SubResource("BoxMesh_tljmp")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.90322, 0.827268, -0.724483)
-mesh = SubResource("SphereMesh_27bco")
+[node name="MouseWorld" type="Node3D" parent="."]
+script = ExtResource("6_y3qe8")

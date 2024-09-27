@@ -1,3 +1,5 @@
+class_name PlayerController
+
 extends CharacterBody3D
 # Camera script that provides smooth camera movement through interpolation.
 # Hierarchy: CharacterBody3D -> Node3D -> SpringArm3D -> Camera3D
