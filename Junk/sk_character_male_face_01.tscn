@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://lyi5s5tnxa0m"]
+
+[ext_resource type="PackedScene" uid="uid://h40yqwe0bywt" path="res://Hero_Game/Art/PolyProtoAssets/Characters/SK_Character_Male_Face_01.fbx" id="1_3ghst"]
+
+[node name="SK_Character_Male_Face_01" instance=ExtResource("1_3ghst")]
+
+[node name="Skeleton3D" parent="Root" index="0"]
+bones/3/rotation = Quaternion(0.99381, 0.11109, -1.11022e-16, -4.71845e-16)
+bones/23/rotation = Quaternion(0.632486, -0.578548, -0.375471, -0.352513)
+bones/43/rotation = Quaternion(-0.705872, -0.0417752, 0.0641594, 0.70419)

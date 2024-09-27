@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://xhnq1385khy"]
+
+[ext_resource type="PackedScene" uid="uid://bvt33ka2uewr0" path="res://Hero_Game/Art/SelfAssets/Base Mesh All Done no textures Dawn Colors solidified hair.fbx" id="1_hngts"]
+
+[node name="Base Mesh All Done no textures Dawn Colors solidified hair" instance=ExtResource("1_hngts")]

@@ -1,0 +1,2290 @@
+-------------------
+Folder Name: Buildings
+-------------------
+Prefab Name: SM_Buildings_WindowGlass_01
+	Mesh Name: SM_Buildings_WindowGlass_01
+		Slot: PolygonPrototype_Glass_Global (Uses custom shader)
+
+-------------------
+Folder Name: Characters
+-------------------
+Prefab Name: Character_Dummy_Female_01
+	Mesh Name: Character_Dummy_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_Dummy_Male_01
+	Mesh Name: Character_Dummy_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_Female_Face_01
+	Mesh Name: Character_Dummy_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Chr_Attach_Female_Hair_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_Female_NoFace_01
+	Mesh Name: Character_Dummy_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Chr_Attach_Female_Hair_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_Male_Face_01
+	Mesh Name: Character_Dummy_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Chr_Attach_Male_Hair_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_Male_NoFace_01
+	Mesh Name: Character_Dummy_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Chr_Attach_Male_Hair_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Chr_Attach_Female_Hair_01
+	Mesh Name: SM_Chr_Attach_Female_Hair_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Chr_Attach_Male_Hair_01
+	Mesh Name: SM_Chr_Attach_Male_Hair_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+
+-------------------
+Folder Name: Character_Pawns
+-------------------
+Prefab Name: SM_Pawn_Cover_Female_01
+	Mesh Name: SM_Pawn_Cover_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Cover_Male_01
+	Mesh Name: SM_Pawn_Cover_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Cower_Female_01
+	Mesh Name: SM_Pawn_Cower_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Cower_Male_01
+	Mesh Name: SM_Pawn_Cower_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Dead_Female_01
+	Mesh Name: SM_Pawn_Dead_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Dead_Male_01
+	Mesh Name: SM_Pawn_Dead_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Handsup_Female_01
+	Mesh Name: SM_Pawn_Handsup_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Handsup_Male_01
+	Mesh Name: SM_Pawn_Handsup_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Idle_Female_01
+	Mesh Name: SM_Pawn_Idle_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Idle_Male_01
+	Mesh Name: SM_Pawn_Idle_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_LadderClimb_Female_01
+	Mesh Name: SM_Pawn_LadderClimb_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_LadderClimb_Male_01
+	Mesh Name: SM_Pawn_LadderClimb_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Run_Female_01
+	Mesh Name: SM_Pawn_Run_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Run_Male_01
+	Mesh Name: SM_Pawn_Run_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Walk_Female_01
+	Mesh Name: SM_Pawn_Walk_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Walk_Male_01
+	Mesh Name: SM_Pawn_Walk_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Weapon_Female_01
+	Mesh Name: SM_Pawn_Weapon_Female_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Weapon_Female_02
+	Mesh Name: SM_Pawn_Weapon_Female_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Weapon_Male_01
+	Mesh Name: SM_Pawn_Weapon_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Pawn_Weapon_Male_02
+	Mesh Name: SM_Pawn_Weapon_Male_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+-------------------
+Folder Name: FX
+-------------------
+Prefab Name: Explosion_Small_FX
+	Mesh Name: Explosion_Small_FX
+		Slot: PolygonPrototype_FX_Dirt (No Albedo Texture)
+	Mesh Name: Explosion_Small_Smoke_FX
+		Slot: PolygonPrototype_FX_Default_02 (Uses custom shader)
+	Mesh Name: Explosion_Small_Fire_FX
+		Slot: PolygonPrototype_FX_Default (Uses custom shader)
+
+Prefab Name: Fire_01_FX
+	Mesh Name: Fire_01_FX
+		Slot: PolygonPrototype_FX_Default (Uses custom shader)
+
+Prefab Name: Smoke_Small_Light_FX
+	Mesh Name: Smoke_Small_Light_FX
+		Slot: PolygonPrototype_FX_Default_02 (Uses custom shader)
+
+Prefab Name: SM_FX_Glow_Ring_01
+	Mesh Name: SM_FX_Glow_Ring_01
+		Slot: PolygonPrototype_FX_GlowRing (Uses custom shader)
+
+Prefab Name: SM_FX_Glow_Ring_02
+	Mesh Name: SM_FX_Glow_Ring_02
+		Slot: PolygonPrototype_FX_GlowRing (Uses custom shader)
+
+-------------------
+Folder Name: Generic
+-------------------
+Prefab Name: SM_Generic_Cloud_01
+	Mesh Name: SM_Generic_Cloud_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Cloud_02
+	Mesh Name: SM_Generic_Cloud_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Cloud_03
+	Mesh Name: SM_Generic_Cloud_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Cloud_04
+	Mesh Name: SM_Generic_Cloud_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Grass_Patch_01
+	Mesh Name: SM_Generic_Grass_Patch_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Grass_Patch_02
+	Mesh Name: SM_Generic_Grass_Patch_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Mountains_Grass_01
+	Mesh Name: SM_Generic_Mountains_Grass_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Mountains_Grass_02
+	Mesh Name: SM_Generic_Mountains_Grass_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Mountains_Snow_01
+	Mesh Name: SM_Generic_Mountains_Snow_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Mountains_Soft_01
+	Mesh Name: SM_Generic_Mountains_Soft_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Small_Rocks_01
+	Mesh Name: SM_Generic_Small_Rocks_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Small_Rocks_02
+	Mesh Name: SM_Generic_Small_Rocks_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_TreeDead_01
+	Mesh Name: SM_Generic_TreeDead_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_TreeStump_01
+	Mesh Name: SM_Generic_TreeStump_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Tree_01
+	Mesh Name: SM_Generic_Tree_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Tree_02
+	Mesh Name: SM_Generic_Tree_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Tree_03
+	Mesh Name: SM_Generic_Tree_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Tree_04
+	Mesh Name: SM_Generic_Tree_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Generic_Water_Plane_01
+	Mesh Name: SM_Generic_Water_Plane_01
+		Slot: PolygonPrototype_Water (No Albedo Texture)
+
+Prefab Name: SM_Generic_Water_Plane_02
+	Mesh Name: SM_Generic_Water_Plane_02
+		Slot: PolygonPrototype_Water (No Albedo Texture)
+
+-------------------
+Folder Name: Icons
+-------------------
+Prefab Name: SM_Icon_Ammo_01
+	Mesh Name: SM_Icon_Ammo_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Ammo_02
+	Mesh Name: SM_Icon_Ammo_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Ammo_03
+	Mesh Name: SM_Icon_Ammo_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Ammo_04
+	Mesh Name: SM_Icon_Ammo_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Apple_01
+	Mesh Name: SM_Icon_Apple_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Long_01
+	Mesh Name: SM_Icon_Arrow_Long_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Long_02
+	Mesh Name: SM_Icon_Arrow_Long_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Long_Curve_01
+	Mesh Name: SM_Icon_Arrow_Long_Curve_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Long_Curve_02
+	Mesh Name: SM_Icon_Arrow_Long_Curve_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Long_Curve_03
+	Mesh Name: SM_Icon_Arrow_Long_Curve_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Small_01
+	Mesh Name: SM_Icon_Arrow_Small_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Small_02
+	Mesh Name: SM_Icon_Arrow_Small_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Small_03
+	Mesh Name: SM_Icon_Arrow_Small_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Small_04
+	Mesh Name: SM_Icon_Arrow_Small_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Small_05
+	Mesh Name: SM_Icon_Arrow_Small_05
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Small_06
+	Mesh Name: SM_Icon_Arrow_Small_06
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Small_07
+	Mesh Name: SM_Icon_Arrow_Small_07
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Arrow_Small_UpDown_01
+	Mesh Name: SM_Icon_Arrow_Small_UpDown_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Audio_01
+	Mesh Name: SM_Icon_Audio_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Axe_01
+	Mesh Name: SM_Icon_Axe_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Balloon_01
+	Mesh Name: SM_Icon_Balloon_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Banana_01
+	Mesh Name: SM_Icon_Banana_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Banana_02
+	Mesh Name: SM_Icon_Banana_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Boat_01
+	Mesh Name: SM_Icon_Boat_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Bones_01
+	Mesh Name: SM_Icon_Bones_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Camera_01
+	Mesh Name: SM_Icon_Camera_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Candy_01
+	Mesh Name: SM_Icon_Candy_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Car_01
+	Mesh Name: SM_Icon_Car_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Circle_01
+	Mesh Name: SM_Icon_Circle_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Clapper_01
+	Mesh Name: SM_Icon_Clapper_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_CoinBag_01
+	Mesh Name: SM_Icon_CoinBag_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Coin_01
+	Mesh Name: SM_Icon_Coin_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Coin_02
+	Mesh Name: SM_Icon_Coin_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Coin_03
+	Mesh Name: SM_Icon_Coin_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Controller_01
+	Mesh Name: SM_Icon_Controller_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Cross_01
+	Mesh Name: SM_Icon_Cross_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Cup_01
+	Mesh Name: SM_Icon_Cup_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Cup_02
+	Mesh Name: SM_Icon_Cup_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Cup_03
+	Mesh Name: SM_Icon_Cup_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Error_Circle_01
+	Mesh Name: SM_Icon_Error_Circle_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Folder_01
+	Mesh Name: SM_Icon_Folder_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Gem_01
+	Mesh Name: SM_Icon_Gem_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Guage_01
+	Mesh Name: SM_Icon_Guage_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Icon_Guage_Bar_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Guage_Bar_01
+	Mesh Name: SM_Icon_Guage_Bar_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Icon_Guage_Bar_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Gun_01
+	Mesh Name: SM_Icon_Gun_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Health_01
+	Mesh Name: SM_Icon_Health_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Health_02
+	Mesh Name: SM_Icon_Health_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Heart_01
+	Mesh Name: SM_Icon_Heart_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Home_01
+	Mesh Name: SM_Icon_Home_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Key_01
+	Mesh Name: SM_Icon_Key_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_And_01
+	Mesh Name: SM_Icon_Letter_And_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_Apostrophe_01
+	Mesh Name: SM_Icon_Letter_Apostrophe_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_A_01
+	Mesh Name: SM_Icon_Letter_A_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_Bracket_01
+	Mesh Name: SM_Icon_Letter_Bracket_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_B_01
+	Mesh Name: SM_Icon_Letter_B_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_Colon_01
+	Mesh Name: SM_Icon_Letter_Colon_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_C_01
+	Mesh Name: SM_Icon_Letter_C_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_Dot_01
+	Mesh Name: SM_Icon_Letter_Dot_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_D_01
+	Mesh Name: SM_Icon_Letter_D_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_Exclamation_01
+	Mesh Name: SM_Icon_Letter_Exclamation_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_E_01
+	Mesh Name: SM_Icon_Letter_E_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_F_01
+	Mesh Name: SM_Icon_Letter_F_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_G_01
+	Mesh Name: SM_Icon_Letter_G_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_H_01
+	Mesh Name: SM_Icon_Letter_H_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_I_01
+	Mesh Name: SM_Icon_Letter_I_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_J_01
+	Mesh Name: SM_Icon_Letter_J_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_K_01
+	Mesh Name: SM_Icon_Letter_K_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_L_01
+	Mesh Name: SM_Icon_Letter_L_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_Money_01
+	Mesh Name: SM_Icon_Letter_Money_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_M_01
+	Mesh Name: SM_Icon_Letter_M_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_N_01
+	Mesh Name: SM_Icon_Letter_N_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_O_01
+	Mesh Name: SM_Icon_Letter_O_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_P_01
+	Mesh Name: SM_Icon_Letter_P_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_Question_01
+	Mesh Name: SM_Icon_Letter_Question_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_Q_01
+	Mesh Name: SM_Icon_Letter_Q_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_R_01
+	Mesh Name: SM_Icon_Letter_R_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_S_01
+	Mesh Name: SM_Icon_Letter_S_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_T_01
+	Mesh Name: SM_Icon_Letter_T_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_U_01
+	Mesh Name: SM_Icon_Letter_U_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_V_01
+	Mesh Name: SM_Icon_Letter_V_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_W_01
+	Mesh Name: SM_Icon_Letter_W_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_X_01
+	Mesh Name: SM_Icon_Letter_X_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_Y_01
+	Mesh Name: SM_Icon_Letter_Y_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Letter_Z_01
+	Mesh Name: SM_Icon_Letter_Z_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Light_Area_01
+	Mesh Name: SM_Icon_Light_Area_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Light_Directional_01
+	Mesh Name: SM_Icon_Light_Directional_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Light_Directional_02
+	Mesh Name: SM_Icon_Light_Directional_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Light_Pointlight_01
+	Mesh Name: SM_Icon_Light_Pointlight_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Light_Spotlight_01
+	Mesh Name: SM_Icon_Light_Spotlight_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Lock_Closed_01
+	Mesh Name: SM_Icon_Lock_Closed_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Lock_Open_01
+	Mesh Name: SM_Icon_Lock_Open_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Manip_01
+	Mesh Name: SM_Icon_Manip_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_0_01
+	Mesh Name: SM_Icon_Number_0_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_1_01
+	Mesh Name: SM_Icon_Number_1_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_2_01
+	Mesh Name: SM_Icon_Number_2_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_3_01
+	Mesh Name: SM_Icon_Number_3_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_4_01
+	Mesh Name: SM_Icon_Number_4_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_5_01
+	Mesh Name: SM_Icon_Number_5_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_6_01
+	Mesh Name: SM_Icon_Number_6_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_7_01
+	Mesh Name: SM_Icon_Number_7_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_8_01
+	Mesh Name: SM_Icon_Number_8_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_9_01
+	Mesh Name: SM_Icon_Number_9_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_At_01
+	Mesh Name: SM_Icon_Number_At_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_Hash_01
+	Mesh Name: SM_Icon_Number_Hash_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Number_Percentage_01
+	Mesh Name: SM_Icon_Number_Percentage_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Pencil_01
+	Mesh Name: SM_Icon_Pencil_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Pin_01
+	Mesh Name: SM_Icon_Pin_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Player_01
+	Mesh Name: SM_Icon_Player_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Potion_01
+	Mesh Name: SM_Icon_Potion_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Potion_02
+	Mesh Name: SM_Icon_Potion_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Power_01
+	Mesh Name: SM_Icon_Power_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Repair_01
+	Mesh Name: SM_Icon_Repair_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Save_01
+	Mesh Name: SM_Icon_Save_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SelectionRing_01
+	Mesh Name: SM_Icon_SelectionRing_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SelectionRing_02
+	Mesh Name: SM_Icon_SelectionRing_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SelectionRing_03
+	Mesh Name: SM_Icon_SelectionRing_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SelectionRing_04
+	Mesh Name: SM_Icon_SelectionRing_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SelectionRing_05
+	Mesh Name: SM_Icon_SelectionRing_05
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SelectionRing_06
+	Mesh Name: SM_Icon_SelectionRing_06
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SelectionRing_07
+	Mesh Name: SM_Icon_SelectionRing_07
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SelectionRing_08
+	Mesh Name: SM_Icon_SelectionRing_08
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SelectionRing_09
+	Mesh Name: SM_Icon_SelectionRing_09
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Shield_01
+	Mesh Name: SM_Icon_Shield_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Skull_01
+	Mesh Name: SM_Icon_Skull_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Skull_02
+	Mesh Name: SM_Icon_Skull_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SpeechBubble_01
+	Mesh Name: SM_Icon_SpeechBubble_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SpeechBubble_02
+	Mesh Name: SM_Icon_SpeechBubble_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_SpeechBubble_03
+	Mesh Name: SM_Icon_SpeechBubble_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Star_01
+	Mesh Name: SM_Icon_Star_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Star_02
+	Mesh Name: SM_Icon_Star_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Sword_01
+	Mesh Name: SM_Icon_Sword_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_System_01
+	Mesh Name: SM_Icon_System_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Text_Bug_01
+	Mesh Name: SM_Icon_Text_Bug_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Text_Finish_01
+	Mesh Name: SM_Icon_Text_Finish_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Text_Start_01
+	Mesh Name: SM_Icon_Text_Start_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Tick_01
+	Mesh Name: SM_Icon_Tick_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Ute_01
+	Mesh Name: SM_Icon_Ute_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Warning_01
+	Mesh Name: SM_Icon_Warning_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Watch_01
+	Mesh Name: SM_Icon_Watch_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Weather_CloudSun_01
+	Mesh Name: SM_Icon_Weather_CloudSun_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Weather_Cloudy_01
+	Mesh Name: SM_Icon_Weather_Cloudy_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Weather_Moon_01
+	Mesh Name: SM_Icon_Weather_Moon_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Weather_Rain_01
+	Mesh Name: SM_Icon_Weather_Rain_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Icon_Weather_Sun_01
+	Mesh Name: SM_Icon_Weather_Sun_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_ArtPass_01
+	Mesh Name: SM_Note_ArtPass_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Blank_01
+	Mesh Name: SM_Note_Blank_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Bug_01
+	Mesh Name: SM_Note_Bug_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_CodePass_01
+	Mesh Name: SM_Note_CodePass_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Crap_01
+	Mesh Name: SM_Note_Crap_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Custom_01
+	Mesh Name: SM_Note_Custom_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Done_01
+	Mesh Name: SM_Note_Done_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Final_01
+	Mesh Name: SM_Note_Final_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Fix_01
+	Mesh Name: SM_Note_Fix_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Kick_Me_01
+	Mesh Name: SM_Note_Kick_Me_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Old_01
+	Mesh Name: SM_Note_Old_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Polish_01
+	Mesh Name: SM_Note_Polish_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Temp_01
+	Mesh Name: SM_Note_Temp_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Test_01
+	Mesh Name: SM_Note_Test_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Note_Wip_01
+	Mesh Name: SM_Note_Wip_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+-------------------
+Folder Name: NewAssets
+-------------------
+Prefab Name: SM_Prop_Badminton_Racket_01
+	Mesh Name: SM_Prop_Badminton_Racket_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+		Slot: PolygonPrototype_Wire (Wire_Alpha)
+
+Prefab Name: SM_Prop_Badminton_Shuttle_01
+	Mesh Name: SM_Prop_Badminton_Shuttle_01
+		Slot: PolygonPrototype_Wire_White (Wire_Alpha_White)
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Bowling_Ball_01
+	Mesh Name: SM_Prop_Bowling_Ball_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Bowling_Pin_01
+	Mesh Name: SM_Prop_Bowling_Pin_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_BoxingGlove_01
+	Mesh Name: SM_Prop_BoxingGlove_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_DartBoard_01
+	Mesh Name: SM_Prop_DartBoard_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Dart_01
+	Mesh Name: SM_Prop_Dart_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Dynamite_01
+	Mesh Name: SM_Prop_Dynamite_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Frisbee_01
+	Mesh Name: SM_Prop_Frisbee_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Horseshoe_Pole_01
+	Mesh Name: SM_Prop_Horseshoe_Pole_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Horseshoe_Toss_01
+	Mesh Name: SM_Prop_Horseshoe_Toss_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Microphone_01
+	Mesh Name: SM_Prop_Microphone_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Microphone_Stand_01
+	Mesh Name: SM_Prop_Microphone_Stand_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Microphone_Stand_Empty_01
+	Mesh Name: SM_Prop_Microphone_Stand_Empty_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Minigolf_Club_01
+	Mesh Name: SM_Prop_Minigolf_Club_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Minigolf_Flag_01
+	Mesh Name: SM_Prop_Minigolf_Flag_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_TableTennis_Ball_01
+	Mesh Name: SM_Prop_TableTennis_Ball_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_TableTennis_Ball_02
+	Mesh Name: SM_Prop_TableTennis_Ball_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_TableTennis_Paddle_01
+	Mesh Name: SM_Prop_TableTennis_Paddle_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Tennis_Ball_01
+	Mesh Name: SM_Prop_Tennis_Ball_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Tennis_Racket_01
+	Mesh Name: SM_Prop_Tennis_Racket_01
+		Slot: PolygonPrototype_Wire (Wire_Alpha)
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_VR_Headset_01
+	Mesh Name: SM_Prop_VR_Headset_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_VR_Headset_02
+	Mesh Name: SM_Prop_VR_Headset_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_VR_Headset_03
+	Mesh Name: SM_Prop_VR_Headset_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+-------------------
+Folder Name: Other
+-------------------
+Prefab Name: FOV
+	Mesh Name: FOV
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+-------------------
+Folder Name: Primitives
+-------------------
+Prefab Name: SM_Primitive_Cone_01
+	Mesh Name: SM_Primitive_Cone_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cone_02
+	Mesh Name: SM_Primitive_Cone_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cone_03
+	Mesh Name: SM_Primitive_Cone_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cone_04
+	Mesh Name: SM_Primitive_Cone_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cone_05
+	Mesh Name: SM_Primitive_Cone_05
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cube_01
+	Mesh Name: SM_Primitive_Cube_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cube_02
+	Mesh Name: SM_Primitive_Cube_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cube_03
+	Mesh Name: SM_Primitive_Cube_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cube_04
+	Mesh Name: SM_Primitive_Cube_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cylander_01
+	Mesh Name: SM_Primitive_Cylander_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cylander_02
+	Mesh Name: SM_Primitive_Cylander_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cylander_03
+	Mesh Name: SM_Primitive_Cylander_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cylander_04
+	Mesh Name: SM_Primitive_Cylander_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cylander_05
+	Mesh Name: SM_Primitive_Cylander_05
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cylander_Wedge_01
+	Mesh Name: SM_Primitive_Cylander_Wedge_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Helix_01
+	Mesh Name: SM_Primitive_Helix_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Pyramid_01
+	Mesh Name: SM_Primitive_Pyramid_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_SoccerBall_01
+	Mesh Name: SM_Primitive_SoccerBall_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Sphere_01
+	Mesh Name: SM_Primitive_Sphere_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Sphere_02
+	Mesh Name: SM_Primitive_Sphere_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Sphere_03
+	Mesh Name: SM_Primitive_Sphere_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Sphere_04
+	Mesh Name: SM_Primitive_Sphere_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Sphere_05
+	Mesh Name: SM_Primitive_Sphere_05
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Torus_01
+	Mesh Name: SM_Primitive_Torus_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Torus_02
+	Mesh Name: SM_Primitive_Torus_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Torus_03
+	Mesh Name: SM_Primitive_Torus_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Torus_04
+	Mesh Name: SM_Primitive_Torus_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Torus_05
+	Mesh Name: SM_Primitive_Torus_05
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Tube_01
+	Mesh Name: SM_Primitive_Tube_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Tube_02
+	Mesh Name: SM_Primitive_Tube_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Tube_03
+	Mesh Name: SM_Primitive_Tube_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Tube_04
+	Mesh Name: SM_Primitive_Tube_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Tube_05
+	Mesh Name: SM_Primitive_Tube_05
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Wedge_01
+	Mesh Name: SM_Primitive_Wedge_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+-------------------
+Folder Name: Props
+-------------------
+Prefab Name: SM_Prop_Barrel_01
+	Mesh Name: SM_Prop_Barrel_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Barrier_01
+	Mesh Name: SM_Prop_Barrier_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Bat_01
+	Mesh Name: SM_Prop_Bat_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_BoostPad_01
+	Mesh Name: SM_Prop_BoostPad_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_C4_01
+	Mesh Name: SM_Prop_C4_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Chest_Wood_01
+	Mesh Name: SM_Prop_Chest_Wood_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Prop_Chest_Wood_Lid
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Cone_01
+	Mesh Name: SM_Prop_Cone_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Crate_01
+	Mesh Name: SM_Prop_Crate_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Crate_02
+	Mesh Name: SM_Prop_Crate_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Crate_03
+	Mesh Name: SM_Prop_Crate_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Crate_Exclamation_01
+	Mesh Name: SM_Prop_Crate_Exclamation_01
+		Slot: PolygonPrototype_Texture_04 (PolygonPrototype_Texture_04)
+
+Prefab Name: SM_Prop_Crate_Question_01
+	Mesh Name: SM_Prop_Crate_Question_01
+		Slot: PolygonPrototype_Texture_04 (PolygonPrototype_Texture_04)
+
+Prefab Name: SM_Prop_FlagPole_01
+	Mesh Name: SM_Prop_FlagPole_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Knife_01
+	Mesh Name: SM_Prop_Knife_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_MetalPlate_01
+	Mesh Name: SM_Prop_MetalPlate_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_MetalPlate_02
+	Mesh Name: SM_Prop_MetalPlate_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Pipe_01
+	Mesh Name: SM_Prop_Pipe_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Pipe_02
+	Mesh Name: SM_Prop_Pipe_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Pipe_03
+	Mesh Name: SM_Prop_Pipe_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Pipe_04
+	Mesh Name: SM_Prop_Pipe_04
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Pipe_Curve_01
+	Mesh Name: SM_Prop_Pipe_Curve_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Pipe_Curve_02
+	Mesh Name: SM_Prop_Pipe_Curve_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Pistol_01
+	Mesh Name: SM_Prop_Pistol_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Prop_Pistol_Mag_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Prop_Pistol_Slide_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Prop_Pistol_Trigger_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Rifle_01
+	Mesh Name: SM_Prop_Rifle_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Prop_Rifle_Mag_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Prop_Rifle_Slide_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Prop_Rifle_Trigger_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Sword_01
+	Mesh Name: SM_Prop_Sword_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Synty_Cube_01
+	Mesh Name: SM_Prop_Synty_Cube_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Target_01
+	Mesh Name: SM_Prop_Target_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Target_02
+	Mesh Name: SM_Prop_Target_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Target_03
+	Mesh Name: SM_Prop_Target_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Target_Stand_01
+	Mesh Name: SM_Prop_Target_Stand_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Tree_Bush_01
+	Mesh Name: SM_Prop_Tree_Bush_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Tree_Palm_01
+	Mesh Name: SM_Prop_Tree_Palm_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Tree_Palm_02
+	Mesh Name: SM_Prop_Tree_Palm_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Tree_Pine_01
+	Mesh Name: SM_Prop_Tree_Pine_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Tree_Pine_02
+	Mesh Name: SM_Prop_Tree_Pine_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Tree_Round_01
+	Mesh Name: SM_Prop_Tree_Round_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Tree_Round_02
+	Mesh Name: SM_Prop_Tree_Round_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Tree_Square_01
+	Mesh Name: SM_Prop_Tree_Square_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Tree_Square_02
+	Mesh Name: SM_Prop_Tree_Square_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Vase_01
+	Mesh Name: SM_Prop_Vase_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_Window_Bar_01
+	Mesh Name: SM_Prop_Window_Bar_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Prop_WoodPlank_01
+	Mesh Name: SM_Prop_WoodPlank_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Switch_Button_01
+	Mesh Name: SM_Switch_Button_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Switch_Button_Button_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Switch_Button_02
+	Mesh Name: SM_Switch_Button_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Switch_Button_Button_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Switch_Lever_01
+	Mesh Name: SM_Switch_Lever_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Switch_Lever_Stick_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Switch_Lever_02
+	Mesh Name: SM_Switch_Lever_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Switch_Lever_Stick_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Switch_Remote_01
+	Mesh Name: SM_Switch_Remote_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: SM_Switch_Remote_Button_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+-------------------
+Folder Name: Vehicle
+-------------------
+Prefab Name: SM_Veh_Car_Sports_01
+	Mesh Name: SM_Veh_Car_Sports_01
+		Slot: PolygonPrototype_Texture_01_Vehicle (PolygonPrototype_Texture_04)
+	Mesh Name: SM_Veh_Sports_Glass
+		Slot: PolygonPrototype_Glass (No Albedo Texture)
+	Mesh Name: SM_Veh_Sports_SteeringW
+		Slot: PolygonPrototype_Texture_01_Vehicle (PolygonPrototype_Texture_04)
+	Mesh Name: SM_Veh_Sports_Wheel_fl
+		Slot: PolygonPrototype_Texture_01_Vehicle (PolygonPrototype_Texture_04)
+	Mesh Name: SM_Veh_Sports_Wheel_fr
+		Slot: PolygonPrototype_Texture_01_Vehicle (PolygonPrototype_Texture_04)
+	Mesh Name: SM_Veh_Sports_Wheel_rl
+		Slot: PolygonPrototype_Texture_01_Vehicle (PolygonPrototype_Texture_04)
+	Mesh Name: SM_Veh_Sports_Wheel_rr
+		Slot: PolygonPrototype_Texture_01_Vehicle (PolygonPrototype_Texture_04)
+
+-------------------
+Folder Name: Polygon
+-------------------
+Prefab Name: SM_Buildings_Block_1x1_01P
+	Mesh Name: SM_Buildings_Block_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Column_1x3_01P
+	Mesh Name: SM_Buildings_Column_1x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Column_2x3_01P
+	Mesh Name: SM_Buildings_Column_2x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_DoorFrame_01P
+	Mesh Name: SM_Buildings_DoorFrame_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Door_01P
+	Mesh Name: SM_Buildings_Door_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorAngle_1x1_01P
+	Mesh Name: SM_Buildings_FloorAngle_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorAngle_2x2_01P
+	Mesh Name: SM_Buildings_FloorAngle_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorAngle_5x5_01P
+	Mesh Name: SM_Buildings_FloorAngle_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorChamfered_1x1_01P
+	Mesh Name: SM_Buildings_FloorChamfered_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorChamfered_2x2_01P
+	Mesh Name: SM_Buildings_FloorChamfered_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorChamfered_5x5_01P
+	Mesh Name: SM_Buildings_FloorChamfered_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorCurved_1x1_01P
+	Mesh Name: SM_Buildings_FloorCurved_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorCurved_2x2_01P
+	Mesh Name: SM_Buildings_FloorCurved_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorCurved_5x5_01P
+	Mesh Name: SM_Buildings_FloorCurved_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorHole_1x1_01P
+	Mesh Name: SM_Buildings_FloorHole_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorHole_2x2_01P
+	Mesh Name: SM_Buildings_FloorHole_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorHole_5x5_01P
+	Mesh Name: SM_Buildings_FloorHole_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorInner_Curved_1x1_01P
+	Mesh Name: SM_Buildings_FloorInner_Curved_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorInner_Curved_2x2_01P
+	Mesh Name: SM_Buildings_FloorInner_Curved_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorInner_Curved_5x5_01P
+	Mesh Name: SM_Buildings_FloorInner_Curved_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Floor_1x1_01P
+	Mesh Name: SM_Buildings_Floor_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Floor_2x2_01P
+	Mesh Name: SM_Buildings_Floor_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Floor_5x5_01P
+	Mesh Name: SM_Buildings_Floor_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RailStairs_1x1_01P
+	Mesh Name: SM_Buildings_RailStairs_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Rail_1x1_01P
+	Mesh Name: SM_Buildings_Rail_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Rail_5x1_01P
+	Mesh Name: SM_Buildings_Rail_5x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_20_1x1_01P
+	Mesh Name: SM_Buildings_Ramp_20_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_25_1x1_01P
+	Mesh Name: SM_Buildings_Ramp_25_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_30_1x1_01P
+	Mesh Name: SM_Buildings_Ramp_30_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_35_1x1_01P
+	Mesh Name: SM_Buildings_Ramp_35_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_40_1x1_01P
+	Mesh Name: SM_Buildings_Ramp_40_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_45_1x1_01P
+	Mesh Name: SM_Buildings_Ramp_45_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_50_1x1_01P
+	Mesh Name: SM_Buildings_Ramp_50_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_55_1x1_01P
+	Mesh Name: SM_Buildings_Ramp_55_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_60_1x1_01P
+	Mesh Name: SM_Buildings_Ramp_60_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_65_1x1_01P
+	Mesh Name: SM_Buildings_Ramp_65_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_70_1x1_01P
+	Mesh Name: SM_Buildings_Ramp_70_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerInner_1x1_01P
+	Mesh Name: SM_Buildings_RoofAngledCornerInner_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerInner_2x2_01P
+	Mesh Name: SM_Buildings_RoofAngledCornerInner_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerInner_5x5_01P
+	Mesh Name: SM_Buildings_RoofAngledCornerInner_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerMiddle_1x1_01P
+	Mesh Name: SM_Buildings_RoofAngledCornerMiddle_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerMiddle_2x2_01P
+	Mesh Name: SM_Buildings_RoofAngledCornerMiddle_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerMiddle_5x5_01P
+	Mesh Name: SM_Buildings_RoofAngledCornerMiddle_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerOuter_1x1_01P
+	Mesh Name: SM_Buildings_RoofAngledCornerOuter_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerOuter_2x2_01P
+	Mesh Name: SM_Buildings_RoofAngledCornerOuter_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerOuter_5x5_01P
+	Mesh Name: SM_Buildings_RoofAngledCornerOuter_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledPoint_1x1_01P
+	Mesh Name: SM_Buildings_RoofAngledPoint_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledPoint_2x2_01P
+	Mesh Name: SM_Buildings_RoofAngledPoint_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledPoint_5x5_01P
+	Mesh Name: SM_Buildings_RoofAngledPoint_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngled_1x1_01P
+	Mesh Name: SM_Buildings_RoofAngled_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngled_2x2_01P
+	Mesh Name: SM_Buildings_RoofAngled_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngled_5x5_01P
+	Mesh Name: SM_Buildings_RoofAngled_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x1_01P
+	Mesh Name: SM_Buildings_Stairs_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x1_02P
+	Mesh Name: SM_Buildings_Stairs_1x1_02P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x2_01P
+	Mesh Name: SM_Buildings_Stairs_1x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x2_02P
+	Mesh Name: SM_Buildings_Stairs_1x2_02P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x3_01P
+	Mesh Name: SM_Buildings_Stairs_1x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x3_02P
+	Mesh Name: SM_Buildings_Stairs_1x3_02P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallArch_2x3_01P
+	Mesh Name: SM_Buildings_WallArch_2x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallChamfered_1x1_01P
+	Mesh Name: SM_Buildings_WallChamfered_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallChamfered_2x2_01P
+	Mesh Name: SM_Buildings_WallChamfered_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallChamfered_5x5_01P
+	Mesh Name: SM_Buildings_WallChamfered_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallCurved_1x1_01P
+	Mesh Name: SM_Buildings_WallCurved_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallCurved_2x2_01P
+	Mesh Name: SM_Buildings_WallCurved_2x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallCurved_5x5_01P
+	Mesh Name: SM_Buildings_WallCurved_5x5_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallDoorDouble_3x3_01P
+	Mesh Name: SM_Buildings_WallDoorDouble_3x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallDoorDouble_5x3_01P
+	Mesh Name: SM_Buildings_WallDoorDouble_5x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallDoor_2x3_01P
+	Mesh Name: SM_Buildings_WallDoor_2x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallDoor_5x3_01P
+	Mesh Name: SM_Buildings_WallDoor_5x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallWindowDouble_2x3_01P
+	Mesh Name: SM_Buildings_WallWindowDouble_2x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallWindowDouble_5x3_01P
+	Mesh Name: SM_Buildings_WallWindowDouble_5x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallWindow_2x3_01P
+	Mesh Name: SM_Buildings_WallWindow_2x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallWindow_5x3_01P
+	Mesh Name: SM_Buildings_WallWindow_5x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Wall_1x3_01P
+	Mesh Name: SM_Buildings_Wall_1x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Wall_2x3_01P
+	Mesh Name: SM_Buildings_Wall_2x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Wall_5x3_01P
+	Mesh Name: SM_Buildings_Wall_5x3_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WindowFrame_01P
+	Mesh Name: SM_Buildings_WindowFrame_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Prop_Ladder_1x1_01P
+	Mesh Name: SM_Prop_Ladder_1x1_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Prop_Ladder_1x2_01P
+	Mesh Name: SM_Prop_Ladder_1x2_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Prop_Ladder_1x4_01P
+	Mesh Name: SM_Prop_Ladder_1x4_01P
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+-------------------
+Folder Name: Simple
+-------------------
+Prefab Name: SM_Buildings_Block_1x1_01
+	Mesh Name: SM_Buildings_Block_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Column_1x3_01
+	Mesh Name: SM_Buildings_Column_1x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Column_2x3_01
+	Mesh Name: SM_Buildings_Column_2x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_DoorFrame_01
+	Mesh Name: SM_Buildings_DoorFrame_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Door_01
+	Mesh Name: SM_Buildings_Door_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorAngle_1x1_01
+	Mesh Name: SM_Buildings_FloorAngle_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorAngle_2x2_01
+	Mesh Name: SM_Buildings_FloorAngle_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorAngle_5x5_01
+	Mesh Name: SM_Buildings_FloorAngle_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorChamfered_1x1_01
+	Mesh Name: SM_Buildings_FloorChamfered_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorChamfered_2x2_01
+	Mesh Name: SM_Buildings_FloorChamfered_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorChamfered_5x5_01
+	Mesh Name: SM_Buildings_FloorChamfered_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorCurved_1x1_01
+	Mesh Name: SM_Buildings_FloorCurved_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorCurved_2x2_01
+	Mesh Name: SM_Buildings_FloorCurved_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorCurved_5x5_01
+	Mesh Name: SM_Buildings_FloorCurved_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorHole_1x1_01
+	Mesh Name: SM_Buildings_FloorHole_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorHole_2x2_01
+	Mesh Name: SM_Buildings_FloorHole_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorHole_5x5_01
+	Mesh Name: SM_Buildings_FloorHole_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorInner_Curved_1x1_01
+	Mesh Name: SM_Buildings_FloorInner_Curved_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorInner_Curved_2x2_01
+	Mesh Name: SM_Buildings_FloorInner_Curved_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_FloorInner_Curved_5x5_01
+	Mesh Name: SM_Buildings_FloorInner_Curved_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Floor_1x1_01
+	Mesh Name: SM_Buildings_Floor_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Floor_2x2_01
+	Mesh Name: SM_Buildings_Floor_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Floor_5x5_01
+	Mesh Name: SM_Buildings_Floor_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RailStairs_1x1_01
+	Mesh Name: SM_Buildings_RailStairs_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Rail_1x1_01
+	Mesh Name: SM_Buildings_Rail_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Rail_5x1_01
+	Mesh Name: SM_Buildings_Rail_5x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_20_1x1_01
+	Mesh Name: SM_Buildings_Ramp_20_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_25_1x1_01
+	Mesh Name: SM_Buildings_Ramp_25_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_30_1x1_01
+	Mesh Name: SM_Buildings_Ramp_30_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_35_1x1_01
+	Mesh Name: SM_Buildings_Ramp_35_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_40_1x1_01
+	Mesh Name: SM_Buildings_Ramp_40_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_45_1x1_01
+	Mesh Name: SM_Buildings_Ramp_45_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_50_1x1_01
+	Mesh Name: SM_Buildings_Ramp_50_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_55_1x1_01
+	Mesh Name: SM_Buildings_Ramp_55_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_60_1x1_01
+	Mesh Name: SM_Buildings_Ramp_60_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_65_1x1_01
+	Mesh Name: SM_Buildings_Ramp_65_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Ramp_70_1x1_01
+	Mesh Name: SM_Buildings_Ramp_70_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerInner_1x1_01
+	Mesh Name: SM_Buildings_RoofAngledCornerInner_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerInner_2x2_01
+	Mesh Name: SM_Buildings_RoofAngledCornerInner_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerInner_5x5_01
+	Mesh Name: SM_Buildings_RoofAngledCornerInner_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerMiddle_1x1_01
+	Mesh Name: SM_Buildings_RoofAngledCornerMiddle_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerMiddle_2x2_01
+	Mesh Name: SM_Buildings_RoofAngledCornerMiddle_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerMiddle_5x5_01
+	Mesh Name: SM_Buildings_RoofAngledCornerMiddle_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerOuter_1x1_01
+	Mesh Name: SM_Buildings_RoofAngledCornerOuter_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerOuter_2x2_01
+	Mesh Name: SM_Buildings_RoofAngledCornerOuter_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledCornerOuter_5x5_01
+	Mesh Name: SM_Buildings_RoofAngledCornerOuter_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledPoint_1x1_01
+	Mesh Name: SM_Buildings_RoofAngledPoint_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledPoint_2x2_01
+	Mesh Name: SM_Buildings_RoofAngledPoint_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngledPoint_5x5_01
+	Mesh Name: SM_Buildings_RoofAngledPoint_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngled_1x1_01
+	Mesh Name: SM_Buildings_RoofAngled_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngled_2x2_01
+	Mesh Name: SM_Buildings_RoofAngled_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_RoofAngled_5x5_01
+	Mesh Name: SM_Buildings_RoofAngled_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x1_01
+	Mesh Name: SM_Buildings_Stairs_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x1_02
+	Mesh Name: SM_Buildings_Stairs_1x1_02
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x2_01
+	Mesh Name: SM_Buildings_Stairs_1x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x2_02
+	Mesh Name: SM_Buildings_Stairs_1x2_02
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x3_01
+	Mesh Name: SM_Buildings_Stairs_1x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Stairs_1x3_02
+	Mesh Name: SM_Buildings_Stairs_1x3_02
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallArch_2x3_01
+	Mesh Name: SM_Buildings_WallArch_2x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallChamfered_1x1_01
+	Mesh Name: SM_Buildings_WallChamfered_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallChamfered_2x2_01
+	Mesh Name: SM_Buildings_WallChamfered_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallChamfered_5x5_01
+	Mesh Name: SM_Buildings_WallChamfered_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallCurved_1x1_01
+	Mesh Name: SM_Buildings_WallCurved_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallCurved_2x2_01
+	Mesh Name: SM_Buildings_WallCurved_2x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallCurved_5x5_01
+	Mesh Name: SM_Buildings_WallCurved_5x5_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallDoorDouble_3x3_01
+	Mesh Name: SM_Buildings_WallDoorDouble_3x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallDoorDouble_5x3_01
+	Mesh Name: SM_Buildings_WallDoorDouble_5x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallDoor_2x3_01
+	Mesh Name: SM_Buildings_WallDoor_2x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallDoor_5x3_01
+	Mesh Name: SM_Buildings_WallDoor_5x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallWindowDouble_2x3_01
+	Mesh Name: SM_Buildings_WallWindowDouble_2x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallWindowDouble_5x3_01
+	Mesh Name: SM_Buildings_WallWindowDouble_5x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallWindow_2x3_01
+	Mesh Name: SM_Buildings_WallWindow_2x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WallWindow_5x3_01
+	Mesh Name: SM_Buildings_WallWindow_5x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Wall_1x3_01
+	Mesh Name: SM_Buildings_Wall_1x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Wall_2x3_01
+	Mesh Name: SM_Buildings_Wall_2x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_Wall_5x3_01
+	Mesh Name: SM_Buildings_Wall_5x3_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Buildings_WindowFrame_01
+	Mesh Name: SM_Buildings_WindowFrame_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Prop_Ladder_1x1_01
+	Mesh Name: SM_Prop_Ladder_1x1_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Prop_Ladder_1x2_01
+	Mesh Name: SM_Prop_Ladder_1x2_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+Prefab Name: SM_Prop_Ladder_1x4_01
+	Mesh Name: SM_Prop_Ladder_1x4_01
+		Slot: PolygonPrototype_Global_Grid_01 (Uses custom shader)
+
+-------------------
+Folder Name: FixedScale
+-------------------
+Prefab Name: Character_Dummy_Female_01_FixedScale
+	Mesh Name: Character_Dummy_Female_01_1
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_Dummy_Male_01_FixedScale
+	Mesh Name: Character_Dummy_Female_01_1
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_Female_Face_01_FixedScale
+	Mesh Name: Character_Dummy_Female_01_1
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_Female_NoFace_01_FixedScale
+	Mesh Name: Character_Dummy_Female_01_1
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_Male_Face_01_FixedScale
+	Mesh Name: Character_Dummy_Female_01_1
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_Male_NoFace_01_FixedScale
+	Mesh Name: Character_Dummy_Female_01_1
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Dummy_Male_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Female_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_Face_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_Male_NoFace_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Chr_Attach_Female_Hair_01_FixedScale
+	Mesh Name: SM_Chr_Attach_Female_Hair_01_FixedScale
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Chr_Attach_Male_Hair_01_FixedScale
+	Mesh Name: SM_Chr_Attach_Male_Hair_01_FixedScale
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+-------------------
+Folder Name: FiveFinger
+-------------------
+Prefab Name: Character_FPS_Arms_FiveFinger_01
+	Mesh Name: Character_VR_Arms_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Arms_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Arms_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Hands_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_FPS_Arms_FiveFinger_02
+	Mesh Name: Character_VR_Arms_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Arms_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Arms_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Hands_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_FPS_Arms_FiveFinger_03
+	Mesh Name: Character_VR_Arms_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Arms_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Arms_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Hands_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_FPS_Hands_FiveFinger_01
+	Mesh Name: Character_VR_Arms_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Arms_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Arms_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_VR_Hands_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+-------------------
+Folder Name: Standard
+-------------------
+Prefab Name: Character_FPS_Arms_Standard_01
+	Mesh Name: Character_FPS_Arms_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Arms_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Arms_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Hands_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_FPS_Arms_Standard_02
+	Mesh Name: Character_FPS_Arms_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Arms_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Arms_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Hands_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_FPS_Arms_Standard_03
+	Mesh Name: Character_FPS_Arms_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Arms_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Arms_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Hands_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: Character_FPS_Hands_Standard_01
+	Mesh Name: Character_FPS_Arms_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Arms_02
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Arms_03
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+	Mesh Name: Character_FPS_Hands_01
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+-------------------
+Folder Name: Polygon
+-------------------
+Prefab Name: SM_Primitive_Cone_01P
+	Mesh Name: SM_Primitive_Cone_01P
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cube_01P
+	Mesh Name: SM_Primitive_Cube_01P
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Cylander_01P
+	Mesh Name: SM_Primitive_Cylander_01P
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Sphere_01P
+	Mesh Name: SM_Primitive_Sphere_01P
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Torus_01P
+	Mesh Name: SM_Primitive_Torus_01P
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)
+
+Prefab Name: SM_Primitive_Tube_01P
+	Mesh Name: SM_Primitive_Tube_01P
+		Slot: PolygonPrototype_Texture_01 (PolygonPrototype_Texture_01)

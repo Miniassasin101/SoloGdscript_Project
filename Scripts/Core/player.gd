@@ -16,7 +16,6 @@ var Zoom_Interp: float
 var Location_Desired: Vector3
 var Location_Speed: float
 var Location_Interp: float
-
 # Rotation variables
 var Rotation_Desired: Vector3
 var Angle_Rotation_Desired: Vector3
@@ -34,7 +33,7 @@ var vertical_max = deg_to_rad(80)   # Maximum upward rotation
 func _ready():
 	# Initialize zoom parameters
 	Zoom_Desired = 10
-	Zoom_Min = 5.0
+	Zoom_Min = 1.0
 	Zoom_Max = 100.0
 	Zoom_Speed = 5.0
 	Zoom_Interp = 5
@@ -87,18 +86,18 @@ func update_location(delta: float):
 
 # Update rotation of the camera smoothly using the shortest path
 func update_rotation(delta: float):
-	# Horizontal (Y) Rotation
+	# Horizontal (Y) Rotation (affects the actor's body)
 	var current_actor_y_rotation = rotation.y
 	var new_actor_y_rotation = shortest_angle_between(current_actor_y_rotation, Rotation_Desired.y)
 	rotation.y = lerp(current_actor_y_rotation, new_actor_y_rotation, clamp(delta * Rotation_Interp, 0, 1))
 
-	# Vertical (X) Rotation
-	var current_actor_x_rotation = rotation.x
-	var new_actor_x_rotation = shortest_angle_between(current_actor_x_rotation, Rotation_Desired.x)
-	rotation.x = lerp(current_actor_x_rotation, new_actor_x_rotation, clamp(delta * Rotation_Interp, 0, 1))
+	# Vertical (X) Rotation (affects the spring arm's vertical tilt)
+	var current_springarm_x_rotation = spring_arm.rotation.x
+	var new_springarm_x_rotation = shortest_angle_between(current_springarm_x_rotation, Angle_Rotation_Desired.x)
+	spring_arm.rotation.x = lerp(current_springarm_x_rotation, new_springarm_x_rotation, clamp(delta * Rotation_Interp, 0, 1))
 
 	# Clamp vertical rotation to prevent camera flipping
-	Rotation_Desired.x = clamp(Rotation_Desired.x, vertical_min, vertical_max)
+	Angle_Rotation_Desired.x = clamp(Angle_Rotation_Desired.x, vertical_min, vertical_max)
 
 	# Wrap horizontal rotation to keep it between -π and π
 	Rotation_Desired.y = wrapf(Rotation_Desired.y, -PI, PI)
@@ -127,14 +126,14 @@ func handle_zoom_input():
 
 # Handle camera rotation input (horizontal and vertical rotation)
 func handle_rotation_input():
-	# Handle horizontal rotation (left/right)
+	# Handle horizontal rotation (left/right) for the character
 	if Input.is_action_just_pressed("rotate_right"):
 		Rotation_Desired.y += deg_to_rad(45)  # Rotate right by 45 degrees
 	if Input.is_action_just_pressed("rotate_left"):
 		Rotation_Desired.y -= deg_to_rad(45)  # Rotate left by 45 degrees
 
-	# Handle vertical rotation (up/down)
+	# Handle vertical rotation (up/down) for the spring arm
 	if Input.is_action_just_pressed("rotate_down"):
-		Rotation_Desired.x -= deg_to_rad(20)  # Rotate down by 20 degrees
+		Angle_Rotation_Desired.x -= deg_to_rad(20)  # Rotate spring arm down by 20 degrees
 	if Input.is_action_just_pressed("rotate_up"):
-		Rotation_Desired.x += deg_to_rad(20)  # Rotate up by 20 degrees
+		Angle_Rotation_Desired.x += deg_to_rad(20)  # Rotate spring arm up by 20 degrees
