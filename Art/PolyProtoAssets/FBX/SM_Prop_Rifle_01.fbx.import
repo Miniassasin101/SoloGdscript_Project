@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bur4ouh7l5ee5"
-path="res://.godot/imported/SM_Grid_SquareFlat.FBX-6d801d29b583315f8a5c6bc1d4a629aa.scn"
+uid="uid://8xs4bw4fw0vi"
+path="res://.godot/imported/SM_Prop_Rifle_01.fbx-ebd76db3f99c062d24e5903820963995.scn"
 
 [deps]
 
-source_file="res://Hero_Game/Junk/SM_Grid_SquareFlat.FBX"
-dest_files=["res://.godot/imported/SM_Grid_SquareFlat.FBX-6d801d29b583315f8a5c6bc1d4a629aa.scn"]
+source_file="res://Hero_Game/Art/PolyProtoAssets/FBX/SM_Prop_Rifle_01.fbx"
+dest_files=["res://.godot/imported/SM_Prop_Rifle_01.fbx-ebd76db3f99c062d24e5903820963995.scn"]
 
 [params]
 
@@ -18,9 +18,9 @@ nodes/root_name=""
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
-meshes/ensure_tangents=true
-meshes/generate_lods=true
-meshes/create_shadow_meshes=true
+meshes/ensure_tangents=false
+meshes/generate_lods=false
+meshes/create_shadow_meshes=false
 meshes/light_baking=1
 meshes/lightmap_texel_size=0.2
 meshes/force_disable_compression=false

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c1a311ta3ww24"
-path="res://.godot/imported/Characters.fbx-c818bd5d2d0e521f2300e98b0e8585ff.scn"
+uid="uid://dixnbyyw22ulj"
+path="res://.godot/imported/Characters.fbx-3a18dbb40ea4a5cbb44ec53d3e64f0ec.scn"
 
 [deps]
 
-source_file="res://Hero_Game/Art/PolyProtoAssets/Characters/FixedScale/Characters.fbx"
-dest_files=["res://.godot/imported/Characters.fbx-c818bd5d2d0e521f2300e98b0e8585ff.scn"]
+source_file="res://Hero_Game/Art/MeshTests/Characters.fbx"
+dest_files=["res://.godot/imported/Characters.fbx-3a18dbb40ea4a5cbb44ec53d3e64f0ec.scn"]
 
 [params]
 
@@ -31,13 +31,7 @@ animation/trimming=true
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
-_subresources={
-"nodes": {
-"PATH:Root/Skeleton3D": {
-"rest_pose/external_animation_library": null
-}
-}
-}
+_subresources={}
 fbx/importer=0
 fbx/allow_geometry_helper_nodes=false
 fbx/embedded_image_handling=1

@@ -5,7 +5,7 @@ extends Node3D
 const LAYER_MASK: int = 1 << 1
 
 # Called every frame. 'delta' is the time passed since the previous frame
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# Get the active 3D camera from the viewport
 	var camera: Camera3D = get_viewport().get_camera_3d()
 
