@@ -100,17 +100,13 @@ shadow_normal_bias = 10.0
 shadow_blur = 0.209
 directional_shadow_max_distance = 18.8
 
-[node name="MouseWorld" type="Node3D" parent="." node_paths=PackedStringArray("raycast")]
+[node name="MouseWorld" type="Node3D" parent="."]
 script = ExtResource("6_y3qe8")
-raycast = NodePath("RayCast3D")
 
 [node name="MouseVisual" type="MeshInstance3D" parent="MouseWorld"]
 transform = Transform3D(0.332613, 0, 0, 0, 0.332613, 0, 0, 0, 0.332613, 0, 0, 0)
 visible = false
 mesh = SubResource("SphereMesh_owyi7")
-
-[node name="RayCast3D" type="RayCast3D" parent="MouseWorld"]
-collision_mask = 2
 
 [node name="UnitActionSystem" type="Node" parent="." node_paths=PackedStringArray("selectedUnit")]
 script = ExtResource("3_xnufy")
