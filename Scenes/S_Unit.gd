@@ -25,8 +25,8 @@ func _process(delta: float) -> void:
 	move_towards_target(delta)
 	
 	# If right mouse button is clicked, perform raycast and set new target
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		update_target_position()
+	#if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	#	update_target_position()
 
 # Moves the unit towards the target position
 func move_towards_target(delta: float) -> void:

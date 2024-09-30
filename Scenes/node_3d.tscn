@@ -85,6 +85,15 @@ data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0
 [node name="Level" type="Node3D"]
 script = SubResource("GDScript_teh1w")
 
+[node name="UnitActionSystem" type="Node" parent="." node_paths=PackedStringArray("mouse_world", "raycast")]
+script = ExtResource("3_xnufy")
+mouse_world = NodePath("../MouseWorld")
+raycast = NodePath("UnitActionRay")
+
+[node name="UnitActionRay" type="RayCast3D" parent="UnitActionSystem"]
+collision_mask = 8
+collide_with_areas = true
+
 [node name="Lighting" type="Node3D" parent="."]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting"]
@@ -100,21 +109,13 @@ shadow_normal_bias = 10.0
 shadow_blur = 0.209
 directional_shadow_max_distance = 18.8
 
-[node name="MouseWorld" type="Node3D" parent="." node_paths=PackedStringArray("raycast")]
+[node name="MouseWorld" type="Node3D" parent="."]
 script = ExtResource("6_y3qe8")
-raycast = NodePath("RayCast3D")
 
 [node name="MouseVisual" type="MeshInstance3D" parent="MouseWorld"]
 transform = Transform3D(0.332613, 0, 0, 0, 0.332613, 0, 0, 0, 0.332613, 0, 0, 0)
 visible = false
 mesh = SubResource("SphereMesh_owyi7")
-
-[node name="RayCast3D" type="RayCast3D" parent="MouseWorld"]
-collision_mask = 2
-
-[node name="UnitActionSystem" type="Node" parent="." node_paths=PackedStringArray("selectedUnit")]
-script = ExtResource("3_xnufy")
-selectedUnit = NodePath("../Unit")
 
 [node name="Unit" parent="." instance=ExtResource("4_78agj")]
 

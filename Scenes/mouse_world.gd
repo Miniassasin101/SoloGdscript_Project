@@ -7,6 +7,7 @@ const LAYER_MASK: int = 1 << 1
 # A reference to the RayCast3D node
 @export var raycast: RayCast3D
 
+
 # Called when the node enters the scene tree
 func _ready() -> void:
 	# Create and add the RayCast3D node dynamically if it's not in the scene
