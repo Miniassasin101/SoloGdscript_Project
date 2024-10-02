@@ -1,9 +1,13 @@
 class_name UnitActionSystem
 extends Node
 
+#signal selected_unit_changed(action_system)
+
+
 @export var selectedUnit: Unit
 @export var mouse_world: MouseWorld  # Reference to the MouseWorld instance (drag and drop in editor)
 @export var raycast: RayCast3D
+@onready var unit_action_system: UnitActionSystem = self
 const unit_LAYER_MASK: int = 1 << 3  # Layer mask for unit
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -13,6 +17,7 @@ func _process(delta: float) -> void:
 			return
 		if selectedUnit:
 			selectedUnit.update_target_position()
+
 
 # Method to handle unit selection using MouseWorld's raycast method
 func TryHandleUnitSelection() -> bool:
@@ -33,9 +38,11 @@ func TryHandleUnitSelection() -> bool:
 		var collider = result["collider"].get_parent()
 		if collider is Unit and collider != current_unit:
 			# Select the unit
-			selectedUnit = collider
+			_set_selected_unit(collider)
 			return true
 	return false
+
+
 
 func get_mouse_position(camera: Camera3D, mouse_position: Vector2) -> Dictionary:
 	# Make sure the RayCast3D node is available and inside the scene tree
@@ -64,3 +71,10 @@ func get_mouse_position(camera: Camera3D, mouse_position: Vector2) -> Dictionary
 
 	# If no collision, return null
 	return {}
+
+func _set_selected_unit(unit: Unit) -> void:
+	selectedUnit = unit
+	SignalBus.selected_unit_changed.emit(unit_action_system)
+
+func get_selected_unit():
+	return selectedUnit

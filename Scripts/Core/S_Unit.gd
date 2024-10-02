@@ -5,7 +5,7 @@ extends Node3D
 
 @export var animation_tree: AnimationTree
 @onready var mouse_world: MouseWorld = $"../MouseWorld"
-  # Reference to the MouseWorld node
+# Reference to the MouseWorld node
 
 # Target position the unit is moving towards
 var target_position: Vector3
