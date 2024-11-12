@@ -11,7 +11,6 @@ func _ready() -> void:
 # This method is connected to the SignalBus signal. 
 # It gets triggered when the selected unit changes.
 func _on_selected_unit_changed(action_system) -> void:
-	print("Signal received: Selected unit changed")
 	update_visual(action_system)
 
 # Updates the visibility of the visual object based on the selected unit.
@@ -21,7 +20,6 @@ func update_visual(action_system) -> void:
 
 	# If the selected unit is the current unit, make this object visible.
 	if selected_unit == current_unit:
-		print("Unit matched: Displaying the visual")
 		self.visible = true
 	else:
 		# Otherwise, hide this object.

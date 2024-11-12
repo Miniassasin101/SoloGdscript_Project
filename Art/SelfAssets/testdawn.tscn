@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=3 uid="uid://drw22bqsga6fq"]
+
+[ext_resource type="PackedScene" uid="uid://bvt33ka2uewr0" path="res://Hero_Game/Art/SelfAssets/Base Mesh All Done no textures Dawn Colors solidified hair.fbx" id="1_m35k0"]
+[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Gobotcelshading.gdshader" id="2_xl5jq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xj20c"]
+render_priority = 0
+shader = ExtResource("2_xl5jq")
+shader_parameter/albedo = Color(0.450648, 0.450648, 0.450648, 1)
+shader_parameter/point_size = 0.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = null
+shader_parameter/metallic = null
+shader_parameter/normal_scale = 1.0
+shader_parameter/uv1_scale = null
+shader_parameter/uv1_offset = null
+shader_parameter/uv2_scale = null
+shader_parameter/uv2_offset = null
+
+[node name="Base Mesh All Done no textures Dawn Colors solidified hair" instance=ExtResource("1_m35k0")]
+
+[node name="Body" parent="." index="0"]
+surface_material_override/0 = SubResource("ShaderMaterial_xj20c")
+
+[node name="Pants" parent="." index="1"]
+surface_material_override/0 = SubResource("ShaderMaterial_xj20c")
+
+[node name="Collar" parent="." index="2"]
+surface_material_override/0 = SubResource("ShaderMaterial_xj20c")
+
+[node name="Hair Tufts" parent="." index="3"]
+surface_material_override/0 = SubResource("ShaderMaterial_xj20c")
+
+[node name="Main Hair" parent="." index="4"]
+surface_material_override/0 = SubResource("ShaderMaterial_xj20c")
+
+[node name="SHirt" parent="." index="5"]
+surface_material_override/0 = SubResource("ShaderMaterial_xj20c")
+
+[node name="Waistcloth_belt" parent="." index="6"]
+surface_material_override/0 = SubResource("ShaderMaterial_xj20c")
+
+[node name="Shoes" parent="." index="7"]
+surface_material_override/0 = SubResource("ShaderMaterial_xj20c")
+
+[node name="Flower Emblem" parent="." index="9"]
+surface_material_override/0 = SubResource("ShaderMaterial_xj20c")
+
+[node name="Flower Emblem_Background" parent="." index="10"]
+surface_material_override/0 = SubResource("ShaderMaterial_xj20c")

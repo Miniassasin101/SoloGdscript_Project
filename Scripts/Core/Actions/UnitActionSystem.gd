@@ -5,9 +5,13 @@ extends Node
 
 
 @export var selectedUnit: Unit
+@onready var level_grid: LevelGrid = $"../LevelGrid"
+
 @export var mouse_world: MouseWorld  # Reference to the MouseWorld instance (drag and drop in editor)
 @export var raycast: RayCast3D
 @onready var unit_action_system: UnitActionSystem = self
+
+@onready var camera: Camera3D = get_viewport().get_camera_3d()
 const unit_LAYER_MASK: int = 1 << 3  # Layer mask for unit
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -15,15 +19,15 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("left_mouse"):
 		if (TryHandleUnitSelection()):
 			return
+
+		var mouse_grid_position = level_grid.get_grid_position(mouse_world.get_mouse_position()["position"])
 		if selectedUnit:
-			selectedUnit.update_target_position()
+			if selectedUnit.get_move_action().is_valid_action_grid_position(mouse_grid_position):
+				selectedUnit.get_move_action().move(mouse_grid_position)
 
 
 # Method to handle unit selection using MouseWorld's raycast method
 func TryHandleUnitSelection() -> bool:
-	# Get the active camera
-	var camera: Camera3D = get_viewport().get_camera_3d()
-
 	# Get the mouse position in screen coordinates
 	var mouse_position: Vector2 = get_viewport().get_mouse_position()
 

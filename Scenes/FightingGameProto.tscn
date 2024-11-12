@@ -1,6 +1,6 @@
 [gd_scene load_steps=21 format=3 uid="uid://cecmda6fwxic6"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitActionSystem.gd" id="1_edbn8"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Actions/UnitActionSystem.gd" id="1_edbn8"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="2_ep4kl"]
 [ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="3_fp3qo"]
 [ext_resource type="PackedScene" uid="uid://cqnr4v4j11wr1" path="res://Hero_Game/Prefabs/Unit.tscn" id="4_g5t0o"]

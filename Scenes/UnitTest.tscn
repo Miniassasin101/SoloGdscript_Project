@@ -1,0 +1,338 @@
+[gd_scene load_steps=9 format=3 uid="uid://n3rbi84udien"]
+
+[sub_resource type="GDScript" id="GDScript_bx7kq"]
+script/source = "class_name BaseObj
+
+extends Node3D
+
+@export  var id = 1
+@export var dummy = false
+
+@export_group(\"MovementAttributes\")
+@export var gravity: String = \"0.8\"
+@export var ground_friction: String = \"2.5\"
+@export var air_friction: String = \"0.2\"
+@export var max_ground_speed: String = \"15\"
+@export var max_air_speed: String = \"10\"
+@export var max_fall_speed: String = \"15\"
+@export_multiline var extra_state_variables: String = \"\"
+
+
+
+
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uf04g"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_gmolb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wq1yf"]
+
+[sub_resource type="GDScript" id="GDScript_tjrui"]
+script/source = "class_name StateMachine
+extends Node
+
+const STACK_SIZE = 32  # Maximum number of states that can be stored in the state stack.
+
+var states_stack = []  # Stack that stores the history of active states.
+var states_map = {}  # Map that holds all available states by name.
+var state  # Variable to hold the current active state.
+var queued_states = []  # Queue to hold states that are waiting to be activated.
+var queued_data = []  # Queue to hold data corresponding to queued states.
+
+var initialized = false  # Boolean to check if the StateMachine has been initialized.
+
+# Signals to notify when the state has changed or exited.
+signal state_changed(states_stack)
+signal state_exited(state)
+
+# Exported variables for setting initial state and host node paths in the editor.
+@export var starting_state: String = \"\"
+@export var host_node_path: NodePath
+
+@export var animation_player_path: NodePath  # Path for the AnimationPlayer node.
+# FIXME: @export var skeleton/root_path?
+@export var animated_sprite_path: NodePath  # Path for the AnimatedSprite node.
+
+var animation_player  # Reference to the AnimationPlayer node.
+#var skeleton/root?
+var animated_sprite  # Reference to the AnimatedSprite node.
+
+var is_ready = false  # Boolean to track if the node is ready.
+var host  # Variable for the host object (could be the parent node or a custom node).
+
+
+
+func _ready():
+	is_ready = true  # Marks the node as ready for initialization.
+
+func _enter_tree():
+	var custom_host = get_node_or_null(host_node_path)  # Tries to find a custom host node.
+	if not is_instance_valid(custom_host):
+		host = get_parent()  # If no valid custom host, it defaults to the parent node.
+	else:
+		host = custom_host  # If custom host exists, it is assigned to `host`.
+
+
+func init(st: String = \"\", data = null) -> bool:
+	# Initializes the StateMachine, setting up states and connecting them.
+	if not is_ready:
+		await self.ready
+
+	if initialized:
+		return false # If already initialized, return.
+	
+	if starting_state:
+		st = starting_state # If a starting state is set, assign it to `st`.
+	
+	var can_initialize = false
+	var states_array = get_children() # Gets all child nodes (which are always states).
+	
+	if states_array == []:
+		queue_free()
+		return false
+	
+	#loops through child nodes and adds valid StateInterface nodes to the state map.
+	for new_state in states_array:
+		if new_state is StateInterface:
+			states_map[new_state.get_name()] = new_state  # Adds state to the map by its name.
+			can_initialize = true
+			
+			# Connects state signals to this state machine.	
+			new_state.queue_change.connect(queue_state)
+			new_state.host = host
+			new_state.init()
+		else:
+			# If the state is invalid, log a message and remove it.
+			print(\"Invalid state %s for node %s\" % [new_state.get_name(), host.get_name()])
+			new_state.queue_free()
+			states_array.erase(new_state)
+	
+	if not can_initialize:
+		queue_free()
+		return false
+
+	# Sets up weak references to animation components.
+	# FIXME: this is setup for a sprite, find a way to use 3d rigs
+	animated_sprite = weakref(get_node_or_null(animated_sprite_path))
+	animation_player = weakref(get_node_or_null(animation_player_path))
+
+	#connects the end of the animation signal to the auto_transition function
+	var a = self.animation_player.get_ref
+	if a != null:
+		a.animation_finished.connect(auto_transition)
+	
+	# If an initial state is provided, changes to that state.
+	if st != \"\":
+		_change_state(states_map[st].get_name(), data)
+	else:
+		_change_state(states_map[st].get_name(), data)  # If no state provided, use the first state.
+	
+	initialized = true  # Marks the state machine as initialized.
+	return true
+
+
+# Automatically transitions to the next state when an animation finishes.
+func auto_transition(_anim_name):
+	var next = state._animation_finished()
+	if next:
+		queue_state(next)
+
+
+# Queues a new state to transition to, replacing the current state if needed.
+func queue_state(new_state, data = null, old_state = state):
+	if old_state.active:
+		queued_states = []
+		queued_data = []
+		queued_states.append(new_state)
+		queued_data.append(data)
+
+
+# Updates the current state. If there are queued states, switch to them.
+func update(delta):
+	if queued_states.size() > 0:
+		var state = queued_states.pop_front
+		var data = queued_data.pop_front
+		_change_state(state, data)
+	
+	var next_state_name = state._update_shared(delta)  # Calls shared update logic across states.
+	if next_state_name == null:
+		next_state_name = state._update(delta)# Calls the state's specific update logic.
+	
+	if next_state_name:
+		queue_state(next_state_name)
+
+# Manages ticking behavior and transitions between states.
+func tick():
+	if queued_states.size() > 0:
+		var state = queued_states.pop_front()
+		var data = queued_data.pop_front()
+		_change_state(state, data)
+	
+	state._tick_before()  #Calls tick-before logic.
+	var next_state_name = state.tick_shared()  # Calls shared tick logic.
+	
+	if next_state_name == null:
+		next_state_name = state.tick()  # Calls the specific state's tick logic.
+	
+	if next_state_name == null:
+		next_state_name = state._tick_after()  # Calls tick-after logic.
+	
+	if next_state_name:
+		queue_state(next_state_name)
+
+
+# Deactivates the current state and signals that it has exited.
+func deactivate():
+	state.active = false
+	state._exit_shared()
+	state._exit()
+	emit_signal(\"state_exited\", state)
+
+
+# Integrates the current state with new state data.
+func integrate(st):
+	state._integrate_shared(st)
+	state._integrate(st)
+
+
+# Handles the transition from one state to another.
+func _change_state(state_name: String, data = null, enter = true, exit = true) -> void:
+	assert(states_map.has(state_name), \"imagine trying to enter a state that doesn't exist LMFAO\")
+	
+	if not states_map.has(state_name):
+		return
+	
+	var next_state = states_map[state_name]  # Retrieves the new state from the state map.
+	queued_states = []
+	queued_data = []	
+	
+	# Exits the current state if required.
+	if state:
+		if exit:
+			state._exit_shared()
+			state.exit()
+			emit_signal(\"state_exited\", state)
+		state.active = false
+		state.set_physics_process(false)
+		state.set_process(false)
+	
+	state = next_state #NOTE: Sets the new state
+	states_stack.push_back(state)  # Adds new state to stack history
+	
+	if states_stack.size > STACK_SIZE:
+		states_stack.pop_front()  # Ensures the state stack doesn't exceed its maximum size.
+	
+	state.active = true # Activates the new state.
+	state.set_physics_process(true)
+	state.set_process(true)
+	
+	state.data = data  # Passes any associated data to the state.
+	
+	if enter:
+		var new_state = state.enter_shared()  # Calls Enter Logic.
+		if new_state:
+			_change_state(new_state)  # immidiately Transitions to the next state on entry if specified.
+			return
+		
+		new_state = state.enter()  # Calls specific enter logic.
+		if new_state:
+			_change_state(new_state)  # Transitions to the next state if specified.
+			return
+	
+	emit_signal(\"state_changed\", states_stack)
+
+
+# Tries to call a method on the current state if it exists.
+func try(method: String, args: Array = []):
+	if state.has_method(method):
+		state.callv(method, args)
+
+
+# Returns the last `x` states, optionally returning their names.
+func last_x_states(x: int, names = true):
+	var states = states_stack.slice(-x, states_stack.size())
+	
+	if names:
+		var s = []
+		for state in states:
+			s.append(state.name)  # Appends the state names to the list if asked for.
+			states = s
+	
+	states.reverse() # Reverses the list for correct order.
+	return states
+
+
+# Retrieves a specific state by name from the state map.
+func get_state(state_name):
+	if states_map.has(state_name):
+		return states_map[state_name]
+"
+
+[sub_resource type="Animation" id="Animation_tgluy"]
+resource_name = "Idle"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2.03333, 2.9, 3.93333, 4.26667, 4.73333, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector3(0, 0, 0), Vector3(-0.00776849, -0.0553047, -0.297995), Vector3(0.0243224, -0.0502773, 0.291624), Vector3(-0.029699, -0.0473024, -0.718829), Vector3(0.0315864, -0.0460641, 0.442077), Vector3(-0.00656177, -0.0554606, -0.276228), Vector3(0.0181136, -0.0528308, 0.171416), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_gcvdk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sqw4k"]
+_data = {
+"Idle": SubResource("Animation_tgluy"),
+"RESET": SubResource("Animation_gcvdk")
+}
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1623, 0)
+script = SubResource("GDScript_bx7kq")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_uf04g")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_gmolb")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_wq1yf")
+
+[node name="StateMachine" type="Node3D" parent="."]
+script = SubResource("GDScript_tjrui")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_sqw4k")
+}

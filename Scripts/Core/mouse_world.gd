@@ -6,10 +6,12 @@ const LAYER_MASK: int = 1 << 1
 @export var mouse_debug_sphere: bool
 # A reference to the RayCast3D node
 @export var raycast: RayCast3D
-
+var camera: Camera3D
+var mouse_position: Vector2
 
 # Called when the node enters the scene tree
 func _ready() -> void:
+	camera = get_viewport().get_camera_3d()
 	# Create and add the RayCast3D node dynamically if it's not in the scene
 	if raycast == null:
 		raycast = RayCast3D.new()
@@ -22,18 +24,18 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	# Get the active 3D camera from the viewport
 	var camera: Camera3D = get_viewport().get_camera_3d()
-
+	adjust_mouse_position()
 	# Perform the raycast and move the node if a hit is detected
 	if mouse_debug_sphere == true:
 		
 		if camera != null and raycast != null:
-			var hit_position = get_mouse_position(camera, get_viewport().get_mouse_position())
+			var hit_position = get_mouse_position()
 			if hit_position:
 				# Update the node's position to the raycast hit position
 				global_transform.origin = hit_position["position"]
 
 # Method to return the mouse position in world space
-func get_mouse_position(camera: Camera3D, mouse_position: Vector2) -> Dictionary:
+func get_mouse_position() -> Dictionary:
 	# Make sure the RayCast3D node is available and inside the scene tree
 	if raycast == null or not raycast.is_inside_tree():
 		return {}
@@ -59,3 +61,6 @@ func get_mouse_position(camera: Camera3D, mouse_position: Vector2) -> Dictionary
 
 	# If no collision, return null
 	return {}
+
+func adjust_mouse_position() -> void:
+	mouse_position = get_viewport().get_mouse_position()

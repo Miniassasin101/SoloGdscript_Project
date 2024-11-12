@@ -1,13 +1,14 @@
-[gd_scene load_steps=21 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=22 format=3 uid="uid://dl3he0bj1hlla"]
 
+[ext_resource type="Script" path="res://Hero_Game/Scenes/testing.gd" id="1_r5kds"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/LevelGrid.gd" id="2_j52xw"]
 [ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="2_x4qwt"]
 [ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="3_pd4ts"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitActionSystem.gd" id="3_xnufy"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Actions/UnitActionSystem.gd" id="3_xnufy"]
 [ext_resource type="PackedScene" uid="uid://cqnr4v4j11wr1" path="res://Hero_Game/Prefabs/Unit.tscn" id="4_78agj"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_Grid_08.png" id="4_t0r05"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="5_p11j4"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="6_y3qe8"]
-[ext_resource type="Script" path="res://Hero_Game/Scenes/testing.gd" id="8_1h1k6"]
 
 [sub_resource type="GDScript" id="GDScript_teh1w"]
 script/source = "extends Node3D
@@ -86,6 +87,13 @@ data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0
 [node name="Level" type="Node3D"]
 script = SubResource("GDScript_teh1w")
 
+[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit")]
+script = ExtResource("1_r5kds")
+unit = NodePath("../Unit")
+
+[node name="LevelGrid" type="Node3D" parent="."]
+script = ExtResource("2_j52xw")
+
 [node name="UnitActionSystem" type="Node" parent="." node_paths=PackedStringArray("mouse_world", "raycast")]
 script = ExtResource("3_xnufy")
 mouse_world = NodePath("../MouseWorld")
@@ -119,8 +127,7 @@ mesh = SubResource("SphereMesh_owyi7")
 [node name="Unit" parent="." instance=ExtResource("4_78agj")]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
-visible = false
+transform = Transform3D(13.9192, 0, 0, 0, 13.9192, 0, 0, 0, 13.9192, 0, 0, 0)
 cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("PlaneMesh_fnkdd")
@@ -154,6 +161,3 @@ mesh = SubResource("BoxMesh_tljmp")
 
 [node name="Unit2" parent="." instance=ExtResource("4_78agj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.43207, 0, -2.61827)
-
-[node name="Testing" type="Node3D" parent="."]
-script = ExtResource("8_1h1k6")

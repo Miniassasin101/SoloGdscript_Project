@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://bx8qt36yrfiib"]
 
-[ext_resource type="Texture2D" uid="uid://bt5o0sr6peltq" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot/model/gobot_gobot_diffuse.png" id="1_5y47m"]
-[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Gobotcelshading.gdshader" id="1_s2knm"]
+[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Gobotcelshading.gdshader" id="1_aaaok"]
+[ext_resource type="Texture2D" uid="uid://bt5o0sr6peltq" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot/model/gobot_gobot_diffuse.png" id="2_ga4u0"]
 
 [sub_resource type="Gradient" id="Gradient_viw3b"]
 offsets = PackedFloat32Array(0.444444, 0.460177, 0.836806, 0.9375, 1)
@@ -19,7 +19,7 @@ gradient = SubResource("Gradient_kgq3v")
 [resource]
 resource_name = "GobotMat"
 render_priority = 0
-shader = ExtResource("1_s2knm")
+shader = ExtResource("1_aaaok")
 shader_parameter/albedo = Color(0.895861, 0.619385, 0.235538, 1)
 shader_parameter/point_size = 1.0
 shader_parameter/roughness = 1.0
@@ -31,6 +31,6 @@ shader_parameter/uv1_scale = Vector3(1, 1, 1)
 shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(1, 1, 1)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
-shader_parameter/texture_albedo = ExtResource("1_5y47m")
+shader_parameter/texture_albedo = ExtResource("2_ga4u0")
 shader_parameter/color_gradient = SubResource("GradientTexture1D_kgg7x")
 shader_parameter/color_ramp3 = SubResource("GradientTexture1D_ovwhm")
