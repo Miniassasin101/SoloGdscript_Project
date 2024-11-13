@@ -6,13 +6,15 @@ extends Node3D
 
 # Reference to the LevelGrid node.
 @onready var level_grid: LevelGrid = LevelGrid#$"../LevelGrid"
-@onready var action_system: UnitActionSystem = $"../UnitActionSystem"
+@onready var action_system = $"../UnitActionSystem"
 
 # The grid position of this unit.
 var grid_position: GridPosition
 
 # Reference to the MoveAction node attached to this unit.
 @onready var move_action: MoveAction = $MoveAction
+@onready var spin_action: SpinAction = $SpinAction
+
 
 
 func _ready() -> void:
@@ -37,6 +39,9 @@ func _to_string() -> String:
 func get_move_action() -> MoveAction:
 	# Return the unit's MoveAction component.
 	return move_action
+
+func get_spin_action() -> SpinAction:
+	return spin_action
 
 func get_animation_tree() -> AnimationTree:
 	# Search for an AnimationTree node among the unit's children.

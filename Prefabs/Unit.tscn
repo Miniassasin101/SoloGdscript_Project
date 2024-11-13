@@ -1,6 +1,7 @@
-[gd_scene load_steps=29 format=3 uid="uid://cqnr4v4j11wr1"]
+[gd_scene load_steps=30 format=3 uid="uid://cqnr4v4j11wr1"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/S_Unit.gd" id="1_a05v8"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Actions/SpinAction.gd" id="1_n6vca"]
 [ext_resource type="ArrayMesh" uid="uid://bg2sg8ii85kgi" path="res://Hero_Game/CharacterMeshTest.tres" id="2_vabmm"]
 [ext_resource type="PackedScene" uid="uid://8xs4bw4fw0vi" path="res://Hero_Game/Art/PolyProtoAssets/FBX/SM_Prop_Rifle_01.fbx" id="3_k7es3"]
 [ext_resource type="Animation" uid="uid://dbdgsd6aidx4a" path="res://Hero_Game/Animations/Editable/Strafe.res" id="5_kynms"]
@@ -739,3 +740,6 @@ script = ExtResource("10_yppwn")
 [node name="MoveAction" type="Node" parent="."]
 script = ExtResource("11_sq73s")
 max_move_distance = 4
+
+[node name="SpinAction" type="Node" parent="."]
+script = ExtResource("1_n6vca")

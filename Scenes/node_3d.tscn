@@ -4,7 +4,7 @@
 [ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="2_x4qwt"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="3_mbubm"]
 [ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="3_pd4ts"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Actions/UnitActionSystem.gd" id="3_xnufy"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="3_xnufy"]
 [ext_resource type="PackedScene" uid="uid://cqnr4v4j11wr1" path="res://Hero_Game/Prefabs/Unit.tscn" id="4_78agj"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_Grid_08.png" id="4_t0r05"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="5_p11j4"]

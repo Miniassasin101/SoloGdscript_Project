@@ -47,6 +47,8 @@ func _process(delta: float) -> void:
 					selected_unit.get_move_action().move(mouse_grid_position)
 		else:
 			print("No collision detected at mouse position.")
+	if Input.is_action_just_pressed("right_mouse"):
+		selected_unit.get_spin_action().spin()
 
 # Handles unit selection via mouse click
 func try_handle_unit_selection() -> bool:

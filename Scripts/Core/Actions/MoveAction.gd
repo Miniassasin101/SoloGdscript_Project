@@ -2,7 +2,7 @@
 # Handles the movement action of a unit.
 
 class_name MoveAction
-extends Node
+extends Action
 
 # Target position is a Vector3.
 var target_position: Vector3
@@ -12,9 +12,8 @@ var target_position: Vector3
 
 # References initialized when the node enters the scene tree.
 @onready var mouse_world: MouseWorld = $"../MouseWorld"
-@onready var unit = get_parent()
 @onready var level_grid: LevelGrid = LevelGrid#unit.get_level_grid()
-@onready var animation_tree: AnimationTree = unit.get_animation_tree()
+var animation_tree: AnimationTree
 
 # Movement speed of the unit.
 const MOVE_SPEED: float = 4.0
@@ -23,10 +22,14 @@ const MOVE_SPEED: float = 4.0
 const STOPPING_DISTANCE: float = 0.1
 
 func _ready() -> void:
+	super._ready()
+	animation_tree = unit.get_animation_tree()
 	# Initialize target position to the unit's current position.
 	target_position = unit.global_transform.origin
 
 func _process(delta: float) -> void:
+	if not is_active:
+		return
 	# Move towards the target position if the unit is far enough.
 	move_towards_target(delta)
 
@@ -34,10 +37,11 @@ func _process(delta: float) -> void:
 func move_towards_target(delta: float) -> void:
 	# Get the unit's current position.
 	var current_position = unit.global_transform.origin
+	# Calculate the movement direction.
+	var move_direction: Vector3 = (target_position - current_position).normalized()
 	# Check if the unit needs to move.
 	if current_position.distance_to(target_position) > STOPPING_DISTANCE:
 		# Calculate the movement direction.
-		var move_direction: Vector3 = (target_position - current_position).normalized()
 
 		# Move towards the target position.
 		current_position += move_direction * MOVE_SPEED * delta
@@ -53,6 +57,11 @@ func move_towards_target(delta: float) -> void:
 	else:
 		# If the unit has reached the target, stop the walking animation.
 		animation_tree.set("parameters/conditions/IsWalking", false)
+		is_active = false
+	# Smoothly rotate the unit towards the movement direction.
+	var target_rotation = Basis.looking_at(-move_direction, Vector3.UP)
+	var rotate_speed: float = 8.0
+	unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
 
 # Updates the target position based on the mouse click.
 func update_target_position() -> void:
@@ -71,6 +80,7 @@ func move(grid_position: GridPosition) -> void:
 		return
 	# Convert the grid position to world position and set as target.
 	self.target_position = level_grid.get_world_position(grid_position)
+	is_active = true
 
 # Checks if the grid position is valid for movement.
 func is_valid_action_grid_position(grid_position: GridPosition) -> bool:
