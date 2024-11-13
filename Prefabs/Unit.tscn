@@ -738,4 +738,4 @@ script = ExtResource("10_yppwn")
 
 [node name="MoveAction" type="Node" parent="."]
 script = ExtResource("11_sq73s")
-max_move_distance = 2
+max_move_distance = 4

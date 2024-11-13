@@ -50,13 +50,15 @@ func get_grid_position(world_position: Vector3) -> GridPosition:
 # Creates debug labels at each grid cell (for visualization).
 func create_debug_objects() -> void:
 	# Clear previous labels.
-	for label in label_3d_list:
-		if label:
-			label.queue_free()
+	for row in label_3d_list:
+		for label in row:
+			if label:
+				label.queue_free()
 	label_3d_list.clear()
 
 	# Create new labels for the current grid configuration.
 	for x in range(width):
+		label_3d_list.append([])  # Initialize label_3d_list[x] as an empty array.
 		for z in range(height):
 			# Get world position and grid object.
 			var position = get_world_position(x, z)
@@ -75,12 +77,20 @@ func create_debug_objects() -> void:
 			
 			# Add the label to the scene.
 			add_child(label_3d)
-			label_3d_list.append(label_3d)  # Store the label for later access.
+			label_3d_list[x].append(label_3d)  # Store the label in the 2D array.
 
 # Rotates all debug labels (for visualization purposes).
 func rotate_labels(direction: float) -> void:
 	for label in label_3d_list:
 		label.rotate(Vector3(0, 1, 0), direction * PI / 4)  # Rotate 45 degrees around the Y-axis.
+
+# Updates the debug label at a specific grid position.
+func update_debug_label(grid_position: GridPosition) -> void:
+	if is_valid_grid_position(grid_position):
+		var x = grid_position.x
+		var z = grid_position.z
+		var grid_object = get_grid_object(grid_position)
+		label_3d_list[x][z].text = grid_object.to_str()
 
 # Retrieves the GridObject at the specified grid position.
 func get_grid_object(grid_position: GridPosition) -> GridObject:

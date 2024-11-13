@@ -19,9 +19,17 @@ extends Node
 # Reference to the active Camera3D
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
 
+static var instance: UnitActionSystem = null
+
 # Layer mask for units
 const UNIT_LAYER_MASK: int = 1 << 3
 
+func _ready() -> void:
+	if instance != null:
+		push_error("There's more than one UnitActionSystem! " + " - " + str(instance))
+		queue_free()
+		return
+	instance = self
 # Called every frame
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("left_mouse"):

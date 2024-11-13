@@ -9,7 +9,7 @@ var grid_system: GridSystem
 # Initialization
 func _init() -> void:
 	# Create a new GridSystem with specified dimensions and cell size
-	grid_system = GridSystem.new(6, 6, 2.0)
+	grid_system = GridSystem.new(13, 13, 2.0)
 	
 	# Add the grid system as a child of the current node
 	add_child(grid_system)
@@ -31,7 +31,8 @@ func set_unit_at_grid_position(grid_position: GridPosition, unit: Unit) -> void:
 	var grid_object: GridObject = grid_system.get_grid_object(grid_position)
 	if grid_object != null:
 		grid_object.add_unit(unit)
-		grid_system.create_debug_objects()  # Update debug visuals
+		# Update only the affected label
+		grid_system.update_debug_label(grid_position)
 
 # Retrieves the list of units at a specified grid position
 func get_unit_list_at_grid_position(grid_position: GridPosition) -> Array:
@@ -43,6 +44,7 @@ func remove_unit_at_grid_position(grid_position: GridPosition, unit: Unit) -> vo
 	var grid_object: GridObject = grid_system.get_grid_object(grid_position)
 	if grid_object != null:
 		grid_object.remove_unit(unit)
+		grid_system.update_debug_label(grid_position)
 
 # Handles moving a unit from one grid position to another
 func unit_moved_grid_position(unit: Unit, from_grid_position: GridPosition, to_grid_position: GridPosition) -> void:
