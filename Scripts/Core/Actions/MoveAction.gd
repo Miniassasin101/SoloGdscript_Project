@@ -1,98 +1,115 @@
+# MoveAction.gd
+# Handles the movement action of a unit.
+
 class_name MoveAction
 extends Node
 
-# Target position is a Vector3, not a Basis
+# Target position is a Vector3.
 var target_position: Vector3
+
+# Maximum movement distance for the unit.
 @export var max_move_distance: int = 3
+
+# References initialized when the node enters the scene tree.
 @onready var mouse_world: MouseWorld = $"../MouseWorld"
 @onready var unit = get_parent()
-@onready var unit_transform = get_parent().global_transform
-@onready var level_grid: LevelGrid = unit.get_level_grid()
-@onready var animation_tree: AnimationTree = get_parent().get_animation_tree()
+@onready var level_grid: LevelGrid = LevelGrid#unit.get_level_grid()
+@onready var animation_tree: AnimationTree = unit.get_animation_tree()
 
-# Movement speed of the unit
+# Movement speed of the unit.
 const MOVE_SPEED: float = 4.0
-# Distance threshold to stop moving when close to the target
+
+# Distance threshold to stop moving when close to the target.
 const STOPPING_DISTANCE: float = 0.1
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	target_position = unit_transform.origin  # Initialize target position to the unit's current position
+	# Initialize target position to the unit's current position.
+	target_position = unit.global_transform.origin
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	# Move towards the target position if the unit is far enough
+	# Move towards the target position if the unit is far enough.
 	move_towards_target(delta)
-	unit_transform = get_parent().global_transform
 
-# Moves the unit towards the target position
+# Moves the unit towards the target position.
 func move_towards_target(delta: float) -> void:
-	# Only move if the unit is farther than the stopping distance from the target
+	# Get the unit's current position.
 	var current_position = unit.global_transform.origin
+	# Check if the unit needs to move.
 	if current_position.distance_to(target_position) > STOPPING_DISTANCE:
-		# Calculate the movement direction
+		# Calculate the movement direction.
 		var move_direction: Vector3 = (target_position - current_position).normalized()
 
-		# Move towards the target by updating the position
+		# Move towards the target position.
 		current_position += move_direction * MOVE_SPEED * delta
-		unit.global_transform.origin = current_position  # Update the unit's position
+		unit.global_transform.origin = current_position  # Update the unit's position.
 
-		# Smoothly rotate the unit towards the movement direction
+		# Smoothly rotate the unit towards the movement direction.
 		var target_rotation = Basis.looking_at(-move_direction, Vector3.UP)
 		var rotate_speed: float = 8.0
 		unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
 
-		# Set the walking animation condition
+		# Set the walking animation condition to true.
 		animation_tree.set("parameters/conditions/IsWalking", true)
 	else:
-		# If not moving, set the walking condition to false
+		# If the unit has reached the target, stop the walking animation.
 		animation_tree.set("parameters/conditions/IsWalking", false)
 
-# Updates the target position based on the raycast from the mouse click
+# Updates the target position based on the mouse click.
 func update_target_position() -> void:
-	# Perform raycast by calling the non-static function in the MouseWorld instance
+	# Get the mouse position from MouseWorld.
 	var result: Dictionary = mouse_world.get_mouse_position()
 	
-	# If raycast hit an object, update the unit's target position
-	if result.size() > 0 and result.has("position"):
-		move(result["position"])
+	# If raycast hit an object, update the unit's target position.
+	if result != null:
+		var grid_position: GridPosition = level_grid.get_grid_position(result["position"])
+		move(grid_position)
 
-# Sets a new target position for the unit
+# Sets a new target position for the unit.
 func move(grid_position: GridPosition) -> void:
-	print("testing123")
+	if not is_valid_action_grid_position(grid_position):
+		print("Invalid move to grid position: ", grid_position.to_str())
+		return
+	# Convert the grid position to world position and set as target.
 	self.target_position = level_grid.get_world_position(grid_position)
 
+# Checks if the grid position is valid for movement.
 func is_valid_action_grid_position(grid_position: GridPosition) -> bool:
 	var valid_grid_position_list = get_valid_action_grid_position_list()
-	if valid_grid_position_list.has(grid_position):
-		return true
-	else:
-		return false
-	
+	var gridpos_str = grid_position.to_str()
+	var valid_positions_str_list = position_list_to_strings(valid_grid_position_list)
+	# Check if the grid position is in the list of valid positions.
+	return valid_positions_str_list.has(gridpos_str)
 
-
+# Gets a list of valid grid positions for movement.
 func get_valid_action_grid_position_list() -> Array:
-	var valid_grid_position_list: Array[GridPosition] = []  # Initialize an empty array for valid grid positions
+	var valid_grid_position_list: Array[GridPosition] = []  # Initialize an empty array for valid grid positions.
 	var unit_grid_position: GridPosition = unit.get_grid_position()
-	level_grid = unit.get_level_grid()
-	# Loop through the x and z ranges based on maxMoveDistance
+	level_grid = LevelGrid#unit.get_level_grid()
+	# Loop through the x and z ranges based on max_move_distance.
 	for x in range(-max_move_distance, max_move_distance + 1):
 		for z in range(-max_move_distance, max_move_distance + 1):
-			# Create a new GridPosition with the current x and z values
+			# Create an offset grid position.
 			var offset_grid_position = GridPosition.new(x, z)
+			# Calculate the test grid position.
 			var test_grid_position: GridPosition = unit_grid_position.add(offset_grid_position)
 			
+			# Skip invalid grid positions.
 			if not level_grid.is_valid_grid_position(test_grid_position):
 				continue
-			
+			# Skip the current unit's grid position.
 			if unit_grid_position.equals(test_grid_position):
-				#same grid position that its already at
 				continue
-			
-			if (level_grid.has_any_unit_on_grid_position(test_grid_position)):
-				#Grid Position already occupied
+			# Skip grid positions that are occupied.
+			if level_grid.has_any_unit_on_grid_position(test_grid_position):
 				continue
 				
+			# Add the valid grid position to the list.
 			valid_grid_position_list.append(test_grid_position)
-	
 	return valid_grid_position_list
+
+# Converts a list of GridPosition to a list of their string representations.
+func position_list_to_strings(pos_list: Array) -> Array:
+	var return_list = []
+	for pos in pos_list:
+		return_list.append(pos.to_str())
+	return return_list

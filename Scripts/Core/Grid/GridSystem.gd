@@ -1,103 +1,103 @@
+# GridSystem.gd
+# Manages the grid system for the game.
+
 class_name GridSystem
 extends Node
 
+# Dimensions of the grid.
 var width: int
 var height: int
+
+# Size of each cell in the grid.
 var cell_size: float
-var gridObjectArray: Array = []
-# Array to store references to all Label3D instances
+
+# 2D array of GridObject instances.
+var grid_object_array: Array = []
+
+# Array to store references to all Label3D instances (for debugging).
 var label_3d_list: Array = []
 
-func _init(inwidth: int, inheight: int, incellsize: float) -> void:
-	width = inwidth
-	height = inheight
-	cell_size = incellsize
-	
+func _init(in_width: int, in_height: int, in_cell_size: float) -> void:
+	# Initialize grid dimensions and cell size.
+	width = in_width
+	height = in_height
+	cell_size = in_cell_size
+	# Initialize the grid objects.
 	initialize_grid_objects()
 
-
-
-
-# Initialize and populate the 2D grid with `GridObject` instances
+# Initializes and populates the grid with GridObject instances.
 func initialize_grid_objects() -> void:
 	for x in range(width):
 		var row: Array = []
 		for z in range(height):
-			# Create a new GridPosition for the current cell
+			# Create a new GridPosition for the current cell.
 			var grid_position = GridPosition.new(x, z)
-			
-			# Create a new GridObject for the current cell, passing in the GridSystem and GridPosition
+			# Create a new GridObject for the current cell.
 			var grid_object = GridObject.new(self, grid_position)
-		
-			
-			# Add the GridObject instance to the current row
+			# Add the GridObject to the current row.
 			row.append(grid_object)
-		# Add the row to the main 2D array
-		gridObjectArray.append(row)
-	#Example below
-	#var grid_object = grid_system.gridObjectArray[x][z]
-	
-	
+		# Add the row to the main grid array.
+		grid_object_array.append(row)
+
+# Converts grid coordinates to world position.
 func get_world_position(x: int, z: int) -> Vector3:
 	return Vector3(x * cell_size, 0, z * cell_size)
 
+# Converts world position to grid position.
 func get_grid_position(world_position: Vector3) -> GridPosition:
 	return GridPosition.new(roundi(world_position.x / cell_size), roundi(world_position.z / cell_size))
 
-func spawn_sphere_at_position(position: Vector3):
-	var sphere_instance = MeshInstance3D.new()
-	var sphere_mesh = SphereMesh.new()
-	sphere_instance.mesh = sphere_mesh
-	sphere_instance.transform.origin = position
-
-	var material = StandardMaterial3D.new()
-	material.albedo_color = Color(1, 0, 0)  # Red color for visibility
-	sphere_instance.material_override = material
-
-	add_child(sphere_instance)
-
+# Creates debug labels at each grid cell (for visualization).
 func create_debug_objects() -> void:
-	# Clear previous labels
+	# Clear previous labels.
 	for label in label_3d_list:
-		if label:  # Check if the label still exists
-			label.queue_free()  # Free the label from memory
-	label_3d_list.clear()  # Clear the list after freeing the labels
+		if label:
+			label.queue_free()
+	label_3d_list.clear()
 
-	# Create new labels for the current grid configuration
+	# Create new labels for the current grid configuration.
 	for x in range(width):
 		for z in range(height):
-			# Calculate the world position for the current grid cell
+			# Get world position and grid object.
 			var position = get_world_position(x, z)
-			var grid_position = get_grid_position(position)
+			var grid_position = GridPosition.new(x, z)
 			var grid_object = get_grid_object(grid_position)
 
-			# Create the Label3D to display the grid coordinates
+			# Create the Label3D to display the grid coordinates.
 			var label_3d = Label3D.new()
-			label_3d.text = grid_object.to_str()  # Display grid coordinates as text
+			label_3d.text = grid_object.to_str()  # Display grid coordinates as text.
 			
-			# Position the label above the grid cell
+			# Position the label slightly above the grid cell.
 			label_3d.transform.origin = position + Vector3(0, 0.02, 0)
 			
-			# Rotate the label to face straight up (rotate -90 degrees around the X-axis)
+			# Rotate the label to face upwards.
 			label_3d.rotate(Vector3(1, 0, 0), -PI / 2)
 			
-			# Add the label to the scene
+			# Add the label to the scene.
 			add_child(label_3d)
-			label_3d_list.append(label_3d)  # Store the label for later access
+			label_3d_list.append(label_3d)  # Store the label for later access.
 
+# Rotates all debug labels (for visualization purposes).
 func rotate_labels(direction: float) -> void:
 	for label in label_3d_list:
-		label.rotate(Vector3(0, 1, 0), direction * PI / 4)  # Rotate 45 degrees (PI / 4) around the Y-axis
+		label.rotate(Vector3(0, 1, 0), direction * PI / 4)  # Rotate 45 degrees around the Y-axis.
 
+# Retrieves the GridObject at the specified grid position.
 func get_grid_object(grid_position: GridPosition) -> GridObject:
-	if grid_position.x >= 0 and grid_position.x < width and grid_position.z >= 0 and grid_position.z < height:
-		return gridObjectArray[grid_position.x][grid_position.z]
+	if is_valid_grid_position(grid_position):
+		return grid_object_array[grid_position.x][grid_position.z]
 	else:
-		#print("Grid position out of bounds: ", grid_position.to_str())
 		return null
 
+# Checks if a grid position is within the bounds of the grid.
 func is_valid_grid_position(grid_position: GridPosition) -> bool:
-	return (grid_position.x >= 0 &&
-			grid_position.z >= 0 &&
-			grid_position.x < width &&
+	return (grid_position.x >= 0 and
+			grid_position.z >= 0 and
+			grid_position.x < width and
 			grid_position.z < height)
+
+func get_width() -> int:
+	return width
+	
+func get_height() -> int:
+	return height

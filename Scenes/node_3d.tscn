@@ -1,8 +1,8 @@
 [gd_scene load_steps=22 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/testing.gd" id="1_r5kds"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/LevelGrid.gd" id="2_j52xw"]
 [ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="2_x4qwt"]
+[ext_resource type="Script" path="res://Hero_Game/Prefabs/grid_system_visual.gd" id="3_mbubm"]
 [ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="3_pd4ts"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Actions/UnitActionSystem.gd" id="3_xnufy"]
 [ext_resource type="PackedScene" uid="uid://cqnr4v4j11wr1" path="res://Hero_Game/Prefabs/Unit.tscn" id="4_78agj"]
@@ -92,7 +92,9 @@ script = ExtResource("1_r5kds")
 unit = NodePath("../Unit")
 
 [node name="LevelGrid" type="Node3D" parent="."]
-script = ExtResource("2_j52xw")
+
+[node name="GridSystemVisual" type="Node3D" parent="LevelGrid"]
+script = ExtResource("3_mbubm")
 
 [node name="UnitActionSystem" type="Node" parent="." node_paths=PackedStringArray("mouse_world", "raycast")]
 script = ExtResource("3_xnufy")
@@ -160,4 +162,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.04805, 1.08465, -3.22367)
 mesh = SubResource("BoxMesh_tljmp")
 
 [node name="Unit2" parent="." instance=ExtResource("4_78agj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.43207, 0, -2.61827)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)

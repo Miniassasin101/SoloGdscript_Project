@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bputpfvj74kol"]
+
+[ext_resource type="Material" uid="uid://dgannwdtstq3s" path="res://Hero_Game/Art/Materials/GridSquareVisual.tres" id="1_3ruuu"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_380yj"]
+material = ExtResource("1_3ruuu")
+
+[node name="GridSystemVisual" type="Node3D"]
+
+[node name="GridSystemVisual" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.01085, 0, 0, 0, -8.78969e-08, 2.01085, 0, -2.01085, -8.78969e-08, 0, 0.03, 0)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_380yj")

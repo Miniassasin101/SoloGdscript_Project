@@ -1,26 +1,32 @@
+# SelectedUnitIndicator.gd
+# Visual indicator that shows when a unit is selected.
+
+class_name SelectedUnitIndicator
 extends MeshInstance3D
 
-# Exported variable to hold the reference to the currently selected unit.
-@export var current_unit: Unit
+# Reference to the unit that this indicator is associated with.
+@onready var current_unit: Unit = get_parent()
+# Reference to the UnitActionSystem (adjust the path as necessary).
+var action_system: UnitActionSystem
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# Connect the 'selected_unit_changed' signal from the SignalBus to the local function.
+	# Get the UnitActionSystem node (assuming it's at the root).
+	action_system = current_unit.get_action_system()
+	# Connect the 'selected_unit_changed' signal from SignalBus to the local function.
 	SignalBus.selected_unit_changed.connect(_on_selected_unit_changed)
+	# Initialize visibility based on whether this unit is selected.
+	if action_system != null:
+		update_visual()
 
-# This method is connected to the SignalBus signal. 
+# This method is connected to the SignalBus signal.
 # It gets triggered when the selected unit changes.
 func _on_selected_unit_changed(action_system) -> void:
-	update_visual(action_system)
+	update_visual()
 
 # Updates the visibility of the visual object based on the selected unit.
-func update_visual(action_system) -> void:
+func update_visual() -> void:
+	action_system = current_unit.get_action_system()
 	# Retrieve the selected unit from the action system.
 	var selected_unit = action_system.get_selected_unit()
-
 	# If the selected unit is the current unit, make this object visible.
-	if selected_unit == current_unit:
-		self.visible = true
-	else:
-		# Otherwise, hide this object.
-		self.visible = false
+	self.visible = (selected_unit == current_unit)

@@ -729,14 +729,13 @@ collision_mask = 8
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0197449, 0.900802, 0.0358276)
 shape = SubResource("BoxShape3D_ff2eu")
 
-[node name="SelectedVisual" type="MeshInstance3D" parent="." node_paths=PackedStringArray("current_unit")]
+[node name="SelectedVisual" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.4, 0, 0, 0, -6.11959e-08, 1.4, 0, -1.4, -6.11959e-08, 0, 0.01, 0)
 visible = false
 cast_shadow = 0
 mesh = SubResource("QuadMesh_k1ff4")
 script = ExtResource("10_yppwn")
-current_unit = NodePath("..")
 
 [node name="MoveAction" type="Node" parent="."]
 script = ExtResource("11_sq73s")
-max_move_distance = 1
+max_move_distance = 2

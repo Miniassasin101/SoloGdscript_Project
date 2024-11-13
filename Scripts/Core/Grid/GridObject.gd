@@ -1,33 +1,44 @@
+# GridObject.gd
+# Represents a cell in the grid and contains units located at that grid position.
+
 class_name GridObject
 extends RefCounted
 
+# Reference to the GridSystem.
 var grid_system: GridSystem
+
+# The grid position of this GridObject.
 var grid_position: GridPosition
-var unitList: Array = []
-# Called when the node enters the scene tree for the first time.
+
+# List of units on this grid cell.
+var unit_list: Array = []
+
 func _init(grid_system: GridSystem, grid_position: GridPosition) -> void:
 	self.grid_system = grid_system
 	self.grid_position = grid_position
 
-func add_unit(inunit: Unit) -> void:
-	self.unitList.append(inunit)
+# Adds a unit to this grid cell.
+func add_unit(unit: Unit) -> void:
+	self.unit_list.append(unit)
 
-func remove_unit(inunit: Unit) -> void:
-	if inunit in unitList:
-		unitList.erase(inunit)
+# Removes a unit from this grid cell.
+func remove_unit(unit: Unit) -> void:
+	if unit in unit_list:
+		unit_list.erase(unit)
 
-func get_unit_list():
-	return unitList
+# Returns the list of units on this grid cell.
+func get_unit_list() -> Array:
+	return unit_list
 
-func has_any_unit():
-	return unitList.size() > 0
+# Checks if there is any unit on this grid cell.
+func has_any_unit() -> bool:
+	return unit_list.size() > 0
 
-
-
-# Returns a string representation of the grid position and all units
+# Returns a string representation of the grid position and units.
 func to_str() -> String:
 	var result = grid_position.to_str()
-	if unitList.size() > 0:
-		for unit in unitList:
+	if unit_list.size() > 0:
+		for unit in unit_list:
 			result += "\n" + unit.to_string()
+		return result
 	return result
