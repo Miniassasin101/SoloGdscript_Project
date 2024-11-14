@@ -2,4 +2,4 @@
 extends Node
 
 
-signal selected_unit_changed(action_system)
+signal selected_unit_changed(unit: Unit)

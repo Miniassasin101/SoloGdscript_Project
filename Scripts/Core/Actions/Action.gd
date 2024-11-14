@@ -9,6 +9,5 @@ var on_action_complete: Callable = Callable()
 func _ready() -> void:
 	unit = get_parent()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func get_action_name() -> String:
+	return ""

@@ -113,7 +113,7 @@ func clear_busy() -> void:
 # Sets the selected unit and emits a signal
 func _set_selected_unit(unit: Unit) -> void:
 	selected_unit = unit
-	SignalBus.selected_unit_changed.emit(unit_action_system)
+	SignalBus.selected_unit_changed.emit(unit)
 
 # Retrieves the currently selected unit
 func get_selected_unit() -> Unit:

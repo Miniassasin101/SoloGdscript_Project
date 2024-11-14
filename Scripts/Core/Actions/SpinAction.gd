@@ -29,3 +29,6 @@ func spin(on_spin_complete: Callable) -> void:
 	is_active = true
 	total_spin_amount = 0.0
 	self.on_action_complete = on_spin_complete
+
+func get_action_name() -> String:
+	return "Spin"

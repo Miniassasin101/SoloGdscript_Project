@@ -128,3 +128,6 @@ func position_list_to_strings(pos_list: Array) -> Array:
 	for pos in pos_list:
 		return_list.append(pos.to_str())
 	return return_list
+
+func get_action_name() -> String:
+	return "Move"

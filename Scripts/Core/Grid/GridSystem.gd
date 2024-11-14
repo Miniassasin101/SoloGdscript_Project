@@ -81,8 +81,10 @@ func create_debug_objects() -> void:
 
 # Rotates all debug labels (for visualization purposes).
 func rotate_labels(direction: float) -> void:
-	for label in label_3d_list:
-		label.rotate(Vector3(0, 1, 0), direction * PI / 4)  # Rotate 45 degrees around the Y-axis.
+	for row in label_3d_list:
+		for label in row:
+			if label and label is Label3D:
+				label.rotate(Vector3(0, 1, 0), direction * PI / 4)  # Rotate 45 degrees around the Y-axis.
 
 # Updates the debug label at a specific grid position.
 func update_debug_label(grid_position: GridPosition) -> void:

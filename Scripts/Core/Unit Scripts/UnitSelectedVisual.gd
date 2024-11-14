@@ -20,7 +20,7 @@ func _ready() -> void:
 
 # This method is connected to the SignalBus signal.
 # It gets triggered when the selected unit changes.
-func _on_selected_unit_changed(action_system) -> void:
+func _on_selected_unit_changed(unit: Unit) -> void:
 	update_visual()
 
 # Updates the visibility of the visual object based on the selected unit.

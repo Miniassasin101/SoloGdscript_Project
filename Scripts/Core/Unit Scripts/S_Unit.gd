@@ -14,7 +14,7 @@ var grid_position: GridPosition
 # Reference to the MoveAction node attached to this unit.
 @onready var move_action: MoveAction = $MoveAction
 @onready var spin_action: SpinAction = $SpinAction
-
+@onready var action_array: Array[Action]
 
 
 func _ready() -> void:
@@ -22,6 +22,10 @@ func _ready() -> void:
 	grid_position = level_grid.get_grid_position(global_transform.origin)
 	# Register this unit at its grid position in the level grid.
 	level_grid.set_unit_at_grid_position(grid_position, self)
+	action_array = []
+	for child in get_children():
+		if child is Action:
+			action_array.append(child)
 
 
 func _process(delta: float) -> void:
@@ -61,3 +65,6 @@ func get_level_grid() -> LevelGrid:
 
 func get_action_system() -> UnitActionSystem:
 	return action_system
+
+func get_action_array() -> Array[Action]:
+	return action_array
