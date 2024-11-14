@@ -19,6 +19,8 @@ extends Node
 # Reference to the active Camera3D
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
 
+var is_busy: bool
+
 static var instance: UnitActionSystem = null
 
 # Layer mask for units
@@ -26,12 +28,14 @@ const UNIT_LAYER_MASK: int = 1 << 3
 
 func _ready() -> void:
 	if instance != null:
-		push_error("There's more than one UnitActionSystem! " + " - " + str(instance))
+		push_error("There's more than one UnitActionSystem! - " + str(instance))
 		queue_free()
 		return
 	instance = self
-# Called every frame
+
 func _process(delta: float) -> void:
+	if is_busy:
+		return
 	if Input.is_action_just_pressed("left_mouse"):
 		# Attempt to select a unit
 		if try_handle_unit_selection():
@@ -40,15 +44,18 @@ func _process(delta: float) -> void:
 		# Get the mouse position in the world
 		var mouse_result = mouse_world.get_mouse_position()
 		if mouse_result != null:
-			var mouse_grid_position = LevelGrid.get_grid_position(mouse_result["position"])
+			var mouse_grid_position = level_grid.get_grid_position(mouse_result["position"])
 			if selected_unit and mouse_grid_position != null:
 				# Check if the grid position is valid for movement
 				if selected_unit.get_move_action().is_valid_action_grid_position(mouse_grid_position):
-					selected_unit.get_move_action().move(mouse_grid_position)
+					set_busy()
+					selected_unit.get_move_action().move(mouse_grid_position, Callable(self, "clear_busy"))
 		else:
 			print("No collision detected at mouse position.")
-	if Input.is_action_just_pressed("right_mouse"):
-		selected_unit.get_spin_action().spin()
+	if Input.is_action_just_pressed("right_mouse") and selected_unit:
+		set_busy()
+		# Pass a callable to the spin action to clear the busy state upon completion.
+		selected_unit.get_spin_action().spin(Callable(self, "clear_busy"))
 
 # Handles unit selection via mouse click
 func try_handle_unit_selection() -> bool:
@@ -96,6 +103,12 @@ func get_mouse_position(camera: Camera3D, mouse_position: Vector2):
 
 	# Return null if no collision
 	return null
+
+func set_busy() -> void:
+	is_busy = true
+
+func clear_busy() -> void:
+	is_busy = false
 
 # Sets the selected unit and emits a signal
 func _set_selected_unit(unit: Unit) -> void:

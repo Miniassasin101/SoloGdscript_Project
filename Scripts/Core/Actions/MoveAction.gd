@@ -12,7 +12,7 @@ var target_position: Vector3
 
 # References initialized when the node enters the scene tree.
 @onready var mouse_world: MouseWorld = $"../MouseWorld"
-@onready var level_grid: LevelGrid = LevelGrid#unit.get_level_grid()
+@onready var level_grid: LevelGrid = LevelGrid
 var animation_tree: AnimationTree
 
 # Movement speed of the unit.
@@ -41,8 +41,6 @@ func move_towards_target(delta: float) -> void:
 	var move_direction: Vector3 = (target_position - current_position).normalized()
 	# Check if the unit needs to move.
 	if current_position.distance_to(target_position) > STOPPING_DISTANCE:
-		# Calculate the movement direction.
-
 		# Move towards the target position.
 		current_position += move_direction * MOVE_SPEED * delta
 		unit.global_transform.origin = current_position  # Update the unit's position.
@@ -53,15 +51,22 @@ func move_towards_target(delta: float) -> void:
 		unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
 
 		# Set the walking animation condition to true.
-		animation_tree.set("parameters/conditions/IsWalking", true)
+		if animation_tree:
+			animation_tree.set("parameters/conditions/IsWalking", true)
 	else:
 		# If the unit has reached the target, stop the walking animation.
-		animation_tree.set("parameters/conditions/IsWalking", false)
+		if animation_tree:
+			animation_tree.set("parameters/conditions/IsWalking", false)
 		is_active = false
-	# Smoothly rotate the unit towards the movement direction.
-	var target_rotation = Basis.looking_at(-move_direction, Vector3.UP)
-	var rotate_speed: float = 8.0
-	unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
+		# Invoke the callback if it's valid.
+		if on_action_complete and on_action_complete.is_valid():
+			on_action_complete.call()
+
+	# Smoothly rotate the unit towards the movement direction if still moving.
+	if is_active:
+		var target_rotation = Basis.looking_at(-move_direction, Vector3.UP)
+		var rotate_speed: float = 8.0
+		unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
 
 # Updates the target position based on the mouse click.
 func update_target_position() -> void:
@@ -71,13 +76,14 @@ func update_target_position() -> void:
 	# If raycast hit an object, update the unit's target position.
 	if result != null:
 		var grid_position: GridPosition = level_grid.get_grid_position(result["position"])
-		move(grid_position)
+		move(grid_position, on_action_complete)
 
-# Sets a new target position for the unit.
-func move(grid_position: GridPosition) -> void:
+func move(grid_position: GridPosition, on_action_complete: Callable) -> void:
 	if not is_valid_action_grid_position(grid_position):
 		print("Invalid move to grid position: ", grid_position.to_str())
 		return
+	# Store the callable that should be called once movement is complete.
+	self.on_action_complete = on_action_complete
 	# Convert the grid position to world position and set as target.
 	self.target_position = level_grid.get_world_position(grid_position)
 	is_active = true
@@ -94,7 +100,6 @@ func is_valid_action_grid_position(grid_position: GridPosition) -> bool:
 func get_valid_action_grid_position_list() -> Array:
 	var valid_grid_position_list: Array[GridPosition] = []  # Initialize an empty array for valid grid positions.
 	var unit_grid_position: GridPosition = unit.get_grid_position()
-	level_grid = LevelGrid#unit.get_level_grid()
 	# Loop through the x and z ranges based on max_move_distance.
 	for x in range(-max_move_distance, max_move_distance + 1):
 		for z in range(-max_move_distance, max_move_distance + 1):
