@@ -74,6 +74,7 @@ func show_grid_positions(grid_positions: Array) -> void:
 func update_grid_visual() -> void:
 	#if Input.is_action_just_pressed("testkey"):
 	hide_all_grid_positions()
-	var selected_unit = UnitActionSystem.instance.get_selected_unit()
-	if selected_unit != null:
-		show_grid_positions(selected_unit.get_move_action().get_valid_action_grid_position_list())
+
+	var selected_action: Action = UnitActionSystem.instance.get_selected_action()
+	if selected_action != null:
+		show_grid_positions(selected_action.get_valid_action_grid_position_list())

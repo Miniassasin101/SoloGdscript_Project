@@ -58,9 +58,8 @@ func move_towards_target(delta: float) -> void:
 		if animation_tree:
 			animation_tree.set("parameters/conditions/IsWalking", false)
 		is_active = false
-		# Invoke the callback if it's valid.
-		if on_action_complete and on_action_complete.is_valid():
-			on_action_complete.call()
+		print_debug("move is_active = false")
+		SignalBus.action_complete.emit()
 
 	# Smoothly rotate the unit towards the movement direction if still moving.
 	if is_active:
@@ -76,25 +75,19 @@ func update_target_position() -> void:
 	# If raycast hit an object, update the unit's target position.
 	if result != null:
 		var grid_position: GridPosition = level_grid.get_grid_position(result["position"])
-		move(grid_position, on_action_complete)
+		take_action(grid_position)
 
-func move(grid_position: GridPosition, on_action_complete: Callable) -> void:
+func take_action(grid_position: GridPosition) -> void:
 	if not is_valid_action_grid_position(grid_position):
 		print("Invalid move to grid position: ", grid_position.to_str())
 		return
-	# Store the callable that should be called once movement is complete.
-	self.on_action_complete = on_action_complete
 	# Convert the grid position to world position and set as target.
-	self.target_position = level_grid.get_world_position(grid_position)
 	is_active = true
+	self.target_position = level_grid.get_world_position(grid_position)
 
 # Checks if the grid position is valid for movement.
 func is_valid_action_grid_position(grid_position: GridPosition) -> bool:
-	var valid_grid_position_list = get_valid_action_grid_position_list()
-	var gridpos_str = grid_position.to_str()
-	var valid_positions_str_list = position_list_to_strings(valid_grid_position_list)
-	# Check if the grid position is in the list of valid positions.
-	return valid_positions_str_list.has(gridpos_str)
+	return super.is_valid_action_grid_position(grid_position)
 
 # Gets a list of valid grid positions for movement.
 func get_valid_action_grid_position_list() -> Array:
@@ -124,10 +117,10 @@ func get_valid_action_grid_position_list() -> Array:
 
 # Converts a list of GridPosition to a list of their string representations.
 func position_list_to_strings(pos_list: Array) -> Array:
-	var return_list = []
-	for pos in pos_list:
-		return_list.append(pos.to_str())
-	return return_list
+	return super.position_list_to_strings(pos_list)
 
 func get_action_name() -> String:
 	return "Move"
+
+func print_sleep_in_spanish():
+	print("Dormir")

@@ -1,13 +1,18 @@
 class_name ActionButtonUI
-extends Node
+extends Button
 
-@export var text: Label
+@export var button_text: Label
 @export var button: Button
+var action: Action
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
 
 
 func set_base_action(action: Action) -> void:
-	text.text = action.get_action_name().to_upper()
-	
+	button_text.set_text(action.get_action_name().to_upper())# = action.get_action_name().to_upper()
+	self.action = action
+
+func _pressed() -> void:
+	print(action.get_action_name())
+	SignalBus.selected_action_changed.emit(action)

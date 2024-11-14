@@ -21,14 +21,16 @@ func _process(delta: float) -> void:
 		is_active = false
 		total_spin_amount = 0.0
 		# Invoke the callback if it's valid.
-		if on_action_complete and on_action_complete.is_valid():
-			on_action_complete.call()
-		on_action_complete = Callable()
+		SignalBus.action_complete.emit()
 
-func spin(on_spin_complete: Callable) -> void:
+
+func take_action(grid_position: GridPosition,) -> void:
 	is_active = true
 	total_spin_amount = 0.0
-	self.on_action_complete = on_spin_complete
 
 func get_action_name() -> String:
 	return "Spin"
+
+func get_valid_action_grid_position_list() -> Array[GridPosition]:
+	var unit_grid_position = unit.get_grid_position()
+	return [unit_grid_position]

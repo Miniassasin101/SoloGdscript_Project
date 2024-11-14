@@ -4,6 +4,7 @@ extends Node
 # Reference to the currently selected unit
 @export var selected_unit: Unit
 
+@onready var selected_action: Action
 # Reference to the LevelGrid node
 @onready var level_grid: LevelGrid = LevelGrid
 
@@ -16,6 +17,8 @@ extends Node
 # Self-reference for signal emission
 @onready var unit_action_system: UnitActionSystem = self
 
+
+
 # Reference to the active Camera3D
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
 
@@ -23,8 +26,6 @@ var is_busy: bool
 
 static var instance: UnitActionSystem = null
 
-# Layer mask for units
-const UNIT_LAYER_MASK: int = 1 << 3
 
 func _ready() -> void:
 	if instance != null:
@@ -32,30 +33,39 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
+	if selected_unit:
+		set_selected_unit(selected_unit)
+	
+	SignalBus.selected_action_changed.connect(set_selected_action)
+	SignalBus.action_complete.connect(clear_busy)
+
+
 
 func _process(delta: float) -> void:
 	if is_busy:
 		return
+
+	# Check if the mouse is over a specific UI element
+	var hovered_control = get_viewport().gui_get_hovered_control()
+	if hovered_control != null:
+		return
+
 	if Input.is_action_just_pressed("left_mouse"):
 		# Attempt to select a unit
 		if try_handle_unit_selection():
 			return
-
-		# Get the mouse position in the world
-		var mouse_result = mouse_world.get_mouse_position()
-		if mouse_result != null:
-			var mouse_grid_position = level_grid.get_grid_position(mouse_result["position"])
-			if selected_unit and mouse_grid_position != null:
-				# Check if the grid position is valid for movement
-				if selected_unit.get_move_action().is_valid_action_grid_position(mouse_grid_position):
-					set_busy()
-					selected_unit.get_move_action().move(mouse_grid_position, Callable(self, "clear_busy"))
 		else:
-			print("No collision detected at mouse position.")
-	if Input.is_action_just_pressed("right_mouse") and selected_unit:
-		set_busy()
-		# Pass a callable to the spin action to clear the busy state upon completion.
-		selected_unit.get_spin_action().spin(Callable(self, "clear_busy"))
+			handle_selected_action()
+
+
+func handle_selected_action() -> void:
+	if selected_unit and selected_action:
+		var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
+		if mouse_grid_position:
+			var grid_position: GridPosition = level_grid.get_grid_position(mouse_grid_position)
+			if selected_action.is_valid_action_grid_position(grid_position):
+				selected_action.take_action(grid_position)
+				set_busy()
 
 # Handles unit selection via mouse click
 func try_handle_unit_selection() -> bool:
@@ -63,58 +73,42 @@ func try_handle_unit_selection() -> bool:
 	var mouse_position: Vector2 = get_viewport().get_mouse_position()
 
 	# Perform raycast to detect units
-	var result = get_mouse_position(camera, mouse_position)
+	var collider = mouse_world.get_mouse_raycast_result("collider")
 
 	# Check if the raycast hit something
-	if result != null:
-		# Get the collider's parent (the unit)
-		var collider = result["collider"].get_parent()
-		if collider is Unit and collider != selected_unit:
+	if collider != null:
+		var unit = collider.get_parent()
+		if unit is Unit and unit != selected_unit:
 			# Select the unit
-			_set_selected_unit(collider)
+			set_selected_unit(unit)
 			return true
-	return false
+		else:
+			return false
+	else:
+		return false
 
-# Performs a raycast to get mouse position in the world
-func get_mouse_position(camera: Camera3D, mouse_position: Vector2):
-	# Ensure RayCast3D is available
-	if raycast == null or not raycast.is_inside_tree():
-		return null
-
-	# Calculate ray origin and direction
-	var ray_origin: Vector3 = camera.project_ray_origin(mouse_position)
-	var ray_direction: Vector3 = camera.project_ray_normal(mouse_position)
-
-	# Update RayCast3D's position and target
-	raycast.global_transform.origin = ray_origin
-	raycast.target_position = ray_origin + ray_direction * 1000  # Extend ray
-
-	# Force raycast update
-	raycast.force_raycast_update()
-
-	# Return collision data if a collision occurred
-	if raycast.is_colliding():
-		print(raycast.get_collider())
-		return {
-			"position": raycast.get_collision_point(),
-			"normal": raycast.get_collision_normal(),
-			"collider": raycast.get_collider()
-		}
-
-	# Return null if no collision
-	return null
 
 func set_busy() -> void:
 	is_busy = true
 
 func clear_busy() -> void:
+	print("clearbusy")
 	is_busy = false
 
 # Sets the selected unit and emits a signal
-func _set_selected_unit(unit: Unit) -> void:
+func set_selected_unit(unit: Unit) -> void:
 	selected_unit = unit
+	set_selected_action(unit.get_move_action())
 	SignalBus.selected_unit_changed.emit(unit)
 
+func set_selected_action(action: Action) -> void:
+	print_debug(action.get_action_name())
+	selected_action = action
+	
 # Retrieves the currently selected unit
 func get_selected_unit() -> Unit:
 	return selected_unit
+
+#Retrieves current selected action
+func get_selected_action() -> Action:
+	return selected_action

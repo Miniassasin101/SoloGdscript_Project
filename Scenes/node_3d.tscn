@@ -1,14 +1,13 @@
-[gd_scene load_steps=24 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=23 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/testing.gd" id="1_r5kds"]
 [ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="2_x4qwt"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="3_mbubm"]
-[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="3_pd4ts"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="3_xnufy"]
 [ext_resource type="PackedScene" uid="uid://cqnr4v4j11wr1" path="res://Hero_Game/Prefabs/Unit.tscn" id="4_78agj"]
-[ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_Grid_08.png" id="4_t0r05"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="5_p11j4"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="6_y3qe8"]
+[ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="7_gls28"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_g2lvi"]
 [ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/ActionButtonUI.tscn" id="10_urllm"]
 
@@ -63,21 +62,8 @@ adjustment_color_correction = SubResource("GradientTexture1D_40odu")
 [sub_resource type="SphereMesh" id="SphereMesh_owyi7"]
 material = ExtResource("2_x4qwt")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vphwt"]
-render_priority = 0
-shader = ExtResource("3_pd4ts")
-shader_parameter/base_color = Color(0.303233, 0.303233, 0.303233, 1)
-shader_parameter/grid_scale = 2.0
-shader_parameter/grid_opacity = 1.0
-shader_parameter/metallic = 0.0
-shader_parameter/specular = 0.2
-shader_parameter/roughness = 0.8
-shader_parameter/emissive_strength = 0.0
-shader_parameter/world_offset = Vector2(1, 1)
-shader_parameter/grid_texture = ExtResource("4_t0r05")
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_fnkdd"]
-material = SubResource("ShaderMaterial_vphwt")
+material = ExtResource("7_gls28")
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_vv6bh"]
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
@@ -85,6 +71,8 @@ data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0
 [sub_resource type="BoxShape3D" id="BoxShape3D_pqthu"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_tljmp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mh8jn"]
 
 [node name="Level" type="Node3D"]
 script = SubResource("GDScript_teh1w")
@@ -101,11 +89,7 @@ script = ExtResource("3_mbubm")
 [node name="UnitActionSystem" type="Node" parent="." node_paths=PackedStringArray("mouse_world", "raycast")]
 script = ExtResource("3_xnufy")
 mouse_world = NodePath("../MouseWorld")
-raycast = NodePath("UnitActionRay")
-
-[node name="UnitActionRay" type="RayCast3D" parent="UnitActionSystem"]
-collision_mask = 8
-collide_with_areas = true
+raycast = NodePath("../MouseWorld/UnitActionRay")
 
 [node name="Lighting" type="Node3D" parent="."]
 
@@ -120,13 +104,19 @@ shadow_enabled = true
 shadow_bias = 0.097
 directional_shadow_max_distance = 12.2
 
-[node name="MouseWorld" type="Node3D" parent="."]
+[node name="MouseWorld" type="Node3D" parent="." node_paths=PackedStringArray("raycast", "mouse_visual")]
 script = ExtResource("6_y3qe8")
+raycast = NodePath("UnitActionRay")
+mouse_visual = NodePath("MouseVisual")
 
 [node name="MouseVisual" type="MeshInstance3D" parent="MouseWorld"]
 transform = Transform3D(0.332613, 0, 0, 0, 0.332613, 0, 0, 0, 0.332613, 0, 0, 0)
 visible = false
 mesh = SubResource("SphereMesh_owyi7")
+
+[node name="UnitActionRay" type="RayCast3D" parent="MouseWorld"]
+collision_mask = 0
+collide_with_areas = true
 
 [node name="Unit" parent="." instance=ExtResource("4_78agj")]
 
@@ -165,6 +155,7 @@ spring_length = 20.0
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.04805, 1.08465, -3.22367)
 mesh = SubResource("BoxMesh_tljmp")
+surface_material_override/0 = SubResource("ShaderMaterial_mh8jn")
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
@@ -175,14 +166,24 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="UnitActionSystemUI" type="Control" parent="UILayer/UIRoot" node_paths=PackedStringArray("action_button_container")]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -71.0
+offset_top = -120.0
+offset_right = 124.0
+offset_bottom = -20.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+scale = Vector2(0.85111, 0.535873)
+mouse_filter = 2
 script = ExtResource("10_g2lvi")
 action_button_prefab = ExtResource("10_urllm")
 action_button_container = NodePath("Container")
@@ -194,10 +195,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -62.0
-offset_top = -98.0
-offset_right = 62.0
-offset_bottom = -38.0
+offset_left = -97.5
+offset_top = -100.0
+offset_right = 137.5
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 0
+scale = Vector2(1.0118, 1.65376)
+mouse_filter = 2
 theme_override_constants/separation = 12
+alignment = 1
