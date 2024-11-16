@@ -121,6 +121,3 @@ func position_list_to_strings(pos_list: Array) -> Array:
 
 func get_action_name() -> String:
 	return "Move"
-
-func print_sleep_in_spanish():
-	print("Dormir")

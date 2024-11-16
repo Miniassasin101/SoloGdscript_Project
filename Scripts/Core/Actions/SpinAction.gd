@@ -34,3 +34,7 @@ func get_action_name() -> String:
 func get_valid_action_grid_position_list() -> Array[GridPosition]:
 	var unit_grid_position = unit.get_grid_position()
 	return [unit_grid_position]
+
+func get_action_points_cost() -> int:
+	return 2
+	

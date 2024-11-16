@@ -3,13 +3,16 @@ extends Node
 
 @export var action_button_prefab: PackedScene
 @export var action_button_container: BoxContainer
+@export var action_points_text: Label
 @export var selected_unit: Unit
 
 
 func _ready() -> void:
 	SignalBus.selected_unit_changed.connect(on_selected_unit_changed)
+	SignalBus.action_points_changed.connect(_update_action_points)
 	selected_unit = UnitActionSystem.instance.get_selected_unit()
 	create_unit_action_buttons()
+	_update_action_points()
 
 
 func create_unit_action_buttons() -> void:
@@ -26,3 +29,9 @@ func create_unit_action_buttons() -> void:
 func on_selected_unit_changed(unit: Unit) -> void:
 	selected_unit = unit
 	create_unit_action_buttons()
+	_update_action_points()
+
+
+func _update_action_points() -> void:
+	if selected_unit:
+		action_points_text.text = "Action Points: " + str(selected_unit.get_action_points())

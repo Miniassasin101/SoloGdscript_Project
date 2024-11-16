@@ -64,8 +64,10 @@ func handle_selected_action() -> void:
 		if mouse_grid_position:
 			var grid_position: GridPosition = level_grid.get_grid_position(mouse_grid_position)
 			if selected_action.is_valid_action_grid_position(grid_position):
-				selected_action.take_action(grid_position)
-				set_busy()
+				if selected_unit.try_spend_action_points_to_take_action(selected_action): # also spends the action points
+					selected_action.take_action(grid_position)
+					set_busy()
+					SignalBus.emit_signal("action_started")
 
 # Handles unit selection via mouse click
 func try_handle_unit_selection() -> bool:

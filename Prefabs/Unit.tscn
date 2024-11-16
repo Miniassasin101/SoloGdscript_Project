@@ -1,6 +1,6 @@
 [gd_scene load_steps=30 format=3 uid="uid://cqnr4v4j11wr1"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/S_Unit.gd" id="1_a05v8"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_a05v8"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Actions/SpinAction.gd" id="1_n6vca"]
 [ext_resource type="ArrayMesh" uid="uid://bg2sg8ii85kgi" path="res://Hero_Game/CharacterMeshTest.tres" id="2_vabmm"]
 [ext_resource type="PackedScene" uid="uid://8xs4bw4fw0vi" path="res://Hero_Game/Art/PolyProtoAssets/FBX/SM_Prop_Rifle_01.fbx" id="3_k7es3"]
@@ -285,7 +285,7 @@ material = ExtResource("9_s4w51")
 script = ExtResource("1_a05v8")
 
 [node name="Root" type="Node3D" parent="."]
-transform = Transform3D(0.767062, 0.126583, -0.628962, 0.0246419, 0.973808, 0.226037, 0.6411, -0.188883, 0.74385, 0, 0, 0)
+transform = Transform3D(0.767062, 0.126583, -0.628962, 0.0246416, 0.973808, 0.226037, 0.6411, -0.188883, 0.743851, 0, 0, 0)
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Root"]
 transform = Transform3D(0.999996, -0.00281894, 0.00050474, 0.00281855, 0.999996, 0.000779397, -0.000506935, -0.000777971, 1, 5.63792e-05, -0.0199999, 1.55605e-05)

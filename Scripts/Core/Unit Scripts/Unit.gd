@@ -17,6 +17,12 @@ var grid_position: GridPosition
 @onready var action_array: Array[Action]
 
 
+const action_points_max: int = 2
+@onready var action_points: int = action_points_max
+
+
+
+
 func _ready() -> void:
 	# Initialize the unit's grid position based on its current world position.
 	grid_position = level_grid.get_grid_position(global_transform.origin)
@@ -26,6 +32,7 @@ func _ready() -> void:
 	for child in get_children():
 		if child is Action:
 			action_array.append(child)
+	SignalBus.next_turn.connect(on_turn_changed)
 
 
 func _process(delta: float) -> void:
@@ -35,6 +42,42 @@ func _process(delta: float) -> void:
 		# Notify the level grid that the unit has moved.
 		level_grid.unit_moved_grid_position(self, grid_position, new_grid_position)
 		grid_position = new_grid_position
+
+func try_spend_action_points_to_take_action(action: Action) -> bool:
+	if can_spend_action_points_to_take_action(action):
+		spend_action_points(action.get_action_points_cost())
+		return true
+	return false
+
+func can_spend_action_points_to_take_action(action: Action) -> bool:
+	if action_points >= action.get_action_points_cost():
+		return true
+	else:
+		return false
+	
+
+func spend_action_points(amount: int) -> void:
+	action_points -= amount
+	SignalBus.emit_signal("action_points_changed")
+
+#will probably have to swap turn with round later
+func on_turn_changed() -> void:
+	action_points = action_points_max
+	SignalBus.emit_signal("action_points_changed")
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Setters and Getters
 
 func _to_string() -> String:
 	# Return the unit's name as a string representation.
@@ -68,3 +111,6 @@ func get_action_system() -> UnitActionSystem:
 
 func get_action_array() -> Array[Action]:
 	return action_array
+
+func get_action_points() -> int:
+	return action_points

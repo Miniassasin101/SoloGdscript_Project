@@ -1,0 +1,298 @@
+[gd_scene load_steps=28 format=3 uid="uid://dl3he0bj1hlla"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="2_td6d6"]
+[ext_resource type="Script" path="res://Hero_Game/Scenes/testing.gd" id="3_vw71g"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="4_8yks7"]
+[ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="5_y067e"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/TurnSystem.gd" id="6_rwbm0"]
+[ext_resource type="PackedScene" uid="uid://cqnr4v4j11wr1" path="res://Hero_Game/Prefabs/Unit.tscn" id="7_tjeks"]
+[ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="8_paohs"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="9_rt187"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
+[ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/ActionButtonUI.tscn" id="11_jk6uv"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
+
+[sub_resource type="GDScript" id="GDScript_teh1w"]
+script/source = "extends Node3D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta: float) -> void:
+	pass
+"
+
+[sub_resource type="Gradient" id="Gradient_3xus0"]
+offsets = PackedFloat32Array(0, 0.117647, 0.819005, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.0645, 0.091575, 0.15, 1, 0.86, 0.786613, 0.7224, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_40odu"]
+gradient = SubResource("Gradient_3xus0")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2xono"]
+sky_top_color = Color(0.307572, 0.472605, 0.669074, 1)
+sky_horizon_color = Color(0.440581, 0.62455, 0.66912, 1)
+energy_multiplier = 4.69
+
+[sub_resource type="Sky" id="Sky_wsc4c"]
+sky_material = SubResource("ProceduralSkyMaterial_2xono")
+
+[sub_resource type="Environment" id="Environment_suifr"]
+background_mode = 2
+sky = SubResource("Sky_wsc4c")
+ambient_light_sky_contribution = 0.26
+ambient_light_energy = 0.0
+reflected_light_source = 1
+tonemap_mode = 2
+tonemap_exposure = 0.18
+ssao_enabled = true
+ssil_enabled = true
+ssil_radius = 1.88
+sdfgi_enabled = true
+sdfgi_energy = 0.385
+glow_enabled = true
+glow_normalized = true
+glow_bloom = 0.05
+adjustment_enabled = true
+adjustment_color_correction = SubResource("GradientTexture1D_40odu")
+
+[sub_resource type="SphereMesh" id="SphereMesh_owyi7"]
+material = ExtResource("5_y067e")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fnkdd"]
+material = ExtResource("8_paohs")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_vv6bh"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pqthu"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_tljmp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mh8jn"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_sh5a7"]
+font_size = 25
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5ega"]
+bg_color = Color(0.15, 0.15, 0.15, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_size = 2
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bwm3i"]
+font_size = 21
+
+[node name="Level" type="Node3D"]
+script = SubResource("GDScript_teh1w")
+
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting"]
+environment = SubResource("Environment_suifr")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(0.550407, -0.587545, 0.593164, -0.358336, 0.475453, 0.803455, -0.754087, -0.654779, 0.0511535, -5.0404, 2.34293, -0.615594)
+light_energy = 6.943
+light_volumetric_fog_energy = 2.0
+shadow_enabled = true
+shadow_bias = 0.097
+directional_shadow_max_distance = 12.2
+
+[node name="LevelGrid" type="Node3D" parent="."]
+
+[node name="GridSystemVisual" type="Node3D" parent="LevelGrid"]
+script = ExtResource("1_fqt43")
+
+[node name="UnitActionSystem" type="Node" parent="." node_paths=PackedStringArray("mouse_world", "raycast")]
+script = ExtResource("2_td6d6")
+mouse_world = NodePath("../MouseWorld")
+raycast = NodePath("../MouseWorld/UnitActionRay")
+
+[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit")]
+script = ExtResource("3_vw71g")
+unit = NodePath("../Unit")
+
+[node name="MouseWorld" type="Node3D" parent="." node_paths=PackedStringArray("raycast", "mouse_visual")]
+script = ExtResource("4_8yks7")
+raycast = NodePath("UnitActionRay")
+mouse_visual = NodePath("MouseVisual")
+
+[node name="MouseVisual" type="MeshInstance3D" parent="MouseWorld"]
+transform = Transform3D(0.332613, 0, 0, 0, 0.332613, 0, 0, 0, 0.332613, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_owyi7")
+
+[node name="UnitActionRay" type="RayCast3D" parent="MouseWorld"]
+collision_mask = 0
+collide_with_areas = true
+
+[node name="TurnSystem" type="Node" parent="."]
+script = ExtResource("6_rwbm0")
+
+[node name="Unit" parent="." instance=ExtResource("7_tjeks")]
+
+[node name="Unit2" parent="." instance=ExtResource("7_tjeks")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(20.8345, 0, 0, 0, 20.8345, 0, 0, 0, 20.8345, 0, 0, 0)
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("PlaneMesh_fnkdd")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_vv6bh")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.06028, 0)
+script = ExtResource("9_rt187")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("BoxShape3D_pqthu")
+
+[node name="CamOrigin" type="Node3D" parent="Player"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Player/CamOrigin"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+collision_mask = 2
+spring_length = 20.0
+
+[node name="fCamera" type="Camera3D" parent="Player/CamOrigin/SpringArm3D"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.04805, 1.08465, -3.22367)
+mesh = SubResource("BoxMesh_tljmp")
+surface_material_override/0 = SubResource("ShaderMaterial_mh8jn")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("action_button_container", "action_points_text")]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = -114.0
+offset_bottom = -114.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("10_nqefp")
+action_button_prefab = ExtResource("11_jk6uv")
+action_button_container = NodePath("Container")
+action_points_text = NodePath("ActionPointsLabel")
+
+[node name="Container" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 60.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="ActionButtonUI" parent="UILayer/UnitActionSystemUI/Container" instance=ExtResource("11_jk6uv")]
+layout_mode = 2
+
+[node name="ActionPointsLabel" type="Label" parent="UILayer/UnitActionSystemUI"]
+layout_mode = 2
+offset_left = 1.0
+offset_top = -49.0
+offset_right = 61.0
+offset_bottom = -14.0
+size_flags_vertical = 1
+text = "AP: 3"
+label_settings = SubResource("LabelSettings_sh5a7")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("end_turn_button", "turn_counter_label", "turn_system")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("12_m6vvv")
+end_turn_button = NodePath("PanelContainer/MarginContainer/EndTurnButton")
+turn_counter_label = NodePath("PanelContainer2/MarginContainer/TurnCounterLabel")
+turn_system = NodePath("../../TurnSystem")
+
+[node name="PanelContainer2" type="PanelContainer" parent="UILayer/TurnSystemUI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 520.5
+offset_top = 17.0
+offset_right = 591.5
+offset_bottom = 53.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/PanelContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TurnCounterLabel" type="Label" parent="UILayer/TurnSystemUI/PanelContainer2/MarginContainer"]
+layout_mode = 2
+text = "Turn 1
+"
+label_settings = SubResource("LabelSettings_bwm3i")
+
+[node name="PanelContainer" type="PanelContainer" parent="UILayer/TurnSystemUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 873.0
+offset_top = 16.0
+offset_right = 969.0
+offset_bottom = 53.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="EndTurnButton" type="Button" parent="UILayer/TurnSystemUI/PanelContainer/MarginContainer"]
+layout_mode = 2
+text = "END TURN"
+
+[connection signal="pressed" from="UILayer/TurnSystemUI/PanelContainer/MarginContainer/EndTurnButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
