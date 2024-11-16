@@ -14,5 +14,5 @@ func set_base_action(action: Action) -> void:
 	self.action = action
 
 func _pressed() -> void:
-	print(action.get_action_name())
+	#print(action.get_action_name())
 	SignalBus.selected_action_changed.emit(action)

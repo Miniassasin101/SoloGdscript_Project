@@ -10,6 +10,8 @@ signal action_complete()
 
 signal action_started
 
-signal next_turn
+signal end_turn
+
+signal on_turn_changed
 
 signal action_points_changed

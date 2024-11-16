@@ -30,7 +30,7 @@ func is_valid_action_grid_position(grid_position: GridPosition) -> bool:
 	return valid_positions_str_list.has(gridpos_str)
 
 # Gets a list of valid grid positions for movement.
-func get_valid_action_grid_position_list() -> Array:
+func get_valid_action_grid_position_list() -> Array[GridPosition]:
 	print_debug("get valid action grid position list on base Action class was called")
 	return []
 

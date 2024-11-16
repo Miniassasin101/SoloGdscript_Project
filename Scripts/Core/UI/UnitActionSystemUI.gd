@@ -10,6 +10,7 @@ extends Node
 func _ready() -> void:
 	SignalBus.selected_unit_changed.connect(on_selected_unit_changed)
 	SignalBus.action_points_changed.connect(_update_action_points)
+	SignalBus.on_turn_changed.connect(on_turn_changed)
 	selected_unit = UnitActionSystem.instance.get_selected_unit()
 	create_unit_action_buttons()
 	_update_action_points()
@@ -35,3 +36,6 @@ func on_selected_unit_changed(unit: Unit) -> void:
 func _update_action_points() -> void:
 	if selected_unit:
 		action_points_text.text = "Action Points: " + str(selected_unit.get_action_points())
+
+func on_turn_changed() -> void:
+	self.visible = TurnSystem.instance.is_player_turn

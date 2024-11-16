@@ -20,6 +20,7 @@ var grid_position: GridPosition
 const action_points_max: int = 2
 @onready var action_points: int = action_points_max
 
+@export var is_enemy: bool
 
 
 
@@ -32,7 +33,7 @@ func _ready() -> void:
 	for child in get_children():
 		if child is Action:
 			action_array.append(child)
-	SignalBus.next_turn.connect(on_turn_changed)
+	SignalBus.on_turn_changed.connect(on_turn_changed)
 
 
 func _process(delta: float) -> void:
@@ -62,8 +63,9 @@ func spend_action_points(amount: int) -> void:
 
 #will probably have to swap turn with round later
 func on_turn_changed() -> void:
-	action_points = action_points_max
-	SignalBus.emit_signal("action_points_changed")
+	if is_enemy and !TurnSystem.instance.is_player_turn or !is_enemy and TurnSystem.instance.is_player_turn:
+		action_points = action_points_max
+		SignalBus.emit_signal("action_points_changed")
 
 
 

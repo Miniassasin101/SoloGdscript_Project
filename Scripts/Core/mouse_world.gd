@@ -59,7 +59,7 @@ func get_mouse_raycast_result(result_type: String) -> Variant:
 
 	# Force raycast update
 	raycast.force_raycast_update()
-	print(raycast.get_collider())
+	#print(raycast.get_collider())
 	# Return collision data if a collision occurred
 	if raycast.is_colliding():
 		match result_type:
@@ -83,12 +83,12 @@ func adjust_mouse_position() -> void:
 	mouse_position = get_viewport().get_mouse_position()
 
 func _change_layer_mask_to_unit() -> void:
-	print_debug("layer mask changed to unit")
+	#print_debug("layer mask changed to unit")
 	raycast.set_collision_mask_value(2, false)
 	raycast.set_collision_mask_value(4, true)
 
 func _change_layer_mask_to_grid() -> void:
-	print_debug("layer mask changed to grid")
+	#print_debug("layer mask changed to grid")
 	raycast.set_collision_mask_value(2, true)
 	raycast.set_collision_mask_value(4, false)
 

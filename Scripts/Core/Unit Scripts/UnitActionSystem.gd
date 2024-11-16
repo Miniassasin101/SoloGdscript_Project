@@ -81,6 +81,9 @@ func try_handle_unit_selection() -> bool:
 	if collider != null:
 		var unit = collider.get_parent()
 		if unit is Unit and unit != selected_unit:
+			if unit.is_enemy:
+				# Clicked on an enemy
+				return false
 			# Select the unit
 			set_selected_unit(unit)
 			return true
@@ -94,7 +97,7 @@ func set_busy() -> void:
 	is_busy = true
 
 func clear_busy() -> void:
-	print("clearbusy")
+	#print("clearbusy")
 	is_busy = false
 
 # Sets the selected unit and emits a signal
@@ -104,7 +107,7 @@ func set_selected_unit(unit: Unit) -> void:
 	SignalBus.selected_unit_changed.emit(unit)
 
 func set_selected_action(action: Action) -> void:
-	print_debug(action.get_action_name())
+	#print_debug(action.get_action_name())
 	selected_action = action
 	
 # Retrieves the currently selected unit

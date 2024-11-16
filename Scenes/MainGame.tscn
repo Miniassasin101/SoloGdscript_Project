@@ -1,5 +1,6 @@
-[gd_scene load_steps=28 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=30 format=3 uid="uid://dl3he0bj1hlla"]
 
+[ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="2_td6d6"]
 [ext_resource type="Script" path="res://Hero_Game/Scenes/testing.gd" id="3_vw71g"]
@@ -7,25 +8,13 @@
 [ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="5_y067e"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/TurnSystem.gd" id="6_rwbm0"]
 [ext_resource type="PackedScene" uid="uid://cqnr4v4j11wr1" path="res://Hero_Game/Prefabs/Unit.tscn" id="7_tjeks"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitAI/UnitAI.gd" id="8_kmwtl"]
+[ext_resource type="PackedScene" uid="uid://cdxsugasmneuu" path="res://Hero_Game/Prefabs/UnitEnemy.tscn" id="8_ne0gl"]
 [ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="8_paohs"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="9_rt187"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
 [ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/ActionButtonUI.tscn" id="11_jk6uv"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
-
-[sub_resource type="GDScript" id="GDScript_teh1w"]
-script/source = "extends Node3D
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
-"
 
 [sub_resource type="Gradient" id="Gradient_3xus0"]
 offsets = PackedFloat32Array(0, 0.117647, 0.819005, 1)
@@ -96,7 +85,10 @@ shadow_offset = Vector2(1, 1)
 font_size = 21
 
 [node name="Level" type="Node3D"]
-script = SubResource("GDScript_teh1w")
+
+[node name="Debug" type="Node" parent="."]
+script = ExtResource("1_7xwui")
+end_turn_debug = true
 
 [node name="Lighting" type="Node3D" parent="."]
 
@@ -142,10 +134,17 @@ collide_with_areas = true
 [node name="TurnSystem" type="Node" parent="."]
 script = ExtResource("6_rwbm0")
 
+[node name="UnitAI" type="Node" parent="."]
+script = ExtResource("8_kmwtl")
+
 [node name="Unit" parent="." instance=ExtResource("7_tjeks")]
 
 [node name="Unit2" parent="." instance=ExtResource("7_tjeks")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="UnitEnemy" parent="." instance=ExtResource("8_ne0gl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+is_enemy = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(20.8345, 0, 0, 0, 20.8345, 0, 0, 0, 20.8345, 0, 0, 0)
@@ -199,10 +198,10 @@ size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("10_nqefp")
 action_button_prefab = ExtResource("11_jk6uv")
-action_button_container = NodePath("Container")
+action_button_container = NodePath("ActionButtonsContainer")
 action_points_text = NodePath("ActionPointsLabel")
 
-[node name="Container" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]
+[node name="ActionButtonsContainer" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -217,7 +216,7 @@ mouse_filter = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="ActionButtonUI" parent="UILayer/UnitActionSystemUI/Container" instance=ExtResource("11_jk6uv")]
+[node name="ActionButtonUI" parent="UILayer/UnitActionSystemUI/ActionButtonsContainer" instance=ExtResource("11_jk6uv")]
 layout_mode = 2
 
 [node name="ActionPointsLabel" type="Label" parent="UILayer/UnitActionSystemUI"]
@@ -232,67 +231,103 @@ label_settings = SubResource("LabelSettings_sh5a7")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("end_turn_button", "turn_counter_label", "turn_system")]
+[node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("end_turn_button", "end_turn_container", "turn_counter_label", "turn_system", "enemy_turn_container")]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("12_m6vvv")
-end_turn_button = NodePath("PanelContainer/MarginContainer/EndTurnButton")
-turn_counter_label = NodePath("PanelContainer2/MarginContainer/TurnCounterLabel")
+end_turn_button = NodePath("EndTurnContainer/MarginContainer/EndTurnButton")
+end_turn_container = NodePath("EndTurnContainer")
+turn_counter_label = NodePath("TurnCountContainer/MarginContainer/TurnCounterLabel")
 turn_system = NodePath("../../TurnSystem")
+enemy_turn_container = NodePath("EnemyTurnContainer")
 
-[node name="PanelContainer2" type="PanelContainer" parent="UILayer/TurnSystemUI"]
+[node name="TurnCountContainer" type="PanelContainer" parent="UILayer/TurnSystemUI"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 520.5
+offset_left = -9.0
 offset_top = 17.0
-offset_right = 591.5
+offset_right = 62.0
 offset_bottom = 53.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
 
-[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/PanelContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/TurnCountContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="TurnCounterLabel" type="Label" parent="UILayer/TurnSystemUI/PanelContainer2/MarginContainer"]
+[node name="TurnCounterLabel" type="Label" parent="UILayer/TurnSystemUI/TurnCountContainer/MarginContainer"]
 layout_mode = 2
 text = "Turn 1
 "
 label_settings = SubResource("LabelSettings_bwm3i")
 
-[node name="PanelContainer" type="PanelContainer" parent="UILayer/TurnSystemUI"]
+[node name="EndTurnContainer" type="PanelContainer" parent="UILayer/TurnSystemUI"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = 873.0
-offset_top = 16.0
-offset_right = 969.0
-offset_bottom = 53.0
+offset_left = -120.0
+offset_top = 17.0
+offset_right = -24.0
+offset_bottom = 54.0
 grow_horizontal = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
 
-[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/EndTurnContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="EndTurnButton" type="Button" parent="UILayer/TurnSystemUI/PanelContainer/MarginContainer"]
+[node name="EndTurnButton" type="Button" parent="UILayer/TurnSystemUI/EndTurnContainer/MarginContainer"]
 layout_mode = 2
 text = "END TURN"
 
-[connection signal="pressed" from="UILayer/TurnSystemUI/PanelContainer/MarginContainer/EndTurnButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
+[node name="EnemyTurnContainer" type="PanelContainer" parent="UILayer/TurnSystemUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -119.0
+offset_top = -124.0
+offset_right = 181.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/EnemyTurnContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="EnemyTurnLabel" type="Label" parent="UILayer/TurnSystemUI/EnemyTurnContainer/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.69, 0.69, 1)
+theme_override_font_sizes/font_size = 50
+text = "Enemy Turn"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="UILayer/TurnSystemUI/EndTurnContainer/MarginContainer/EndTurnButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
