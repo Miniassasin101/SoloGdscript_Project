@@ -14,10 +14,6 @@ func _ready() -> void:
 
 
 
-func end_turn() -> void:
-	SignalBus.emit_signal("end_turn")
-	
-
 
 func _on_end_turn_button_pressed() -> void:
 	SignalBus.emit_signal("end_turn")

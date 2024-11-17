@@ -12,11 +12,11 @@ var target_position: Vector3
 
 # References initialized when the node enters the scene tree.
 @onready var mouse_world: MouseWorld = $"../MouseWorld"
-@onready var level_grid: LevelGrid = LevelGrid
+
 var animation_tree: AnimationTree
 
 # Movement speed of the unit.
-const MOVE_SPEED: float = 4.0
+const MOVE_SPEED: float = 5.5
 
 # Distance threshold to stop moving when close to the target.
 const STOPPING_DISTANCE: float = 0.1
@@ -46,8 +46,8 @@ func move_towards_target(delta: float) -> void:
 		unit.global_transform.origin = current_position  # Update the unit's position.
 
 		# Smoothly rotate the unit towards the movement direction.
-		var target_rotation = Basis.looking_at(-move_direction, Vector3.UP)
-		var rotate_speed: float = 8.0
+		var target_rotation = Basis.looking_at(move_direction, Vector3.UP, true)
+		var rotate_speed: float = 2.0
 		unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
 
 		# Set the walking animation condition to true.
@@ -57,9 +57,9 @@ func move_towards_target(delta: float) -> void:
 		# If the unit has reached the target, stop the walking animation.
 		if animation_tree:
 			animation_tree.set("parameters/conditions/IsWalking", false)
-		is_active = false
+		super.action_complete()
 		print_debug("move is_active = false")
-		SignalBus.action_complete.emit()
+
 
 	# Smoothly rotate the unit towards the movement direction if still moving.
 	if is_active:
@@ -74,16 +74,16 @@ func update_target_position() -> void:
 	
 	# If raycast hit an object, update the unit's target position.
 	if result != null:
-		var grid_position: GridPosition = level_grid.get_grid_position(result["position"])
+		var grid_position: GridPosition = LevelGrid.get_grid_position(result["position"])
 		take_action(grid_position)
 
 func take_action(grid_position: GridPosition) -> void:
 	if not is_valid_action_grid_position(grid_position):
 		print("Invalid move to grid position: ", grid_position.to_str())
 		return
+	action_start()
 	# Convert the grid position to world position and set as target.
-	is_active = true
-	self.target_position = level_grid.get_world_position(grid_position)
+	self.target_position = LevelGrid.get_world_position(grid_position)
 
 # Checks if the grid position is valid for movement.
 func is_valid_action_grid_position(grid_position: GridPosition) -> bool:
@@ -102,13 +102,13 @@ func get_valid_action_grid_position_list() -> Array:
 			var test_grid_position: GridPosition = unit_grid_position.add(offset_grid_position)
 			
 			# Skip invalid grid positions.
-			if not level_grid.is_valid_grid_position(test_grid_position):
+			if not LevelGrid.is_valid_grid_position(test_grid_position):
 				continue
 			# Skip the current unit's grid position.
 			if unit_grid_position.equals(test_grid_position):
 				continue
 			# Skip grid positions that are occupied.
-			if level_grid.has_any_unit_on_grid_position(test_grid_position):
+			if LevelGrid.has_any_unit_on_grid_position(test_grid_position):
 				continue
 				
 			# Add the valid grid position to the list.

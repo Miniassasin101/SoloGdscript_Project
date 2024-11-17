@@ -34,6 +34,12 @@ func get_unit_list() -> Array:
 func has_any_unit() -> bool:
 	return unit_list.size() > 0
 
+func get_unit() -> Unit:
+	if has_any_unit():
+		return unit_list[0]
+	else:
+		return null
+
 # Returns a string representation of the grid position and units.
 func to_str() -> String:
 	var result = grid_position.to_str()

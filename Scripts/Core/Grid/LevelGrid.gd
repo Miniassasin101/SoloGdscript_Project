@@ -74,3 +74,7 @@ func is_valid_grid_position(grid_position: GridPosition) -> bool:
 func has_any_unit_on_grid_position(grid_position: GridPosition) -> bool:
 	var grid_object = grid_system.get_grid_object(grid_position)
 	return grid_object.has_any_unit()
+
+func get_unit_at_grid_position(grid_position: GridPosition):
+	var grid_object: GridObject = grid_system.get_grid_object(grid_position)
+	return grid_object.get_unit()

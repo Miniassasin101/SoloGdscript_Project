@@ -18,14 +18,12 @@ func _process(delta: float) -> void:
 
 	# Check if a full rotation has been completed.
 	if total_spin_amount >= 360.0:
-		is_active = false
 		total_spin_amount = 0.0
-		# Invoke the callback if it's valid.
-		SignalBus.action_complete.emit()
+		super.action_complete()
 
 
 func take_action(grid_position: GridPosition,) -> void:
-	is_active = true
+	action_start()
 	total_spin_amount = 0.0
 
 func get_action_name() -> String:

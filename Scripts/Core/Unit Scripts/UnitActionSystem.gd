@@ -5,8 +5,7 @@ extends Node
 @export var selected_unit: Unit
 
 @onready var selected_action: Action
-# Reference to the LevelGrid node
-@onready var level_grid: LevelGrid = LevelGrid
+
 
 # Reference to the MouseWorld instance (set in the editor)
 @export var mouse_world: MouseWorld
@@ -62,7 +61,7 @@ func handle_selected_action() -> void:
 	if selected_unit and selected_action:
 		var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
 		if mouse_grid_position:
-			var grid_position: GridPosition = level_grid.get_grid_position(mouse_grid_position)
+			var grid_position: GridPosition = LevelGrid.get_grid_position(mouse_grid_position)
 			if selected_action.is_valid_action_grid_position(grid_position):
 				if selected_unit.try_spend_action_points_to_take_action(selected_action): # also spends the action points
 					selected_action.take_action(grid_position)
@@ -100,16 +99,22 @@ func clear_busy() -> void:
 	#print("clearbusy")
 	is_busy = false
 
-# Sets the selected unit and emits a signal
 func set_selected_unit(unit: Unit) -> void:
 	selected_unit = unit
-	set_selected_action(unit.get_move_action())
+	set_selected_action(unit.get_action("Move"))  # Set the move action as the default action when selecting a unit
 	SignalBus.selected_unit_changed.emit(unit)
 
 func set_selected_action(action: Action) -> void:
-	#print_debug(action.get_action_name())
 	selected_action = action
-	
+
+func set_selected_action_by_name(action_name: String) -> void:
+	if selected_unit:
+		var action = selected_unit.get_action(action_name)
+		if action != null:
+			selected_action = action
+			SignalBus.selected_action_changed.emit(action)
+		else:
+			print("Action not found: ", action_name)
 # Retrieves the currently selected unit
 func get_selected_unit() -> Unit:
 	return selected_unit

@@ -29,6 +29,14 @@ func is_valid_action_grid_position(grid_position: GridPosition) -> bool:
 	# Check if the grid position is in the list of valid positions.
 	return valid_positions_str_list.has(gridpos_str)
 
+func action_start() -> void:
+	is_active = true
+
+func action_complete() -> void:
+	is_active = false
+	SignalBus.action_complete.emit()
+
+
 # Gets a list of valid grid positions for movement.
 func get_valid_action_grid_position_list() -> Array[GridPosition]:
 	print_debug("get valid action grid position list on base Action class was called")
