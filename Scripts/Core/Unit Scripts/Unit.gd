@@ -69,6 +69,12 @@ func _to_string() -> String:
 	# Return the unit's name as a string representation.
 	return self.name
 
+func has_action(action_name: String) -> bool:
+	for action in action_array:
+		if action.get_action_name() == action_name:
+			return true
+	return false  # Return null if action not found
+
 func get_animation_tree() -> AnimationTree:
 	# Search for an AnimationTree node among the unit's children.
 	for child in get_children():

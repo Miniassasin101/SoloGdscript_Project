@@ -4,6 +4,11 @@
 class_name MoveAction
 extends Action
 
+signal on_start_moving
+
+signal on_stop_moving
+
+
 # Target position is a Vector3.
 var target_position: Vector3
 
@@ -13,7 +18,7 @@ var target_position: Vector3
 # References initialized when the node enters the scene tree.
 @onready var mouse_world: MouseWorld = $"../MouseWorld"
 
-var animation_tree: AnimationTree
+
 
 # Movement speed of the unit.
 const MOVE_SPEED: float = 5.5
@@ -23,9 +28,9 @@ const STOPPING_DISTANCE: float = 0.1
 
 func _ready() -> void:
 	super._ready()
-	animation_tree = unit.get_animation_tree()
 	# Initialize target position to the unit's current position.
 	target_position = unit.global_transform.origin
+
 
 func _process(delta: float) -> void:
 	if not is_active:
@@ -51,12 +56,10 @@ func move_towards_target(delta: float) -> void:
 		unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
 
 		# Set the walking animation condition to true.
-		if animation_tree:
-			animation_tree.set("parameters/conditions/IsWalking", true)
+		on_start_moving.emit()
 	else:
 		# If the unit has reached the target, stop the walking animation.
-		if animation_tree:
-			animation_tree.set("parameters/conditions/IsWalking", false)
+		on_stop_moving.emit()
 		super.action_complete()
 		print_debug("move is_active = false")
 
@@ -84,6 +87,8 @@ func take_action(grid_position: GridPosition) -> void:
 	action_start()
 	# Convert the grid position to world position and set as target.
 	self.target_position = LevelGrid.get_world_position(grid_position)
+
+
 
 # Checks if the grid position is valid for movement.
 func is_valid_action_grid_position(grid_position: GridPosition) -> bool:

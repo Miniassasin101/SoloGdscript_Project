@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=30 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
 [ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/ActionButtonUI.tscn" id="11_jk6uv"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
+[ext_resource type="PackedScene" uid="uid://cpcptdymwdmvl" path="res://Hero_Game/Prefabs/UnitEnemy.tscn" id="15_bh6ls"]
 
 [sub_resource type="Gradient" id="Gradient_3xus0"]
 offsets = PackedFloat32Array(0, 0.117647, 0.819005, 1)
@@ -140,6 +141,10 @@ script = ExtResource("8_kmwtl")
 
 [node name="Unit2" parent="." instance=ExtResource("7_tjeks")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="UnitEnemy" parent="." instance=ExtResource("15_bh6ls")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+is_enemy = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(20.8345, 0, 0, 0, 20.8345, 0, 0, 0, 20.8345, 0, 0, 0)
