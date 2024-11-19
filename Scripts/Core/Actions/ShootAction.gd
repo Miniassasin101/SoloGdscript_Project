@@ -1,10 +1,10 @@
 class_name ShootAction
 extends Action
 
-signal on_shoot
+signal on_shoot(target_unit: Unit, shooting_unit: Unit)
 
 var total_spin_amount: float = 0.0
-var max_shoot_distance: int = 3
+var max_shoot_distance: int = 6
 
 var state: State
 var state_timer: float
@@ -63,7 +63,7 @@ func next_state() -> void:
 
 # Later replace below logic with logic to pass along a damage dealing effect package
 func shoot() -> void:
-	on_shoot.emit()
+	on_shoot.emit(target_unit, get_parent())
 	target_unit.damage()
 
 func get_action_name():

@@ -1,7 +1,8 @@
-[gd_scene load_steps=30 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=26 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
+[ext_resource type="Environment" uid="uid://c7cx2thxig2w6" path="res://Hero_Game/Scenes/TestEnvironment1.tres" id="2_ocl1f"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="2_td6d6"]
 [ext_resource type="Script" path="res://Hero_Game/Scenes/testing.gd" id="3_vw71g"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="4_8yks7"]
@@ -14,41 +15,7 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
 [ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/ActionButtonUI.tscn" id="11_jk6uv"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
-[ext_resource type="PackedScene" uid="uid://cpcptdymwdmvl" path="res://Hero_Game/Prefabs/UnitEnemy.tscn" id="15_bh6ls"]
-
-[sub_resource type="Gradient" id="Gradient_3xus0"]
-offsets = PackedFloat32Array(0, 0.117647, 0.819005, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.0645, 0.091575, 0.15, 1, 0.86, 0.786613, 0.7224, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_40odu"]
-gradient = SubResource("Gradient_3xus0")
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2xono"]
-sky_top_color = Color(0.307572, 0.472605, 0.669074, 1)
-sky_horizon_color = Color(0.440581, 0.62455, 0.66912, 1)
-energy_multiplier = 4.69
-
-[sub_resource type="Sky" id="Sky_wsc4c"]
-sky_material = SubResource("ProceduralSkyMaterial_2xono")
-
-[sub_resource type="Environment" id="Environment_suifr"]
-background_mode = 2
-sky = SubResource("Sky_wsc4c")
-ambient_light_sky_contribution = 0.26
-ambient_light_energy = 0.0
-reflected_light_source = 1
-tonemap_mode = 2
-tonemap_exposure = 0.18
-ssao_enabled = true
-ssil_enabled = true
-ssil_radius = 1.88
-sdfgi_enabled = true
-sdfgi_energy = 0.385
-glow_enabled = true
-glow_normalized = true
-glow_bloom = 0.05
-adjustment_enabled = true
-adjustment_color_correction = SubResource("GradientTexture1D_40odu")
+[ext_resource type="PackedScene" uid="uid://cdxsugasmneuu" path="res://Hero_Game/Prefabs/UnitEnemy.tscn" id="15_bh6ls"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_owyi7"]
 material = ExtResource("5_y067e")
@@ -93,11 +60,10 @@ end_turn_debug = true
 [node name="Lighting" type="Node3D" parent="."]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting"]
-environment = SubResource("Environment_suifr")
+environment = ExtResource("2_ocl1f")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting"]
 transform = Transform3D(0.550407, -0.587545, 0.593164, -0.358336, 0.475453, 0.803455, -0.754087, -0.654779, 0.0511535, -5.0404, 2.34293, -0.615594)
-light_energy = 6.943
 light_volumetric_fog_energy = 2.0
 shadow_enabled = true
 shadow_bias = 0.097
@@ -143,7 +109,7 @@ script = ExtResource("8_kmwtl")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 
 [node name="UnitEnemy" parent="." instance=ExtResource("15_bh6ls")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
 is_enemy = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

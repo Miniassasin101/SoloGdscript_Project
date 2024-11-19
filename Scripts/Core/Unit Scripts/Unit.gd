@@ -16,7 +16,7 @@ const action_points_max: int = 2
 
 @export var is_enemy: bool = false
 
-
+@export var chest_point: Node3D
 
 func _ready() -> void:
 	# Initialize the unit's grid position based on its current world position.
@@ -107,3 +107,8 @@ func get_action(action_name: String) -> Action:
 		if action.get_action_name() == action_name:
 			return action
 	return null  # Return null if action not found
+
+func get_target_position_with_offset(height_offset: float) -> Vector3:
+	var target_position = global_position
+	target_position.y += height_offset
+	return target_position
