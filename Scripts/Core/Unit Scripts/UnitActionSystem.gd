@@ -40,7 +40,7 @@ func _ready() -> void:
 
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_busy:
 		return
 
@@ -50,6 +50,8 @@ func _process(delta: float) -> void:
 		return
 
 	if Input.is_action_just_pressed("left_mouse"):
+		if !TurnSystem.instance.is_player_turn:
+			return
 		# Attempt to select a unit
 		if try_handle_unit_selection():
 			return
@@ -71,7 +73,7 @@ func handle_selected_action() -> void:
 # Handles unit selection via mouse click
 func try_handle_unit_selection() -> bool:
 	# Get the mouse position in screen coordinates
-	var mouse_position: Vector2 = get_viewport().get_mouse_position()
+	#var mouse_position: Vector2 = get_viewport().get_mouse_position()
 
 	# Perform raycast to detect units
 	var collider = mouse_world.get_mouse_raycast_result("collider")
@@ -97,6 +99,7 @@ func set_busy() -> void:
 
 func clear_busy() -> void:
 	#print("clearbusy")
+	SignalBus.update_grid_visual.emit()
 	is_busy = false
 
 func set_selected_unit(unit: Unit) -> void:
@@ -106,6 +109,7 @@ func set_selected_unit(unit: Unit) -> void:
 
 func set_selected_action(action: Action) -> void:
 	selected_action = action
+	SignalBus.update_grid_visual.emit()
 
 func set_selected_action_by_name(action_name: String) -> void:
 	if selected_unit:

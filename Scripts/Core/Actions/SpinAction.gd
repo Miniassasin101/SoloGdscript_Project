@@ -22,7 +22,7 @@ func _process(delta: float) -> void:
 		super.action_complete()
 
 
-func take_action(grid_position: GridPosition,) -> void:
+func take_action(_grid_position: GridPosition,) -> void:
 	action_start()
 	total_spin_amount = 0.0
 
@@ -34,5 +34,5 @@ func get_valid_action_grid_position_list() -> Array[GridPosition]:
 	return [unit_grid_position]
 
 func get_action_points_cost() -> int:
-	return 2
+	return 1
 	

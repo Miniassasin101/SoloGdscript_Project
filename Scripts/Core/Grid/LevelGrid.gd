@@ -3,8 +3,6 @@ extends Node
 # Reference to the GridSystem instance
 var grid_system: GridSystem
 
-# Reference to the MouseWorld node
-@onready var mouse_world: MouseWorld = $"../MouseWorld"
 
 # Initialization
 func _init() -> void:

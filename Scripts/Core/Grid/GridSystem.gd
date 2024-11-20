@@ -14,6 +14,9 @@ var cell_size: float
 # 2D array of GridObject instances.
 var grid_object_array: Array = []
 
+# Dictionary to store GridPosition instances.
+var grid_positions = {}  
+
 # Array to store references to all Label3D instances (for debugging).
 var label_3d_list: Array = []
 
@@ -29,9 +32,12 @@ func _init(in_width: int, in_height: int, in_cell_size: float) -> void:
 func initialize_grid_objects() -> void:
 	for x in range(width):
 		var row: Array = []
+		grid_positions[x] = {}
 		for z in range(height):
 			# Create a new GridPosition for the current cell.
 			var grid_position = GridPosition.new(x, z)
+			# Add grid_position to the grid_positions dictionary
+			grid_positions[x][z] = grid_position
 			# Create a new GridObject for the current cell.
 			var grid_object = GridObject.new(self, grid_position)
 			# Add the GridObject to the current row.
@@ -45,7 +51,16 @@ func get_world_position(x: int, z: int) -> Vector3:
 
 # Converts world position to grid position.
 func get_grid_position(world_position: Vector3) -> GridPosition:
-	return GridPosition.new(roundi(world_position.x / cell_size), roundi(world_position.z / cell_size))
+	var x = roundi(world_position.x / cell_size)
+	var z = roundi(world_position.z / cell_size)
+	if is_valid_grid_coords(x, z):
+		return grid_positions[x][z]
+	else:
+		return null  # Or handle invalid positions as needed
+
+# Helper function to check if coordinates are within grid bounds.
+func is_valid_grid_coords(x: int, z: int) -> bool:
+	return x >= 0 and x < width and z >= 0 and z < height
 
 # Creates debug labels at each grid cell (for visualization).
 func create_debug_objects() -> void:
@@ -103,10 +118,7 @@ func get_grid_object(grid_position: GridPosition) -> GridObject:
 
 # Checks if a grid position is within the bounds of the grid.
 func is_valid_grid_position(grid_position: GridPosition) -> bool:
-	return (grid_position.x >= 0 and
-			grid_position.z >= 0 and
-			grid_position.x < width and
-			grid_position.z < height)
+	return is_valid_grid_coords(grid_position.x, grid_position.z)
 
 func get_width() -> int:
 	return width

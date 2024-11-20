@@ -58,25 +58,31 @@ color = Color(2, 1.3, 0.5, 1)
 [sub_resource type="QuadMesh" id="QuadMesh_lmjej"]
 size = Vector2(0.1, 0.5)
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_ry05t"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_67qi5"]
 
 [node name="VFX_FireBall" type="Node3D" node_paths=PackedStringArray("trail_3d")]
 script = ExtResource("1_8ww2s")
-trail_3d = NodePath("Trail3D")
+speed = 40.0
+trail_3d = NodePath("rotator/Trail3D")
 fireball_hit_vfx = ExtResource("2_wycy4")
 
-[node name="FireballMesh" type="MeshInstance3D" parent="."]
+[node name="rotator" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="FireballMesh" type="MeshInstance3D" parent="rotator"]
 transform = Transform3D(-2.18557e-08, 0, 0.5, 0, 0.5, 0, -0.5, 0, -2.18557e-08, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_msr3w")
 cast_shadow = 0
 mesh = ExtResource("2_lxed6")
+skeleton = NodePath("../..")
 
-[node name="FlameHead" type="MeshInstance3D" parent="."]
+[node name="FlameHead" type="MeshInstance3D" parent="rotator"]
 transform = Transform3D(0.602465, 0, 0, 0, 0.602465, 0, 0, 0, 0.602465, 0.0830178, 0.00474656, -0.00209093)
 material_override = SubResource("ShaderMaterial_f7p4w")
 mesh = SubResource("SphereMesh_7f8qs")
+skeleton = NodePath("../..")
 
-[node name="SmallSparks" type="GPUParticles3D" parent="."]
+[node name="SmallSparks" type="GPUParticles3D" parent="rotator"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.241388, 0, 0)
 material_override = SubResource("StandardMaterial3D_x7rnv")
 amount = 10
@@ -85,11 +91,12 @@ explosiveness = 0.4
 process_material = SubResource("ParticleProcessMaterial_ef1mv")
 draw_pass_1 = SubResource("QuadMesh_lmjej")
 
-[node name="Trail3D" type="MeshInstance3D" parent="."]
+[node name="Trail3D" type="MeshInstance3D" parent="rotator"]
 transform = Transform3D(0.66744, 0, 0, 0, 0.66744, 0, 0, 0, 0.66744, 0, 0, 0)
 material_override = ExtResource("6_qtac6")
 cast_shadow = 0
-mesh = SubResource("ImmediateMesh_ry05t")
+mesh = SubResource("ImmediateMesh_67qi5")
+skeleton = NodePath("../..")
 script = ExtResource("7_d3lxd")
 fromWidth = 1.0
 toWidth = 0.4

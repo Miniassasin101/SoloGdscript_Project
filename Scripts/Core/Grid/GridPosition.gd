@@ -5,9 +5,9 @@ var x: int
 var z: int
 
 # Constructor
-func _init(x: int, z: int) -> void:
-	self.x = x
-	self.z = z
+func _init(inx: int, inz: int) -> void:
+	self.x = inx
+	self.z = inz
 
 # Method to add two GridPosition objects
 func add(other: GridPosition) -> GridPosition:
@@ -23,7 +23,7 @@ func equals(other: GridPosition) -> bool:
 	return other != null and other.x == self.x and other.z == self.z
 
 # Override to provide equality comparison
-func _equals(obj) -> bool:
+func _equals(obj: GridPosition) -> bool:
 	# Check if 'obj' is a GridPosition and compare 'x' and 'z'
 	return obj is GridPosition and self.x == obj.x and self.z == obj.z
 

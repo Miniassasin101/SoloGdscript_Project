@@ -9,9 +9,9 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 
-func set_base_action(action: Action) -> void:
-	button_text.set_text(action.get_action_name().to_upper())# = action.get_action_name().to_upper()
-	self.action = action
+func set_base_action(inaction: Action) -> void:
+	button_text.set_text(inaction.get_action_name().to_upper())# = action.get_action_name().to_upper()
+	action = inaction
 
 func _pressed() -> void:
 	#print(action.get_action_name())

@@ -13,9 +13,9 @@ var grid_position: GridPosition
 # List of units on this grid cell.
 var unit_list: Array = []
 
-func _init(grid_system: GridSystem, grid_position: GridPosition) -> void:
-	self.grid_system = grid_system
-	self.grid_position = grid_position
+func _init(ingrid_system: GridSystem, ingrid_position: GridPosition) -> void:
+	grid_system = ingrid_system
+	grid_position = ingrid_position
 
 # Adds a unit to this grid cell.
 func add_unit(unit: Unit) -> void:

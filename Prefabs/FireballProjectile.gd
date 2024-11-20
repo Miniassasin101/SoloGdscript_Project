@@ -1,47 +1,68 @@
 class_name Projectile
 extends Node3D
 
+signal target_hit
+
 @export var speed: float = 50.0  # Speed at which the projectile travels
 @export var timer: float = 2.0  # Duration in seconds for how long the projectile will travel
-var target_position: Vector3 
-
 @export var trail_3d: Trail3D
 @export var fireball_hit_vfx: PackedScene
 
-func setup(target_position: Vector3) -> void:
-	self.target_position = target_position
+var target_position: Vector3 
+
+func setup(intarget_position: Vector3) -> void:
+	target_position = intarget_position
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	var move_direction = (target_position - global_transform.origin).normalized()
-
 	if timer > 0:
-		var distance_before_moving = global_transform.origin.distance_to(target_position)
-		# Move the projectile in the desired direction at the specified speed
-		global_translate(move_direction * speed * delta)
-		var distance_after_moving = global_transform.origin.distance_to(target_position)
-		# Decrease the timer to stop movement after one second
-		timer -= delta
-
-		if distance_before_moving < distance_after_moving:
-			# The projectile has reached or passed the target
-			global_transform.origin = target_position  # Snap to target position
-			
-			# Handle the trail effect
-			trail_3d.remove_on_completion = true
-			trail_3d.trailEnabled = false
-			remove_child(trail_3d)
-			get_tree().root.add_child(trail_3d)
-			
-			# Spawn the fireball hit effect at the target position
-			if fireball_hit_vfx:
-				var fireball_effect = fireball_hit_vfx.instantiate() as Node3D
-				get_tree().root.add_child(fireball_effect)
-				fireball_effect.global_transform.origin = target_position
-				fireball_effect.get_child(0).emitting = true
-
-			# Queue the projectile for deletion
-			queue_free()
+		check_collision(delta)
 	else:
-		# Queue the projectile for deletion after the timer runs out
-		queue_free()
+		queue_free()  # Queue the projectile for deletion after the timer runs out
+
+# Moves the projectile towards the target position
+func move_projectile(delta: float) -> void:
+	var move_direction = (target_position - global_transform.origin).normalized()
+	look_at(target_position, Vector3.UP, true)  # Orient towards the target
+	global_translate(move_direction * speed * delta)  # Move in the direction at the given speed
+	timer -= delta  # Decrease the timer
+
+# Checks if the projectile has reached or passed the target
+func check_collision(delta: float) -> void:
+	var distance_before_moving = global_transform.origin.distance_to(target_position)
+	move_projectile(delta)
+	var distance_after_moving = (global_transform.origin).distance_to(target_position)
+
+	if distance_before_moving < distance_after_moving:
+		on_hit_target()
+
+# Handles what happens when the projectile hits the target
+func on_hit_target() -> void:
+	# Snap to target position
+	global_transform.origin = target_position
+	emit_signal("target_hit")
+
+	# Handle trail effect
+	remove_trail_effect()
+
+	# Spawn the fireball hit effect
+	if fireball_hit_vfx:
+		spawn_fireball_effect()
+
+	# Queue the projectile for deletion
+	queue_free()
+
+# Handles the trail effect removal and cleanup
+func remove_trail_effect() -> void:
+	trail_3d.remove_on_completion = true
+	trail_3d.trailEnabled = false
+	get_child(0).remove_child(trail_3d)
+	get_tree().root.add_child(trail_3d)
+
+# Spawns the fireball hit VFX at the target position
+func spawn_fireball_effect() -> void:
+	var fireball_effect = fireball_hit_vfx.instantiate() as Node3D
+	get_tree().root.add_child(fireball_effect)
+	fireball_effect.global_transform.origin = target_position
+	if fireball_effect.get_child_count() > 0 and fireball_effect.get_child(0) is GPUParticles3D:
+		fireball_effect.get_child(0).emitting = true

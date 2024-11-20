@@ -1,7 +1,7 @@
 class_name ShootAction
 extends Action
 
-signal on_shoot(target_unit: Unit, shooting_unit: Unit)
+signal on_shoot(target_unit: Unit, shooting_unit: Unit, damage: int)
 
 var total_spin_amount: float = 0.0
 var max_shoot_distance: int = 6
@@ -63,8 +63,9 @@ func next_state() -> void:
 
 # Later replace below logic with logic to pass along a damage dealing effect package
 func shoot() -> void:
-	on_shoot.emit(target_unit, get_parent())
-	target_unit.damage()
+	on_shoot.emit(target_unit, get_parent(), 4)
+	
+	#target_unit.damage(4)
 
 func get_action_name():
 	return "Shoot"
@@ -97,7 +98,7 @@ func get_valid_action_grid_position_list() -> Array:
 			if !LevelGrid.has_any_unit_on_grid_position(test_grid_position):
 				continue
 
-			var target_unit: Unit = LevelGrid.get_unit_at_grid_position(test_grid_position)
+			target_unit = LevelGrid.get_unit_at_grid_position(test_grid_position)
 
 			#Replace later with actual teams functionality
 
@@ -112,6 +113,10 @@ func get_valid_action_grid_position_list() -> Array:
 func take_action(grid_position: GridPosition) -> void:
 	action_start()
 	target_unit = LevelGrid.get_unit_at_grid_position(grid_position)
+	if target_unit.is_enemy == unit.is_enemy:
+		action_complete()
+		return
+		
 	state = State.Aiming
 	var aiming_state_time: float = 1.0
 	state_timer = aiming_state_time

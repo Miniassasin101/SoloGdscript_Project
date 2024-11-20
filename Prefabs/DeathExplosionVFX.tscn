@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://jpjrq5vek1s4"]
+
+[ext_resource type="Texture2D" uid="uid://f8d7m0fhky1j" path="res://Hero_Game/Art/Textures/Noise Textures/T_VFX_basic1.PNG" id="1_tvki8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a043u"]
+blend_mode = 1
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("1_tvki8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0f30v"]
+emission_shape = 1
+emission_sphere_radius = 0.5
+direction = Vector3(0, 1, 0)
+spread = 147.717
+flatness = 0.734
+initial_velocity_min = 8.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, -10, 0)
+linear_accel_min = -7.23
+linear_accel_max = -7.23
+scale_max = 1.25
+color = Color(0.72, 0.972, 1, 1)
+hue_variation_min = -0.02
+hue_variation_max = 0.07
+
+[sub_resource type="QuadMesh" id="QuadMesh_a2nbw"]
+
+[node name="DeathExplosionVfx" type="Node3D"]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_a043u")
+cast_shadow = 0
+emitting = false
+amount = 13
+lifetime = 2.88
+one_shot = true
+explosiveness = 0.99
+randomness = 0.28
+transform_align = 1
+process_material = SubResource("ParticleProcessMaterial_0f30v")
+draw_pass_1 = SubResource("QuadMesh_a2nbw")

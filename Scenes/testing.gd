@@ -5,6 +5,6 @@ extends Node3D
 @onready var unit_action_system: UnitActionSystem = $"../UnitActionSystem"
 
 # Called when the node enters the scene tree for the first time.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("testkey"):
 		pass

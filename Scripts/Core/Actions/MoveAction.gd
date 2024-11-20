@@ -15,10 +15,6 @@ var target_position: Vector3
 # Maximum movement distance for the unit.
 @export var max_move_distance: int = 3
 
-# References initialized when the node enters the scene tree.
-@onready var mouse_world: MouseWorld = $"../MouseWorld"
-
-
 
 # Movement speed of the unit.
 const MOVE_SPEED: float = 5.5
@@ -70,15 +66,7 @@ func move_towards_target(delta: float) -> void:
 		var rotate_speed: float = 8.0
 		unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
 
-# Updates the target position based on the mouse click.
-func update_target_position() -> void:
-	# Get the mouse position from MouseWorld.
-	var result: Dictionary = mouse_world.get_mouse_position()
-	
-	# If raycast hit an object, update the unit's target position.
-	if result != null:
-		var grid_position: GridPosition = LevelGrid.get_grid_position(result["position"])
-		take_action(grid_position)
+
 
 func take_action(grid_position: GridPosition) -> void:
 	if not is_valid_action_grid_position(grid_position):

@@ -7,6 +7,7 @@ const GRID_CELL_VISUAL: PackedScene = preload("res://Hero_Game/Prefabs/GridCellV
 # 2D array to hold the visual instances of grid cells.
 var grid_visuals: Array = []  # Array of Arrays of Node3D instances.
 
+var selected_action: Action
 # Singleton instance of GridSystemVisual.
 static var instance: GridSystemVisual = null
 
@@ -17,7 +18,9 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
+	SignalBus.update_grid_visual.connect(update_grid_visual)
 	initialize_grid_visuals()
+	#update_grid_visual()
 
 func initialize_grid_visuals() -> void:
 	# Ensure LevelGrid singleton is properly loaded.
@@ -52,7 +55,6 @@ func initialize_grid_visuals() -> void:
 			grid_visuals[x].append(cell_instance)
 
 func _process(_delta: float) -> void:
-	update_grid_visual()
 	pass
 
 func hide_all_grid_positions() -> void:
@@ -75,6 +77,6 @@ func update_grid_visual() -> void:
 	#if Input.is_action_just_pressed("testkey"):
 	hide_all_grid_positions()
 
-	var selected_action: Action = UnitActionSystem.instance.get_selected_action()
+	selected_action = UnitActionSystem.instance.get_selected_action()
 	if selected_action != null:
 		show_grid_positions(selected_action.get_valid_action_grid_position_list())

@@ -11,6 +11,8 @@ var fireball_instance: Projectile
 var move_action: MoveAction
 var shoot_action: ShootAction
 @onready var unit: Unit = get_parent()
+var target_unit: Unit
+var stored_damage: int
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	call_deferred("connect_signals")
@@ -22,22 +24,27 @@ func on_start_moving() -> void:
 func on_stop_moving() -> void:
 	animator_tree.set("parameters/conditions/IsWalking", false)
 
-func on_shoot(target_unit: Unit, shooting_unit: Unit) -> void:
+func on_shoot(target_unit_in: Unit, _shooting_unit: Unit, damage: int) -> void:
 	if fireball_projectile_prefab and shoot_point:
 		# Instantiate the fireball
-		var fireball_instance = fireball_projectile_prefab.instantiate()
+		fireball_instance = fireball_projectile_prefab.instantiate()
 
-		# Set the fireball's initial position
-		fireball_instance.global_transform.origin = shoot_point.global_transform.origin
-		var target_unit_shoot_at_position: Vector3 = target_unit.get_position()
+		var target_unit_shoot_at_position: Vector3 = target_unit_in.get_position()
 		print(target_unit_shoot_at_position.y)
 		target_unit_shoot_at_position.y = shoot_point.global_position.y
 		print(target_unit_shoot_at_position.y)
+		
 		# Add the fireball to the root or the appropriate scene node
 		get_tree().root.add_child(fireball_instance)
+		# Set the fireball's initial position
+		fireball_instance.global_transform.origin = shoot_point.global_transform.origin
+		fireball_instance.target_hit.connect(trigger_damage)
 		fireball_instance.setup(target_unit_shoot_at_position)
+		target_unit = target_unit_in
+		stored_damage = damage
 
-
+func trigger_damage() -> void:
+	target_unit.damage(stored_damage)
 
 
 func connect_signals():
