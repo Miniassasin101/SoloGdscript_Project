@@ -17,6 +17,11 @@ func _init(ingrid_system: GridSystem, ingrid_position: GridPosition) -> void:
 	grid_system = ingrid_system
 	grid_position = ingrid_position
 
+
+func get_grid_position() -> GridPosition:
+	return grid_position
+
+
 # Adds a unit to this grid cell.
 func add_unit(unit: Unit) -> void:
 	self.unit_list.append(unit)

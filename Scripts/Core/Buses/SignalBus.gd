@@ -1,4 +1,5 @@
 #SignalBus.gd
+#Autoloaded Singleton
 extends Node
 
 

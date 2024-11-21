@@ -9,40 +9,48 @@ enum State {
 
 var state: State = State.WaitingForEnemyTurn
 var timer: float = 0.0
-var turn_finished: bool = false
+var turn_finished: bool = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.on_turn_changed.connect(on_turn_changed)
+	SignalBus.action_complete.connect(on_action_complete)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if TurnSystem.instance.is_player_turn:
 		return
-	
+
 	match state:
 		State.WaitingForEnemyTurn:
 			pass
 		State.TakingTurn:
-			timer -= delta
-			if timer <= 0.0:
+			if turn_finished:
 				if try_take_enemy_ai_action():
 					set_state_busy()
 				else:
 					# No more enemies have actions to take
 					TurnSystem.instance.end_turn()
 		State.Busy:
-			timer -= delta
-			if timer <= 0.0:
-				state = State.TakingTurn  # Go back to TakingTurn to continue with the next unit
+			pass  # State remains busy until we receive the action complete signal
+
 
 func set_state_taking_turn() -> void:
 	timer = 0.5
 	state = State.TakingTurn
 
 func set_state_busy() -> void:
-	timer = 1.0
 	state = State.Busy
+	turn_finished = false
+
+func set_state_waiting() -> void:
+	state = State.WaitingForEnemyTurn
+
+
+func on_action_complete() -> void:
+	turn_finished = true
+	state = State.TakingTurn  # After action completes, move to TakingTurn state
+
 
 func on_turn_changed() -> void:
 	timer = 1.0
@@ -56,12 +64,22 @@ func try_take_enemy_ai_action() -> bool:
 	return false
 
 func try_take_enemy_action(enemy_unit: Unit) -> bool:
-	var spin_action: SpinAction = enemy_unit.get_action("Spin")
-	if enemy_unit and spin_action:
-		var action_grid_position = enemy_unit.get_grid_position()
-		if action_grid_position:
-			if spin_action.is_valid_action_grid_position(action_grid_position):
-				if enemy_unit.try_spend_action_points_to_take_action(spin_action): # also spends the action points
-					spin_action.take_action(action_grid_position)
-					return true
-	return false
+	var best_action: Action = null
+	var best_enemy_ai_action: EnemyAIAction = null
+	for action: Action in enemy_unit.get_action_array():
+		if !enemy_unit.can_spend_action_points_to_take_action(action):
+			# Enemy cannot afford this action
+			continue
+		if best_enemy_ai_action == null:
+			best_enemy_ai_action = action.get_best_enemy_ai_action()
+			best_action = action
+		else:
+			var test_enemy_ai_action: EnemyAIAction = action.get_best_enemy_ai_action()
+			if test_enemy_ai_action != null and test_enemy_ai_action.action_value > best_enemy_ai_action.action_value:
+				best_enemy_ai_action = test_enemy_ai_action
+				best_action = action
+	if best_enemy_ai_action != null and enemy_unit.try_spend_action_points_to_take_action(best_action):
+		best_action.take_action(best_enemy_ai_action.grid_position)
+		return true
+	else:
+		return false

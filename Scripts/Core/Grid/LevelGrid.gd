@@ -7,7 +7,7 @@ var grid_system: GridSystem
 # Initialization
 func _init() -> void:
 	# Create a new GridSystem with specified dimensions and cell size
-	grid_system = GridSystem.new(13, 13, 2.0)
+	grid_system = GridSystem.new(10, 10, 2.0)
 	
 	# Add the grid system as a child of the current node
 	add_child(grid_system)

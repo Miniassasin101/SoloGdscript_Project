@@ -72,6 +72,11 @@ func show_grid_positions(grid_positions: Array) -> void:
 		if x >= 0 and x < LevelGrid.get_width() and z >= 0 and z < LevelGrid.get_height():
 			grid_visuals[x][z].visible = true
 
+func update_grid_visual_pathfinding(grid_list: Array[GridPosition]):
+	if !grid_list.is_empty():
+		hide_all_grid_positions()
+		show_grid_positions(grid_list)
+		
 
 func update_grid_visual() -> void:
 	#if Input.is_action_just_pressed("testkey"):

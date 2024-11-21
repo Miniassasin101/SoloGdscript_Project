@@ -49,6 +49,9 @@ func initialize_grid_objects() -> void:
 func get_world_position(x: int, z: int) -> Vector3:
 	return Vector3(x * cell_size, 0, z * cell_size)
 
+func get_world_position_from_grid_position(ingrid_position: GridPosition):
+	return get_world_position(ingrid_position.x, ingrid_position.y)
+
 # Converts world position to grid position.
 func get_grid_position(world_position: Vector3) -> GridPosition:
 	var x = roundi(world_position.x / cell_size)
@@ -57,6 +60,18 @@ func get_grid_position(world_position: Vector3) -> GridPosition:
 		return grid_positions[x][z]
 	else:
 		return null  # Or handle invalid positions as needed
+
+func get_grid_position_from_coords(x: int, z: int) -> GridPosition:
+	if is_valid_grid_coords(x, z):
+		return grid_positions[x][z]
+	else:
+		return null  # Or handle invalid positions as needed
+
+func get_grid_position_from_grid_position(ingrid: GridPosition) -> GridPosition:
+	if is_valid_grid_position(ingrid):
+		return grid_positions[ingrid.x][ingrid.z]
+	else:
+		return ingrid
 
 # Helper function to check if coordinates are within grid bounds.
 func is_valid_grid_coords(x: int, z: int) -> bool:

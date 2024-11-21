@@ -34,7 +34,7 @@ func on_selected_unit_changed(unit: Unit) -> void:
 
 
 func _update_action_points() -> void:
-	if selected_unit:
+	if selected_unit != null:
 		action_points_text.text = "Action Points: " + str(selected_unit.get_action_points())
 
 func on_turn_changed() -> void:

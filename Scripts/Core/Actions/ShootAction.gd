@@ -4,10 +4,11 @@ extends Action
 signal on_shoot(target_unit: Unit, shooting_unit: Unit, damage: int)
 
 var total_spin_amount: float = 0.0
-var max_shoot_distance: int = 6
+var max_shoot_distance: int = 5
 
 var state: State
 var state_timer: float
+var to_turn_timer: float
 var can_shoot_bullet: bool
 var target_unit: Unit
 
@@ -29,11 +30,14 @@ func _process(delta: float) -> void:
 	state_timer -= delta
 	match state:
 		State.Aiming:
-			var aim_direction: Vector3 = (target_unit.get_world_position() - unit.get_world_position()).normalized()
-			# Smoothly rotate the unit towards the movement direction.
-			var target_rotation = Basis.looking_at(aim_direction, Vector3.UP, true)
-			var rotate_speed: float = 10.0
-			unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
+			to_turn_timer -= delta
+			if to_turn_timer <= 0.0:
+				var aim_direction: Vector3 = (target_unit.get_world_position() - unit.get_world_position()).normalized()
+				# Smoothly rotate the unit towards the movement direction.
+				var target_rotation = Basis.looking_at(aim_direction, Vector3.UP, true)
+				var rotate_speed: float = 3.0
+				unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
+				unit.global_transform.basis = unit.global_transform.basis.orthonormalized()
 		State.Shooting:
 			if can_shoot_bullet:
 				shoot()
@@ -49,17 +53,19 @@ func next_state() -> void:
 		State.Aiming:
 			if state_timer <= 0.0:
 				state = State.Shooting
-				var shooting_state_time: float = 0.1
+				var shooting_state_time: float = 0.2
 				state_timer = shooting_state_time
 		State.Shooting:
 			if state_timer <= 0.0:
 				state = State.Cooling
-				var cooling_state_time: float = 0.5
+				var cooling_state_time: float = 0.3
 				state_timer = cooling_state_time
 
 		State.Cooling:
 			if state_timer <= 0.0:
 				super.action_complete()
+				state_timer = 0.2
+				to_turn_timer = 1.0
 
 # Later replace below logic with logic to pass along a damage dealing effect package
 func shoot() -> void:
@@ -70,10 +76,14 @@ func shoot() -> void:
 func get_action_name():
 	return "Shoot"
 
-# Gets a list of valid grid positions for movement.
+
 func get_valid_action_grid_position_list() -> Array:
-	var valid_grid_position_list: Array[GridPosition] = []  # Initialize an empty array for valid grid positions.
 	var unit_grid_position: GridPosition = unit.get_grid_position()
+	return get_valid_action_grid_position_list_input(unit_grid_position)
+
+# Gets a list of valid grid positions for movement.
+func get_valid_action_grid_position_list_input(unit_grid_position: GridPosition) -> Array:
+	var valid_grid_position_list: Array[GridPosition] = []  # Initialize an empty array for valid grid positions.
 
 	# Loop through the x and z ranges based on max_shoot_distance.
 	for x in range(-max_shoot_distance, max_shoot_distance + 1):
@@ -120,5 +130,16 @@ func take_action(grid_position: GridPosition) -> void:
 	state = State.Aiming
 	var aiming_state_time: float = 1.0
 	state_timer = aiming_state_time
+	to_turn_timer = 0.2
 	
 	can_shoot_bullet = true
+
+
+func get_enemy_ai_action(grid_position: GridPosition):
+	var enemy_ai_action: EnemyAIAction = EnemyAIAction.new()
+	enemy_ai_action.action_value = 100
+	enemy_ai_action.grid_position = grid_position
+	return enemy_ai_action
+
+func get_target_count_at_position(grid_position: GridPosition) -> int:
+	return get_valid_action_grid_position_list_input(grid_position).size()

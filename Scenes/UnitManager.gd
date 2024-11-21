@@ -47,14 +47,14 @@ func add_unit(unit: Unit) -> void:
 		units.append(unit)
 		unit.unit_manager = self  # Set reference back to this manager
 		_update_unit_lists(unit)
-		SignalBus.emit_signal("update_stats_bars")  # Notify UI of new unit
+		SignalBus.update_stat_bars.emit()  # Notify UI of new unit
 
 # Removes a unit from the manager (e.g., when it is destroyed).
 func remove_unit(unit: Unit) -> void:
 	if unit in units:
 		units.erase(unit)
 		_update_unit_lists(unit, true)
-		SignalBus.emit_signal("update_stats_bars")  # Notify UI of unit removal
+		SignalBus.update_stat_bars.emit()  # Notify UI of unit removal
 
 # Updates the friendly and enemy unit lists based on a unit's type.
 func _update_unit_lists(unit: Unit, remove: bool = false) -> void:

@@ -4,11 +4,9 @@ extends Node
 var is_active: bool
 var unit: Unit
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	unit = get_parent()
-
 
 func take_action(_grid_position: GridPosition) -> void:
 	print_debug("Take action on base Action class was called")
@@ -29,15 +27,12 @@ func is_valid_action_grid_position(grid_position: GridPosition) -> bool:
 			return true
 	return false
 
-
 func action_start() -> void:
 	is_active = true
 
 func action_complete() -> void:
 	is_active = false
 	SignalBus.action_complete.emit()
-
-
 
 # Gets a list of valid grid positions for movement.
 func get_valid_action_grid_position_list() -> Array[GridPosition]:
@@ -52,21 +47,26 @@ func get_action_points_cost() -> int:
 
 func get_best_enemy_ai_action() -> EnemyAIAction:
 	var enemy_ai_action_list: Array[EnemyAIAction] = []
-	var valid_action_grid_position_list: Array[GridPosition] = get_valid_action_grid_position_list()
+	var valid_action_grid_position_list: Array = get_valid_action_grid_position_list()
+
 	for grid_position: GridPosition in valid_action_grid_position_list:
 		var enemy_ai_action: EnemyAIAction = get_enemy_ai_action(grid_position)
-		enemy_ai_action_list.append(enemy_ai_action)
+		if enemy_ai_action != null:
+			enemy_ai_action_list.append(enemy_ai_action)
+
 	if !enemy_ai_action_list.is_empty():
-		enemy_ai_action_list.sort_custom(func(a: EnemyAIAction, b: EnemyAIAction): return b.action_value - a.action_value)
+		# Sort using a callable function to compare action values
+		enemy_ai_action_list.sort_custom(_compare_enemy_ai_actions)
 		return enemy_ai_action_list[0]
 	else:
 		# No possible Enemy AI Actions
+		print(get_action_name())
 		return null
+
+# Comparison function for sorting the enemy AI actions based on action value
+func _compare_enemy_ai_actions(a: EnemyAIAction, b: EnemyAIAction) -> bool:
+	return a.action_value > b.action_value
 
 func get_enemy_ai_action(_grid_position: GridPosition) -> EnemyAIAction:
 	push_error("get_enemy_ai_action on base Action class was called")
 	return null
-	
-
-
-	
