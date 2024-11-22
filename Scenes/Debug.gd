@@ -5,6 +5,9 @@ extends Node
 static var instance: LevelDebug = null
 
 @export var end_turn_debug: bool
+@export_category("Grid Debug")
+@export var grid_dimensions: Vector2 = Vector2(10, 10)
+@export var grid_scale: float = 2.0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if instance != null:
@@ -12,8 +15,4 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
+	LevelGrid.generate_grid_system(int(grid_dimensions.x), int(grid_dimensions.y), grid_scale)

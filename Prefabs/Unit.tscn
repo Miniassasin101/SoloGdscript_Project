@@ -292,7 +292,7 @@ health_system = NodePath("HealthSystem")
 death_vfx_scene = ExtResource("2_1rbfy")
 
 [node name="Root" type="Node3D" parent="."]
-transform = Transform3D(0.766796, 0.126245, -0.629352, 0.0240894, 0.974119, 0.224752, 0.641438, -0.1875, 0.743908, 0, 0, 0)
+transform = Transform3D(0.766796, 0.126245, -0.629352, 0.0240893, 0.974119, 0.224752, 0.641438, -0.1875, 0.743908, 0, 0, 0)
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Root"]
 transform = Transform3D(0.999996, -0.00281894, 0.00050474, 0.00281855, 0.999996, 0.000779397, -0.000506935, -0.000777971, 1, 5.63792e-05, -0.0199999, 1.55605e-05)

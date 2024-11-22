@@ -24,3 +24,5 @@ signal update_stat_bars
 signal remove_unit(unit: Unit)
 
 signal add_unit(unit: Unit)
+
+signal obstacles_changed

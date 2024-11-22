@@ -74,6 +74,7 @@ func setup_astar() -> void:
 					astar.connect_points(id, id + pathfinding_grid_system.get_height() + 1, true)  # Connect bottom-right neighbor
 
 				id += 1
+	#update_astar_walkable()
 
 # Helper Functions
 
@@ -114,6 +115,30 @@ func is_point_in_range(start_grid_position: GridPosition, end_grid_position: Gri
 	var end_id = get_grid_point_id(end_grid_position)
 	var path = astar.get_id_path(start_id, end_id)
 	return astar.get_point_path_length(start_id, end_id) <= max_distance
+
+#Note: Should also add a way later to just update a single point by passing in a single position or gridobject
+func update_astar_walkable() -> void:
+	# Iterate through all grid positions in the grid system
+	for x in range(pathfinding_grid_system.get_width()):
+		for z in range(pathfinding_grid_system.get_height()):
+			# Get the current grid position
+			var grid_position = pathfinding_grid_system.get_grid_position_from_coords(x, z)
+			if grid_position:
+				# Get the grid object at the position
+				var grid_object = pathfinding_grid_system.get_grid_object(grid_position)
+				if grid_object:
+					# Check the is_walkable property
+					var point_id = get_grid_point_id(grid_position)
+					if grid_object.is_walkable:
+						# Enable the point if it's walkable
+						if astar.has_point(point_id):
+							astar.set_point_disabled(point_id, false)
+					else:
+						# Disable the point if it's not walkable
+						if astar.has_point(point_id):
+							astar.set_point_disabled(point_id, true)
+
+
 
 # Disables a point in AStar3D to make it non-traversable.
 func disable_point(grid_position: GridPosition) -> void:
@@ -157,10 +182,3 @@ class CustomAStar3D extends AStar3D:
 		if abs(diff.x) > 0 and abs(diff.z) > 0:
 			return 1.41  # Diagonal movement cost
 		return 1.0  # Horizontal or vertical movement cost
-
-	# Override the estimate cost function to work with GridPositions
-	func _estimate_cost(from_id: int, to_id: int) -> float:
-		var from_pos = get_point_position(from_id)
-		var to_pos = get_point_position(to_id)
-		# Use Manhattan distance as an estimate
-		return abs(to_pos.x - from_pos.x) + abs(to_pos.z - from_pos.z)

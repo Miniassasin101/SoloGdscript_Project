@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=4 uid="uid://cjfn5scxmrv7j"]
+
+[ext_resource type="Texture2D" uid="uid://ci1u2xqp780ca" path="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_01.png" id="1_7vegl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hga8i"]
+resource_name = "Texture_01"
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.906332, 0.906332, 0.906332, 0.8)
+albedo_texture = ExtResource("1_7vegl")
+emission_enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_gpkfg"]
+_surfaces = [{
+"aabb": AABB(-1, 0, 0, 1, 3, 0.1),
+"format": 34359742465,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAwABAAAABAADAAAABQADAAQABgAFAAQABwAFAAYAAgAHAAYAAQAHAAIAAwAHAAEABQAHAAMABAACAAYAAAACAAQA"),
+"name": "Texture_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 8,
+"vertex_data": PackedByteArray("AACAvwAAQEAAAAAAAACAvwAAAADNzMw9AACAvwAAAAAAAAAAAACAvwAAQEDNzMw9AAAAAAAAQEAAAAAAAAAAAAAAQEDNzMw9AAAAAAAAAAAAAAAAAAAAAAAAAADNzMw9")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_x0yn3"]
+resource_name = "SM_Buildings_Wall_1x3_01"
+_surfaces = [{
+"aabb": AABB(-1, 0, 0, 1, 3, 0.1),
+"attribute_data": PackedByteArray("rrR9PsJbMj+utH0+wlsyP660fT7CWzI/rrR9PsJbMj+ytH0+wlsyP660fT7CWzI/rrR9PsJbMj+ytH0+w1syP7K0fT7CWzI/srR9PsNbMj+ytH0+wlsyP7K0fT7CWzI/rrR9PsJbMj+ytH0+wlsyP7K0fT7CWzI/rrR9PsJbMj+utH0+wlsyP7K0fT7CWzI/rrR9PsJbMj+ytH0+w1syP7K0fT7CWzI/rrR9PsJbMj+ytH0+wlsyP660fT7CWzI/"),
+"format": 34359742487,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAwABAAAABAAFAAYABwAFAAQACAAJAAoACwAJAAgADAANAA4ADwANAAwAEAARABIAEwARABAAFAAVABYAFwAVABQA"),
+"material": SubResource("StandardMaterial3D_hga8i"),
+"name": "Texture_01",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 24,
+"vertex_data": PackedByteArray("AACAvwAAQEAAAAAAAACAvwAAAADNzMw9AACAvwAAAAAAAAAAAACAvwAAQEDNzMw9AAAAAAAAQEAAAAAAAACAvwAAQEDNzMw9AACAvwAAQEAAAAAAAAAAAAAAQEDNzMw9AAAAAAAAAAAAAAAAAAAAAAAAQEDNzMw9AAAAAAAAQEAAAAAAAAAAAAAAAADNzMw9AACAvwAAAAAAAAAAAAAAAAAAAADNzMw9AAAAAAAAAAAAAAAAAACAvwAAAADNzMw9AACAvwAAQEDNzMw9AAAAAAAAAADNzMw9AACAvwAAAADNzMw9AAAAAAAAQEDNzMw9AAAAAAAAQEAAAAAAAACAvwAAAAAAAAAAAAAAAAAAAAAAAAAAAACAvwAAQEAAAAAAAAD/f////78AAP9/////vwAA/3////+/AAD/f////7//f//////Qxf9//////9DF/3///////7//f//////Qxf///3////+/////f////7////9/////v////3////+//38AAP///7//fwAA////v/9/AAD///+//38AAP///7//f/9//5//b/9//3//n/9v/3//f////z//f/9//5//b/////////+//////////7//////////v/////////+/")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_gpkfg")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cjj2j"]
+size = Vector3(1, 3.05231, 0.118195)
+
+[node name="Wall" type="Node3D"]
+
+[node name="SM_Buildings_Wall_1x3_02" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4886, 0, 0)
+mesh = SubResource("ArrayMesh_x0yn3")
+skeleton = NodePath("")
+
+[node name="Area3D" type="Area3D" parent="SM_Buildings_Wall_1x3_02"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.491742, 0, 0)
+collision_layer = 17
+collision_mask = 0
+monitoring = false
+
+[node name="WallCollision" type="CollisionShape3D" parent="SM_Buildings_Wall_1x3_02/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4904, 0.0512704)
+shape = SubResource("BoxShape3D_cjj2j")

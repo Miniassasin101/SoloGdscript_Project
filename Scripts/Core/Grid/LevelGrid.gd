@@ -1,3 +1,5 @@
+# LevelGrid.gd
+# Autoloaded singleton
 extends Node
 
 # Reference to the GridSystem instance
@@ -6,14 +8,24 @@ var grid_system: GridSystem
 
 # Initialization
 func _init() -> void:
+	pass
 	# Create a new GridSystem with specified dimensions and cell size
-	grid_system = GridSystem.new(10, 10, 2.0)
+	#grid_system = GridSystem.new(10, 10, 2.0)
+	
+	# Add the grid system as a child of the current node
+	#add_child(grid_system)
+	# Create debug objects for visualizing the grid
+	#grid_system.create_debug_objects()
+
+func generate_grid_system(x: int, z: int, grid_scale: float):
+		# Create a new GridSystem with specified dimensions and cell size
+	grid_system = GridSystem.new(x, z, grid_scale)
 	
 	# Add the grid system as a child of the current node
 	add_child(grid_system)
 	# Create debug objects for visualizing the grid
 	grid_system.create_debug_objects()
-
+	
 # Called every frame
 func _process(_delta: float) -> void:
 	# Rotate labels 45 degrees clockwise

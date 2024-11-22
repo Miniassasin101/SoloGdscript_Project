@@ -45,37 +45,6 @@ func initialize_grid_objects() -> void:
 		# Add the row to the main grid array.
 		grid_object_array.append(row)
 
-# Converts grid coordinates to world position.
-func get_world_position(x: int, z: int) -> Vector3:
-	return Vector3(x * cell_size, 0, z * cell_size)
-
-func get_world_position_from_grid_position(ingrid_position: GridPosition):
-	return get_world_position(ingrid_position.x, ingrid_position.y)
-
-# Converts world position to grid position.
-func get_grid_position(world_position: Vector3) -> GridPosition:
-	var x = roundi(world_position.x / cell_size)
-	var z = roundi(world_position.z / cell_size)
-	if is_valid_grid_coords(x, z):
-		return grid_positions[x][z]
-	else:
-		return null  # Or handle invalid positions as needed
-
-func get_grid_position_from_coords(x: int, z: int) -> GridPosition:
-	if is_valid_grid_coords(x, z):
-		return grid_positions[x][z]
-	else:
-		return null  # Or handle invalid positions as needed
-
-func get_grid_position_from_grid_position(ingrid: GridPosition) -> GridPosition:
-	if is_valid_grid_position(ingrid):
-		return grid_positions[ingrid.x][ingrid.z]
-	else:
-		return ingrid
-
-# Helper function to check if coordinates are within grid bounds.
-func is_valid_grid_coords(x: int, z: int) -> bool:
-	return x >= 0 and x < width and z >= 0 and z < height
 
 # Creates debug labels at each grid cell (for visualization).
 func create_debug_objects() -> void:
@@ -109,6 +78,7 @@ func create_debug_objects() -> void:
 			add_child(label_3d)
 			label_3d_list[x].append(label_3d)  # Store the label in the 2D array.
 
+
 # Rotates all debug labels (for visualization purposes).
 func rotate_labels(direction: float) -> void:
 	for row in label_3d_list:
@@ -123,6 +93,72 @@ func update_debug_label(grid_position: GridPosition) -> void:
 		var z = grid_position.z
 		var grid_object = get_grid_object(grid_position)
 		label_3d_list[x][z].text = grid_object.to_str()
+
+
+func update_walkability_from_bounding_boxes(bounding_boxes: Array) -> void:
+	# Offset for height consideration (hovering slightly above the ground)
+	var height_offset = Vector3(0, 0.1, 0)
+
+	# Iterate over all grid positions
+	for x in range(width):
+		for z in range(height):
+			var grid_position = grid_positions[x][z]
+			var world_position = get_world_position(x, z) + height_offset
+
+			# Check if this grid position is inside any of the bounding boxes
+			var is_walkable = true
+			for aabb: AABB in bounding_boxes:
+				if aabb.has_point(world_position):
+					is_walkable = false
+					break
+			
+			# Update the grid object's walkability
+			var grid_object = get_grid_object(grid_position)
+			if grid_object:
+				grid_object.is_walkable = is_walkable
+	
+	# Optionally, update visuals or AStar pathfinding here
+	# Example: pathfinding.update_astar_walkable()
+	
+
+
+
+#getter/setter functions
+
+
+# Converts grid coordinates to world position.
+func get_world_position(x: int, z: int) -> Vector3:
+	return Vector3(x * cell_size, 0, z * cell_size)
+
+func get_world_position_from_grid_position(ingrid_position: GridPosition):
+	return get_world_position(ingrid_position.x, ingrid_position.y)
+
+# Converts world position to grid position.
+func get_grid_position(world_position: Vector3) -> GridPosition:
+	var x = roundi(world_position.x / cell_size)
+	var z = roundi(world_position.z / cell_size)
+	if is_valid_grid_coords(x, z):
+		return grid_positions[x][z]
+	else:
+		return null  # Or handle invalid positions as needed
+
+func get_grid_position_from_coords(x: int, z: int) -> GridPosition:
+	if is_valid_grid_coords(x, z):
+		return grid_positions[x][z]
+	else:
+		return null  # Or handle invalid positions as needed
+
+func get_grid_position_from_grid_position(ingrid: GridPosition) -> GridPosition:
+	if is_valid_grid_position(ingrid):
+		return grid_positions[ingrid.x][ingrid.z]
+	else:
+		return ingrid
+
+# Helper function to check if coordinates are within grid bounds.
+func is_valid_grid_coords(x: int, z: int) -> bool:
+	return x >= 0 and x < width and z >= 0 and z < height
+
+
 
 # Retrieves the GridObject at the specified grid position.
 func get_grid_object(grid_position: GridPosition) -> GridObject:

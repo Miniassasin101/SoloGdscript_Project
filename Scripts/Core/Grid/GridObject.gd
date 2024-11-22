@@ -10,6 +10,8 @@ var grid_system: GridSystem
 # The grid position of this GridObject.
 var grid_position: GridPosition
 
+var is_walkable: bool = true
+
 # List of units on this grid cell.
 var unit_list: Array = []
 
