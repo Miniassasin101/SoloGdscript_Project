@@ -118,7 +118,7 @@ func update_walkability_from_bounding_boxes(bounding_boxes: Array) -> void:
 				grid_object.is_walkable = is_walkable
 	
 	# Optionally, update visuals or AStar pathfinding here
-	# Example: pathfinding.update_astar_walkable()
+	Pathfinding.instance.update_astar_walkable()
 	
 
 

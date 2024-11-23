@@ -17,7 +17,7 @@ func _ready() -> void:
 	SignalBus.action_complete.connect(on_action_complete)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if TurnSystem.instance.is_player_turn:
 		return
 

@@ -12,14 +12,25 @@ const UNIT_LAYER_MASK: int = 4
 @export var raycast: RayCast3D
 
 @export var mouse_visual: MeshInstance3D
+
+@export var debug_visual: PackedScene
 # Reference to the active Camera3D
 var camera: Camera3D
 
 # Mouse position in screen coordinates
 var mouse_position: Vector2
 
+static var instance: MouseWorld = null
+
+
+
 # Called when the node enters the scene tree
 func _ready() -> void:
+	if instance != null:
+		push_error("There's more than one MouseWorld! - " + str(instance))
+		queue_free()
+		return
+	instance = self
 	camera = get_viewport().get_camera_3d()
 	# Create and add the RayCast3D node dynamically if it's not in the scene
 	if raycast == null:
@@ -38,6 +49,36 @@ func _process(_delta: float) -> void:
 	if mouse_debug_sphere:
 		_adjust_mouse_debug_position()
 	
+
+func has_line_of_sight(start_position: Vector3, end_position: Vector3, layer_mask: int = 5) -> bool:
+	# Access the space state for physics queries
+	var space_state = get_world_3d().direct_space_state
+	var laymas = 1 << 4
+	# Create a raycast query
+	var query = PhysicsRayQueryParameters3D.new()
+	query.from = start_position
+	query.to = end_position
+	query.collision_mask = laymas  # Set the collision mask to the provided layer
+	query.collide_with_bodies = true
+	query.collide_with_areas = true  # Include areas if needed
+
+	# Perform the raycast
+	var result = space_state.intersect_ray(query)
+
+	# Debug visualization (optional)
+	if debug_visual:
+		var vis1: Node3D = debug_visual.instantiate()
+		var vis2: Node3D = debug_visual.instantiate()
+		add_child(vis1)
+		add_child(vis2)
+		vis1.global_position = start_position
+		vis2.global_position = end_position
+	if result.has("position"):
+		print_debug("collided")
+	# If no collision is detected, line of sight is clear
+	return not result.has("position")
+
+
 
 # Returns the mouse position in world space as a Dictionary
 func get_mouse_raycast_result(result_type: String) -> Variant:
@@ -86,11 +127,19 @@ func _change_layer_mask_to_unit() -> void:
 	#print_debug("layer mask changed to unit")
 	raycast.set_collision_mask_value(2, false)
 	raycast.set_collision_mask_value(4, true)
+	raycast.set_collision_mask_value(5, false)
 
 func _change_layer_mask_to_grid() -> void:
 	#print_debug("layer mask changed to grid")
 	raycast.set_collision_mask_value(2, true)
 	raycast.set_collision_mask_value(4, false)
+	raycast.set_collision_mask_value(5, false)
+
+func _change_layer_mask_to_obstacle() -> void:
+	#print_debug("layer mask changed to obstacle")
+	raycast.set_collision_mask_value(2, false)
+	raycast.set_collision_mask_value(4, false)
+	raycast.set_collision_mask_value(5, true)
 
 func _adjust_mouse_debug_position() -> void:
 	if camera != null and raycast != null:

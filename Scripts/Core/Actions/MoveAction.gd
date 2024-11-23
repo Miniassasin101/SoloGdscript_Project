@@ -9,7 +9,7 @@ signal on_start_moving
 signal on_stop_moving
 
 # Target position is a Vector3.
-var target_position: Vector3
+var position_list: Array[Vector3]
 
 # Maximum movement distance for the unit.
 @export var max_move_distance: int = 3
@@ -19,6 +19,8 @@ const MOVE_SPEED: float = 5.5
 
 # Distance threshold to stop moving when close to the target.
 const STOPPING_DISTANCE: float = 0.1
+
+var current_position_index: int
 
 # Movement related states
 var is_moving: bool = false  # Tracks if the unit is moving
@@ -31,17 +33,14 @@ var rotate_speed: float = 2.0  # Speed for rotating the unit
 var ai_exit: bool = false  # Used to control AI exit delay logic
 var start_trigger: bool = false
 
-func _ready() -> void:
-	super._ready()
-	# Initialize target position to the unit's current position.
-	target_position = unit.global_transform.origin
+
 
 # Called every frame. Handles movement and state changes.
 func _process(delta: float) -> void:
 	# Skip if action is not active
 	if not is_active:
 		return
-
+	var target_position: Vector3 = position_list[current_position_index]
 	# Handle delay for enemy unit
 	if unit.is_enemy and timer > 0.0:
 		timer -= delta
@@ -56,10 +55,10 @@ func _process(delta: float) -> void:
 			start_trigger = true
 		return
 	# Move towards the target position if the unit is far enough.
-	move_towards_target(delta)
+	move_towards_target(delta, target_position)
 
 # Moves the unit towards the target position.
-func move_towards_target(delta: float) -> void:
+func move_towards_target(delta: float, target_position: Vector3) -> void:
 	# Get the unit's current position.
 	var current_position = unit.global_transform.origin
 	# Calculate the movement direction.
@@ -100,17 +99,20 @@ func move_towards_target(delta: float) -> void:
 	else:
 		# If the unit has reached the target, stop the walking animation.
 		if is_moving:
-			on_stop_moving.emit()
-			is_moving = false
+			current_position_index += 1
+			if current_position_index >= position_list.size():
+				on_stop_moving.emit()
+				is_moving = false
 
-			# Add a delay if the unit is an enemy to add AI action completion timing
-			if unit.is_enemy:
-				timer = 0.1
-				ai_exit = true
-			else:
-				# Immediately complete the action if not an enemy
-				start_trigger = false
-				super.action_complete()
+				# Add a delay if the unit is an enemy to add AI action completion timing
+				if unit.is_enemy:
+					timer = 0.1
+					ai_exit = true
+					current_position_index -= 1
+				else:
+					# Immediately complete the action if not an enemy
+					start_trigger = false
+					super.action_complete()
 
 	# Smoothly rotate the unit towards the movement direction if still moving.
 	if is_active:
@@ -120,11 +122,19 @@ func move_towards_target(delta: float) -> void:
 
 # Begins the movement action to a specified grid position.
 func take_action(grid_position: GridPosition) -> void:
+	var grid_position_list: Array[GridPosition] = Pathfinding.instance.find_path(unit.get_grid_position(), grid_position)
+	current_position_index = 1
+	position_list = []
+
+	for position: GridPosition in grid_position_list:
+		position_list.append(LevelGrid.get_world_position(position))
 	if not is_valid_action_grid_position(grid_position):
 		print("Invalid move to grid position: ", grid_position.to_str())
 		return
+	
 
 	action_start()
+	
 
 	# Reset timers for smooth acceleration and rotation
 	acceleration_timer = 0.3
@@ -132,8 +142,6 @@ func take_action(grid_position: GridPosition) -> void:
 	current_speed = 0.0
 	start_timer = 0.1
 
-	# Convert the grid position to world position and set as target.
-	self.target_position = LevelGrid.get_world_position(grid_position)
 
 # Checks if the grid position is valid for movement.
 func is_valid_action_grid_position(grid_position: GridPosition) -> bool:
@@ -164,7 +172,15 @@ func get_valid_action_grid_position_list_input(unit_grid_position: GridPosition)
 			# Skip invalid or occupied grid positions.
 			if not LevelGrid.is_valid_grid_position(test_grid_position) or unit_grid_position.equals(test_grid_position) or LevelGrid.has_any_unit_on_grid_position(test_grid_position):
 				continue
-
+			
+			if not Pathfinding.instance.is_walkable(test_grid_position):
+				continue
+			
+			if not Pathfinding.instance.is_path_available(unit_grid_position, test_grid_position):
+				continue
+			if Pathfinding.instance.get_path_cost(unit_grid_position, test_grid_position) > max_move_distance:
+				# Path length is too long
+				continue
 			# Add the valid grid position to the list.
 			valid_grid_position_list.append(test_grid_position)
 

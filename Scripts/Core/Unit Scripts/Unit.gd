@@ -18,6 +18,8 @@ var grid_position: GridPosition
 @export var is_enemy: bool = false
 @export var death_vfx_scene: PackedScene
 
+@export var shoulder_height: float = 1.7
+
 func _ready() -> void:
 	unit_manager = get_parent()
 	action_system = unit_manager.unit_action_system

@@ -53,7 +53,7 @@ skeleton = NodePath("")
 
 [node name="Area3D" type="Area3D" parent="SM_Buildings_Wall_1x3_02"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.491742, 0, 0)
-collision_layer = 17
+collision_layer = 16
 collision_mask = 0
 monitoring = false
 

@@ -10,6 +10,8 @@ var astar: CustomAStar3D
 
 static var instance: Pathfinding = null
 
+
+
 func _ready() -> void:
 	if instance != null:
 		push_error("There's more than one UnitActionSystem! - " + str(instance))
@@ -32,7 +34,7 @@ func find_path(start_grid_position: GridPosition, end_grid_position: GridPositio
 
 	if start_id != -1 and end_id != -1:
 		# Get the path of point IDs from AStar3D.
-		var id_path = astar.get_id_path(start_id, end_id)
+		var id_path = astar.get_id_path(start_id, end_id, false)
 
 		# Convert the point IDs to GridPosition instances and add them to the path array.
 		for point_id in id_path:
@@ -74,7 +76,7 @@ func setup_astar() -> void:
 					astar.connect_points(id, id + pathfinding_grid_system.get_height() + 1, true)  # Connect bottom-right neighbor
 
 				id += 1
-	#update_astar_walkable()
+
 
 # Helper Functions
 
@@ -138,7 +140,8 @@ func update_astar_walkable() -> void:
 						if astar.has_point(point_id):
 							astar.set_point_disabled(point_id, true)
 
-
+func is_walkable(grid_position: GridPosition) -> bool:
+	return pathfinding_grid_system.get_grid_object(grid_position).is_walkable
 
 # Disables a point in AStar3D to make it non-traversable.
 func disable_point(grid_position: GridPosition) -> void:
@@ -166,9 +169,10 @@ func get_path_cost(start_grid_position: GridPosition, end_grid_position: GridPos
 
 # Checks if a path between two grid positions is available.
 func is_path_available(start_grid_position: GridPosition, end_grid_position: GridPosition) -> bool:
-	var start_id = get_grid_point_id(start_grid_position)
-	var end_id = get_grid_point_id(end_grid_position)
-	return astar.are_points_connected(start_id, end_id)
+	if find_path(start_grid_position, end_grid_position).size() > 0:
+		return true
+	else:
+		return false
 
 
 # Custom AStar3D Class to Override Cost Calculation

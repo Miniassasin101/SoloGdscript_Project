@@ -91,8 +91,13 @@ func get_valid_action_grid_position_list_input(unit_grid_position: GridPosition)
 			# Create an offset grid position.
 			var offset_grid_position = GridPosition.new(x, z)
 			# Calculate the test grid position.
-			var test_grid_position: GridPosition = unit_grid_position.add(offset_grid_position)
 			
+			
+			var temp_grid_position: GridPosition = unit_grid_position.add(offset_grid_position)
+			var test_grid_object: GridObject = LevelGrid.grid_system.get_grid_object(temp_grid_position)
+			if test_grid_object == null:
+				continue
+			var test_grid_position: GridPosition = test_grid_object.get_grid_position()
 			# Calculate the Euclidean distance and use that to limit the distance.
 			var euclidean_distance: float = sqrt(pow(x, 2) + pow(z, 2))
 			if euclidean_distance > float(max_shoot_distance):
@@ -114,6 +119,12 @@ func get_valid_action_grid_position_list_input(unit_grid_position: GridPosition)
 
 			if target_unit.is_enemy == unit.is_enemy:
 				# Both units are either player or enemy units
+				continue
+			
+			var unit_world_position: Vector3 = LevelGrid.get_world_position(unit_grid_position)
+			if !MouseWorld.instance.has_line_of_sight(unit_world_position + Vector3.UP,
+			 target_unit.get_world_position() + Vector3.UP, 5):
+				print_debug("No line of sight to target!")
 				continue
 
 			# Add the valid grid position to the list.

@@ -16,7 +16,7 @@ func _process(_delta: float) -> void:
 func _on_obstacles_changed() -> void:
 	update_obstacles()
 
-# Called every frame to update walkability dynamically
+
 func update_obstacles() -> void:
 	# Gather AABBs from all MeshInstance3D children
 	var bounding_boxes = []
@@ -33,6 +33,20 @@ func update_obstacles() -> void:
 				world_aabb = world_aabb.abs()
 
 			bounding_boxes.append(world_aabb)
+		elif child is Node3D:
+			# Search for a MeshInstance3D child
+			for grandchild in child.get_children():
+				if grandchild is MeshInstance3D:
+					var mesh_child = grandchild as MeshInstance3D
+					var aabb = mesh_child.mesh.get_aabb()  # Local AABB of the mesh
+					var global_transform = mesh_child.global_transform
+					var world_aabb = global_transform * aabb
+
+					# Ensure the resulting AABB has valid size
+					if world_aabb.size.x < 0 or world_aabb.size.y < 0 or world_aabb.size.z < 0:
+						world_aabb = world_aabb.abs()
+
+					bounding_boxes.append(world_aabb)
 	
 	# Pass the bounding boxes to the grid system
 	grid_system.update_walkability_from_bounding_boxes(bounding_boxes)

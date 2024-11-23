@@ -60,7 +60,7 @@ func get_best_enemy_ai_action() -> EnemyAIAction:
 		return enemy_ai_action_list[0]
 	else:
 		# No possible Enemy AI Actions
-		print(get_action_name())
+		print(get_action_name() + " is not possible")
 		return null
 
 # Comparison function for sorting the enemy AI actions based on action value
