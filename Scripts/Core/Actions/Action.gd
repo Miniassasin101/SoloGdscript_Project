@@ -65,7 +65,11 @@ func get_best_enemy_ai_action() -> EnemyAIAction:
 
 # Comparison function for sorting the enemy AI actions based on action value
 func _compare_enemy_ai_actions(a: EnemyAIAction, b: EnemyAIAction) -> bool:
-	return a.action_value > b.action_value
+	if a.action_value > b.action_value:
+		return true
+	else:
+		return false
+
 
 func get_enemy_ai_action(_grid_position: GridPosition) -> EnemyAIAction:
 	push_error("get_enemy_ai_action on base Action class was called")

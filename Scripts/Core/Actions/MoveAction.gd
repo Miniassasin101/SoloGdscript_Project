@@ -8,6 +8,12 @@ extends Action
 signal on_start_moving
 signal on_stop_moving
 
+
+var movement_curve: Curve3D
+
+var curve_travel_offset: float = 0.0
+var curve_length: float = 0.0
+
 # Target position is a Vector3.
 var position_list: Array[Vector3]
 
@@ -38,109 +44,129 @@ var start_trigger: bool = false
 # Called every frame. Handles movement and state changes.
 func _process(delta: float) -> void:
 	# Skip if action is not active
-	if not is_active:
+	if not is_active or not is_moving:
 		return
 	var target_position: Vector3 = position_list[current_position_index]
-	# Handle delay for enemy unit
-	if unit.is_enemy and timer > 0.0:
-		timer -= delta
-	if timer <= 0.0 and ai_exit:
-		super.action_complete()
-		ai_exit = false
-		start_trigger = false
-		return
 	if !start_trigger:
 		start_timer -= delta
 		if start_timer <= 0.0:
 			start_trigger = true
 		return
 	# Move towards the target position if the unit is far enough.
-	move_towards_target(delta, target_position)
+	move_along_curve(delta)
 
-# Moves the unit towards the target position.
-func move_towards_target(delta: float, target_position: Vector3) -> void:
-	# Get the unit's current position.
+
+func move_along_curve(delta: float) -> void:
+	# If the unit reaches the end of the curve, stop moving.
+	#fix is_enemy logic later
+	if curve_travel_offset >= curve_length:
+		if is_moving:
+			on_stop_moving.emit()
+			is_moving = false
+
+			# Add a delay if the unit is an enemy to handle AI exit logic.
+			if unit.is_enemy:
+				await get_tree().create_timer(0.1).timeout
+				super.action_complete()
+				
+			else:
+				# Immediately complete the action if not an enemy.
+				super.action_complete()
+		return
+
+	# Ensure `current_speed` is not zero to avoid getting stuck.
+	if current_speed <= 0.0:
+		current_speed = MOVE_SPEED  # Fallback to default speed
+
+	# Get the current position on the curve.
 	var current_position = unit.global_transform.origin
-	# Calculate the movement direction.
-	var move_direction: Vector3 = (target_position - current_position).normalized()
+	var next_position: Vector3 = movement_curve.sample_baked(curve_travel_offset)
+	var move_direction: Vector3 = (next_position - current_position).normalized()
 
-	# Check if the unit needs to move.
-	if current_position.distance_to(target_position) > STOPPING_DISTANCE:
-		# Set the walking animation condition to true when starting movement.
-		if not is_moving:
-			on_start_moving.emit()
-			is_moving = true
+	# Start movement if it hasn't already started.
+	if not is_moving:
+		on_start_moving.emit()
+		is_moving = true
 
-		# Accelerate movement speed smoothly over the first 0.5 seconds
-		if acceleration_timer > 0.0:
-			acceleration_timer -= delta
-			var acceleration_progress: float = 1.0 - (acceleration_timer / 0.5)  # Interpolation factor from 0 to 1
-			current_speed = lerp(0.0, MOVE_SPEED, acceleration_progress)
-		else:
-			current_speed = MOVE_SPEED  # After 0.5 seconds, use max speed
+	# Accelerate movement speed smoothly over the first 0.5 seconds.
+	if acceleration_timer > 0.0:
+		acceleration_timer -= delta
+		var acceleration_progress: float = 1.0 - (acceleration_timer / 0.5)  # Interpolation factor from 0 to 1
+		current_speed = lerp(0.0, MOVE_SPEED, acceleration_progress)
+	else:
+		current_speed = MOVE_SPEED  # After 0.5 seconds, use max speed
 
-		# Move towards the target position with the current speed.
+	# Move towards the next position with the current speed.
+	var distance_to_next_point = current_position.distance_to(next_position)
+	if distance_to_next_point > STOPPING_DISTANCE:
 		current_position += move_direction * current_speed * delta
-		unit.global_transform.origin = current_position  # Update the unit's position.
+		unit.global_transform.origin = current_position
 
-		# Smoothly accelerate the rotation towards the movement direction
+		# Smoothly accelerate the rotation towards the movement direction.
 		if rotation_acceleration_timer > 0.0:
 			rotation_acceleration_timer -= delta
 			var rotation_progress: float = 1.0 - (rotation_acceleration_timer / 0.5)  # Interpolation factor from 0 to 1
-			rotate_speed = lerp(1.0, 3.0, rotation_progress)
+			rotate_speed = lerp(3.0, 7.0, rotation_progress)
 		else:
-			rotate_speed = 3.0  # Default rotation speed
+			rotate_speed = 7.0  # Default rotation speed
 
-		# Smoothly rotate the unit towards the movement direction
+		# Smoothly rotate the unit towards the movement direction.
 		var target_rotation = Basis.looking_at(move_direction, Vector3.UP, true)
 		unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
 		unit.global_transform.basis = unit.global_transform.basis.orthonormalized()
 
-	else:
-		# If the unit has reached the target, stop the walking animation.
-		if is_moving:
-			current_position_index += 1
-			if current_position_index >= position_list.size():
-				on_stop_moving.emit()
-				is_moving = false
+	# Increment the travel offset along the curve.
+	curve_travel_offset += min(current_speed * delta, curve_length - curve_travel_offset)
 
-				# Add a delay if the unit is an enemy to add AI action completion timing
-				if unit.is_enemy:
-					timer = 0.1
-					ai_exit = true
-					current_position_index -= 1
-				else:
-					# Immediately complete the action if not an enemy
-					start_trigger = false
-					super.action_complete()
+	# Handle enemy unit AI exit logic if no movement is required.
+	if unit.is_enemy and timer > 0.0:
+		timer -= delta
+		if timer <= 0.0 and ai_exit:
+			super.action_complete()
+			ai_exit = false
 
-	# Smoothly rotate the unit towards the movement direction if still moving.
-	if is_active:
-		var target_rotation = Basis.looking_at(-move_direction, Vector3.UP)
-		rotate_speed = 3.0
-		unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
 
-# Begins the movement action to a specified grid position.
+
+
+
+
+
+
 func take_action(grid_position: GridPosition) -> void:
 	var grid_position_list: Array[GridPosition] = Pathfinding.instance.find_path(unit.get_grid_position(), grid_position)
-	current_position_index = 1
+	if grid_position_list.is_empty():
+		push_error("No valid path found to target position: ", grid_position)
+		super.action_complete()
+		return
+
 	position_list = []
+	movement_curve = Curve3D.new()
+	movement_curve.bake_interval = 0.2  # Adjust for smoothness
 
 	for position: GridPosition in grid_position_list:
 		position_list.append(LevelGrid.get_world_position(position))
-	if not is_valid_action_grid_position(grid_position):
-		print("Invalid move to grid position: ", grid_position.to_str())
-		return
-	
+
+	# Add points to the curve
+	for i in range(position_list.size()):
+		var point = position_list[i]
+		var control_offset = Vector3(0, 0, 0)
+		if i > 0 and i < position_list.size() - 1:
+			# Smooth control points for intermediate nodes
+			control_offset = (position_list[i + 1] - position_list[i - 1]).normalized() * 0.5
+		movement_curve.add_point(point, -control_offset, control_offset)
+
+	# Store curve length and reset offset
+	curve_length = movement_curve.get_baked_length()
+	curve_travel_offset = 0.0
+	is_moving = true
+	on_start_moving.emit()
+	acceleration_timer = 0.2
+	rotation_acceleration_timer = 0.3
+	current_speed = 0.1
+	start_timer = 0.1
 
 	action_start()
-	
 
-	# Reset timers for smooth acceleration and rotation
-	acceleration_timer = 0.3
-	rotation_acceleration_timer = 0.3
-	current_speed = 0.0
-	start_timer = 0.1
 
 
 # Checks if the grid position is valid for movement.

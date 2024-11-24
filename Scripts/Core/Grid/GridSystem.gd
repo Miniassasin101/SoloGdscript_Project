@@ -97,7 +97,7 @@ func update_debug_label(grid_position: GridPosition) -> void:
 
 func update_walkability_from_bounding_boxes(bounding_boxes: Array) -> void:
 	# Offset for height consideration (hovering slightly above the ground)
-	var height_offset = Vector3(0, 0.1, 0)
+	var height_offset = Vector3(0, 0.6, 0)
 
 	# Iterate over all grid positions
 	for x in range(width):

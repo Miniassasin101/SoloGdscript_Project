@@ -293,7 +293,7 @@ death_vfx_scene = ExtResource("2_1rbfy")
 shoulder_height = 0.5
 
 [node name="Root" type="Node3D" parent="."]
-transform = Transform3D(0.767211, 0.123899, -0.629313, 0.0254705, 0.974507, 0.222911, 0.640889, -0.18705, 0.744495, 0, 0, 0)
+transform = Transform3D(0.767211, 0.123899, -0.629313, 0.0254705, 0.974507, 0.222912, 0.640889, -0.18705, 0.744495, 0, 0, 0)
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Root"]
 transform = Transform3D(0.999996, -0.00281894, 0.00050474, 0.00281855, 0.999996, 0.000779397, -0.000506935, -0.000777971, 1, 5.63792e-05, -0.0199999, 1.55605e-05)

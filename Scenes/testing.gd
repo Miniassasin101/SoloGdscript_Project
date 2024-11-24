@@ -12,7 +12,7 @@ extends Node3D
 func _process(_delta: float) -> void:
 	test_pathfinding()
 	handle_right_mouse_click()
-	#test_obstacle_trigger()
+	test_obstacle_trigger()
 
 # Testing function to visualize the path when a test key is pressed.
 func test_pathfinding() -> void:
@@ -64,4 +64,4 @@ func handle_right_mouse_click() -> void:
 
 func test_obstacle_trigger() -> void:
 	if Input.is_action_just_pressed("testkey_n"):
-		SignalBus.obstacles_changed.emit()
+		unit_ai.on_action_complete()

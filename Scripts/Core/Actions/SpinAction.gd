@@ -38,6 +38,6 @@ func get_action_points_cost() -> int:
 
 func get_enemy_ai_action(grid_position: GridPosition):
 	var enemy_ai_action: EnemyAIAction = EnemyAIAction.new()
-	enemy_ai_action.action_value = 0
+	enemy_ai_action.action_value = -1
 	enemy_ai_action.grid_position = grid_position
 	return enemy_ai_action
