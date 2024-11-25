@@ -181,6 +181,8 @@ func get_valid_action_grid_position_list() -> Array:
 
 # Gets a list of valid grid positions for movement.
 func get_valid_action_grid_position_list_input(unit_grid_position: GridPosition) -> Array:
+	if unit_grid_position == null:
+		return []
 	var valid_grid_position_list: Array[GridPosition] = []  # Initialize an empty array for valid grid positions.
 
 	# Loop through the x and z ranges based on max_move_distance.

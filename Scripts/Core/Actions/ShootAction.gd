@@ -124,7 +124,7 @@ func get_valid_action_grid_position_list_input(unit_grid_position: GridPosition)
 			var unit_world_position: Vector3 = LevelGrid.get_world_position(unit_grid_position)
 			if !MouseWorld.instance.has_line_of_sight(unit_world_position + Vector3.UP,
 			 target_unit.get_world_position() + Vector3.UP, 5):
-				print_debug("No line of sight to target!")
+				print_debug("No line of sight to target!" + target_unit.to_string())
 				continue
 
 			# Add the valid grid position to the list.
@@ -148,7 +148,7 @@ func take_action(grid_position: GridPosition) -> void:
 
 func get_enemy_ai_action(grid_position: GridPosition):
 	var enemy_ai_action: EnemyAIAction = EnemyAIAction.new()
-	enemy_ai_action.action_value = 100
+	enemy_ai_action.action_value = 1000
 	enemy_ai_action.grid_position = grid_position
 	return enemy_ai_action
 

@@ -27,6 +27,7 @@ func initialize_units() -> void:
 			units.append(child)
 			child.unit_manager = self  # Set this manager reference in the unit
 			_update_unit_lists(child)
+	print(units)
 
 # Connects the UnitManager to global signals
 func connect_global_signals() -> void:

@@ -196,36 +196,47 @@ shader_parameter/color_ramp3 = SubResource("GradientTexture1D_ovwhm")
 [node name="Base Mesh All Done no textures Dawn Colors solidified hair" instance=ExtResource("1_m35k0")]
 
 [node name="Body" parent="." index="0"]
+gi_mode = 0
 surface_material_override/0 = SubResource("ShaderMaterial_dxm3e")
 
 [node name="Pants" parent="." index="1"]
+gi_mode = 0
 surface_material_override/0 = SubResource("ShaderMaterial_btkb0")
 
 [node name="Collar" parent="." index="2"]
+gi_mode = 0
 surface_material_override/0 = SubResource("ShaderMaterial_kejqd")
 
 [node name="Hair Tufts" parent="." index="3"]
+gi_mode = 0
 surface_material_override/0 = SubResource("ShaderMaterial_5vdg2")
 
 [node name="Main Hair" parent="." index="4"]
+gi_mode = 0
 surface_material_override/0 = SubResource("ShaderMaterial_5vdg2")
 
 [node name="SHirt" parent="." index="5"]
+gi_mode = 0
 surface_material_override/0 = SubResource("ShaderMaterial_0ybph")
 
 [node name="Waistcloth_belt" parent="." index="6"]
+gi_mode = 0
 surface_material_override/0 = SubResource("ShaderMaterial_nmvdy")
 
 [node name="Shoes" parent="." index="7"]
+gi_mode = 0
 surface_material_override/0 = SubResource("ShaderMaterial_pipn7")
 
 [node name="Circle" parent="." index="8"]
+gi_mode = 0
 surface_material_override/0 = SubResource("ShaderMaterial_2t2np")
 
 [node name="Flower Emblem" parent="." index="9"]
+gi_mode = 0
 surface_material_override/0 = SubResource("ShaderMaterial_c8cvl")
 
 [node name="Flower Emblem_Background" parent="." index="10"]
+gi_mode = 0
 surface_material_override/0 = SubResource("ShaderMaterial_c8cvl")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." index="11"]

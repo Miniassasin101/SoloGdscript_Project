@@ -169,7 +169,10 @@ func get_grid_object(grid_position: GridPosition) -> GridObject:
 
 # Checks if a grid position is within the bounds of the grid.
 func is_valid_grid_position(grid_position: GridPosition) -> bool:
-	return is_valid_grid_coords(grid_position.x, grid_position.z)
+	if grid_position:
+		return is_valid_grid_coords(grid_position.x, grid_position.z)
+	else:
+		return false
 
 func get_width() -> int:
 	return width
