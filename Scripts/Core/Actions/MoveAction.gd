@@ -42,11 +42,11 @@ var start_trigger: bool = false
 
 
 # Called every frame. Handles movement and state changes.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	# Skip if action is not active
 	if not is_active or not is_moving:
 		return
-	var target_position: Vector3 = position_list[current_position_index]
+
 	if !start_trigger:
 		start_timer -= delta
 		if start_timer <= 0.0:

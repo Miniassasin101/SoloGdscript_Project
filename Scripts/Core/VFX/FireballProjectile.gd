@@ -3,15 +3,18 @@ extends Node3D
 
 signal target_hit
 
-@export var speed: float = 50.0  # Speed at which the projectile travels
-@export var timer: float = 2.0  # Duration in seconds for how long the projectile will travel
+@export var speed: float = 30.0  # Speed at which the projectile travels
+@export var timer: float = 3.0  # Duration in seconds for how long the projectile will travel
 @export var trail_3d: Trail3D
 @export var fireball_hit_vfx: PackedScene
 
 var target_position: Vector3 
 
-func setup(intarget_position: Vector3) -> void:
-	target_position = intarget_position
+func setup(_target_position: Vector3) -> void:
+	target_position = _target_position
+
+
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -19,6 +22,9 @@ func _process(delta: float) -> void:
 		check_collision(delta)
 	else:
 		queue_free()  # Queue the projectile for deletion after the timer runs out
+
+func trigger_projectile():
+	pass
 
 # Moves the projectile towards the target position
 func move_projectile(delta: float) -> void:
@@ -58,7 +64,7 @@ func remove_trail_effect() -> void:
 	trail_3d.trailEnabled = false
 	#get_child(0).remove_child(trail_3d)
 	#get_parent().add_child(trail_3d)
-	trail_3d.reparent(get_parent())
+	trail_3d.reparent(self.get_parent())
 
 # Spawns the fireball hit VFX at the target position
 func spawn_fireball_effect() -> void:

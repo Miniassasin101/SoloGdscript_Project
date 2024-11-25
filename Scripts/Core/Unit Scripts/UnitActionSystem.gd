@@ -5,7 +5,7 @@ extends Node
 @export var selected_unit: Unit
 
 @onready var selected_action: Action
-
+@onready var selected_ability: Ability
 
 # Reference to the MouseWorld instance (set in the editor)
 @export var mouse_world: MouseWorld
@@ -36,6 +36,7 @@ func _ready() -> void:
 		set_selected_unit(selected_unit)
 	
 	SignalBus.selected_action_changed.connect(set_selected_action)
+	SignalBus.selected_ability_changed.connect(set_selected_ability)
 	SignalBus.action_complete.connect(clear_busy)
 
 
@@ -56,7 +57,8 @@ func _process(_delta: float) -> void:
 		if try_handle_unit_selection():
 			return
 		else:
-			handle_selected_action()
+			#handle_selected_action()
+			handle_selected_ability()
 
 
 func handle_selected_action() -> void:
@@ -70,11 +72,22 @@ func handle_selected_action() -> void:
 					set_busy()
 					SignalBus.emit_signal("action_started")
 
+func handle_selected_ability() -> void:
+	if selected_unit and selected_ability:
+		var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
+		if mouse_grid_position:
+			var grid_position: GridPosition = LevelGrid.get_grid_position(mouse_grid_position)
+			if selected_unit.ability_container.can_activate_at_position(selected_ability, grid_position):
+				# Add action points logic back here later
+				if selected_unit.try_spend_ability_points_to_use_ability(selected_ability):
+					selected_unit.ability_container.activate_one(selected_ability, grid_position)
+					set_busy()
+					SignalBus.emit_signal("ability_started")
+
+
+
 # Handles unit selection via mouse click
 func try_handle_unit_selection() -> bool:
-	# Get the mouse position in screen coordinates
-	#var mouse_position: Vector2 = get_viewport().get_mouse_position()
-
 	# Perform raycast to detect units
 	var collider = mouse_world.get_mouse_raycast_result("collider")
 
@@ -111,6 +124,11 @@ func set_selected_action(action: Action) -> void:
 	selected_action = action
 	SignalBus.update_grid_visual.emit()
 
+func set_selected_ability(ability: Ability) -> void:
+	selected_ability = ability
+	SignalBus.update_grid_visual.emit()
+	
+
 func set_selected_action_by_name(action_name: String) -> void:
 	if selected_unit:
 		var action = selected_unit.get_action(action_name)
@@ -126,3 +144,6 @@ func get_selected_unit() -> Unit:
 #Retrieves current selected action
 func get_selected_action() -> Action:
 	return selected_action
+
+func get_selected_ability() -> Ability:
+	return selected_ability

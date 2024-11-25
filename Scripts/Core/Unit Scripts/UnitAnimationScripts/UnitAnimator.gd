@@ -1,6 +1,8 @@
 class_name UnitAnimator
 extends Node
 
+signal rotation_completed
+
 @export var animator: AnimationPlayer
 @export var animator_tree: AnimationTree
 @export var fireball_projectile_prefab: PackedScene
@@ -13,10 +15,30 @@ var shoot_action: ShootAction
 @onready var unit: Unit = get_parent()
 var target_unit: Unit
 var stored_damage: int
+var projectile: Projectile
+
+var is_rotating: bool = false
+const rotate_speed: float = 3.0
+var facing_direction: Vector3
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	call_deferred("connect_signals")
 
+func _physics_process(delta: float) -> void:
+	if is_rotating:
+		rotate_unit_towards_target_position_process(delta)
+
+func play_animation() -> void:
+	pass
+func stop_animation() -> void:
+	pass
+
+
+
+func on_target_hit() -> void:
+	print("Target Hit")
+
+	
 
 func on_start_moving() -> void:
 	animator_tree.set("parameters/conditions/IsWalking", true)
@@ -46,6 +68,22 @@ func on_shoot(target_unit_in: Unit, _shooting_unit: Unit, damage: int) -> void:
 func trigger_damage() -> void:
 	target_unit.damage(stored_damage)
 
+
+func rotate_unit_towards_target_position(grid_position: GridPosition) -> void:
+	is_rotating = true
+	facing_direction = (LevelGrid.get_world_position(grid_position) - unit.get_world_position()).normalized()
+
+
+func rotate_unit_towards_target_position_process(delta: float):
+	var target_rotation = Basis.looking_at(facing_direction, Vector3.UP, true)
+	unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
+	unit.global_transform.basis = unit.global_transform.basis.orthonormalized()
+	
+	# Check if the rotation is close enough to stop rotating
+	var current_direction = unit.global_transform.basis.z.normalized()
+	if current_direction.dot(facing_direction) > 0.99:
+		is_rotating = false  # Stop rotating if we're almost facing the target
+		rotation_completed.emit()
 
 func connect_signals():
 	move_action = unit.get_action("Move")

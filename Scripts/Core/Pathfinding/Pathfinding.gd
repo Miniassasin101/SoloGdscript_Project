@@ -115,7 +115,6 @@ func clear_astar() -> void:
 func is_point_in_range(start_grid_position: GridPosition, end_grid_position: GridPosition, max_distance: float) -> bool:
 	var start_id = get_grid_point_id(start_grid_position)
 	var end_id = get_grid_point_id(end_grid_position)
-	var path = astar.get_id_path(start_id, end_id)
 	return astar.get_point_path_length(start_id, end_id) <= max_distance
 
 #Note: Should also add a way later to just update a single point by passing in a single position or gridobject

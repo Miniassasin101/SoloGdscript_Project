@@ -101,7 +101,7 @@ func try_take_enemy_action(enemy_unit: Unit) -> bool:
 	
 	# Execute the best action if available
 	if best_enemy_ai_action != null and enemy_unit.try_spend_action_points_to_take_action(best_action):
-		print_debug("Enemy unit ", enemy_unit, " takes action: ", best_action)
+		print_debug("Enemy unit ", enemy_unit, " takes action: ", best_action.get_action_name())
 		best_action.take_action(best_enemy_ai_action.grid_position)
 		return true
 	else:

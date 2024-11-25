@@ -7,6 +7,7 @@ extends Node3D
 @onready var pathfinding: Pathfinding = $"../Pathfinding"
 @onready var camera = unit_action_system.camera
 @onready var mouse_world: MouseWorld = $"../MouseWorld"
+@onready var unit_stats_ui: UnitStatsUI = $"../UILayer/UnitStatsUI"
 
 # Called every frame
 func _process(_delta: float) -> void:
@@ -64,4 +65,4 @@ func handle_right_mouse_click() -> void:
 
 func test_obstacle_trigger() -> void:
 	if Input.is_action_just_pressed("testkey_n"):
-		unit_ai.on_action_complete()
+		unit_stats_ui._on_update_stats_bars()

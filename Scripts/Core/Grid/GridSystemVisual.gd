@@ -8,6 +8,7 @@ const GRID_CELL_VISUAL: PackedScene = preload("res://Hero_Game/Prefabs/GridCellV
 var grid_visuals: Array = []  # Array of Arrays of Node3D instances.
 
 var selected_action: Action
+var selected_ability: Ability
 # Singleton instance of GridSystemVisual.
 static var instance: GridSystemVisual = null
 
@@ -85,3 +86,10 @@ func update_grid_visual() -> void:
 	selected_action = UnitActionSystem.instance.get_selected_action()
 	if selected_action != null:
 		show_grid_positions(selected_action.get_valid_action_grid_position_list())
+	selected_ability = UnitActionSystem.instance.get_selected_ability()
+	if selected_ability != null:
+		if UnitActionSystem.instance.selected_unit != null:
+			show_grid_positions(UnitActionSystem.instance
+			.selected_unit.ability_container.get_valid_ability_target_grid_position_list(selected_ability)
+			)
+		

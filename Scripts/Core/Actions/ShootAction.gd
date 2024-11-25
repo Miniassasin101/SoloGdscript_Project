@@ -23,7 +23,7 @@ func _ready() -> void:
 	super._ready()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not is_active:
 		return
 	
@@ -123,8 +123,8 @@ func get_valid_action_grid_position_list_input(unit_grid_position: GridPosition)
 			
 			var unit_world_position: Vector3 = LevelGrid.get_world_position(unit_grid_position)
 			if !MouseWorld.instance.has_line_of_sight(unit_world_position + Vector3.UP,
-			 target_unit.get_world_position() + Vector3.UP, 5):
-				print_debug("No line of sight to target!" + target_unit.to_string())
+			 target_unit.get_world_position() + Vector3.UP):
+				#print_debug("No line of sight to target!" + target_unit.to_string())
 				continue
 
 			# Add the valid grid position to the list.

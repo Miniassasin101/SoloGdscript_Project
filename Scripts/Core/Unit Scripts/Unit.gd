@@ -4,6 +4,10 @@ extends Node3D
 # Reference to the LevelGrid node.
 
 var action_system: UnitActionSystem
+@export var animator: UnitAnimator
+
+@export var ability_container: AbilityContainer
+@export var attribute_map: GameplayAttributeMap
 @export var health_system: HealthSystem
 var unit_manager: UnitManager = get_parent()
 # The grid position of this unit.
@@ -11,6 +15,7 @@ var grid_position: GridPosition
 
 # Reference to the action array node attached to this unit.
 @onready var action_array: Array[Action]
+var target_unit: Unit
 
 @export var action_points_max: int = 2
 @onready var action_points: int = action_points_max
@@ -19,6 +24,8 @@ var grid_position: GridPosition
 @export var death_vfx_scene: PackedScene
 
 @export var shoulder_height: float = 1.7
+
+@export var shoot_point: Node3D
 
 func _ready() -> void:
 	unit_manager = get_parent()
@@ -32,6 +39,7 @@ func _ready() -> void:
 		if child is Action:
 			action_array.append(child)
 	health_system.on_dead.connect(on_dead)
+	attribute_map.attribute_changed.connect(on_attribute_changed)
 	SignalBus.on_turn_changed.connect(on_turn_changed)
 	SignalBus.add_unit.emit(self)
 
@@ -49,16 +57,37 @@ func try_spend_action_points_to_take_action(action: Action) -> bool:
 		return true
 	return false
 
+func try_spend_ability_points_to_use_ability(ability: Ability) -> bool:
+	if can_spend_ability_points_to_use_ability(ability):
+		spend_ability_points(ability.ap_cost)
+		return true
+	return false
+
 func can_spend_action_points_to_take_action(action: Action) -> bool:
 	if action_points >= action.get_action_points_cost():
 		return true
 	else:
 		return false
 
+func can_spend_ability_points_to_use_ability(ability: Ability) -> bool:
+	# Replace action points with ability points later
+	if action_points >= ability.ap_cost:
+		return true
+	else:
+		return false
+
+
 func spend_action_points(amount: int) -> void:
 	action_points -= amount
 	SignalBus.emit_signal("action_points_changed")
 	SignalBus.emit_signal("update_stat_bars")
+
+func spend_ability_points(amount: int) -> void:
+	# Note: Change to ability points later
+	action_points -= amount
+	SignalBus.emit_signal("action_points_changed")
+	SignalBus.emit_signal("update_stat_bars")
+
 
 func damage(indamage: int) -> void:
 	health_system.damage(indamage)
@@ -76,6 +105,10 @@ func on_dead() -> void:
 	
 	queue_free()
 
+func on_attribute_changed(_attribute: AttributeSpec):
+	SignalBus.emit_signal("update_stat_bars")
+	if attribute_map.get_attribute_by_name("health").current_value <= 0:
+		on_dead()
 
 # Will probably have to swap turn with round later
 func on_turn_changed() -> void:

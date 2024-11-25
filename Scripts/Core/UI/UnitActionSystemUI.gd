@@ -22,10 +22,14 @@ func create_unit_action_buttons() -> void:
 	for action_button in action_button_container.get_children():
 		action_button.queue_free()
 	
-	for action: Action in  selected_unit.get_action_array():
+	for action: Action in selected_unit.get_action_array():
 		var action_button_ui = action_button_prefab.instantiate()
 		action_button_ui.set_base_action(action)
 		action_button_container.add_child(action_button_ui)
+	for ability: Ability in selected_unit.ability_container.granted_abilities:
+		var ability_button_ui = action_button_prefab.instantiate()
+		ability_button_ui.set_base_ability(ability)
+		action_button_container.add_child(ability_button_ui)
 		
 func on_selected_unit_changed(unit: Unit) -> void:
 	selected_unit = unit
