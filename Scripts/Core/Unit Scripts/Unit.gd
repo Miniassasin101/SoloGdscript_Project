@@ -6,9 +6,8 @@ extends Node3D
 var action_system: UnitActionSystem
 @export var animator: UnitAnimator
 
-@export var ability_container: AbilityContainer
-@export var attribute_map: GameplayAttributeMap
-@export var health_system: HealthSystem
+var ability_container: AbilityContainer
+var attribute_map: GameplayAttributeMap
 var unit_manager: UnitManager = get_parent()
 # The grid position of this unit.
 var grid_position: GridPosition
@@ -38,7 +37,10 @@ func _ready() -> void:
 	for child in get_children():
 		if child is Action:
 			action_array.append(child)
-	health_system.on_dead.connect(on_dead)
+		if child is AbilityContainer:
+			ability_container = child
+		if child is GameplayAttributeMap:
+			attribute_map = child
 	attribute_map.attribute_changed.connect(on_attribute_changed)
 	SignalBus.on_turn_changed.connect(on_turn_changed)
 	SignalBus.add_unit.emit(self)
@@ -89,9 +91,6 @@ func spend_ability_points(amount: int) -> void:
 	SignalBus.emit_signal("update_stat_bars")
 
 
-func damage(indamage: int) -> void:
-	health_system.damage(indamage)
-	SignalBus.update_stat_bars.emit()
 
 
 func on_dead() -> void:
@@ -122,11 +121,12 @@ func _to_string() -> String:
 	# Return the unit's name as a string representation.
 	return self.name
 
-func has_action(action_name: String) -> bool:
-	for action in action_array:
-		if action.get_action_name() == action_name:
+
+func has_ability(ability_name: StringName) -> bool:
+	for ability: Ability in ability_container.granted_abilities:
+		if ability.ui_name == ability_name:
 			return true
-	return false  # Return null if action not found
+	return false
 
 func get_animation_tree() -> AnimationTree:
 	# Search for an AnimationTree node among the unit's children.

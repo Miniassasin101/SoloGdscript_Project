@@ -35,9 +35,8 @@ func _ready() -> void:
 	if selected_unit:
 		set_selected_unit(selected_unit)
 	
-	SignalBus.selected_action_changed.connect(set_selected_action)
 	SignalBus.selected_ability_changed.connect(set_selected_ability)
-	SignalBus.action_complete.connect(clear_busy)
+	SignalBus.ability_complete.connect(clear_busy)
 
 
 
@@ -57,20 +56,7 @@ func _process(_delta: float) -> void:
 		if try_handle_unit_selection():
 			return
 		else:
-			#handle_selected_action()
 			handle_selected_ability()
-
-
-func handle_selected_action() -> void:
-	if selected_unit and selected_action:
-		var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
-		if mouse_grid_position:
-			var grid_position: GridPosition = LevelGrid.get_grid_position(mouse_grid_position)
-			if selected_action.is_valid_action_grid_position(grid_position):
-				if selected_unit.try_spend_action_points_to_take_action(selected_action): # also spends the action points
-					selected_action.take_action(grid_position)
-					set_busy()
-					SignalBus.emit_signal("action_started")
 
 func handle_selected_ability() -> void:
 	if selected_unit and selected_ability:
@@ -117,12 +103,11 @@ func clear_busy() -> void:
 
 func set_selected_unit(unit: Unit) -> void:
 	selected_unit = unit
-	set_selected_action(unit.get_action("Move"))  # Set the move action as the default action when selecting a unit
+	var aco = unit.ability_container.abilities
+	if !unit.ability_container.abilities.is_empty():
+		set_selected_ability(unit.ability_container.granted_abilities[0])
 	SignalBus.selected_unit_changed.emit(unit)
 
-func set_selected_action(action: Action) -> void:
-	selected_action = action
-	SignalBus.update_grid_visual.emit()
 
 func set_selected_ability(ability: Ability) -> void:
 	selected_ability = ability
@@ -137,13 +122,12 @@ func set_selected_action_by_name(action_name: String) -> void:
 			SignalBus.selected_action_changed.emit(action)
 		else:
 			print("Action not found: ", action_name)
+
+
 # Retrieves the currently selected unit
 func get_selected_unit() -> Unit:
 	return selected_unit
 
-#Retrieves current selected action
-func get_selected_action() -> Action:
-	return selected_action
 
 func get_selected_ability() -> Ability:
 	return selected_ability

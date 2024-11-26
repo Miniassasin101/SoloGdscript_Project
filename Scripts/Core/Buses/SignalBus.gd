@@ -6,14 +6,13 @@ extends Node
 
 signal selected_unit_changed(unit: Unit)
 
-signal selected_action_changed(action: Action)
+
 signal selected_ability_changed(ability: Ability)
 
 signal update_grid_visual
 
-signal action_complete
+signal ability_complete
 
-signal action_started
 signal ability_started
 
 signal end_turn

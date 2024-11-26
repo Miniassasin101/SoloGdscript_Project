@@ -45,6 +45,7 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 	timer.timeout.connect(shoot_projectile)
 	event.character.add_child(timer)
 	
+	
 
 func shoot_projectile() -> void:
 	assert(unit.shoot_point != null)
@@ -140,3 +141,10 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 			# Add the valid grid position to the list.
 			valid_grid_position_list.append(test_grid_position)
 	return valid_grid_position_list
+
+
+func get_enemy_ai_ability(_event: ActivationEvent) -> EnemyAIAction:
+	var enemy_ai_ability: EnemyAIAction = EnemyAIAction.new()
+	enemy_ai_ability.action_value = 1000
+	enemy_ai_ability.grid_position = _event.target_grid_position
+	return enemy_ai_ability

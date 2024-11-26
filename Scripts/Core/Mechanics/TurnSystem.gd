@@ -7,7 +7,7 @@ static var instance: TurnSystem = null
 
 func _ready() -> void:
 	if instance != null:
-		push_error("There's more than one UnitActionSystem! - " + str(instance))
+		push_error("There's more than one TurnSystem! - " + str(instance))
 		queue_free()
 		return
 	instance = self

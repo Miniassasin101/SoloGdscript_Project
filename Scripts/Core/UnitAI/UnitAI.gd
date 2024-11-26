@@ -18,7 +18,7 @@ var state_timer: float = 0.0  # Timer to track time spent in a state
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.on_turn_changed.connect(on_turn_changed)
-	SignalBus.action_complete.connect(on_action_complete)
+	SignalBus.ability_complete.connect(on_ability_complete)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -39,7 +39,7 @@ func _process(_delta: float) -> void:
 			pass
 		State.TakingTurn:
 			if turn_finished:
-				if try_take_enemy_ai_action():
+				if try_take_enemy_ai_ability():
 					set_state_busy()
 				else:
 					# No more enemies have actions to take
@@ -64,11 +64,10 @@ func set_state_waiting() -> void:
 	state_timer = 0.0  # Reset state timer
 
 
-func on_action_complete() -> void:
+func on_ability_complete() -> void:
 	turn_finished = true
-	state = State.TakingTurn  # After action completes, move to TakingTurn state
+	state = State.TakingTurn  # After ability completes, move to TakingTurn state
 	state_timer = 0.0  # Reset state timer
-
 
 func on_turn_changed() -> void:
 	timer = 1.0
@@ -77,33 +76,61 @@ func on_turn_changed() -> void:
 	if !TurnSystem.instance.is_player_turn:
 		set_state_taking_turn()
 
-func try_take_enemy_ai_action() -> bool:
+
+func try_take_enemy_ai_ability() -> bool:
 	for enemy_unit: Unit in UnitManager.instance.get_enemy_units():
 		current_unit = enemy_unit.name
-		if try_take_enemy_action(enemy_unit):
+		if try_use_enemy_ability(enemy_unit):
 			return true
-	print_debug("No valid actions found for any enemy units.")
+	print_debug("No valid abilities found for any enemy units.")
 	return false
 
-func try_take_enemy_action(enemy_unit: Unit) -> bool:
-	var best_action: Action = null
-	var best_enemy_ai_action: EnemyAIAction = null
-	for action: Action in enemy_unit.get_action_array():
-		if !enemy_unit.can_spend_action_points_to_take_action(action):
-			# Enemy cannot afford this action
+
+func try_use_enemy_ability(enemy_unit: Unit) -> bool:
+	var best_ability: Ability = null
+	var best_enemy_ai_ability: EnemyAIAction = null
+	for ability: Ability in enemy_unit.ability_container.granted_abilities:
+		if !enemy_unit.can_spend_ability_points_to_use_ability(ability):
+			# Enemy cannot afford this ability
 			continue
-		var test_enemy_ai_action: EnemyAIAction = action.get_best_enemy_ai_action()
-		if test_enemy_ai_action == null:
+		var test_enemy_ai_ability: EnemyAIAction = get_best_enemy_ai_ability(enemy_unit.ability_container, ability)
+		if test_enemy_ai_ability == null:
 			continue
-		if best_enemy_ai_action == null or test_enemy_ai_action.action_value > best_enemy_ai_action.action_value:
-			best_enemy_ai_action = test_enemy_ai_action
-			best_action = action
+		if best_enemy_ai_ability == null or test_enemy_ai_ability.action_value > best_enemy_ai_ability.action_value:
+			best_enemy_ai_ability = test_enemy_ai_ability
+			best_ability = ability
 	
 	# Execute the best action if available
-	if best_enemy_ai_action != null and enemy_unit.try_spend_action_points_to_take_action(best_action):
-		print_debug("Enemy unit ", enemy_unit, " takes action: ", best_action.get_action_name())
-		best_action.take_action(best_enemy_ai_action.grid_position)
+	if best_enemy_ai_ability != null and enemy_unit.try_spend_ability_points_to_use_ability(best_ability):
+		var testname = best_ability.ui_name
+		best_ability.ended.connect(on_ability_complete)
+		enemy_unit.ability_container.activate_one(best_ability, best_enemy_ai_ability.grid_position)
 		return true
 	else:
-		print_debug("No valid action for enemy unit: ", enemy_unit)
+		print_debug("No valid ability for enemy unit: ", enemy_unit)
+		return false
+
+func get_best_enemy_ai_ability(ability_container: AbilityContainer, ability: Ability):
+	var enemy_ai_ability_list: Array[EnemyAIAction] = []
+	var valid_ability_grid_position_list: Array[GridPosition] = ability_container.get_valid_ability_target_grid_position_list(ability)
+	
+	for grid_position: GridPosition in valid_ability_grid_position_list:
+		var enemy_ai_ability: EnemyAIAction = ability_container.get_enemy_ai_ability(ability, grid_position)
+		if enemy_ai_ability != null:
+			enemy_ai_ability_list.append(enemy_ai_ability)
+
+	if !enemy_ai_ability_list.is_empty():
+		# Sort using a callable function to compare ability values
+		enemy_ai_ability_list.sort_custom(_compare_enemy_ai_abilities)
+		return enemy_ai_ability_list[0]
+	else:
+		# No possible Enemy AI Abilities
+		print(ability.ui_name + " is not possible")
+		return null
+
+# Comparison function for sorting the enemy AI actions based on action value
+func _compare_enemy_ai_abilities(a: EnemyAIAction, b: EnemyAIAction) -> bool:
+	if a.action_value > b.action_value:
+		return true
+	else:
 		return false

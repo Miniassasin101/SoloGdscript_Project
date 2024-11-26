@@ -1,15 +1,15 @@
 [gd_resource type="Resource" script_class="ProjectileAbility" load_steps=3 format=3 uid="uid://crgywdemy0bgk"]
 
-[ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/fireball_mesh.tscn" id="1_gbhra"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/ProjectileAbility.gd" id="1_q36nh"]
+[ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/fireball_mesh.tscn" id="1_nusuh"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/ProjectileAbility.gd" id="2_og3a5"]
 
 [resource]
-script = ExtResource("1_q36nh")
+script = ExtResource("2_og3a5")
 damage = 10
-attack_range = 20
+attack_range = 15
 ap_cost = 1
-projectile = ExtResource("1_gbhra")
-ui_name = "Strong Fireball"
+projectile = ExtResource("1_nusuh")
+ui_name = "S-Fireball"
 cooldown_duration = 0.0
 cooldown_continuos = false
 grant_automatic = true

@@ -7,7 +7,7 @@ const GRID_CELL_VISUAL: PackedScene = preload("res://Hero_Game/Prefabs/GridCellV
 # 2D array to hold the visual instances of grid cells.
 var grid_visuals: Array = []  # Array of Arrays of Node3D instances.
 
-var selected_action: Action
+
 var selected_ability: Ability
 # Singleton instance of GridSystemVisual.
 static var instance: GridSystemVisual = null
@@ -80,12 +80,10 @@ func update_grid_visual_pathfinding(grid_list: Array[GridPosition]):
 		
 
 func update_grid_visual() -> void:
-	#if Input.is_action_just_pressed("testkey"):
+
 	hide_all_grid_positions()
 
-	selected_action = UnitActionSystem.instance.get_selected_action()
-	if selected_action != null:
-		show_grid_positions(selected_action.get_valid_action_grid_position_list())
+
 	selected_ability = UnitActionSystem.instance.get_selected_ability()
 	if selected_ability != null:
 		if UnitActionSystem.instance.selected_unit != null:
