@@ -4,8 +4,9 @@
 
 [resource]
 script = ExtResource("1_hphuf")
-attribute_name = "size"
+attribute_name = "endurance"
 minimum_value = 0.0
 maximum_value = 50.0
 current_value = 12.0
-attribute_type = 0
+derived_from = Array[String]([])
+calculation_type = 0

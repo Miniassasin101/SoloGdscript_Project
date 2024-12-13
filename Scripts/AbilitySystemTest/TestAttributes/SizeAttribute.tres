@@ -4,8 +4,9 @@
 
 [resource]
 script = ExtResource("1_ld6ls")
-attribute_name = ""
+attribute_name = "size"
 minimum_value = 0.0
-maximum_value = 0.0
-current_value = 0.0
-attribute_type = 0
+maximum_value = 21.0
+current_value = 21.0
+derived_from = Array[String]([])
+calculation_type = 0

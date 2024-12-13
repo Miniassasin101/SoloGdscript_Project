@@ -65,4 +65,4 @@ func handle_right_mouse_click() -> void:
 
 func test_obstacle_trigger() -> void:
 	if Input.is_action_just_pressed("testkey_n"):
-		unit_stats_ui._on_update_stats_bars()
+		print(unit.attribute_map.get_attribute_by_name("endurance"))
