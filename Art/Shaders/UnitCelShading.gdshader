@@ -1,6 +1,8 @@
+
 shader_type spatial;
 render_mode blend_mix,depth_draw_opaque,cull_disabled,diffuse_toon,specular_toon;
 
+uniform vec4 albedo : source_color;
 uniform sampler2D texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
 uniform float point_size : hint_range(0,128);
 uniform float roughness : hint_range(0,1);
@@ -36,8 +38,12 @@ void fragment() {
 	// Sample the texture
 	vec4 albedo_tex = texture(texture_albedo, base_uv);
 
-	// Use the albedo texture directly
-	ALBEDO = albedo_tex.rgb + (basic_fresnel * texture(color_ramp3, vec2(basic_fresnel, 0.0)).rgb * 1.0);
+	// Desaturate the albedo texture (luminance formula)
+	float luminance = dot(albedo_tex.rgb, vec3(0.299, 0.587, 0.114));
+	vec3 desaturated_albedo_tex = vec3(luminance);
+
+	// Multiply the desaturated albedo with the main albedo
+	ALBEDO = albedo.rgb * desaturated_albedo_tex + (basic_fresnel * texture(color_ramp3, vec2(basic_fresnel, 0.0)).rgb * 1.0);
 
 	// Handle metallic and roughness from textures
 	float metallic_tex = dot(texture(texture_metallic, base_uv), metallic_texture_channel);
