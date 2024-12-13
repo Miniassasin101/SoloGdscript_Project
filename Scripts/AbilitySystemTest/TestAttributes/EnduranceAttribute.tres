@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AttributeResource" load_steps=2 format=3 uid="uid://ctkldarvpfe18"]
+
+[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="1_hphuf"]
+
+[resource]
+script = ExtResource("1_hphuf")
+attribute_name = "size"
+minimum_value = 0.0
+maximum_value = 50.0
+current_value = 12.0
+attribute_type = 0

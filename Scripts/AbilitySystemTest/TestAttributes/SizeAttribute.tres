@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AttributeResource" load_steps=2 format=3 uid="uid://b4cltjme3q4uh"]
+
+[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="1_ld6ls"]
+
+[resource]
+script = ExtResource("1_ld6ls")
+attribute_name = ""
+minimum_value = 0.0
+maximum_value = 0.0
+current_value = 0.0
+attribute_type = 0
