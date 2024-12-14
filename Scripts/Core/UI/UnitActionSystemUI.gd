@@ -35,7 +35,8 @@ func on_selected_unit_changed(unit: Unit) -> void:
 
 func _update_ability_points() -> void:
 	if selected_unit != null:
-		ability_points_text.text = "Ability Points: " + str(selected_unit.get_action_points())
+		ability_points_text.text = ("Ability Points: " + str(selected_unit.attribute_map.
+		get_attribute_by_name("action_points").current_buffed_value))
 
 func on_turn_changed() -> void:
 	self.visible = TurnSystem.instance.is_player_turn

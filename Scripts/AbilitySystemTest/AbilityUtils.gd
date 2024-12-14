@@ -1,5 +1,5 @@
-# Global Autoload Singleton
-# Manages the getting of ability stuff from different locations
+## Global Autoload Singleton
+## Manages any utilities and calculations for the ability system
 extends Node
 
 func get_ability_from_container():
@@ -8,8 +8,10 @@ func get_ability_from_container():
 func get_ability_from_unit():
 	pass
 
+
+
 ## Calculation logic based on `calculation_type`. A value of '-1' represents an error.
-func calculate(derived_from: Array[StringName], calculation_type: int, specs: Dictionary) -> int:
+func calculate(derived_from: Array[String], calculation_type: int, specs: Dictionary) -> int:
 	match calculation_type:
 		0:
 			# Push an error and return null for base attributes

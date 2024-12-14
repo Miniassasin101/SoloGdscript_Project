@@ -65,4 +65,24 @@ func handle_right_mouse_click() -> void:
 
 func test_obstacle_trigger() -> void:
 	if Input.is_action_just_pressed("testkey_n"):
-		print(unit.attribute_map.get_attribute_by_name("endurance"))
+		print(unit.attribute_map.get_attribute_by_name("health").attribute_name)
+		print(unit.attribute_map.get_attribute_by_name("health").current_buffed_value)
+		print(unit.attribute_map.get_attribute_by_name("size").attribute_name)
+		print(unit.attribute_map.get_attribute_by_name("size").current_buffed_value)
+		apply_effect("size")
+
+
+func apply_effect(att_name: String) -> void:
+	# creating a new [GameplayEffect] resource
+	var effect = GameplayEffect.new()
+	# creating a new [AttributeEffect] resource
+	var health_effect = AttributeEffect.new()
+	
+	health_effect.attribute_name = att_name
+	health_effect.minimum_value = -2
+	health_effect.maximum_value = -2
+
+	
+	effect.attributes_affected.append(health_effect)
+	
+	unit_action_system.selected_unit.add_child(effect)

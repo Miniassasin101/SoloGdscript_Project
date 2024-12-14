@@ -14,7 +14,7 @@ func _ready() -> void:
 func update_stats(unit: Unit) -> void:
 	unit_name_label.text = unit.name
 
-	ability_points_label.set_text(str(unit.action_points))
+	ability_points_label.set_text(str(unit.attribute_map.get_attribute_by_name("action_points").current_value))
 	health_text_label.text = "Health: %d / %d" % [unit.attribute_map.get_attribute_by_name("health").current_value, 
 	unit.attribute_map.get_attribute_by_name("health").maximum_value]
 

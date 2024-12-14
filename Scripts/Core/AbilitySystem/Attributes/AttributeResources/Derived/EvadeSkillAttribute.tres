@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AttributeResource" load_steps=2 format=3 uid="uid://cuoutloeyr4rk"]
+
+[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="1_oy1os"]
+
+[resource]
+script = ExtResource("1_oy1os")
+attribute_name = "evade_skill"
+minimum_value = 0.0
+maximum_value = 50.0
+current_value = 50.0
+derived_from = Array[String](["dexterity", "agility"])
+calculation_type = 1

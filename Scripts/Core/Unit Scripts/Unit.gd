@@ -72,21 +72,23 @@ func can_spend_action_points_to_take_action(action: Action) -> bool:
 		return false
 
 func can_spend_ability_points_to_use_ability(ability: Ability) -> bool:
+	var ap_remain: int = attribute_map.get_attribute_by_name("action_points").current_value
 	# Replace action points with ability points later
-	if action_points >= ability.ap_cost:
+	if ap_remain >= ability.ap_cost:
 		return true
 	else:
 		return false
 
 
 func spend_action_points(amount: int) -> void:
+
 	action_points -= amount
 	SignalBus.emit_signal("action_points_changed")
 	SignalBus.emit_signal("update_stat_bars")
 
 func spend_ability_points(amount: int) -> void:
+	attribute_map.get_attribute_by_name("action_points").current_value -= amount
 	# Note: Change to ability points later
-	action_points -= amount
 	SignalBus.emit_signal("action_points_changed")
 	SignalBus.emit_signal("update_stat_bars")
 
@@ -113,6 +115,7 @@ func on_attribute_changed(_attribute: AttributeSpec):
 func on_turn_changed() -> void:
 	if is_enemy and !TurnSystem.instance.is_player_turn or !is_enemy and TurnSystem.instance.is_player_turn:
 		action_points = action_points_max
+		
 		SignalBus.emit_signal("action_points_changed")
 		SignalBus.emit_signal("update_stat_bars")
 

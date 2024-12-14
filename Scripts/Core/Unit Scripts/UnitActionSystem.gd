@@ -103,7 +103,7 @@ func clear_busy() -> void:
 
 func set_selected_unit(unit: Unit) -> void:
 	selected_unit = unit
-	var aco = unit.ability_container.abilities
+	#var aco = unit.ability_container.abilities
 	if !unit.ability_container.abilities.is_empty():
 		set_selected_ability(unit.ability_container.granted_abilities[0])
 	SignalBus.selected_unit_changed.emit(unit)

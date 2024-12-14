@@ -102,7 +102,7 @@ func try_use_enemy_ability(enemy_unit: Unit) -> bool:
 	
 	# Execute the best action if available
 	if best_enemy_ai_ability != null and enemy_unit.try_spend_ability_points_to_use_ability(best_ability):
-		var testname = best_ability.ui_name
+		#var testname = best_ability.ui_name
 		best_ability.ended.connect(on_ability_complete)
 		enemy_unit.ability_container.activate_one(best_ability, best_enemy_ai_ability.grid_position)
 		return true
