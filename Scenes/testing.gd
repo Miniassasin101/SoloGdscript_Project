@@ -13,7 +13,7 @@ extends Node3D
 func _process(_delta: float) -> void:
 	test_pathfinding()
 	handle_right_mouse_click()
-	test_obstacle_trigger()
+	test_n()
 
 # Testing function to visualize the path when a test key is pressed.
 func test_pathfinding() -> void:
@@ -63,13 +63,10 @@ func handle_right_mouse_click() -> void:
 					pathfinding.update_astar_walkable()
 					print("Grid object at " + hovered_grid_position.to_str() + " is now not walkable.")
 
-func test_obstacle_trigger() -> void:
+func test_n() -> void:
 	if Input.is_action_just_pressed("testkey_n"):
-		print(unit.attribute_map.get_attribute_by_name("health").attribute_name)
-		print(unit.attribute_map.get_attribute_by_name("health").current_buffed_value)
-		print(unit.attribute_map.get_attribute_by_name("size").attribute_name)
-		print(unit.attribute_map.get_attribute_by_name("size").current_buffed_value)
-		apply_effect("size")
+		TurnSystem.instance.start_combat()
+
 
 
 func apply_effect(att_name: String) -> void:

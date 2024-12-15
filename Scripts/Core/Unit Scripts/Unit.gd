@@ -72,7 +72,7 @@ func can_spend_action_points_to_take_action(action: Action) -> bool:
 		return false
 
 func can_spend_ability_points_to_use_ability(ability: Ability) -> bool:
-	var ap_remain: int = attribute_map.get_attribute_by_name("action_points").current_value
+	var ap_remain: int = int(attribute_map.get_attribute_by_name("action_points").current_value)
 	# Replace action points with ability points later
 	if ap_remain >= ability.ap_cost:
 		return true

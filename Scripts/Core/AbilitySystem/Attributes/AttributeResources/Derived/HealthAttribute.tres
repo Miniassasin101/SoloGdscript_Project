@@ -6,7 +6,7 @@
 script = ExtResource("1_p44ra")
 attribute_name = "health"
 minimum_value = 0.0
-maximum_value = 50.0
-current_value = 20.0
+maximum_value = 33.0
+current_value = 33.0
 derived_from = Array[String](["size", "endurance"])
 calculation_type = 1

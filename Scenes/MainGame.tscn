@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=39 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
 [ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/UI_Prefabs/ActionButtonUI.tscn" id="11_jk6uv"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
+[ext_resource type="Script" path="res://Hero_Game/Scenes/CombatSystem.gd" id="16_f3oa4"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
@@ -180,9 +181,6 @@ collision_mask = 0
 hit_from_inside = true
 collide_with_areas = true
 
-[node name="TurnSystem" type="Node" parent="."]
-script = ExtResource("6_rwbm0")
-
 [node name="UnitActionSystem" type="Node" parent="." node_paths=PackedStringArray("mouse_world", "raycast")]
 script = ExtResource("2_td6d6")
 mouse_world = NodePath("../MouseWorld")
@@ -199,10 +197,21 @@ unit_action_system = NodePath("../UnitActionSystem")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0621, -3.90784e-05, 5.99286)
 action_points_max = 3
 
+[node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0621, -3.90784e-05, 5.99286)
+action_points_max = 3
+
 [node name="Unit6" parent="UnitManager" instance=ExtResource("7_tjeks")]
 transform = Transform3D(7.54979e-08, 0, -1, 0, 1, 0, 1, 0, 7.54979e-08, 4.0689, -1.90735e-06, 7.95955)
 action_points_max = 3
 is_enemy = true
+
+[node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
+script = ExtResource("6_rwbm0")
+unit_manager = NodePath("../UnitManager")
+
+[node name="CombatSystem" type="Node" parent="."]
+script = ExtResource("16_f3oa4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(32.7711, -2.64261e-05, 0.046329, 2.63892e-05, 32.7711, 2.57785e-05, -0.046329, -2.57406e-05, 32.7711, 24.867, 0, 26.089)
@@ -293,12 +302,12 @@ offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_vertical = 1
-text = "Action Points: Test"
+text = "Press \"N\" to start combat"
 label_settings = SubResource("LabelSettings_sh5a7")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("end_turn_button", "end_turn_container", "turn_counter_label", "turn_system", "enemy_turn_container")]
+[node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("end_turn_button", "end_turn_container", "round_counter_label", "turn_system", "enemy_turn_container")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -309,7 +318,7 @@ mouse_filter = 2
 script = ExtResource("12_m6vvv")
 end_turn_button = NodePath("EndTurnContainer/MarginContainer/EndTurnButton")
 end_turn_container = NodePath("EndTurnContainer")
-turn_counter_label = NodePath("TurnCountContainer/MarginContainer/TurnCounterLabel")
+round_counter_label = NodePath("TurnCountContainer/MarginContainer/TurnCounterLabel")
 turn_system = NodePath("../../TurnSystem")
 enemy_turn_container = NodePath("EnemyTurnContainer")
 metadata/_edit_use_anchors_ = true

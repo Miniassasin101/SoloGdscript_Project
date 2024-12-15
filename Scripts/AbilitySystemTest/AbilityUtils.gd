@@ -8,7 +8,14 @@ func get_ability_from_container():
 func get_ability_from_unit():
 	pass
 
-
+## This function recieves a die type (Ex: 20 for a d20) and the number that need to be rolled, returns the sum of the results.
+func roll(die_type: int = 100, count: int = 1) -> int:
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var total = 0
+	for i in range(count):
+		total += rng.randi_range(1, die_type)
+	return total
 
 ## Calculation logic based on `calculation_type`. A value of '-1' represents an error.
 func calculate(derived_from: Array[String], calculation_type: int, specs: Dictionary) -> int:
@@ -22,7 +29,7 @@ func calculate(derived_from: Array[String], calculation_type: int, specs: Dictio
 			var total = 0
 			for key in derived_from:
 				if specs.has(key):
-					total += specs[key].current_value
+					total += int(specs[key])
 				else:
 					push_error("Key '%s' in derived_from not found in specs dictionary." % key)
 			return total

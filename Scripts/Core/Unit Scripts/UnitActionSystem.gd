@@ -50,7 +50,7 @@ func _process(_delta: float) -> void:
 		return
 
 	if Input.is_action_just_pressed("left_mouse"):
-		if !TurnSystem.instance.is_player_turn:
+		if !TurnSystem.instance.is_player_turn or !TurnSystem.instance.combat_started:
 			return
 		# Attempt to select a unit
 		if try_handle_unit_selection():
@@ -83,6 +83,8 @@ func try_handle_unit_selection() -> bool:
 		if unit is Unit and unit != selected_unit:
 			if unit.is_enemy:
 				# Clicked on an enemy
+				return false
+			elif unit != TurnSystem.instance.current_unit_turn:
 				return false
 			# Select the unit
 			set_selected_unit(unit)
