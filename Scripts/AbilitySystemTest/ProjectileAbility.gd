@@ -2,7 +2,9 @@
 class_name ProjectileAbility extends Ability
 
 @export_group("Attributes")
-@export var damage: int = 5
+@export var damage: int = 6
+@export var die_number: int = 1
+@export var flat_damage: int = 0
 @export var attack_range: int = 5
 @export var ap_cost: int = 1
 
@@ -14,6 +16,7 @@ var total_spin_amount: float = 0.0
 var event: ActivationEvent = null
 var target_position: GridPosition = null
 var unit: Unit
+var rolled_damage: int = 0
 
 
 
@@ -27,6 +30,15 @@ func try_activate(_event: ActivationEvent) -> void:
 	if not unit or not target_position:
 		return
 	
+	await CombatSystem.instance.declare_action(self, event)
+	if !can_activate(event):
+		print_debug("Action has been thwarted")
+		return
+	# NOTE await doesnt do anything right now but later the coroutine will prompt user or ai decisions
+	# on things like special effects.
+	rolled_damage = await CombatSystem.instance.attack_unit(self, event)
+	
+
 	rotate_unit_towards_target_enemy(event)
 	# creating a new [GameplayEffect] node
 
@@ -51,6 +63,7 @@ func shoot_projectile() -> void:
 	assert(unit.shoot_point != null)
 	
 	var projectile_instance: Projectile = projectile.instantiate()
+	# Will need to dynamically adjust shoot height later
 	var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
 	projectile_instance.setup(target_shoot_at_position)
 	

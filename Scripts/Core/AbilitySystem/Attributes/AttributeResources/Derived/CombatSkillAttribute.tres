@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1_0xeyd")
-attribute_name = "health"
+attribute_name = "combat_skill"
 minimum_value = 0.0
 maximum_value = 50.0
 current_value = 20.0
-derived_from = Array[String](["size", "endurance"])
+derived_from = Array[String](["power", "dexterity"])
 calculation_type = 1

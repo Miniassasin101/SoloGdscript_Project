@@ -81,7 +81,6 @@ func start_round() -> void:
 		UnitActionSystem.instance.set_selected_unit(current_unit_turn)
 	
 func on_book_keeping_ended() -> void:
-	
 	print_debug("on book keeping ended")
 	start_turn()
 

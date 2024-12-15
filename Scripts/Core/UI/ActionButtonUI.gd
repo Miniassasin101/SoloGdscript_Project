@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func set_base_ability(_ability: Ability) -> void:
 	button_text.set_text(_ability.ui_name.to_upper())
-	print_debug(_ability.ui_name.to_upper())
+	#print_debug(_ability.ui_name.to_upper())
 	ability = _ability
 
 func _pressed() -> void:

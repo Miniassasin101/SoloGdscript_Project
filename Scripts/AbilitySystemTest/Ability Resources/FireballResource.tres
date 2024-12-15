@@ -6,6 +6,8 @@
 [resource]
 script = ExtResource("2_csomy")
 damage = 5
+die_number = 1
+flat_damage = 1
 attack_range = 5
 ap_cost = 1
 projectile = ExtResource("1_8y4qy")
@@ -15,6 +17,7 @@ cooldown_continuos = false
 grant_automatic = true
 grant_tags = Array[String]([])
 grant_tags_required = Array[String]([])
+tags_type = Array[String](["attack.single"])
 tags_activation = Array[String]([])
 tags_activation_required = Array[String]([])
 tags_block = Array[String]([])

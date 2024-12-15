@@ -8,6 +8,23 @@ func get_ability_from_container():
 func get_ability_from_unit():
 	pass
 
+func check_success_level(skill: int, roll: int) -> int:
+	# Check for critical failure
+	if roll == 99 or roll == 100:
+		return -1
+	
+	# Check for critical success
+	if roll <= ceil(skill * 0.1):  # 10% of skill value rounded up
+		return 2
+	
+	# Check for regular success
+	if roll <= skill:
+		return 1
+	
+	# Otherwise, it's a failure
+	return 0
+
+
 ## This function recieves a die type (Ex: 20 for a d20) and the number that need to be rolled, returns the sum of the results.
 func roll(die_type: int = 100, count: int = 1) -> int:
 	var rng = RandomNumberGenerator.new()

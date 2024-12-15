@@ -17,6 +17,7 @@ cooldown_continuos = false
 grant_automatic = true
 grant_tags = Array[String]([])
 grant_tags_required = Array[String]([])
+tags_type = Array[String](["move"])
 tags_activation = Array[String]([])
 tags_activation_required = Array[String]([])
 tags_block = Array[String]([])
