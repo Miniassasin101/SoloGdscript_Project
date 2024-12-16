@@ -114,7 +114,7 @@ func can_activate(_event: ActivationEvent) -> bool:
 
 
 ## Gets a list of valid grid positions for movement.
-func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array:
+func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
 	if _event.character.get_grid_position() == null:
 		return []
 	var self_unit = _event.character.get_grid_position()

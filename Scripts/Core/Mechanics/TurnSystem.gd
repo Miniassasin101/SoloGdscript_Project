@@ -32,7 +32,7 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
-	SignalBus.connect("end_turn", end_turn)
+	SignalBus.connect("end_turn", next_turn)
 	SignalBus.connect("on_book_keeping_ended", on_book_keeping_ended)
 	setup_initiative()
 
@@ -83,7 +83,7 @@ func start_round() -> void:
 	is_player_turn = !current_unit_turn.is_enemy
 	CombatSystem.instance.book_keeping()
 	SignalBus.on_turn_changed.emit()
-	if is_player_turn:
+	if is_player_turn or LevelDebug.instance.control_enemy_debug:
 		UnitActionSystem.instance.set_selected_unit(current_unit_turn)
 
 	
@@ -103,6 +103,7 @@ func next_turn() -> void:
 			# Start new cycle
 			turn_number = 1
 			current_cycle += 1
+			print_debug("Current Cycle: ", current_cycle)
 			reset_cycle_actions()
 		else:
 			# End of round
@@ -118,6 +119,22 @@ func next_turn() -> void:
 		UnitActionSystem.instance.set_selected_unit(current_unit_turn)
 		
 	start_turn()
+
+func end_turn() -> void:
+	if turn_number >= initiative_order.size():
+		# End of cycle: check if a new cycle is needed
+		if any_unit_has_ap_left():
+			turn_number = 1
+			current_cycle += 1
+			print_debug("Current Cycle: ", current_cycle)
+			reset_cycle_actions()
+			start_turn()
+			return
+		else:
+			end_round()
+			return
+	next_turn()
+
 
 func any_unit_has_ap_left() -> bool:
 	for u in initiative_order:
@@ -138,19 +155,6 @@ func reset_cycle_actions():
 	UnitActionSystem.instance.reset_unit_cycle_actions(current_unit_turn)
 
 
-func end_turn() -> void:
-	if turn_number >= initiative_order.size():
-		# End of cycle: check if a new cycle is needed
-		if any_unit_has_ap_left():
-			turn_number = 1
-			current_cycle += 1
-			reset_cycle_actions()
-			start_turn()
-			return
-		else:
-			end_round()
-			return
-	next_turn()
 
 
 

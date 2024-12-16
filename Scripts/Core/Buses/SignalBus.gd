@@ -11,7 +11,7 @@ signal selected_ability_changed(ability: Ability)
 
 signal update_grid_visual
 
-signal ability_complete
+signal ability_complete(ability: Ability)
 
 signal ability_started
 

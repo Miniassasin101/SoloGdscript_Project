@@ -1,11 +1,10 @@
 @tool
-class_name ParryAbility extends Ability
+class_name DitherAbility extends Ability
 
 ## Example tooltip comment, put directly above the line(s) they reference
 
 @export_group("Attributes")
-@export var ap_cost: int = 1
-
+@export var ap_cost: int = 0
 
 var timer: float = 0.0  ## Timer for adding delay if needed
 var start_timer: float = 0.1
@@ -26,16 +25,16 @@ func try_activate(_event: ActivationEvent) -> void:
 			push_error("no unit: " + event.to_string())
 			end_ability(event)
 			return
-	
 
+	# Animation stand-in
 	var timer = Timer.new()
 	
 	timer.one_shot = true
 	timer.autostart = true
-	timer.wait_time = 1.0
+	timer.wait_time = 0.5
 	event.character.add_child(timer)
 	await timer.timeout
-	#await unit.animator.movement_completed
+	# FIXME: add an (await unit.animator.dither flourish animation)
 
 	if can_end(event):
 		end_ability(event)
@@ -49,23 +48,17 @@ func try_activate(_event: ActivationEvent) -> void:
 func can_activate(_event: ActivationEvent) -> bool:
 	if !super.can_activate(_event):
 		return false
-	#Add logic here to check to see if the user can parry the attack, given data like:
-	#weapon has attacking trait. user is stunned. User is facing the wrong way, ect.
-	
-	#var valid_grid_position_list = get_valid_ability_target_grid_position_list(_event)
+	# Should always be able to dither
 
 	return true
 
 
-## Gets a list of valid grid positions for movement.
-func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
-	return []
 
 
 
 # Gets the best AI action for a specified grid position.
 func get_enemy_ai_ability(_event: ActivationEvent) -> EnemyAIAction:
 	var enemy_ai_ability: EnemyAIAction = EnemyAIAction.new()
-	enemy_ai_ability.action_value = 30
+	enemy_ai_ability.action_value = 0
 	enemy_ai_ability.grid_position = _event.target_grid_position
 	return enemy_ai_ability

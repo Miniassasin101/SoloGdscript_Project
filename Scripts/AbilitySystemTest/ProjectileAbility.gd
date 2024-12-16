@@ -36,7 +36,7 @@ func try_activate(_event: ActivationEvent) -> void:
 		return
 	# NOTE await doesnt do anything right now but later the coroutine will prompt user or ai decisions
 	# on things like special effects.
-	rolled_damage = await CombatSystem.instance.attack_unit(self, event)
+	event = await CombatSystem.instance.attack_unit(self, event)
 	
 
 	rotate_unit_towards_target_enemy(event)
@@ -80,8 +80,8 @@ func apply_effect() -> void:
 	var health_effect = AttributeEffect.new()
 	
 	health_effect.attribute_name = "health"
-	health_effect.minimum_value = -damage
-	health_effect.maximum_value = -damage
+	health_effect.minimum_value = -event.rolled_damage
+	health_effect.maximum_value = -event.rolled_damage
 
 	
 	effect.attributes_affected.append(health_effect)

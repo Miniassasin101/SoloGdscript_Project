@@ -65,7 +65,7 @@ func set_state_waiting() -> void:
 	state_timer = 0.0  # Reset state timer
 
 
-func on_ability_complete() -> void:
+func on_ability_complete(ability: Ability) -> void:
 	turn_finished = true
 	state = State.TakingTurn  # After ability completes, move to TakingTurn state
 	state_timer = 0.0  # Reset state timer

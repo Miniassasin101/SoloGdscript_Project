@@ -54,7 +54,7 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("left_mouse"):
 		if !TurnSystem.instance.is_player_turn or !TurnSystem.instance.combat_started:
 			#return
-			print_debug("Temporary Fix")
+			print_debug("Temporary Fix: is_action_just_pressed(left_mouse)")
 		# Attempt to select a unit
 		if try_handle_unit_selection():
 			return
@@ -102,7 +102,7 @@ func try_handle_unit_selection() -> bool:
 				# Clicked on an enemy
 				print_debug("Temporary debug fix to allow me to control enemy units")
 				#return false
-			elif unit != TurnSystem.instance.current_unit_turn:
+			if unit != TurnSystem.instance.current_unit_turn:
 				return false
 			# Select the unit
 			set_selected_unit(unit)
@@ -120,7 +120,7 @@ func reset_unit_cycle_actions(unit: Unit) -> void:
 func set_busy() -> void:
 	is_busy = true
 
-func clear_busy() -> void:
+func clear_busy(ability: Ability) -> void:
 	#print("clearbusy")
 	SignalBus.update_grid_visual.emit()
 	is_busy = false

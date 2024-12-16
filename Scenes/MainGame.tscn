@@ -289,6 +289,7 @@ theme_override_constants/separation = 12
 alignment = 1
 
 [node name="ActionButtonUI" parent="UILayer/UnitActionSystemUI/ActionButtonsContainer" instance=ExtResource("11_jk6uv")]
+visible = false
 layout_mode = 2
 
 [node name="ReactionButtonsContainer" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]

@@ -7,7 +7,7 @@ signal target_hit
 @export var timer: float = 3.0  # Duration in seconds for how long the projectile will travel
 @export var trail_3d: Trail3D
 @export var fireball_hit_vfx: PackedScene
-
+var miss: bool = false
 var target_position: Vector3 
 
 func setup(_target_position: Vector3) -> void:
@@ -19,9 +19,10 @@ func setup(_target_position: Vector3) -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if timer > 0:
-		check_collision(delta)
+		if !miss:
+			check_collision(delta)
 	else:
-		queue_free()  # Queue the projectile for deletion after the timer runs out
+		on_hit_target()  # Queue the projectile for deletion after the timer runs out
 
 func trigger_projectile():
 	pass
@@ -38,7 +39,6 @@ func check_collision(delta: float) -> void:
 	var distance_before_moving = global_transform.origin.distance_to(target_position)
 	move_projectile(delta)
 	var distance_after_moving = (global_transform.origin).distance_to(target_position)
-
 	if distance_before_moving < distance_after_moving:
 		on_hit_target()
 

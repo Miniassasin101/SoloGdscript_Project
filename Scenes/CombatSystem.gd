@@ -26,7 +26,7 @@ func interrupt_turn(unit: Unit) -> void:
 func declare_action(action: Ability, event: ActivationEvent) -> void:
 	# Possibly prompt others if they can react to the declaration itself.
 	await check_declaration_reaction_queue(action, event)
-	print("Action Declared")
+	print_debug("Action Declared: ", action.ui_name)
 
 func check_declaration_reaction_queue(action: Ability, event: ActivationEvent) -> void:
 	# This is where you could prompt units who have "hold actions" or special abilities 
@@ -54,7 +54,11 @@ func reaction(reacting_unit: Unit) -> int:
 		return 0
 
 	reacting_unit.ability_container.activate_one(ability)
-	await SignalBus.ability_complete
+	var reacted_ability: Ability = await SignalBus.ability_complete
+	if reacted_ability.ui_name == "Dither":
+		print_debug(reacting_unit._to_string(), " Dithered")
+		return 0
+	
 
 	# After activation, we assume reaction is a skill roll. In Mythras:
 	# For example, if parry: skill = combat_skill
@@ -65,7 +69,7 @@ func reaction(reacting_unit: Unit) -> int:
 	var defender_success_level = AbilityUtils.check_success_level(defend_skill_value, defending_roll)
 	return defender_success_level
 
-func attack_unit(action: Ability, event: ActivationEvent) -> int:
+func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var attacking_unit: Unit = event.character
 	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 
@@ -74,13 +78,13 @@ func attack_unit(action: Ability, event: ActivationEvent) -> int:
 	print_debug("Attacker Roll: ", attacker_roll)
 
 	var attacker_success_level: int = AbilityUtils.check_success_level(attacker_combat_skill, attacker_roll)
+	var ret_event: ActivationEvent = event
 	if LevelDebug.instance.attacker_success_debug == true:
 		attacker_success_level = 1
-
 	# If attacker fails outright:
 	if attacker_success_level <= 0:
-		print_debug("Attacker failed, no reaction needed.")
-		return 0
+		print_debug("Attacker missed.")
+		ret_event.miss = true
 
 	# Attacker succeeded, prompt defender for a reaction
 	var defender_success_level: int = 0
@@ -96,21 +100,24 @@ func attack_unit(action: Ability, event: ActivationEvent) -> int:
 		if defender_success_level >= attacker_success_level:
 			parry_success = true
 			parrying_weapon_size = 0#target_unit.attribute_map.get_attribute_by_name("weapon_size").current_buffed_value
+	if !defender_wants_reaction:
+		return ret_event
+
 
 	# Determine success differential
 	var differential: int = attacker_success_level - defender_success_level
 	if differential > 0:
 		print_debug("Attacker wins. Applying damage. Also prompt special effects")
-		var damage: int = roll_damage(action, event, target_unit, parry_success, parrying_weapon_size, attack_weapon_size)
-		return damage
+		ret_event.rolled_damage = roll_damage(action, event, target_unit, parry_success, parrying_weapon_size, attack_weapon_size)
+		return ret_event
 	elif differential == 0:
 		print_debug("It's a tie - no special effects.")
-		var damage: int = roll_damage(action, event, target_unit, parry_success, parrying_weapon_size, attack_weapon_size)
-		return damage
+		ret_event.rolled_damage = roll_damage(action, event, target_unit, parry_success, parrying_weapon_size, attack_weapon_size)
+		return ret_event
 	else:
 		print_debug("Defender wins. Prompt Special Effects")
-		var damage: int = roll_damage(action, event, target_unit, parry_success, parrying_weapon_size, attack_weapon_size)
-		return damage
+		ret_event.rolled_damage = roll_damage(action, event, target_unit, parry_success, parrying_weapon_size, attack_weapon_size)
+		return ret_event
 
 
 # FIXME: 
