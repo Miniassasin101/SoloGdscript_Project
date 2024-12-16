@@ -16,4 +16,7 @@ func set_base_ability(_ability: Ability) -> void:
 	ability = _ability
 
 func _pressed() -> void:
+	if ability.tags_type.has("reaction"):
+		SignalBus.reaction_selected.emit(ability)
+		
 	SignalBus.selected_ability_changed.emit(ability)

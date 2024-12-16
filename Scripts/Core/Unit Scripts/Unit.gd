@@ -11,6 +11,7 @@ var attribute_map: GameplayAttributeMap
 var unit_manager: UnitManager = get_parent()
 # The grid position of this unit.
 var grid_position: GridPosition
+var is_holding: bool = false
 
 # Reference to the action array node attached to this unit.
 @onready var action_array: Array[Action]
@@ -43,6 +44,7 @@ func _ready() -> void:
 			attribute_map = child
 	attribute_map.attribute_changed.connect(on_attribute_changed)
 	SignalBus.on_turn_changed.connect(on_turn_changed)
+	SignalBus.on_round_changed.connect(on_round_changed)
 	SignalBus.add_unit.emit(self)
 
 func _process(_delta: float) -> void:
@@ -118,6 +120,11 @@ func on_turn_changed() -> void:
 		
 		SignalBus.emit_signal("action_points_changed")
 		SignalBus.emit_signal("update_stat_bars")
+
+func on_round_changed() -> void:
+	attribute_map.get_attribute_by_name("action_points").current_value = attribute_map.get_attribute_by_name("action_points").maximum_value
+	SignalBus.emit_signal("action_points_changed")
+	SignalBus.emit_signal("update_stat_bars")
 
 # Setters and Getters
 func _to_string() -> String:

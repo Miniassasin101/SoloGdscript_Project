@@ -84,7 +84,8 @@ size = Vector2(2, 2)
 
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
-end_turn_debug = true
+control_enemy_debug = true
+attacker_success_debug = true
 grid_dimensions = Vector2(20, 10)
 
 [node name="Lighting" type="Node3D" parent="."]
@@ -200,6 +201,7 @@ action_points_max = 3
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0621, -3.90784e-05, 5.99286)
 action_points_max = 3
+is_enemy = true
 
 [node name="Unit6" parent="UnitManager" instance=ExtResource("7_tjeks")]
 transform = Transform3D(7.54979e-08, 0, -1, 0, 1, 0, 1, 0, 7.54979e-08, 4.0689, -1.90735e-06, 7.95955)
@@ -249,7 +251,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_mh8jn")
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
-[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("action_button_container", "ability_points_text")]
+[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("action_button_container", "reaction_button_container", "ability_points_text")]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -266,6 +268,7 @@ mouse_filter = 2
 script = ExtResource("10_nqefp")
 action_button_prefab = ExtResource("11_jk6uv")
 action_button_container = NodePath("ActionButtonsContainer")
+reaction_button_container = NodePath("ReactionButtonsContainer")
 ability_points_text = NodePath("AbilityPointsLabel")
 metadata/_edit_use_anchors_ = true
 
@@ -286,6 +289,26 @@ theme_override_constants/separation = 12
 alignment = 1
 
 [node name="ActionButtonUI" parent="UILayer/UnitActionSystemUI/ActionButtonsContainer" instance=ExtResource("11_jk6uv")]
+layout_mode = 2
+
+[node name="ReactionButtonsContainer" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -28.0
+offset_right = 32.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="ReactionButtonUI" parent="UILayer/UnitActionSystemUI/ReactionButtonsContainer" instance=ExtResource("11_jk6uv")]
 layout_mode = 2
 
 [node name="AbilityPointsLabel" type="Label" parent="UILayer/UnitActionSystemUI"]

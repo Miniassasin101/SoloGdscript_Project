@@ -4,6 +4,9 @@ extends Node
 @export var unit_manager: UnitManager
 var round_number: int = 1
 var turn_number: int = 1
+var current_cycle: int = 1
+## Tracks who has taken a proactive action this cycle.
+var actions_per_cycle: Dictionary = {}
 var initiative_order: Array[Unit] = []
 var current_unit_turn: Unit = null:
 	get:
@@ -73,12 +76,16 @@ func start_combat() -> void:
 	start_round()
 
 func start_round() -> void:
+	current_cycle = 1
+	turn_number = 1
+	reset_cycle_actions()
 	current_unit_turn = initiative_order[0]
 	is_player_turn = !current_unit_turn.is_enemy
 	CombatSystem.instance.book_keeping()
 	SignalBus.on_turn_changed.emit()
 	if is_player_turn:
 		UnitActionSystem.instance.set_selected_unit(current_unit_turn)
+
 	
 func on_book_keeping_ended() -> void:
 	print_debug("on book keeping ended")
@@ -90,22 +97,61 @@ func start_turn() -> void:
 
 func next_turn() -> void:
 	turn_number += 1
+	if turn_number > initiative_order.size():
+		# End of cycle
+		if any_unit_has_ap_left():
+			# Start new cycle
+			turn_number = 1
+			current_cycle += 1
+			reset_cycle_actions()
+		else:
+			# End of round
+			end_round()
+			return
+	
 	current_unit_turn = initiative_order[turn_number - 1]
-	prints("Turn Number:", turn_number, "/n", "Current Unit:", current_unit_turn)
 	is_player_turn = !current_unit_turn.is_enemy
 	SignalBus.on_turn_changed.emit()
-	if is_player_turn:
+
+	# Set the selected unit if it's a player turn
+	if is_player_turn or LevelDebug.instance.control_enemy_debug:
 		UnitActionSystem.instance.set_selected_unit(current_unit_turn)
+		
 	start_turn()
 
+func any_unit_has_ap_left() -> bool:
+	for u in initiative_order:
+		if u.attribute_map.get_attribute_by_name("action_points").current_buffed_value > 0:
+			return true
+	return false
+
+func has_taken_proactive_action_this_cycle(unit: Unit) -> bool:
+	return actions_per_cycle.has(unit) and actions_per_cycle[unit] == true
+
+func mark_proactive_action_taken(unit: Unit) -> void:
+	actions_per_cycle[unit] = true
+
+
+
+func reset_cycle_actions():
+	actions_per_cycle.clear()
+	UnitActionSystem.instance.reset_unit_cycle_actions(current_unit_turn)
+
+
 func end_turn() -> void:
-	#round_number += 1
-	#is_player_turn = !is_player_turn
 	if turn_number >= initiative_order.size():
-		end_round()
-		return
+		# End of cycle: check if a new cycle is needed
+		if any_unit_has_ap_left():
+			turn_number = 1
+			current_cycle += 1
+			reset_cycle_actions()
+			start_turn()
+			return
+		else:
+			end_round()
+			return
 	next_turn()
-	
+
 
 
 func end_round() -> void:

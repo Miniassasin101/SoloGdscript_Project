@@ -23,10 +23,11 @@ func on_turn_changed() -> void:
 	update_turn_label()
 
 func update_turn_label() -> void:
-	round_counter_label.text = "Turn " + str(turn_system.round_number)
+	round_counter_label.text = "Round " + str(turn_system.round_number)
 
 func update_enemy_turn_visual() -> void:
 	var is_player_turn: bool = TurnSystem.instance.is_player_turn
-	enemy_turn_container.visible = !is_player_turn
+	# FIXME: Temporary debugging thing to allow me to control enemy units
+	enemy_turn_container.visible = false#!is_player_turn
 	if !LevelDebug.instance.end_turn_debug:
 		end_turn_container.visible = is_player_turn

@@ -21,7 +21,9 @@ extends Node
 # Reference to the active Camera3D
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
 
-var is_busy: bool
+var is_busy: bool = false
+var proactive_action_taken: bool = false
+
 
 static var instance: UnitActionSystem = null
 
@@ -51,7 +53,8 @@ func _process(_delta: float) -> void:
 
 	if Input.is_action_just_pressed("left_mouse"):
 		if !TurnSystem.instance.is_player_turn or !TurnSystem.instance.combat_started:
-			return
+			#return
+			print_debug("Temporary Fix")
 		# Attempt to select a unit
 		if try_handle_unit_selection():
 			return
@@ -60,15 +63,29 @@ func _process(_delta: float) -> void:
 
 func handle_selected_ability() -> void:
 	if selected_unit and selected_ability:
+		# Check if it's a proactive action (assuming selected_ability is always proactive if used during player's turn)
+		if TurnSystem.instance.is_player_turn or LevelDebug.instance.control_enemy_debug:
+			# Check if we've already taken a proactive action this cycle
+			if TurnSystem.instance.has_taken_proactive_action_this_cycle(selected_unit):
+				print_debug("You have already taken a proactive action this cycle!")
+				return
+
+			
 		var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
 		if mouse_grid_position:
 			var grid_position: GridPosition = LevelGrid.get_grid_position(mouse_grid_position)
 			if selected_unit.ability_container.can_activate_at_position(selected_ability, grid_position):
-				# Add action points logic back here later
+				# Attempt to spend AP
 				if selected_unit.try_spend_ability_points_to_use_ability(selected_ability):
+					# Activate ability
 					selected_unit.ability_container.activate_one(selected_ability, grid_position)
 					set_busy()
 					SignalBus.emit_signal("ability_started")
+					
+					# Mark that we have taken a proactive action this cycle
+					TurnSystem.instance.mark_proactive_action_taken(selected_unit)
+
+
 
 
 
@@ -83,7 +100,8 @@ func try_handle_unit_selection() -> bool:
 		if unit is Unit and unit != selected_unit:
 			if unit.is_enemy:
 				# Clicked on an enemy
-				return false
+				print_debug("Temporary debug fix to allow me to control enemy units")
+				#return false
 			elif unit != TurnSystem.instance.current_unit_turn:
 				return false
 			# Select the unit
@@ -93,6 +111,10 @@ func try_handle_unit_selection() -> bool:
 			return false
 	else:
 		return false
+
+func reset_unit_cycle_actions(unit: Unit) -> void:
+	if unit == selected_unit:
+		proactive_action_taken = false
 
 
 func set_busy() -> void:
