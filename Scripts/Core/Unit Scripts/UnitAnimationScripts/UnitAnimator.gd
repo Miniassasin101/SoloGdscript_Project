@@ -150,7 +150,7 @@ func on_shoot(target_unit_in: Unit, _shooting_unit: Unit, damage: int) -> void:
 		# Set the fireball's initial position
 		fireball_instance.global_transform.origin = shoot_point.global_transform.origin
 		fireball_instance.target_hit.connect(trigger_damage)
-		fireball_instance.setup(target_unit_shoot_at_position)
+		fireball_instance.setup(target_unit_shoot_at_position, true)
 		target_unit = target_unit_in
 		stored_damage = damage
 

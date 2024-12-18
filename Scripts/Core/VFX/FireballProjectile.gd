@@ -10,8 +10,11 @@ signal target_hit
 var miss: bool = false
 var target_position: Vector3 
 
-func setup(_target_position: Vector3) -> void:
+func setup(_target_position: Vector3, _miss: bool) -> void:
 	target_position = _target_position
+	miss = _miss
+	
+	
 
 
 	
@@ -19,8 +22,7 @@ func setup(_target_position: Vector3) -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if timer > 0:
-		if !miss:
-			check_collision(delta)
+		check_collision(delta)
 	else:
 		on_hit_target()  # Queue the projectile for deletion after the timer runs out
 
@@ -38,6 +40,7 @@ func move_projectile(delta: float) -> void:
 func check_collision(delta: float) -> void:
 	var distance_before_moving = global_transform.origin.distance_to(target_position)
 	move_projectile(delta)
+
 	var distance_after_moving = (global_transform.origin).distance_to(target_position)
 	if distance_before_moving < distance_after_moving:
 		on_hit_target()
@@ -52,7 +55,7 @@ func on_hit_target() -> void:
 	remove_trail_effect()
 
 	# Spawn the fireball hit effect
-	if fireball_hit_vfx:
+	if fireball_hit_vfx and !miss:
 		spawn_fireball_effect()
 
 	# Queue the projectile for deletion

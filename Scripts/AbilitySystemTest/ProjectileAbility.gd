@@ -34,9 +34,6 @@ func try_activate(_event: ActivationEvent) -> void:
 	if !can_activate(event):
 		print_debug("Action has been thwarted")
 		return
-	# NOTE await doesnt do anything right now but later the coroutine will prompt user or ai decisions
-	# on things like special effects.
-	event = await CombatSystem.instance.attack_unit(self, event)
 	
 
 	rotate_unit_towards_target_enemy(event)
@@ -55,6 +52,9 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 	timer.autostart = true
 	timer.wait_time = 0.5
 	timer.timeout.connect(shoot_projectile)
+	# NOTE await doesnt do anything right now but later the coroutine will prompt user or ai decisions
+	# on things like special effects.
+	event = await CombatSystem.instance.attack_unit(self, event)
 	event.character.add_child(timer)
 	
 	
@@ -65,7 +65,7 @@ func shoot_projectile() -> void:
 	var projectile_instance: Projectile = projectile.instantiate()
 	# Will need to dynamically adjust shoot height later
 	var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
-	projectile_instance.setup(target_shoot_at_position)
+	projectile_instance.setup(target_shoot_at_position, false) #Add miss logic later
 	
 	event.character.add_child(projectile_instance)
 	projectile_instance.global_transform.origin = unit.shoot_point.global_transform.origin

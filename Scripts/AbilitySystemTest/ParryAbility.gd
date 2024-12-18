@@ -34,9 +34,21 @@ func try_activate(_event: ActivationEvent) -> void:
 	timer.autostart = true
 	timer.wait_time = 1.0
 	event.character.add_child(timer)
-	await timer.timeout
+	#await timer.timeout
 	#await unit.animator.movement_completed
+	rotate_unit_towards_target_enemy(event)
+func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
+	var animator: UnitAnimator = unit.animator
+	animator.rotate_unit_towards_target_position(event.target_grid_position)
+	await animator.rotation_completed
+	var timer = Timer.new()
+	
+	timer.one_shot = true
+	timer.autostart = true
+	timer.wait_time = 0.5
 
+	event.character.add_child(timer)
+	await timer.timeout
 	if can_end(event):
 		end_ability(event)
 

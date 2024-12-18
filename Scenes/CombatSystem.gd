@@ -37,7 +37,7 @@ func check_declaration_reaction_queue(action: Ability, event: ActivationEvent) -
 			await SignalBus.continue_turn
 	# Additional logic can be added here per Mythras optional rules.
 
-func reaction(reacting_unit: Unit) -> int:
+func reaction(reacting_unit: Unit, attacking_unit: Unit) -> int:
 	# Prompt UI or AI to choose a reaction ability (e.g., a parry, an evade).
 	SignalBus.on_player_reaction.emit(reacting_unit)
 	var ability: Ability = await SignalBus.reaction_selected
@@ -53,7 +53,7 @@ func reaction(reacting_unit: Unit) -> int:
 	if !reacting_unit.try_spend_ability_points_to_use_ability(ability):
 		return 0
 
-	reacting_unit.ability_container.activate_one(ability)
+	reacting_unit.ability_container.activate_one(ability, attacking_unit.get_grid_position())
 	var reacted_ability: Ability = await SignalBus.ability_complete
 	if reacted_ability.ui_name == "Dither":
 		print_debug(reacting_unit._to_string(), " Dithered")
@@ -94,7 +94,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var attack_weapon_size = 0 #event.attribute_map.get_attribute_by_name("weapon_size").current_buffed_value
 
 	if defender_wants_reaction:
-		defender_success_level = await reaction(target_unit)
+		defender_success_level = await reaction(target_unit, attacking_unit)
 
 		# If defender wins, determine parry effectiveness
 		if defender_success_level >= attacker_success_level:
