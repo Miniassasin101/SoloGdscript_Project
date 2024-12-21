@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="AttributesTable" load_steps=20 format=3 uid="uid://bqwjl5qldj4b3"]
+
+[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="1_1w6l2"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/Attributes/AttributesTable.gd" id="2_cuele"]
+[ext_resource type="Resource" uid="uid://b4cltjme3q4uh" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/SizeAttribute.tres" id="2_p3a7e"]
+[ext_resource type="Resource" uid="uid://ctkldarvpfe18" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/EnduranceAttribute.tres" id="3_h3ht5"]
+[ext_resource type="Resource" uid="uid://d3uqoh4pmuljd" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/PowerAttribute.tres" id="4_msg3r"]
+[ext_resource type="Resource" uid="uid://lwvvfaivys7c" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/MindAttribute.tres" id="5_oeu6c"]
+[ext_resource type="Resource" uid="uid://b5bfbjeaatofm" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/WillAttribute.tres" id="6_co132"]
+[ext_resource type="Resource" uid="uid://cmi2ppcs6qo5j" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/DexterityAttribute.tres" id="7_gxddd"]
+[ext_resource type="Resource" uid="uid://dg56ydxgon6r2" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/MovementRateAttribute.tres" id="8_cfmxu"]
+[ext_resource type="Resource" uid="uid://dcehp7j7jdea6" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/PresenceAttribute.tres" id="8_u6uov"]
+[ext_resource type="Resource" uid="uid://c3sphq6y72h38" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables/ActionPointsAttribute.tres" id="10_gqpcg"]
+[ext_resource type="Resource" uid="uid://bdvtscqbo08no" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/CombatSkillAttribute.tres" id="11_4775x"]
+[ext_resource type="Resource" uid="uid://cuoutloeyr4rk" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/EvadeSkillAttribute.tres" id="12_plnat"]
+[ext_resource type="Resource" uid="uid://dhycuxfmfj34a" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Derived/HealthAttribute.tres" id="13_60mvg"]
+[ext_resource type="Resource" uid="uid://dxsb2kexd664a" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Derived/InitiativeBonusAttribute.tres" id="14_0p8hf"]
+[ext_resource type="Resource" uid="uid://bcsymcrsnt8dg" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables/DamageModifierAttribute.tres" id="15_3jcos"]
+[ext_resource type="Resource" uid="uid://b1835bsxed8bt" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables/ExperienceModifierAttribute.tres" id="16_mgy6l"]
+[ext_resource type="Resource" uid="uid://ctx1x6455nyse" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables/HealingRateAttribute.tres" id="17_ubpf5"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/HitLocationsAttribute.gd" id="18_medj0"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("2_cuele")
+attributes = Array[ExtResource("1_1w6l2")]([ExtResource("2_p3a7e"), ExtResource("3_h3ht5"), ExtResource("4_msg3r"), ExtResource("7_gxddd"), ExtResource("5_oeu6c"), ExtResource("6_co132"), ExtResource("8_u6uov"), ExtResource("8_cfmxu"), ExtResource("10_gqpcg"), ExtResource("11_4775x"), ExtResource("12_plnat"), ExtResource("13_60mvg"), ExtResource("14_0p8hf"), ExtResource("15_3jcos"), ExtResource("16_mgy6l"), ExtResource("17_ubpf5")])
+hit_locations = Array[ExtResource("18_medj0")]([])

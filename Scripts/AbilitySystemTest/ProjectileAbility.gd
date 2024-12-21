@@ -83,8 +83,16 @@ func apply_effect() -> void:
 	health_effect.minimum_value = -event.rolled_damage
 	health_effect.maximum_value = -event.rolled_damage
 
+	var part_effect = AttributeEffect.new()
+	
+	part_effect.attribute_name = event.body_part
+	part_effect.minimum_value = -event.rolled_damage
+	part_effect.maximum_value = -event.rolled_damage
+	
+	
 	
 	effect.attributes_affected.append(health_effect)
+	effect.attributes_affected.append(part_effect)
 	
 	LevelGrid.get_unit_at_grid_position(event.target_grid_position).add_child(effect)
 	

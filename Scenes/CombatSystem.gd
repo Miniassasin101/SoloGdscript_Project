@@ -102,26 +102,37 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 			parrying_weapon_size = 0#target_unit.attribute_map.get_attribute_by_name("weapon_size").current_buffed_value
 	if !defender_wants_reaction:
 		return ret_event
+	if LevelDebug.instance.parry_fail_debug:
+		parry_success = false
+	var hit_location: BodyPart = get_hit_location(target_unit)
+	if hit_location == null:
+		push_error("Error: null hit location on ", target_unit.name)
+	ret_event.body_part = hit_location.part_name + "_health"
 
 
 	# Determine success differential
 	var differential: int = attacker_success_level - defender_success_level
 	if differential > 0:
 		print_debug("Attacker wins. Applying damage. Also prompt special effects")
-		ret_event.rolled_damage = roll_damage(action, event, target_unit, parry_success, parrying_weapon_size, attack_weapon_size)
+
+		ret_event.rolled_damage = roll_damage(action, event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
 		return ret_event
 	elif differential == 0:
 		print_debug("It's a tie - no special effects.")
-		ret_event.rolled_damage = roll_damage(action, event, target_unit, parry_success, parrying_weapon_size, attack_weapon_size)
+		ret_event.rolled_damage = roll_damage(action, event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
 		return ret_event
 	else:
 		print_debug("Defender wins. Prompt Special Effects")
-		ret_event.rolled_damage = roll_damage(action, event, target_unit, parry_success, parrying_weapon_size, attack_weapon_size)
+		ret_event.rolled_damage = roll_damage(action, event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
 		return ret_event
 
+func get_hit_location(target_unit: Unit) -> BodyPart:
+	var ret = target_unit.body.roll_hit_location()
+	return ret
 
 # FIXME: 
-func roll_damage(ability: Ability, event: ActivationEvent, target_unit: Unit, parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
+func roll_damage(ability: Ability, event: ActivationEvent, target_unit: Unit, hit_location: BodyPart,  
+parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	# Roll base damage
 	var damage_total: int = 0
 	damage_total += AbilityUtils.roll(ability.damage, ability.die_number)
@@ -141,9 +152,10 @@ func roll_damage(ability: Ability, event: ActivationEvent, target_unit: Unit, pa
 			print_debug("Parry unsuccessful - Weapon too small to reduce damage.")
 
 	# Apply armor reduction after parry
-	var armor_value = target_unit.attribute_map.get_attribute_by_name("armor").current_buffed_value
+	#var armor_value = target_unit.attribute_map.get_attribute_by_name("armor").current_buffed_value
+	var armor_value = hit_location.armor
 	damage_total -= armor_value
-	print_debug("Damage after armor reduction: ", damage_total)
+	print_debug("Damage after armor reduction: ", damage_total, "\nOn ", hit_location.part_name)
 
 	# Ensure damage does not go negative
 	damage_total = max(damage_total, 0)

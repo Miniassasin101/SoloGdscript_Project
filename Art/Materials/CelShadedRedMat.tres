@@ -1,6 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=9 format=3 uid="uid://cpccbvm86p68o"]
+[gd_resource type="ShaderMaterial" load_steps=9 format=3 uid="uid://7s23ohsljb1e"]
 
-[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Gobotcelshading.gdshader" id="1_ssmxs"]
+[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Gobotcelshading.gdshader" id="1_qx08n"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqout"]
 blend_mode = 4
@@ -25,16 +25,17 @@ colors = PackedColorArray(0, 0, 0, 1, 0.0885599, 0.0885599, 0.0885599, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_ovwhm"]
 gradient = SubResource("Gradient_kgq3v")
 
-[sub_resource type="Gradient" id="Gradient_qyqdn"]
+[sub_resource type="Gradient" id="Gradient_j2ugg"]
+colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_c5yo4"]
-gradient = SubResource("Gradient_qyqdn")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_wfgn4"]
+gradient = SubResource("Gradient_j2ugg")
 
 [resource]
 resource_name = "GobotMat"
 render_priority = 0
 next_pass = SubResource("StandardMaterial3D_aqout")
-shader = ExtResource("1_ssmxs")
+shader = ExtResource("1_qx08n")
 shader_parameter/point_size = 1.0
 shader_parameter/roughness = 1.0
 shader_parameter/metallic_texture_channel = null
@@ -45,6 +46,6 @@ shader_parameter/uv1_scale = Vector3(1, 1, 1)
 shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(1, 1, 1)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
-shader_parameter/texture_albedo = SubResource("GradientTexture1D_c5yo4")
+shader_parameter/texture_albedo = SubResource("GradientTexture1D_wfgn4")
 shader_parameter/color_gradient = SubResource("GradientTexture1D_kgg7x")
 shader_parameter/color_ramp3 = SubResource("GradientTexture1D_ovwhm")

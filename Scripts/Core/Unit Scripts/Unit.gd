@@ -5,6 +5,7 @@ extends Node3D
 
 var action_system: UnitActionSystem
 @export var animator: UnitAnimator
+@export var body: Body
 
 var ability_container: AbilityContainer
 var attribute_map: GameplayAttributeMap
@@ -12,7 +13,7 @@ var unit_manager: UnitManager = get_parent()
 # The grid position of this unit.
 var grid_position: GridPosition
 var is_holding: bool = false
-
+var unit_name: String = "null"
 # Reference to the action array node attached to this unit.
 @onready var action_array: Array[Action]
 var target_unit: Unit
@@ -46,6 +47,9 @@ func _ready() -> void:
 	SignalBus.on_turn_changed.connect(on_turn_changed)
 	SignalBus.on_round_changed.connect(on_round_changed)
 	SignalBus.add_unit.emit(self)
+
+
+
 
 func _process(_delta: float) -> void:
 	# Update the unit's grid position if it has moved to a new grid cell.

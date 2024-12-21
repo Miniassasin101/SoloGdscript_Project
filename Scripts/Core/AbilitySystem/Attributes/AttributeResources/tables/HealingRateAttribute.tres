@@ -4,9 +4,14 @@
 
 [resource]
 script = ExtResource("1_khbu4")
-attribute_name = "health"
+attribute_name = "healing_rate"
 minimum_value = 1.0
 maximum_value = 3.0
 current_value = 3.0
 derived_from = Array[String](["endurance"])
-calculation_type = 1
+calculation_type = 2
+is_skill = false
+skill_base_value = 0.0
+skill_value = 0.0
+table_mod = 0
+table_step = 6

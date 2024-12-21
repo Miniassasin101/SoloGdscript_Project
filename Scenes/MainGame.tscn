@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=38 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -11,7 +11,6 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Pathfinding/ObstacleManager.gd" id="6_ni1mu"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/TurnSystem.gd" id="6_rwbm0"]
 [ext_resource type="PackedScene" uid="uid://b37juamn5pbrv" path="res://WallTestInst.tscn" id="7_snusx"]
-[ext_resource type="PackedScene" uid="uid://cqnr4v4j11wr1" path="res://Hero_Game/Prefabs/Unit.tscn" id="7_tjeks"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitAI/UnitAI.gd" id="8_kmwtl"]
 [ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="8_paohs"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="9_rt187"]
@@ -19,12 +18,12 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
 [ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/UI_Prefabs/ActionButtonUI.tscn" id="11_jk6uv"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
+[ext_resource type="PackedScene" uid="uid://cfdwdb2mt6i5g" path="res://Hero_Game/Scenes/dawn_unit_red.tscn" id="14_t5y3h"]
 [ext_resource type="Script" path="res://Hero_Game/Scenes/CombatSystem.gd" id="16_f3oa4"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
 [ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/3ds_shaders/PixelationS.gdshader" id="43_hww07"]
-[ext_resource type="PackedScene" uid="uid://dlaw5y3cotmdg" path="res://Hero_Game/Art/SelfAssets/CharacterImports/w.tscn" id="52_1s2l3"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
 [ext_resource type="Shader" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
 
@@ -85,6 +84,8 @@ size = Vector2(2, 2)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
+attacker_success_debug = true
+parry_fail_debug = true
 grid_dimensions = Vector2(20, 10)
 
 [node name="Lighting" type="Node3D" parent="."]
@@ -200,12 +201,11 @@ action_points_max = 3
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0621, -3.90784e-05, 5.99286)
 action_points_max = 3
-is_enemy = true
 
-[node name="Unit6" parent="UnitManager" instance=ExtResource("7_tjeks")]
-transform = Transform3D(7.54979e-08, 0, -1, 0, 1, 0, 1, 0, 7.54979e-08, 4.0689, -1.90735e-06, 7.95955)
-action_points_max = 3
+[node name="RedDawn1" parent="UnitManager" instance=ExtResource("14_t5y3h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 6)
 is_enemy = true
+shoulder_height = 0.5
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
 script = ExtResource("6_rwbm0")
@@ -484,70 +484,4 @@ metadata/_edit_use_anchors_ = true
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_bteft")
 
-[node name="RobustArmRig_Completed_005" parent="." instance=ExtResource("52_1s2l3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
-
-[node name="Skeleton3D" parent="RobustArmRig_Completed_005/Rig_001" index="0"]
-bones/46/rotation = Quaternion(0.370617, -0.625245, 0.137101, 0.672989)
-bones/48/rotation = Quaternion(0.391802, 0.198799, -0.0948308, 0.893296)
-bones/53/rotation = Quaternion(0.370617, -0.625245, 0.137101, 0.672989)
-bones/55/rotation = Quaternion(0.391802, 0.198799, -0.0948308, 0.893296)
-bones/57/rotation = Quaternion(0.503045, -0.000290148, -0.512584, 0.695847)
-bones/69/rotation = Quaternion(0.685083, -0.000891993, 0.00978802, 0.728399)
-bones/76/rotation = Quaternion(0.685083, -0.000891993, 0.00978802, 0.728399)
-bones/83/rotation = Quaternion(0.824776, -0.00274641, 0.0564596, 0.562626)
-bones/99/rotation = Quaternion(-0.0213175, -0.0234868, 0.94848, -0.315247)
-bones/103/rotation = Quaternion(0.0213174, -0.0234868, 0.94848, 0.315247)
-bones/113/rotation = Quaternion(-0.352885, -0.0291861, -0.0154197, 0.935084)
-bones/119/rotation = Quaternion(0.761501, -0.481534, 0.430441, -0.0544182)
-bones/139/rotation = Quaternion(0.858488, -0.0825441, -0.407523, 0.300183)
-bones/140/rotation = Quaternion(0.468325, 0.398704, 0.783193, -0.0911906)
-bones/145/rotation = Quaternion(-0.00942129, -0.00942122, 0.707044, 0.707044)
-bones/149/rotation = Quaternion(-0.352885, -0.0291861, -0.0154197, 0.935084)
-bones/157/rotation = Quaternion(-0.00942129, 0.00942122, -0.707044, 0.707044)
-
-[node name="Body_001" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="0"]
-surface_material_override/0 = null
-
-[node name="Collar_001" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="1"]
-surface_material_override/0 = null
-
-[node name="Eye_L" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="2"]
-surface_material_override/0 = null
-
-[node name="Eye_R" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="3"]
-surface_material_override/0 = null
-
-[node name="Eyebrow_L" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="4"]
-surface_material_override/0 = null
-
-[node name="Eyebrow_R" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="5"]
-surface_material_override/0 = null
-
-[node name="Flower Emblem_001" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="6"]
-surface_material_override/0 = null
-
-[node name="Hair Tufts_001" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="7"]
-surface_material_override/0 = null
-
-[node name="Main Hair_001" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="8"]
-surface_material_override/0 = null
-
-[node name="Pants_001" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="9"]
-surface_material_override/0 = null
-
-[node name="Pupil_L" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="10"]
-surface_material_override/0 = null
-
-[node name="Pupil_R" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="11"]
-surface_material_override/0 = null
-
-[node name="SHirt_001" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="12"]
-surface_material_override/0 = null
-
-[node name="Waistcloth_belt_001" parent="RobustArmRig_Completed_005/Rig_001/Skeleton3D" index="13"]
-surface_material_override/0 = null
-
 [connection signal="pressed" from="UILayer/TurnSystemUI/EndTurnContainer/MarginContainer/EndTurnButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
-
-[editable path="RobustArmRig_Completed_005"]

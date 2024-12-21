@@ -35,6 +35,8 @@ signal action_points_changed
 
 signal update_stat_bars
 
+signal form_body
+
 signal remove_unit(unit: Unit)
 
 signal add_unit(unit: Unit)

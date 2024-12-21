@@ -35,7 +35,7 @@ func roll(die_type: int = 100, count: int = 1) -> int:
 	return total
 
 ## Calculation logic based on `calculation_type`. A value of '-1' represents an error.
-func calculate(derived_from: Array[String], calculation_type: int, specs: Dictionary) -> int:
+func calculate(derived_from: Array[String], calculation_type: int, specs: Dictionary, table_incr: int, table_mod: int = 0) -> int:
 	match calculation_type:
 		0:
 			# Push an error and return null for base attributes
@@ -51,14 +51,37 @@ func calculate(derived_from: Array[String], calculation_type: int, specs: Dictio
 					push_error("Key '%s' in derived_from not found in specs dictionary." % key)
 			return total
 		2:
-			# Placeholder: Look up a table and derive the value
-			# For now, just push a warning and return 0 as a placeholder value
-			push_warning("Placeholder: Table lookup not yet implemented for calculation type 2.")
-			return -1
+			# Add up all the values of the keys in `derived_from` found in `specs`
+			# Then run logic to decide based on the table
+			var total = 0
+			for key in derived_from:
+				if specs.has(key):
+					total += int(specs[key])
+				else:
+					push_error("Key '%s' in derived_from not found in specs dictionary." % key)
+			total = table_calc(total, table_incr, table_mod)
+			return total
+
 		_:
 			# Handle unexpected calculation types
 			push_error("Invalid calculation type: %d" % calculation_type)
 			return -1
+
+
+func table_calc(total: int, table_incr: int, table_mod: int) -> int:
+	# 1) Divide total by 5 and round up
+	var base_value = ceili(total / table_incr)
+	
+	# 2) Add (or subtract if body_part_mod is negative) the table_mod
+	var result = base_value + table_mod
+	
+	# 3) Ensure the result is at least 1
+	if result <= 0:
+		result = 1
+	
+	return result
+
+
 
 func lookup_table_value(derived_from: Array[StringName], table: Dictionary, specs: Dictionary) -> int:
 	# Example logic for cross-referencing
