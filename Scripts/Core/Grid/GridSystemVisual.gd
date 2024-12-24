@@ -54,9 +54,21 @@ func initialize_grid_visuals() -> void:
 
 			# Store the instance in the 2D array at position (x, z).
 			grid_visuals[x].append(cell_instance)
+			# Update visual for difficult terrain
+			var grid_object = LevelGrid.grid_system.get_grid_object(grid_position)
+			if grid_object.is_difficult_terrain:
+				cell_instance.set_difficult_terrain(true)
+			else:
+				cell_instance.set_difficult_terrain(false)
 
 func _process(_delta: float) -> void:
 	pass
+
+func mark_red() -> void:
+	for row in grid_visuals:
+		for cell in row:
+			pass
+
 
 func hide_all_grid_positions() -> void:
 	# Hide all grid cell visuals.

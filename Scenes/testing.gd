@@ -46,14 +46,45 @@ func test_pathfinding() -> void:
 
 func handle_right_mouse_click() -> void:
 	if Input.is_action_just_pressed("right_mouse"):
-		var result = mouse_world.get_mouse_raycast_result("position")
-		var unit: Unit = LevelGrid.get_unit_at_grid_position(pathfinding.pathfinding_grid_system.get_grid_position(result))
-		var attributes_dict = unit.attribute_map.get_attributes_dict()
-		print(unit.name)
-		for attribute_name in attributes_dict.keys():
-			var attribute_value = attributes_dict[attribute_name]
-			print(attribute_name, ": ", attribute_value)
+		toggle_difficult_terrain()
 
+
+func toggle_difficult_terrain() -> void:
+	# Get the grid position under the mouse
+	var result = mouse_world.get_mouse_raycast_result("position")
+	if result:
+		var hovered_grid_position = pathfinding.pathfinding_grid_system.get_grid_position(result)
+		if hovered_grid_position != null:
+			# Get the grid object
+			var grid_object = pathfinding.pathfinding_grid_system.get_grid_object(hovered_grid_position)
+			if grid_object:
+				# Toggle difficult terrain
+				grid_object.is_difficult_terrain = not grid_object.is_difficult_terrain
+
+				# Update visuals
+				var grid_visual = GridSystemVisual.instance.grid_visuals[hovered_grid_position.x][hovered_grid_position.z]
+				if grid_visual:
+					grid_visual.set_difficult_terrain(grid_object.is_difficult_terrain)
+
+				# Recalculate AStar cost based on terrain type
+				pathfinding.update_astar_costs()
+
+				# Print confirmation
+				if grid_object.is_difficult_terrain:
+					print("Grid position " + hovered_grid_position.to_str() + " marked as difficult terrain.")
+				else:
+					print("Grid position " + hovered_grid_position.to_str() + " is now normal terrain.")
+
+
+# Prints out all of the stats of the unit under the mouse
+func print_statblock() -> void:
+	var result = mouse_world.get_mouse_raycast_result("position")
+	var unit: Unit = LevelGrid.get_unit_at_grid_position(pathfinding.pathfinding_grid_system.get_grid_position(result))
+	var attributes_dict = unit.attribute_map.get_attributes_dict()
+	print(unit.name)
+	for attribute_name in attributes_dict.keys():
+		var attribute_value = attributes_dict[attribute_name]
+		print(attribute_name, ": ", attribute_value)
 
 # Disables grid object walkability and update pathfinding.
 func turn_unwalkable() -> void:

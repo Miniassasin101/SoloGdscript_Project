@@ -166,6 +166,20 @@ func get_path_cost(start_grid_position: GridPosition, end_grid_position: GridPos
 		return total_cost
 	return INF
 
+func update_astar_costs() -> void:
+	for x in range(pathfinding_grid_system.get_width()):
+		for z in range(pathfinding_grid_system.get_height()):
+			var grid_position = pathfinding_grid_system.get_grid_position_from_coords(x, z)
+			if grid_position:
+				var grid_object = pathfinding_grid_system.get_grid_object(grid_position)
+				if grid_object:
+					var point_id = get_grid_point_id(grid_position)
+					if astar.has_point(point_id):
+						var weight = 2.0 if grid_object.is_difficult_terrain else 1.0
+						astar.set_point_weight_scale(point_id, weight)
+
+
+
 # Checks if a path between two grid positions is available.
 func is_path_available(start_grid_position: GridPosition, end_grid_position: GridPosition) -> bool:
 	if find_path(start_grid_position, end_grid_position).size() > 0:
@@ -176,12 +190,22 @@ func is_path_available(start_grid_position: GridPosition, end_grid_position: Gri
 
 # Custom AStar3D Class to Override Cost Calculation
 class CustomAStar3D extends AStar3D:
-	# Override the compute cost function to handle diagonal cost
+	var pathfinding_grid_system = LevelGrid.grid_system
+	
 	func _compute_cost(from_id: int, to_id: int) -> float:
 		var from_pos: Vector3 = get_point_position(from_id)
 		var to_pos: Vector3 = get_point_position(to_id)
 		var diff = to_pos - from_pos
+
+		# Get the GridPosition for the `to_id`
+		var grid_position = pathfinding_grid_system.get_grid_position(to_pos)
+		var grid_object = pathfinding_grid_system.get_grid_object(grid_position)
+
+		var terrain_cost: float = 1.0  # Default cost
+		if grid_object:
+			terrain_cost = 2.0 if grid_object.is_difficult_terrain else 1.0
+
 		# Check if the movement is diagonal
 		if abs(diff.x) > 0 and abs(diff.z) > 0:
-			return 1.41  # Diagonal movement cost
-		return 1.0  # Horizontal or vertical movement cost
+			return 1.41 * terrain_cost  # Diagonal movement cost
+		return 1.0 * terrain_cost  # Horizontal or vertical movement cost
