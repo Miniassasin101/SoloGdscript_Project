@@ -28,6 +28,8 @@ var target_unit: Unit
 
 @export var shoot_point: Node3D
 
+
+
 func _ready() -> void:
 	unit_manager = get_parent()
 	action_system = unit_manager.unit_action_system
