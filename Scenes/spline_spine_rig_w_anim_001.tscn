@@ -1,0 +1,66 @@
+[gd_scene load_steps=3 format=3 uid="uid://xnkslcqhjv74"]
+
+[ext_resource type="PackedScene" uid="uid://xv5beikyhys2" path="res://Hero_Game/Art/SelfAssets/CharacterImports/SplineSpineRig_w_anim.001.glb" id="1_jy7c0"]
+[ext_resource type="Material" uid="uid://cpccbvm86p68o" path="res://Hero_Game/Art/Materials/CelShadedMat.tres" id="2_l7via"]
+
+[node name="SplineSpineRig_w_anim_001" instance=ExtResource("1_jy7c0")]
+
+[node name="Skeleton3D" parent="Armature_004" index="0"]
+bones/1/position = Vector3(0, 0.966036, -7.45198e-10)
+bones/1/rotation = Quaternion(-9.91125e-21, -8.88178e-16, 8.80296e-36, 1)
+bones/2/position = Vector3(0, 0.981779, -1.9872e-09)
+bones/2/rotation = Quaternion(-9.91126e-21, -1.77636e-15, 1.76059e-35, 1)
+bones/3/position = Vector3(0, 0.997522, -2.2356e-09)
+bones/3/rotation = Quaternion(-4.50512e-21, -2.66454e-15, 3.12105e-35, 1)
+bones/4/position = Vector3(0, 1.01327, 0)
+bones/4/rotation = Quaternion(4.03897e-28, 1.19209e-07, 6.97555e-35, 1)
+bones/5/position = Vector3(0, 1.02908, 2.24588e-09)
+bones/5/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
+bones/6/position = Vector3(0, 1.0449, 1.99634e-09)
+bones/6/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
+bones/7/position = Vector3(0, 1.06071, 7.48631e-10)
+bones/7/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
+bones/8/rotation = Quaternion(6.71794e-08, 1.19209e-07, 0, 1)
+bones/19/rotation = Quaternion(0.0285129, 0.996476, -0.0772275, -0.0160513)
+bones/35/rotation = Quaternion(0.82367, 0.395191, -0.357596, -0.193692)
+bones/40/rotation = Quaternion(0.82367, -0.395191, 0.357596, -0.193692)
+
+[node name="Body_001" parent="Armature_004/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="Collar_001" parent="Armature_004/Skeleton3D" index="1"]
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="Eyebrows" parent="Armature_004/Skeleton3D" index="2"]
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="Eyes" parent="Armature_004/Skeleton3D" index="3"]
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="Flower Emblem_001" parent="Armature_004/Skeleton3D" index="4"]
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="Flower Emblem_Background_001" parent="Armature_004/Skeleton3D" index="5"]
+visible = false
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="Hair Tufts_001" parent="Armature_004/Skeleton3D" index="6"]
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="Main Hair_001" parent="Armature_004/Skeleton3D" index="7"]
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="Pants_001" parent="Armature_004/Skeleton3D" index="8"]
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="Pupil" parent="Armature_004/Skeleton3D" index="9"]
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="SHirt_001" parent="Armature_004/Skeleton3D" index="10"]
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="Shoes_001" parent="Armature_004/Skeleton3D" index="11"]
+surface_material_override/0 = ExtResource("2_l7via")
+
+[node name="Waistcloth_belt_001" parent="Armature_004/Skeleton3D" index="12"]
+surface_material_override/0 = ExtResource("2_l7via")

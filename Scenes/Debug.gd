@@ -3,11 +3,15 @@ extends Node
 
 # Manages a lot of the debug settings and variables
 static var instance: LevelDebug = null
-
-@export var end_turn_debug: bool
+@export_category("Combat Debug")
+@export var end_turn_debug: bool = true
+@export var control_enemy_debug: bool = false
+@export var attacker_success_debug: bool = false
+@export var parry_fail_debug: bool = false
 @export_category("Grid Debug")
 @export var grid_dimensions: Vector2 = Vector2(10, 10)
 @export var grid_scale: float = 2.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if instance != null:

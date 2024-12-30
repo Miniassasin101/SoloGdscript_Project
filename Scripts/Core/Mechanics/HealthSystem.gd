@@ -11,7 +11,7 @@ func damage(damage_dealt: int) -> void:
 		current_health = 0
 	if current_health == 0:
 		die()
-	print_debug(str(current_health) + " / " + str(max_health))
+
 
 func die() ->void:
 	on_dead.emit()

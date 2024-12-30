@@ -1,0 +1,50 @@
+[gd_resource type="ShaderMaterial" load_steps=9 format=3 uid="uid://cpccbvm86p68o"]
+
+[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Gobotcelshading.gdshader" id="1_ssmxs"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqout"]
+blend_mode = 4
+cull_mode = 1
+shading_mode = 0
+albedo_color = Color(0.0605303, 0.0605303, 0.0605303, 1)
+disable_receive_shadows = true
+grow = true
+grow_amount = 0.01
+
+[sub_resource type="Gradient" id="Gradient_viw3b"]
+offsets = PackedFloat32Array(0.494382, 0.498127, 0.970037, 0.975309, 1)
+colors = PackedColorArray(0.0728426, 0.0728426, 0.0728426, 1, 0.741176, 0.741176, 0.741176, 1, 0.741176, 0.741176, 0.741176, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kgg7x"]
+gradient = SubResource("Gradient_viw3b")
+
+[sub_resource type="Gradient" id="Gradient_kgq3v"]
+offsets = PackedFloat32Array(0.853933, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.0885599, 0.0885599, 0.0885599, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ovwhm"]
+gradient = SubResource("Gradient_kgq3v")
+
+[sub_resource type="Gradient" id="Gradient_qyqdn"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_c5yo4"]
+gradient = SubResource("Gradient_qyqdn")
+
+[resource]
+resource_name = "GobotMat"
+render_priority = 0
+next_pass = SubResource("StandardMaterial3D_aqout")
+shader = ExtResource("1_ssmxs")
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.0
+shader_parameter/metallic = 0.0
+shader_parameter/normal_scale = 1.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_albedo = SubResource("GradientTexture1D_c5yo4")
+shader_parameter/color_gradient = SubResource("GradientTexture1D_kgg7x")
+shader_parameter/color_ramp3 = SubResource("GradientTexture1D_ovwhm")

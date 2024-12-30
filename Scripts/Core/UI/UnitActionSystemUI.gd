@@ -3,17 +3,22 @@ extends Node
 
 @export var action_button_prefab: PackedScene
 @export var action_button_container: BoxContainer
-@export var action_points_text: Label
-@export var selected_unit: Unit
+@export var reaction_button_container: BoxContainer
+@export var ability_points_text: Label
+var selected_unit: Unit
+var reacting_unit: Unit = null
 
 
 func _ready() -> void:
 	SignalBus.selected_unit_changed.connect(on_selected_unit_changed)
-	SignalBus.action_points_changed.connect(_update_action_points)
+	SignalBus.action_points_changed.connect(_update_ability_points)
 	SignalBus.on_turn_changed.connect(on_turn_changed)
+	SignalBus.on_player_reaction.connect(on_player_reaction)
 	selected_unit = UnitActionSystem.instance.get_selected_unit()
 	create_unit_action_buttons()
-	_update_action_points()
+	create_unit_reaction_buttons()
+	_update_ability_points()
+	reaction_button_container.visible = false
 
 
 func create_unit_action_buttons() -> void:
@@ -22,20 +27,52 @@ func create_unit_action_buttons() -> void:
 	for action_button in action_button_container.get_children():
 		action_button.queue_free()
 	
-	for action: Action in  selected_unit.get_action_array():
-		var action_button_ui = action_button_prefab.instantiate()
-		action_button_ui.set_base_action(action)
-		action_button_container.add_child(action_button_ui)
-		
+	for ability: Ability in selected_unit.ability_container.granted_abilities:
+		if ability.tags_type.has("reaction"):
+			continue # FIXME: Replace with actual Tag logic later
+		var ability_button_ui = action_button_prefab.instantiate()
+		ability_button_ui.set_base_ability(ability)
+		action_button_container.add_child(ability_button_ui)
+
+func create_unit_reaction_buttons() -> void:
+	if !reacting_unit:
+		return
+	for action_button in reaction_button_container.get_children():
+		action_button.queue_free()
+	
+	for ability: Ability in selected_unit.ability_container.granted_abilities:
+		if ability.tags_type.has("reaction"):
+			var ability_button_ui = action_button_prefab.instantiate()
+			ability_button_ui.set_base_ability(ability)
+			reaction_button_container.add_child(ability_button_ui)
+
+
+
 func on_selected_unit_changed(unit: Unit) -> void:
 	selected_unit = unit
 	create_unit_action_buttons()
-	_update_action_points()
+	create_unit_reaction_buttons()
+	_update_ability_points()
+
+func on_player_reaction(unit: Unit) -> void:
+	reaction_button_container.visible = true
+	action_button_container.visible = false
+	reacting_unit = unit
+	print_debug("Selected Unit Ui Is: ", unit._to_string())
+	create_unit_reaction_buttons()
+	await SignalBus.reaction_selected
+	print_debug("Reaction Selected")
+	reaction_button_container.visible = false
+	action_button_container.visible = true
 
 
-func _update_action_points() -> void:
+
+func _update_ability_points() -> void:
 	if selected_unit != null:
-		action_points_text.text = "Action Points: " + str(selected_unit.get_action_points())
+		ability_points_text.text = ("Ability Points: " + str(selected_unit.attribute_map.
+		get_attribute_by_name("action_points").current_buffed_value))
 
 func on_turn_changed() -> void:
-	self.visible = TurnSystem.instance.is_player_turn
+	on_selected_unit_changed(UnitActionSystem.instance.get_selected_unit())
+	#self.visible = TurnSystem.instance.is_player_turn
+	# FIXME: Revert back later

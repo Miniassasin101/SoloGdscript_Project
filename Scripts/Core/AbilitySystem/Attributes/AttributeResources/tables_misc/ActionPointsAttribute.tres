@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AttributeResource" load_steps=2 format=3 uid="uid://c3sphq6y72h38"]
+
+[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="1_2y512"]
+
+[resource]
+script = ExtResource("1_2y512")
+attribute_name = "action_points"
+minimum_value = 0.0
+maximum_value = 3.0
+current_value = 3.0
+derived_from = Array[String](["mind", "dexterity"])
+calculation_type = 2
+is_skill = false
+skill_base_value = 0.0
+skill_value = 0.0
+table_mod = 0
+table_step = 12

@@ -7,7 +7,8 @@ const GRID_CELL_VISUAL: PackedScene = preload("res://Hero_Game/Prefabs/GridCellV
 # 2D array to hold the visual instances of grid cells.
 var grid_visuals: Array = []  # Array of Arrays of Node3D instances.
 
-var selected_action: Action
+
+var selected_ability: Ability
 # Singleton instance of GridSystemVisual.
 static var instance: GridSystemVisual = null
 
@@ -53,9 +54,21 @@ func initialize_grid_visuals() -> void:
 
 			# Store the instance in the 2D array at position (x, z).
 			grid_visuals[x].append(cell_instance)
+			# Update visual for difficult terrain
+			var grid_object = LevelGrid.grid_system.get_grid_object(grid_position)
+			if grid_object.is_difficult_terrain:
+				cell_instance.set_difficult_terrain(true)
+			else:
+				cell_instance.set_difficult_terrain(false)
 
 func _process(_delta: float) -> void:
 	pass
+
+func mark_red() -> void:
+	for row in grid_visuals:
+		for cell in row:
+			pass
+
 
 func hide_all_grid_positions() -> void:
 	# Hide all grid cell visuals.
@@ -79,9 +92,14 @@ func update_grid_visual_pathfinding(grid_list: Array[GridPosition]):
 		
 
 func update_grid_visual() -> void:
-	#if Input.is_action_just_pressed("testkey"):
+
 	hide_all_grid_positions()
 
-	selected_action = UnitActionSystem.instance.get_selected_action()
-	if selected_action != null:
-		show_grid_positions(selected_action.get_valid_action_grid_position_list())
+
+	selected_ability = UnitActionSystem.instance.get_selected_ability()
+	if selected_ability != null:
+		if UnitActionSystem.instance.selected_unit != null:
+			show_grid_positions(UnitActionSystem.instance
+			.selected_unit.ability_container.get_valid_ability_target_grid_position_list(selected_ability)
+			)
+		

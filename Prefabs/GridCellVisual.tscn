@@ -1,16 +1,31 @@
-[gd_scene load_steps=4 format=3 uid="uid://bputpfvj74kol"]
+[gd_scene load_steps=7 format=3 uid="uid://bputpfvj74kol"]
 
-[ext_resource type="Material" uid="uid://dgannwdtstq3s" path="res://Hero_Game/Art/Materials/GridSquareVisual.tres" id="1_3ruuu"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisualSingle.gd" id="1_saigr"]
+[ext_resource type="Texture2D" uid="uid://bimrvcaxqy7hu" path="res://Hero_Game/Art/Textures/white_square_outline.png" id="2_1dn03"]
+[ext_resource type="Material" uid="uid://bwm3qr51qde8f" path="res://Hero_Game/Art/Materials/GridSquareRedVisual.tres" id="3_mk768"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sgdvw"]
+transparency = 1
+albedo_texture = ExtResource("2_1dn03")
+
+[sub_resource type="QuadMesh" id="QuadMesh_u230j"]
+material = SubResource("StandardMaterial3D_sgdvw")
 
 [sub_resource type="QuadMesh" id="QuadMesh_380yj"]
-material = ExtResource("1_3ruuu")
+material = ExtResource("3_mk768")
 
-[node name="GridSystemVisual" type="Node3D" node_paths=PackedStringArray("mesh_renderer")]
+[node name="GridSystemVisual" type="Node3D" node_paths=PackedStringArray("grid_system_visual", "grid_system_visual_red")]
 script = ExtResource("1_saigr")
-mesh_renderer = NodePath("GridSystemVisual")
+grid_system_visual = NodePath("GridSystemVisual")
+grid_system_visual_red = NodePath("GridSystemVisualRed")
 
 [node name="GridSystemVisual" type="MeshInstance3D" parent="."]
 transform = Transform3D(2.01085, 0, 0, 0, -8.78969e-08, 2.01085, 0, -2.01085, -8.78969e-08, 0, 0.03, 0)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_u230j")
+
+[node name="GridSystemVisualRed" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.01085, 0, 0, 0, -8.78969e-08, 2.01085, 0, -2.01085, -8.78969e-08, 0, 0.03, 0)
+visible = false
 cast_shadow = 0
 mesh = SubResource("QuadMesh_380yj")

@@ -12,6 +12,9 @@ var grid_position: GridPosition
 
 var is_walkable: bool = true
 
+# Whether this grid cell is difficult terrain.
+var is_difficult_terrain: bool = false  # New property
+
 # List of units on this grid cell.
 var unit_list: Array = []
 
@@ -23,6 +26,11 @@ func _init(ingrid_system: GridSystem, ingrid_position: GridPosition) -> void:
 func get_grid_position() -> GridPosition:
 	return grid_position
 
+func set_difficult_terrain(difficult: bool) -> void:
+	is_difficult_terrain = difficult
+
+func get_movement_cost() -> int:
+	return 2 if is_difficult_terrain else 1  # Double cost for difficult terrain
 
 # Adds a unit to this grid cell.
 func add_unit(unit: Unit) -> void:

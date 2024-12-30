@@ -38,11 +38,11 @@ colors = PackedColorArray(0.774322, 0.559134, 0.910283, 1, 1, 1, 1, 1)
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_hmxcl"]
 gradient = SubResource("Gradient_nftri")
 
-[node name="UnitStatsBar" type="PanelContainer" node_paths=PackedStringArray("unit_name_label", "action_points_label", "health_text_label", "health_bar")]
+[node name="UnitStatsBar" type="PanelContainer" node_paths=PackedStringArray("unit_name_label", "ability_points_label", "health_text_label", "health_bar")]
 theme_override_styles/panel = SubResource("StyleBoxFlat_wvosu")
 script = ExtResource("1_73dlo")
 unit_name_label = NodePath("VBoxContainer/UnitNameLabel")
-action_points_label = NodePath("VBoxContainer/ActionPointsLabel")
+ability_points_label = NodePath("VBoxContainer/ActionPointsLabel")
 health_text_label = NodePath("VBoxContainer/HealthTextLabel")
 health_bar = NodePath("VBoxContainer/PanelContainer/MarginContainer/HealthBar")
 

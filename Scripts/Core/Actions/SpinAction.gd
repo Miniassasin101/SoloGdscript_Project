@@ -7,7 +7,7 @@ func _ready() -> void:
 	super._ready()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not is_active:
 		return
 

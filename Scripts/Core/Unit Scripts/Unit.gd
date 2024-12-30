@@ -4,13 +4,19 @@ extends Node3D
 # Reference to the LevelGrid node.
 
 var action_system: UnitActionSystem
-@export var health_system: HealthSystem
+@export var animator: UnitAnimator
+@export var body: Body
+
+var ability_container: AbilityContainer
+var attribute_map: GameplayAttributeMap
 var unit_manager: UnitManager = get_parent()
 # The grid position of this unit.
 var grid_position: GridPosition
-
+var is_holding: bool = false
+var unit_name: String = "null"
 # Reference to the action array node attached to this unit.
 @onready var action_array: Array[Action]
+var target_unit: Unit
 
 @export var action_points_max: int = 2
 @onready var action_points: int = action_points_max
@@ -19,6 +25,10 @@ var grid_position: GridPosition
 @export var death_vfx_scene: PackedScene
 
 @export var shoulder_height: float = 1.7
+
+@export var shoot_point: Node3D
+
+
 
 func _ready() -> void:
 	unit_manager = get_parent()
@@ -31,9 +41,17 @@ func _ready() -> void:
 	for child in get_children():
 		if child is Action:
 			action_array.append(child)
-	health_system.on_dead.connect(on_dead)
+		if child is AbilityContainer:
+			ability_container = child
+		if child is GameplayAttributeMap:
+			attribute_map = child
+	attribute_map.attribute_changed.connect(on_attribute_changed)
 	SignalBus.on_turn_changed.connect(on_turn_changed)
+	SignalBus.on_round_changed.connect(on_round_changed)
 	SignalBus.add_unit.emit(self)
+
+
+
 
 func _process(_delta: float) -> void:
 	# Update the unit's grid position if it has moved to a new grid cell.
@@ -49,20 +67,40 @@ func try_spend_action_points_to_take_action(action: Action) -> bool:
 		return true
 	return false
 
+func try_spend_ability_points_to_use_ability(ability: Ability) -> bool:
+	if can_spend_ability_points_to_use_ability(ability):
+		spend_ability_points(ability.ap_cost)
+		return true
+	return false
+
 func can_spend_action_points_to_take_action(action: Action) -> bool:
 	if action_points >= action.get_action_points_cost():
 		return true
 	else:
 		return false
 
+func can_spend_ability_points_to_use_ability(ability: Ability) -> bool:
+	var ap_remain: int = int(attribute_map.get_attribute_by_name("action_points").current_value)
+	# Replace action points with ability points later
+	if ap_remain >= ability.ap_cost:
+		return true
+	else:
+		return false
+
+
 func spend_action_points(amount: int) -> void:
+
 	action_points -= amount
 	SignalBus.emit_signal("action_points_changed")
 	SignalBus.emit_signal("update_stat_bars")
 
-func damage(indamage: int) -> void:
-	health_system.damage(indamage)
-	SignalBus.update_stat_bars.emit()
+func spend_ability_points(amount: int) -> void:
+	attribute_map.get_attribute_by_name("action_points").current_value -= amount
+	# Note: Change to ability points later
+	SignalBus.emit_signal("action_points_changed")
+	SignalBus.emit_signal("update_stat_bars")
+
+
 
 
 func on_dead() -> void:
@@ -76,24 +114,35 @@ func on_dead() -> void:
 	
 	queue_free()
 
+func on_attribute_changed(_attribute: AttributeSpec):
+	SignalBus.emit_signal("update_stat_bars")
+	if attribute_map.get_attribute_by_name("health").current_value <= 0:
+		on_dead()
 
 # Will probably have to swap turn with round later
 func on_turn_changed() -> void:
 	if is_enemy and !TurnSystem.instance.is_player_turn or !is_enemy and TurnSystem.instance.is_player_turn:
 		action_points = action_points_max
+		
 		SignalBus.emit_signal("action_points_changed")
 		SignalBus.emit_signal("update_stat_bars")
+
+func on_round_changed() -> void:
+	attribute_map.get_attribute_by_name("action_points").current_value = attribute_map.get_attribute_by_name("action_points").maximum_value
+	SignalBus.emit_signal("action_points_changed")
+	SignalBus.emit_signal("update_stat_bars")
 
 # Setters and Getters
 func _to_string() -> String:
 	# Return the unit's name as a string representation.
 	return self.name
 
-func has_action(action_name: String) -> bool:
-	for action in action_array:
-		if action.get_action_name() == action_name:
+
+func has_ability(ability_name: StringName) -> bool:
+	for ability: Ability in ability_container.granted_abilities:
+		if ability.ui_name == ability_name:
 			return true
-	return false  # Return null if action not found
+	return false
 
 func get_animation_tree() -> AnimationTree:
 	# Search for an AnimationTree node among the unit's children.

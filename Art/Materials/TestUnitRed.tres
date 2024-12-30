@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://cktqjbr7lsq4l"]
 
-[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Gobotcelshading.gdshader" id="1_fgo6c"]
+[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/UnitCelShading.gdshader" id="1_rp1j6"]
 [ext_resource type="Texture2D" uid="uid://bt5o0sr6peltq" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot/model/gobot_gobot_diffuse.png" id="2_l3xfe"]
 
 [sub_resource type="Gradient" id="Gradient_viw3b"]
@@ -19,7 +19,7 @@ gradient = SubResource("Gradient_kgq3v")
 [resource]
 resource_name = "GobotMat"
 render_priority = 0
-shader = ExtResource("1_fgo6c")
+shader = ExtResource("1_rp1j6")
 shader_parameter/albedo = Color(0.81, 0.2106, 0.2106, 1)
 shader_parameter/point_size = 1.0
 shader_parameter/roughness = 1.0

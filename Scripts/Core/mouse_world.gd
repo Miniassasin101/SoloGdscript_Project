@@ -5,6 +5,8 @@ extends Node3D
 const GRID_MASK: int = 2
 # Layer mask for units
 const UNIT_LAYER_MASK: int = 4
+
+const OBSTACLE_LAYER_MASK: int = 1 << 4
 # Toggle for showing a debug sphere at the mouse position
 @export var mouse_debug_sphere: bool
 
@@ -50,15 +52,14 @@ func _process(_delta: float) -> void:
 		_adjust_mouse_debug_position()
 	
 
-func has_line_of_sight(start_position: Vector3, end_position: Vector3, layer_mask: int = 5) -> bool:
+func has_line_of_sight(start_position: Vector3, end_position: Vector3) -> bool:
 	# Access the space state for physics queries
 	var space_state = get_world_3d().direct_space_state
-	var laymas = 1 << 4
 	# Create a raycast query
 	var query = PhysicsRayQueryParameters3D.new()
 	query.from = start_position
 	query.to = end_position
-	query.collision_mask = laymas  # Set the collision mask to the provided layer
+	query.collision_mask = OBSTACLE_LAYER_MASK  # Set the collision mask to the provided layer
 	query.collide_with_bodies = true
 	query.collide_with_areas = true  # Include areas if needed
 

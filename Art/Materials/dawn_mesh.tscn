@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://ct0mc2hdj87lv"]
+
+[ext_resource type="PackedScene" uid="uid://bvqddjc10hmqs" path="res://Hero_Game/Art/SelfAssets/Base Mesh Textures Almost Done.glb" id="1_wu2q5"]
+
+[node name="DawnMesh" instance=ExtResource("1_wu2q5")]

@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="ProjectileAbility" load_steps=3 format=3 uid="uid://knnn4c4diq6f"]
+
+[ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/fireball_mesh.tscn" id="1_8y4qy"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/ProjectileAbility.gd" id="2_csomy"]
+
+[resource]
+script = ExtResource("2_csomy")
+damage = 5
+die_number = 1
+flat_damage = 1
+attack_range = 5
+ap_cost = 1
+projectile = ExtResource("1_8y4qy")
+ui_name = "Fireball"
+cooldown_duration = 0.0
+cooldown_continuos = false
+grant_automatic = true
+grant_tags = Array[String]([])
+grant_tags_required = Array[String]([])
+tags_type = Array[String](["action"])
+tags_activation = Array[String]([])
+tags_activation_required = Array[String]([])
+tags_block = Array[String]([])
+tags_cancellation_required = Array[String]([])
+tags_cooldown_start = Array[String]([])
+tags_cooldown_end = Array[String]([])
+tags_end_blocking = Array[String]([])
+tags_to_remove_on_activation = Array[String]([])
+tags_to_remove_on_block = Array[String]([])
+tags_to_remove_on_cancellation = Array[String]([])
+tags_to_remove_on_cooldown_start = Array[String]([])
+tags_to_remove_on_cooldown_end = Array[String]([])
+tags_to_remove_on_end = Array[String]([])
