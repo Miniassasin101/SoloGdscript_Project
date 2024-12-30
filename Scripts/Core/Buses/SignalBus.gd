@@ -35,6 +35,8 @@ signal action_points_changed
 
 signal update_stat_bars
 
+signal open_character_sheet(unit: Unit)
+
 signal form_body
 
 signal remove_unit(unit: Unit)

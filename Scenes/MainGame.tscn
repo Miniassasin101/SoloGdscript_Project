@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=39 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -23,6 +23,7 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
+[ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
 [ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/3ds_shaders/PixelationS.gdshader" id="43_hww07"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
 [ext_resource type="Shader" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
@@ -479,6 +480,8 @@ offset_bottom = 176.0
 grow_horizontal = 0
 script = ExtResource("21_dna0q")
 metadata/_edit_use_anchors_ = true
+
+[node name="UnitCharacterSheetUI" parent="UILayer" instance=ExtResource("26_7hc4r")]
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 extra_cull_margin = 16384.0

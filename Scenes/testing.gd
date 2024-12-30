@@ -111,7 +111,17 @@ func test_n() -> void:
 
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
-		SignalBus.form_body.emit()
+		# Grab the unit under the mouse or whichever unit you want
+		var result = mouse_world.get_mouse_raycast_result("position")
+		if !result:
+			return
+		var hovered_unit: Unit = LevelGrid.get_unit_at_grid_position(
+			pathfinding.pathfinding_grid_system.get_grid_position(result)
+		)
+		if hovered_unit:
+			# Emit your signal passing in the unit reference
+			SignalBus.emit_signal("open_character_sheet", hovered_unit)
+
 
 func apply_effect(att_name: String) -> void:
 	# creating a new [GameplayEffect] resource

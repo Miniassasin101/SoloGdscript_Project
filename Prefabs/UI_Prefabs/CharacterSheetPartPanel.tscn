@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://p6evu7hnt4o3"]
+
+[ext_resource type="Script" path="res://Hero_Game/Prefabs/UI_Prefabs/CharacterSheetPartPanel.gd" id="1_lo83w"]
+
+[node name="PanelContainer" type="PanelContainer"]
+script = ExtResource("1_lo83w")
+
+[node name="HitLocationContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PartNameLabel" type="Label" parent="HitLocationContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "PartName"
+horizontal_alignment = 1
+
+[node name="ArmorPointValueLabel" type="Label" parent="HitLocationContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "AP"
+horizontal_alignment = 1
+
+[node name="HealthPointsLabel" type="Label" parent="HitLocationContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HP/HP"
+horizontal_alignment = 1
