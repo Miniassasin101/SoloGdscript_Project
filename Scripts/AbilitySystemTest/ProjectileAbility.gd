@@ -54,6 +54,8 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 	timer.timeout.connect(shoot_projectile)
 	# NOTE await doesnt do anything right now but later the coroutine will prompt user or ai decisions
 	# on things like special effects.
+	
+	#Here is where the actual attack resolution comes in
 	event = await CombatSystem.instance.attack_unit(self, event)
 	event.character.add_child(timer)
 	

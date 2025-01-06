@@ -2,7 +2,6 @@
 class_name Body
 extends Node
 
-signal setup_body
 
 @export var body_parts: Array[BodyPart] = []
 

@@ -19,7 +19,7 @@ func book_keeping() -> void:
 func start_turn(unit: Unit) -> void:
 	print_debug("CombatSystem Turn Started: ", unit)
 
-func interrupt_turn(unit: Unit) -> void:
+func interrupt_turn(_unit: Unit) -> void:
 	SignalBus.continue_turn.emit()
 	print_debug("Turn Interrupted")
 
@@ -28,7 +28,7 @@ func declare_action(action: Ability, event: ActivationEvent) -> void:
 	await check_declaration_reaction_queue(action, event)
 	print_debug("Action Declared: ", action.ui_name)
 
-func check_declaration_reaction_queue(action: Ability, event: ActivationEvent) -> void:
+func check_declaration_reaction_queue(_action: Ability, _event: ActivationEvent) -> void:
 	# This is where you could prompt units who have "hold actions" or special abilities 
 	# triggered upon declarations. For now, we assume minimal logic.
 	for unit: Unit in declaration_reaction_queue:
@@ -131,7 +131,7 @@ func get_hit_location(target_unit: Unit) -> BodyPart:
 	return ret
 
 # FIXME: 
-func roll_damage(ability: Ability, event: ActivationEvent, target_unit: Unit, hit_location: BodyPart,  
+func roll_damage(ability: Ability, _event: ActivationEvent, _target_unit: Unit, hit_location: BodyPart,  
 parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	# Roll base damage
 	var damage_total: int = 0
@@ -146,7 +146,7 @@ parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 			print_debug("Parry successful - Full damage blocked by equal or larger weapon.")
 			return 0  # Fully blocked
 		elif parrying_weapon_size == attack_weapon_size - 1:
-			damage_total = ceili(damage_total / 2)  # Half damage
+			damage_total = ceili(float(damage_total) / 2.0)  # Half damage
 			print_debug("Parry successful - Half damage taken (smaller parrying weapon).")
 		else:
 			print_debug("Parry unsuccessful - Weapon too small to reduce damage.")
@@ -154,7 +154,7 @@ parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	# Apply armor reduction after parry
 	#var armor_value = target_unit.attribute_map.get_attribute_by_name("armor").current_buffed_value
 	var armor_value = hit_location.armor
-	damage_total -= armor_value
+	damage_total -= int(armor_value)
 	print_debug("Damage after armor reduction: ", damage_total, "\nOn ", hit_location.part_name)
 
 	# Ensure damage does not go negative

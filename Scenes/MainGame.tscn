@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=41 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -23,6 +23,7 @@
 [ext_resource type="Script" path="res://Hero_Game/Scenes/CombatSystem.gd" id="16_f3oa4"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
+[ext_resource type="Script" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
 [ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/3ds_shaders/PixelationS.gdshader" id="43_hww07"]
@@ -199,9 +200,12 @@ unit_action_system = NodePath("../UnitActionSystem")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
+holding_weapon = false
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
+is_enemy = true
+holding_weapon = false
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
 script = ExtResource("6_rwbm0")
@@ -238,6 +242,10 @@ collision_mask = 2
 spring_length = 20.0
 
 [node name="fCamera" type="Camera3D" parent="Player/CamOrigin/SpringArm3D"]
+
+[node name="CameraShake" type="Node" parent="Player"]
+script = ExtResource("20_lbku0")
+camera_path = NodePath("../CamOrigin/SpringArm3D/fCamera")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.04805, 1.08465, -3.22367)

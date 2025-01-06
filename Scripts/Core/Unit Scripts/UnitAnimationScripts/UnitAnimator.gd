@@ -5,7 +5,7 @@ extends Node
 # Signals
 signal rotation_completed
 signal movement_completed
-
+signal attack_completed
 # Exported Variables
 @export var animator: AnimationPlayer
 @export var animator_tree: AnimationTree
@@ -77,10 +77,46 @@ func weapon_setup(weapon_type: bool) -> void:
 	animator_tree.set("parameters/RunCycleBlend/GreatswordBlend/blend_amount", 0.0)
 	animator_tree.set("parameters/IdleBlend/GreatswordIdleBlend/blend_amount", 0.0)
 
-func attack_anim() -> void:
-	var is_attacking: bool = animator_tree.get("parameters/conditions/IsAttacking")
-	animator_tree.set("parameters/conditions/IsAttacking", !is_attacking)
+func melee_attack_anim(in_animation: Animation) -> void:
+# Note: Later replace greatsword test with the animation library
+	var root: AnimationNodeStateMachine = animator_tree.tree_root
+	var attack: AnimationNodeBlendTree = root.get_node("Attack")
+	var attack_anim: AnimationNodeAnimation = attack.get_node("AttackAnimation")
+	var animation: StringName = attack_anim.get_animation()
+	print("Old Animation: ", animation)
+	var anim_path: String = ("GreatSwordTest1/" + in_animation.resource_name)
+	attack_anim.set_animation(anim_path)
+	#GreatSwordTest1/Greatsword_Swing_001
 
+	var is_attacking: bool = animator_tree.get("parameters/conditions/IsAttacking")
+	animator_tree.set("parameters/conditions/IsAttacking", true)
+	# Animation stand-in
+	var timer = Timer.new()
+	
+	timer.one_shot = true
+	timer.autostart = true
+	timer.wait_time = in_animation.length
+	add_child(timer)
+	await attack_completed#timer.timeout
+	animator_tree.set("parameters/conditions/IsAttacking", false)
+	return
+	# Always add call method tracks for resolving the damage
+
+
+func attack_landed() -> void:
+	attack_completed.emit()
+	trigger_camera_shake()
+
+func trigger_camera_shake() -> void:
+	var strength = 0.1 # the maximum shake strenght. The higher, the messier
+	var shake_time = 0.2 # how much it will last
+	var shake_frequency = 50 # will apply 250 shakes per `shake_time`
+
+	CameraShake.instance.shake(strength, shake_time, shake_frequency)
+
+
+func testprint() -> void:
+	print_debug("AnimTestPrint")
 
 # Move Along Curve Process
 # Handles the movement along the given curve in each frame
@@ -139,7 +175,7 @@ func rotate_unit_towards_target_position_process(delta: float):
 	var current_direction = unit.global_transform.basis.z.normalized()
 	if current_direction.dot(facing_direction) > 0.99:
 		is_rotating = false  # Stop rotating if we're almost facing the target
-		emit_signal("rotation_completed")
+		rotation_completed.emit()
 
 # Movement State Handlers
 func on_start_moving() -> void:
@@ -148,7 +184,7 @@ func on_start_moving() -> void:
 func on_stop_moving() -> void:
 	animator_tree.set("parameters/conditions/IsWalking", false)
 	is_moving = false
-	emit_signal("movement_completed")
+	movement_completed.emit()
 
 # Shooting Functions
 # Handles shooting a projectile towards a target

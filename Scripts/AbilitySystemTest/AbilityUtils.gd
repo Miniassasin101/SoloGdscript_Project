@@ -8,17 +8,17 @@ func get_ability_from_container():
 func get_ability_from_unit():
 	pass
 
-func check_success_level(skill: int, roll: int) -> int:
+func check_success_level(skill: int, in_roll: int) -> int:
 	# Check for critical failure
-	if roll == 99 or roll == 100:
+	if in_roll == 99 or in_roll == 100:
 		return -1
 	
 	# Check for critical success
-	if roll <= ceil(skill * 0.1):  # 10% of skill value rounded up
+	if in_roll <= ceil(skill * 0.1):  # 10% of skill value rounded up
 		return 2
 	
 	# Check for regular success
-	if roll <= skill:
+	if in_roll <= skill:
 		return 1
 	
 	# Otherwise, it's a failure
@@ -70,7 +70,7 @@ func calculate(derived_from: Array[String], calculation_type: int, specs: Dictio
 
 func table_calc(total: int, table_incr: int, table_mod: int) -> int:
 	# 1) Divide total by 5 and round up
-	var base_value = ceili(total / table_incr)
+	var base_value = ceili(float(total) / float(table_incr))
 	
 	# 2) Add (or subtract if body_part_mod is negative) the table_mod
 	var result = base_value + table_mod

@@ -49,7 +49,7 @@ func check_collision(delta: float) -> void:
 func on_hit_target() -> void:
 	# Snap to target position
 	global_transform.origin = target_position
-	emit_signal("target_hit")
+	target_hit.emit()
 
 	# Handle trail effect
 	remove_trail_effect()

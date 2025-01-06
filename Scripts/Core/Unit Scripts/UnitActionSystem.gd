@@ -120,7 +120,7 @@ func reset_unit_cycle_actions(unit: Unit) -> void:
 func set_busy() -> void:
 	is_busy = true
 
-func clear_busy(ability: Ability) -> void:
+func clear_busy(_ability: Ability) -> void:
 	#print("clearbusy")
 	SignalBus.update_grid_visual.emit()
 	is_busy = false

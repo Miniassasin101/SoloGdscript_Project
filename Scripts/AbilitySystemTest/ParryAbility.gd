@@ -7,7 +7,7 @@ class_name ParryAbility extends Ability
 @export var ap_cost: int = 1
 
 
-var timer: float = 0.0  ## Timer for adding delay if needed
+
 var start_timer: float = 0.1
 var event: ActivationEvent = null
 var unit: Unit = null

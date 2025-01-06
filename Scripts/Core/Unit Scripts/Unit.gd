@@ -78,6 +78,10 @@ func _process(_delta: float) -> void:
 		LevelGrid.unit_moved_grid_position(self, grid_position, new_grid_position)
 		grid_position = new_grid_position
 
+func update_weapon_anims() -> void:
+	animator.weapon_setup(holding_weapon)
+
+
 func try_spend_action_points_to_take_action(action: Action) -> bool:
 	if can_spend_action_points_to_take_action(action):
 		spend_action_points(action.get_action_points_cost())

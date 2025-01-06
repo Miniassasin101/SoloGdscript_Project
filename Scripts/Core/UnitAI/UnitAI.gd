@@ -15,6 +15,8 @@ var current_unit
 const TIMEOUT_LIMIT: float = 5.0  # Maximum time allowed in a state before fallback
 var state_timer: float = 0.0  # Timer to track time spent in a state
 
+var disable: bool = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.on_turn_changed.connect(on_turn_changed)
@@ -22,7 +24,9 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	return 
+	if disable == true:
+		return 
+
 	if TurnSystem.instance.is_player_turn:
 		return
 
@@ -65,7 +69,7 @@ func set_state_waiting() -> void:
 	state_timer = 0.0  # Reset state timer
 
 
-func on_ability_complete(ability: Ability) -> void:
+func on_ability_complete(_ability: Ability) -> void:
 	turn_finished = true
 	state = State.TakingTurn  # After ability completes, move to TakingTurn state
 	state_timer = 0.0  # Reset state timer

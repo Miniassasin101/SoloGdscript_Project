@@ -2,6 +2,7 @@ class_name Testing
 extends Node3D
 
 @export var unit: Unit
+@export var camerashake: CameraShake
 @onready var unit_action_system: UnitActionSystem = $"../UnitActionSystem"
 @onready var unit_ai: UnitAI = $"../UnitAI"
 @onready var pathfinding: Pathfinding = $"../Pathfinding"
@@ -10,7 +11,6 @@ extends Node3D
 @onready var unit_stats_ui: UnitStatsUI = $"../UILayer/UnitStatsUI"
 
 @export var animlib: Array[Animation]
-
 var testbool: bool = false
 # Called every frame
 func _process(_delta: float) -> void:
@@ -51,8 +51,16 @@ func handle_right_mouse_click() -> void:
 	if Input.is_action_just_pressed("right_mouse"):
 		#toggle_difficult_terrain()
 		#toggle_sword_hold()
-		trigger_attack_anim()
+		#trigger_attack_anim()
+		trigger_camera_shake()
 		
+
+func trigger_camera_shake() -> void:
+	var strength = 0.2 # the maximum shake strenght. The higher, the messier
+	var shake_time = 0.2 # how much it will last
+	var shake_frequency = 150 # will apply 250 shakes per `shake_time`
+
+	CameraShake.instance.shake(strength, shake_time, shake_frequency)
 
 func trigger_attack_anim() -> void:
 	var root: AnimationNodeStateMachine = UnitActionSystem.instance.selected_unit.animator.animator_tree.tree_root
@@ -69,9 +77,9 @@ func trigger_attack_anim() -> void:
 
 func toggle_sword_hold():
 	var units: Array[Unit] = UnitManager.instance.units
-	for unit: Unit in units:
-		unit.holding_weapon = !unit.holding_weapon
-		unit.animator.weapon_setup(unit.holding_weapon)
+	for in_unit: Unit in units:
+		in_unit.holding_weapon = !in_unit.holding_weapon
+		in_unit.animator.weapon_setup(in_unit.holding_weapon)
 
 func toggle_difficult_terrain() -> void:
 	# Get the grid position under the mouse
@@ -159,6 +167,8 @@ func equip_weapon() -> void:
 	var slot: EquipmentSlot = unit.equipment.find_slot_by_item(testitem)
 	print("Slot: ", slot.name)
 	testbool = false
+	unit.holding_weapon = true
+	unit.update_weapon_anims()
 
 
 
