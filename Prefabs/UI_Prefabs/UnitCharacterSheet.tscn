@@ -633,6 +633,16 @@ theme_override_font_sizes/font_size = 12
 text = "Health"
 horizontal_alignment = 1
 
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="WeaponContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/WeaponContainer"]
+layout_mode = 2
+text = "Weapon Name"
+
 [node name="CloseButton" type="Button" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 8

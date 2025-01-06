@@ -41,7 +41,10 @@ var stopping_distance: float = 0.0
 
 # Ready Function - Called when the node enters the scene tree for the first time
 func _ready() -> void:
-	call_deferred("connect_signals")
+	#call_deferred("connect_signals")
+	pass
+
+		
 
 # Physics Process - Called every frame to handle physics-related logic
 func _physics_process(delta: float) -> void:
@@ -64,6 +67,20 @@ func animate_movement_along_curve(move_speed_in: float, movement_curve_in: Curve
 	curve_travel_offset = 0.0
 	is_moving = true
 	animator_tree.set("parameters/conditions/IsWalking", true)
+
+
+func weapon_setup(weapon_type: bool) -> void:
+	if weapon_type:
+		animator_tree.set("parameters/RunCycleBlend/GreatswordBlend/blend_amount", 1.0)
+		animator_tree.set("parameters/IdleBlend/GreatswordIdleBlend/blend_amount", 1.0)
+		return
+	animator_tree.set("parameters/RunCycleBlend/GreatswordBlend/blend_amount", 0.0)
+	animator_tree.set("parameters/IdleBlend/GreatswordIdleBlend/blend_amount", 0.0)
+
+func attack_anim() -> void:
+	var is_attacking: bool = animator_tree.get("parameters/conditions/IsAttacking")
+	animator_tree.set("parameters/conditions/IsAttacking", !is_attacking)
+
 
 # Move Along Curve Process
 # Handles the movement along the given curve in each frame

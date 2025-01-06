@@ -4,9 +4,18 @@ extends Node3D
 # Reference to the LevelGrid node.
 
 var action_system: UnitActionSystem
+
+@export_category("References")
 @export var animator: UnitAnimator
 @export var body: Body
+@export var inventory: Inventory
+@export var equipment: Equipment
 
+@export_category("Sockets")
+@export var right_hand_socket: Node3D
+@export var shoot_point: Node3D
+
+@export_category("")
 var ability_container: AbilityContainer
 var attribute_map: GameplayAttributeMap
 var unit_manager: UnitManager = get_parent()
@@ -22,11 +31,14 @@ var target_unit: Unit
 @onready var action_points: int = action_points_max
 
 @export var is_enemy: bool = false
+
+# Replace with string of weapon group later or a check if holding weapon to determine what anim to use
+@export var holding_weapon: bool = true
+
 @export var death_vfx_scene: PackedScene
 
 @export var shoulder_height: float = 1.7
 
-@export var shoot_point: Node3D
 
 
 
@@ -45,7 +57,12 @@ func _ready() -> void:
 			ability_container = child
 		if child is GameplayAttributeMap:
 			attribute_map = child
+		if child is Inventory:
+			inventory = child
+		if child is Equipment:
+			equipment = child
 	attribute_map.attribute_changed.connect(on_attribute_changed)
+	animator.weapon_setup(holding_weapon)
 	SignalBus.on_turn_changed.connect(on_turn_changed)
 	SignalBus.on_round_changed.connect(on_round_changed)
 	SignalBus.add_unit.emit(self)

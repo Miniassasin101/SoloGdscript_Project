@@ -6,7 +6,7 @@ class_name DitherAbility extends Ability
 @export_group("Attributes")
 @export var ap_cost: int = 0
 
-var timer: float = 0.0  ## Timer for adding delay if needed
+var _timer: float = 0.0  ## Timer for adding delay if needed
 var start_timer: float = 0.1
 var event: ActivationEvent = null
 var unit: Unit = null

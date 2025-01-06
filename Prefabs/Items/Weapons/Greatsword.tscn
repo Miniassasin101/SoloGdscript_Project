@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://ws4usfvbsn2l"]
+
+[ext_resource type="ArrayMesh" uid="uid://clq4o2souep2c" path="res://Hero_Game/Art/SelfAssets/WeaponAssets/WeaponMeshes/Greatsword_Cube_001.res" id="1_w1yhh"]
+[ext_resource type="Material" uid="uid://cpccbvm86p68o" path="res://Hero_Game/Art/Materials/CelShadedMat.tres" id="2_g8fl0"]
+
+[node name="Greatsword" type="MeshInstance3D"]
+transform = Transform3D(1.48231, 5.96046e-08, 3.72529e-08, 0, 1.48231, 0, 5.96046e-08, -7.45058e-08, 1.48231, 0, 0, 0)
+mesh = ExtResource("1_w1yhh")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("2_g8fl0")

@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="1_edbn8"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="2_ep4kl"]
 [ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="3_fp3qo"]
-[ext_resource type="PackedScene" uid="uid://cqnr4v4j11wr1" path="res://Hero_Game/Prefabs/Unit.tscn" id="4_g5t0o"]
+[ext_resource type="PackedScene" uid="uid://cqnr4v4j11wr1" path="res://Hero_Game/Prefabs/Units/Unit.tscn" id="4_g5t0o"]
 [ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="5_x33pd"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_Grid_08.png" id="6_q25by"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="7_v8ytv"]

@@ -2,8 +2,8 @@ class_name GridSystemVisual
 extends Node3D
 
 # The prefab for each grid cell's visual representation.
-const GRID_CELL_VISUAL: PackedScene = preload("res://Hero_Game/Prefabs/GridCellVisual.tscn")
-
+#const GRID_CELL_VISUAL: PackedScene = preload("res://Hero_Game/Prefabs/GridCellVisual.tscn")
+@export var GRID_CELL_VISUAL: PackedScene
 # 2D array to hold the visual instances of grid cells.
 var grid_visuals: Array = []  # Array of Arrays of Node3D instances.
 

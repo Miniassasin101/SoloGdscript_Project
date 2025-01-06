@@ -9,6 +9,9 @@ extends Node3D
 @onready var mouse_world: MouseWorld = $"../MouseWorld"
 @onready var unit_stats_ui: UnitStatsUI = $"../UILayer/UnitStatsUI"
 
+@export var animlib: Array[Animation]
+
+var testbool: bool = false
 # Called every frame
 func _process(_delta: float) -> void:
 	test_pathfinding()
@@ -46,8 +49,29 @@ func test_pathfinding() -> void:
 
 func handle_right_mouse_click() -> void:
 	if Input.is_action_just_pressed("right_mouse"):
-		toggle_difficult_terrain()
+		#toggle_difficult_terrain()
+		#toggle_sword_hold()
+		trigger_attack_anim()
+		
 
+func trigger_attack_anim() -> void:
+	var root: AnimationNodeStateMachine = UnitActionSystem.instance.selected_unit.animator.animator_tree.tree_root
+	var attack: AnimationNodeBlendTree = root.get_node("Attack")
+	var attack_anim: AnimationNodeAnimation = attack.get_node("AttackAnimation")
+	var animation: StringName = attack_anim.get_animation()
+	print("Old Animation: ", animation)
+	attack_anim.set_animation("GreatSwordTest1/Greatsword_Swing_001")
+	#GreatSwordTest1/Greatsword_Swing_001
+	UnitActionSystem.instance.selected_unit.animator.attack_anim()
+	animation = attack_anim.get_animation()
+	print("New Animation: ", animation)
+
+
+func toggle_sword_hold():
+	var units: Array[Unit] = UnitManager.instance.units
+	for unit: Unit in units:
+		unit.holding_weapon = !unit.holding_weapon
+		unit.animator.weapon_setup(unit.holding_weapon)
 
 func toggle_difficult_terrain() -> void:
 	# Get the grid position under the mouse
@@ -111,17 +135,46 @@ func test_n() -> void:
 
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
-		# Grab the unit under the mouse or whichever unit you want
-		var result = mouse_world.get_mouse_raycast_result("position")
-		if !result:
-			return
-		var hovered_unit: Unit = LevelGrid.get_unit_at_grid_position(
-			pathfinding.pathfinding_grid_system.get_grid_position(result)
-		)
-		if hovered_unit:
-			# Emit your signal passing in the unit reference
-			SignalBus.emit_signal("open_character_sheet", hovered_unit)
+		#open_character_sheet()
+		equip_weapon()
 
+func equip_weapon() -> void:
+	# Grab the unit under the mouse or whichever unit you want
+	var result = mouse_world.get_mouse_raycast_result("position")
+	if !result:
+		return
+	var unit: Unit = LevelGrid.get_unit_at_grid_position(
+		pathfinding.pathfinding_grid_system.get_grid_position(result)
+	)
+	var testitem_original: Item = preload("res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponTest.tres")
+	var testitem: Item = testitem_original.duplicate()
+	if !testbool:
+		print(unit.name)
+		unit.inventory.add_item(testitem)
+		for item: Item in unit.inventory.items:
+			print("Item: ", item.name)
+		testbool = true
+		return
+	unit.equipment.equip(testitem)
+	var slot: EquipmentSlot = unit.equipment.find_slot_by_item(testitem)
+	print("Slot: ", slot.name)
+	testbool = false
+
+
+
+
+
+func open_character_sheet() -> void:
+	# Grab the unit under the mouse or whichever unit you want
+	var result = mouse_world.get_mouse_raycast_result("position")
+	if !result:
+		return
+	var hovered_unit: Unit = LevelGrid.get_unit_at_grid_position(
+		pathfinding.pathfinding_grid_system.get_grid_position(result)
+	)
+	if hovered_unit:
+		# Emit your signal passing in the unit reference
+		SignalBus.emit_signal("open_character_sheet", hovered_unit)
 
 func apply_effect(att_name: String) -> void:
 	# creating a new [GameplayEffect] resource

@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://cphuh7sjr0ov8"]
+
+[ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/item.gd" id="1_42pch"]
+[ext_resource type="PackedScene" uid="uid://ws4usfvbsn2l" path="res://Hero_Game/Prefabs/Items/Weapons/Greatsword.tscn" id="1_lf4ro"]
+
+[resource]
+script = ExtResource("1_42pch")
+name = &"Greatsword"
+can_stack = false
+decrease_stack_on_use = false
+scene = ExtResource("1_lf4ro")
+tags = Array[String]([])
+quantity_current = 1
+quantity_max = 1
+tags_added_on_activation = Array[String]([])
+tags_added_on_add = Array[String]([])
+tags_added_on_equip = Array[String]([])
+tags_added_on_remove = Array[String]([])
+tags_added_on_unequip = Array[String]([])
+tags_required_to_activate = Array[String]([])
+tags_required_to_add = Array[String]([])
+tags_required_to_equip = Array[String]([])
+tags_required_to_remove = Array[String]([])
+tags_required_to_unequip = Array[String]([])
+tags_removed_on_activation = Array[String]([])
+tags_removed_on_add = Array[String]([])
+tags_removed_on_equip = Array[String]([])
+tags_removed_on_remove = Array[String]([])
+tags_removed_on_unequip = Array[String]([])

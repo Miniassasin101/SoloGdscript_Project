@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=40 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="2_td6d6"]
 [ext_resource type="Script" path="res://Hero_Game/Scenes/testing.gd" id="3_vw71g"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="4_8yks7"]
+[ext_resource type="PackedScene" uid="uid://bputpfvj74kol" path="res://Hero_Game/Prefabs/Grid/GridCellVisual.tscn" id="4_85pbp"]
+[ext_resource type="Animation" uid="uid://dswwaq5xbcffc" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Swing_001.res" id="5_o3n5o"]
 [ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="5_y067e"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Pathfinding/Pathfinding.gd" id="6_3wgmn"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Pathfinding/ObstacleManager.gd" id="6_ni1mu"]
@@ -18,7 +20,6 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
 [ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/UI_Prefabs/ActionButtonUI.tscn" id="11_jk6uv"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
-[ext_resource type="PackedScene" uid="uid://cfdwdb2mt6i5g" path="res://Hero_Game/Scenes/dawn_unit_red.tscn" id="14_t5y3h"]
 [ext_resource type="Script" path="res://Hero_Game/Scenes/CombatSystem.gd" id="16_f3oa4"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
@@ -107,10 +108,11 @@ directional_shadow_max_distance = 27.1
 
 [node name="GridSystemVisual" type="Node3D" parent="LevelGrid"]
 script = ExtResource("1_fqt43")
+GRID_CELL_VISUAL = ExtResource("4_85pbp")
 
-[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit")]
+[node name="GridSystemTest" type="Node3D" parent="."]
 script = ExtResource("3_vw71g")
-unit = NodePath("../UnitManager/DawnUnit")
+animlib = Array[Animation]([ExtResource("5_o3n5o")])
 
 [node name="Pathfinding" type="Node" parent="."]
 script = ExtResource("6_3wgmn")
@@ -196,17 +198,10 @@ script = ExtResource("10_iw061")
 unit_action_system = NodePath("../UnitActionSystem")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0621, -3.90784e-05, 5.99286)
-action_points_max = 3
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0621, -3.90784e-05, 5.99286)
-action_points_max = 3
-
-[node name="RedDawn1" parent="UnitManager" instance=ExtResource("14_t5y3h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 6)
-is_enemy = true
-shoulder_height = 0.5
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
 script = ExtResource("6_rwbm0")

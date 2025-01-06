@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ProjectileAbility" load_steps=3 format=3 uid="uid://knnn4c4diq6f"]
 
-[ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/fireball_mesh.tscn" id="1_8y4qy"]
+[ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/VFX/fireball_mesh.tscn" id="1_8y4qy"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/ProjectileAbility.gd" id="2_csomy"]
 
 [resource]
