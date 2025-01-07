@@ -39,12 +39,15 @@ var move_speed: float = 0.0
 var move_rotate_speed: float = 0.0
 var stopping_distance: float = 0.0
 
+# Attack Variables:
+var miss: bool = false
+
 # Ready Function - Called when the node enters the scene tree for the first time
 func _ready() -> void:
 	#call_deferred("connect_signals")
-	pass
+	SignalBus.equipment_changed.connect(equipment_anim_check)
 
-		
+
 
 # Physics Process - Called every frame to handle physics-related logic
 func _physics_process(delta: float) -> void:
@@ -68,6 +71,13 @@ func animate_movement_along_curve(move_speed_in: float, movement_curve_in: Curve
 	is_moving = true
 	animator_tree.set("parameters/conditions/IsWalking", true)
 
+func equipment_anim_check(in_unit: Unit) -> void:
+	if in_unit != unit:
+		return
+	if !unit.equipment.equipped_items.is_empty():
+		weapon_setup(true)
+		return
+	weapon_setup(false)
 
 func weapon_setup(weapon_type: bool) -> void:
 	if weapon_type:
@@ -77,8 +87,9 @@ func weapon_setup(weapon_type: bool) -> void:
 	animator_tree.set("parameters/RunCycleBlend/GreatswordBlend/blend_amount", 0.0)
 	animator_tree.set("parameters/IdleBlend/GreatswordIdleBlend/blend_amount", 0.0)
 
-func melee_attack_anim(in_animation: Animation) -> void:
+func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 # Note: Later replace greatsword test with the animation library
+	miss = in_miss
 	var root: AnimationNodeStateMachine = animator_tree.tree_root
 	var attack: AnimationNodeBlendTree = root.get_node("Attack")
 	var attack_anim: AnimationNodeAnimation = attack.get_node("AttackAnimation")
@@ -105,10 +116,13 @@ func melee_attack_anim(in_animation: Animation) -> void:
 
 func attack_landed() -> void:
 	attack_completed.emit()
+	if miss:
+		miss = false
+		return
 	trigger_camera_shake()
 
 func trigger_camera_shake() -> void:
-	var strength = 0.1 # the maximum shake strenght. The higher, the messier
+	var strength = 0.1 # the maximum shake strength. The higher, the messier
 	var shake_time = 0.2 # how much it will last
 	var shake_frequency = 50 # will apply 250 shakes per `shake_time`
 

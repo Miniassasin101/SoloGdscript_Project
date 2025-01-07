@@ -8,6 +8,7 @@ static var instance: LevelDebug = null
 @export var control_enemy_debug: bool = false
 @export var attacker_success_debug: bool = false
 @export var parry_fail_debug: bool = false
+@export var auto_equip_debug: bool = false
 @export_category("Grid Debug")
 @export var grid_dimensions: Vector2 = Vector2(10, 10)
 @export var grid_scale: float = 2.0

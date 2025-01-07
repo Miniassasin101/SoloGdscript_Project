@@ -63,6 +63,9 @@ func try_activate(_event: ActivationEvent) -> void:
 		print_debug("Melee attack action thwarted - out of range or invalid target.")
 		return
 
+	
+	add_weapon_to_event()
+	
 	# Rotate the Unit to face the target, then continue the action (attack).
 	rotate_unit_towards_target_enemy(event)
 
@@ -143,6 +146,15 @@ func get_enemy_ai_ability(_event: ActivationEvent) -> EnemyAIAction:
 #             HELPER METHODS
 ################################################
 
+# FIXME: Add a prompt if there is more than one weapon equipped
+func add_weapon_to_event() -> void:
+	
+	for item: Item in unit.equipment.equipped_items:
+		event.weapon = item
+		return
+	
+
+
 ##
 # Rotates the user to face the target.
 # After rotation, we call melee_attack_anim() to perform the strike.
@@ -170,7 +182,7 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 ##
 func melee_attack_anim() -> void:
 	# 1) Toggle the "IsAttacking" parameter to start the melee animation.
-	await unit.animator.melee_attack_anim(animation)
+	await unit.animator.melee_attack_anim(animation, event.miss)
 
 	# 2) If your animator signals when the attack hits or finishes,
 	#    you can "await" that signal here. For example:
@@ -189,6 +201,8 @@ func melee_attack_anim() -> void:
 # This is the "on-hit" portion of the melee attack.
 ##
 func apply_effect() -> void:
+	if event.miss:
+		return
 	# Create a new GameplayEffect resource
 	var effect = GameplayEffect.new()
 

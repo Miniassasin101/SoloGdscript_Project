@@ -65,19 +65,25 @@ func reaction(reacting_unit: Unit, attacking_unit: Unit) -> int:
 	# If evade: skill = evade skill
 	var defend_skill_value = reacting_unit.attribute_map.get_attribute_by_name("combat_skill").current_buffed_value
 	var defending_roll = AbilityUtils.roll(100)
+	print_debug("Defend Skill Value: ", defend_skill_value)
+	print_debug("Defend Roll: ", defending_roll)
 
 	var defender_success_level = AbilityUtils.check_success_level(defend_skill_value, defending_roll)
+	print_debug("Defender Success Level: ", defender_success_level)
 	return defender_success_level
 
 func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
+	var weapon: Weapon = event.weapon
 	var attacking_unit: Unit = event.character
 	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 
 	var attacker_combat_skill = event.attribute_map.get_attribute_by_name("combat_skill").current_buffed_value
 	var attacker_roll: int = AbilityUtils.roll(100)
+	print_debug("Attacker Combat Skill: ", attacker_combat_skill)
 	print_debug("Attacker Roll: ", attacker_roll)
 
 	var attacker_success_level: int = AbilityUtils.check_success_level(attacker_combat_skill, attacker_roll)
+	print_debug("Attacker Success Level: ", attacker_success_level)
 	var ret_event: ActivationEvent = event
 	if LevelDebug.instance.attacker_success_debug == true:
 		attacker_success_level = 1
@@ -88,10 +94,10 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 
 	# Attacker succeeded, prompt defender for a reaction
 	var defender_success_level: int = 0
-	var defender_wants_reaction = true  # Example prompt
-	var parry_success = false
-	var parrying_weapon_size = 0
-	var attack_weapon_size = 0 #event.attribute_map.get_attribute_by_name("weapon_size").current_buffed_value
+	var defender_wants_reaction: bool = true  # Example prompt
+	var parry_success: bool = false
+	var parrying_weapon_size: int = 0
+	var attack_weapon_size = weapon.size if weapon else 0#0 #event.attribute_map.get_attribute_by_name("weapon_size").current_buffed_value
 
 	if defender_wants_reaction:
 		defender_success_level = await reaction(target_unit, attacking_unit)
@@ -99,7 +105,9 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		# If defender wins, determine parry effectiveness
 		if defender_success_level >= attacker_success_level:
 			parry_success = true
-			parrying_weapon_size = 0#target_unit.attribute_map.get_attribute_by_name("weapon_size").current_buffed_value
+		if target_unit.equipment.equipped_items.front() != null:
+			parrying_weapon_size = target_unit.equipment.equipped_items.front().size
+
 	if !defender_wants_reaction:
 		return ret_event
 	if LevelDebug.instance.parry_fail_debug:
@@ -108,6 +116,8 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	if hit_location == null:
 		push_error("Error: null hit location on ", target_unit.name)
 	ret_event.body_part = hit_location.part_name + "_health"
+	if ret_event.miss:
+		return ret_event
 
 
 	# Determine success differential
@@ -134,9 +144,14 @@ func get_hit_location(target_unit: Unit) -> BodyPart:
 func roll_damage(ability: Ability, _event: ActivationEvent, _target_unit: Unit, hit_location: BodyPart,  
 parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	# Roll base damage
+	var weapon: Weapon = _event.weapon
 	var damage_total: int = 0
-	damage_total += AbilityUtils.roll(ability.damage, ability.die_number)
-	damage_total += ability.flat_damage
+	if weapon:
+		damage_total += AbilityUtils.roll(weapon.die_type, weapon.die_number)
+		damage_total += weapon.flat_damage
+	else:
+		damage_total += AbilityUtils.roll(ability.damage, ability.die_number)
+		damage_total += ability.flat_damage
 
 	print_debug("Base damage rolled: ", damage_total)
 

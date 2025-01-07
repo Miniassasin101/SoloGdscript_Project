@@ -37,6 +37,8 @@ signal update_stat_bars
 
 signal open_character_sheet(unit: Unit)
 
+signal equipment_changed(unit: Unit)
+
 signal form_body
 
 signal remove_unit(unit: Unit)

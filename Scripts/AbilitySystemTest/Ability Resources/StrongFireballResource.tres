@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="ProjectileAbility" load_steps=3 format=3 uid="uid://crgywdemy0bgk"]
+[gd_resource type="Resource" script_class="ProjectileAbility" load_steps=4 format=3 uid="uid://crgywdemy0bgk"]
 
+[ext_resource type="Animation" uid="uid://7welfvxasjgq" path="res://Hero_Game/Animations/AnimsSwordTest/Left_Hand_Cast_001.res" id="1_3wita"]
 [ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/VFX/fireball_mesh.tscn" id="1_nusuh"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/ProjectileAbility.gd" id="2_og3a5"]
 
 [resource]
 script = ExtResource("2_og3a5")
+animation = ExtResource("1_3wita")
 damage = 10
 die_number = 1
 flat_damage = 0

@@ -50,6 +50,8 @@ func on_hit_target() -> void:
 	# Snap to target position
 	global_transform.origin = target_position
 	target_hit.emit()
+	
+	trigger_camera_shake()
 
 	# Handle trail effect
 	remove_trail_effect()
@@ -60,6 +62,13 @@ func on_hit_target() -> void:
 
 	# Queue the projectile for deletion
 	queue_free()
+
+func trigger_camera_shake() -> void:
+	var strength = 0.15 # the maximum shake strength. The higher, the messier
+	var shake_time = 0.2 # how much it will last
+	var shake_frequency = 50 # will apply 250 shakes per `shake_time`
+
+	CameraShake.instance.shake(strength, shake_time, shake_frequency)
 
 # Handles the trail effect removal and cleanup
 func remove_trail_effect() -> void:
