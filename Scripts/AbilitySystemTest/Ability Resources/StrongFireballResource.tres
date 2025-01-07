@@ -8,8 +8,8 @@
 script = ExtResource("2_og3a5")
 animation = ExtResource("1_3wita")
 damage = 10
-die_number = 1
-flat_damage = 0
+die_number = 3
+flat_damage = 1
 attack_range = 15
 ap_cost = 1
 projectile = ExtResource("1_nusuh")

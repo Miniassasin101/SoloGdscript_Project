@@ -65,11 +65,11 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 
 func shoot_projectile() -> void:
 	assert(unit.shoot_point != null)
-	await unit.animator.melee_attack_anim(animation)
+	await unit.animator.left_cast_anim(null, event.miss)
 	var projectile_instance: Projectile = projectile.instantiate()
 	# Will need to dynamically adjust shoot height later
 	var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
-	projectile_instance.setup(target_shoot_at_position, false) #Add miss logic later
+	projectile_instance.setup(target_shoot_at_position, event.miss) #Add miss logic later
 	event.character.add_child(projectile_instance)
 	projectile_instance.global_transform.origin = unit.shoot_point.global_transform.origin
 	projectile_instance.global_transform.basis = unit.shoot_point.global_transform.basis

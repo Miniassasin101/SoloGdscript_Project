@@ -6,14 +6,27 @@ extends Node3D
 var action_system: UnitActionSystem
 
 @export_category("References")
+@export var skeleton: Skeleton3D
 @export var animator: UnitAnimator
-@export var body: Body
+@export var body: Body #abstract of stats and health of each limb
 @export var inventory: Inventory
 @export var equipment: Equipment
 
 @export_category("Sockets")
 @export var right_hand_socket: Node3D
 @export var shoot_point: Node3D
+
+@export_category("Head Look")
+@export var neck_target: Marker3D
+@export var look_target: Node3D
+var new_rotation: Quaternion
+## Should stay between 0 and 180 usually
+@export var max_horizontal_angle: int = 90
+@export var max_vertical_angle: int = 20
+var bone_smooth_rot
+
+
+
 
 @export_category("")
 var ability_container: AbilityContainer
@@ -39,8 +52,11 @@ var target_unit: Unit
 
 @export var shoulder_height: float = 1.7
 
+var facing: int = 2
 
+var target: Unit = null
 
+var testbool: bool = false
 
 func _ready() -> void:
 	unit_manager = get_parent()
@@ -49,6 +65,7 @@ func _ready() -> void:
 	grid_position = LevelGrid.get_grid_position(global_transform.origin)
 	# Register this unit at its grid position in the level grid.
 	LevelGrid.set_unit_at_grid_position(grid_position, self)
+	set_facing()
 	action_array = []
 	for child in get_children():
 		if child is Action:
@@ -70,13 +87,70 @@ func _ready() -> void:
 
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	# Update the unit's grid position if it has moved to a new grid cell.
 	var new_grid_position: GridPosition = LevelGrid.get_grid_position(global_transform.origin)
 	if new_grid_position != grid_position:
 		# Notify the level grid that the unit has moved.
 		LevelGrid.unit_moved_grid_position(self, grid_position, new_grid_position)
 		grid_position = new_grid_position
+	if testbool:
+		look_at_object(delta)
+
+
+func look_at_target(target: Node3D, bone_name: String = "DEF_neck.001", clamp_angle: float = 55.0, interpolation_time: float = 0.2) -> void:
+	"""
+	Makes the specified bone (default: Head) look at the target node.
+	Parameters:
+		- target: The node to look at (Node3D).
+		- bone_name: The name of the bone to rotate (default: "Head").
+		- clamp_angle: The maximum angle the head can turn (in degrees).
+		- interpolation_time: The time (in seconds) for smooth rotation.
+	"""
+	if not is_instance_valid(target) or skeleton == null:
+		print_debug("Invalid target or missing skeleton.")
+		return
+
+	# Get the current position of the bone in world space
+	var bone_global_transform = skeleton.get_bone_global_pose(skeleton.find_bone(bone_name))
+	var bone_world_position = bone_global_transform.origin
+
+	# Get the target's world position
+	var target_position = target.global_transform.origin
+
+	# Calculate the direction vector to the target
+	var look_direction = (target_position - bone_world_position).normalized()
+
+	# Calculate the current bone's forward direction
+	var current_bone_forward = bone_global_transform.basis.z.normalized()
+
+	# Calculate the angle between the current direction and the look direction
+	var angle_to_target = rad_to_deg(acos(current_bone_forward.dot(look_direction)))
+
+	# Clamp the rotation angle to the maximum allowed (clamp_angle)
+	if angle_to_target > clamp_angle:
+		print_debug("Clamping head rotation.")
+		var axis_of_rotation = current_bone_forward.cross(look_direction).normalized()
+		look_direction = current_bone_forward.rotated(axis_of_rotation, deg_to_rad(clamp_angle))
+
+	# Compute the desired rotation
+	var look_at_transform = Transform3D()
+	look_at_transform.origin = bone_world_position
+	look_at_transform.basis = Basis().looking_at(look_direction, Vector3.UP)
+
+	# Apply interpolation for smooth rotation
+	var interpolated_basis = bone_global_transform.basis.slerp(look_at_transform.basis, clamp(1.0 / interpolation_time, 0, 1))
+	var bonename: String = skeleton.get_bone_name(skeleton.find_bone(bone_name))
+	# Apply the new rotation to the bone
+	bone_global_transform.basis = interpolated_basis
+	skeleton.set_bone_global_pose(skeleton.find_bone(bone_name), bone_global_transform)
+
+func look_at_object(delta: float):
+	var neck_bone = skeleton.find_bone("DEF_neck.001")
+	neck_target.look_at(look_target.global_position, Vector3.UP, true)
+	new_rotation = Quaternion.from_euler(neck_target.rotation)
+	skeleton.set_bone_pose_rotation(neck_bone, new_rotation)
+
 
 func update_weapon_anims() -> void:
 	animator.weapon_setup(holding_weapon)
@@ -202,3 +276,28 @@ func get_target_position_with_offset(height_offset: float) -> Vector3:
 	var target_position = global_position
 	target_position.y += height_offset
 	return target_position
+
+
+func set_facing() -> void:
+	"""
+	Sets the facing variable based on the unit's current rotation.
+	Facing values:
+	- 0: 180 degrees (facing North(back))
+	- 1: 90 degrees (facing East(left))
+	- 2: 0 degrees (facing South(front))
+	- 3: -90 degrees (facing West(right))
+	"""
+	# Get the unit's y-axis rotation in degrees
+	var rotation_y = wrapf(rotation_degrees.y, 0.0, 360.0)
+
+	# Map rotation to cardinal directions
+	if rotation_y > 135.0 and rotation_y <= 225.0:
+		facing = 0  # Facing backward
+	elif rotation_y > 45.0 and rotation_y <= 135.0:
+		facing = 1  # Facing right
+	elif (rotation_y > 315.0 and rotation_y <= 360.0) or (rotation_y >= 0.0 and rotation_y <= 45.0):
+		facing = 2  # Facing forward
+	elif rotation_y > 225.0 and rotation_y <= 315.0:
+		facing = 3  # Facing left
+
+	print_debug("Unit facing direction set to: ", facing)

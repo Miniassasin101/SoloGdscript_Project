@@ -87,6 +87,7 @@ size = Vector2(2, 2)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
+attacker_success_debug = true
 parry_fail_debug = true
 auto_equip_debug = true
 grid_dimensions = Vector2(20, 10)
@@ -111,8 +112,9 @@ directional_shadow_max_distance = 27.1
 script = ExtResource("1_fqt43")
 GRID_CELL_VISUAL = ExtResource("4_85pbp")
 
-[node name="GridSystemTest" type="Node3D" parent="."]
+[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit")]
 script = ExtResource("3_vw71g")
+unit = NodePath("../UnitManager/DawnUnit")
 animlib = Array[Animation]([ExtResource("5_o3n5o")])
 
 [node name="Pathfinding" type="Node" parent="."]
@@ -198,12 +200,14 @@ script = ExtResource("8_kmwtl")
 script = ExtResource("10_iw061")
 unit_action_system = NodePath("../UnitActionSystem")
 
-[node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
+[node name="DawnUnit" parent="UnitManager" node_paths=PackedStringArray("look_target") instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
+look_target = NodePath("../DawnUnit2")
 holding_weapon = false
 
-[node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
+[node name="DawnUnit2" parent="UnitManager" node_paths=PackedStringArray("look_target") instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
+look_target = NodePath("../DawnUnit")
 is_enemy = true
 holding_weapon = false
 

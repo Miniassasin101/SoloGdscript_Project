@@ -87,6 +87,19 @@ func weapon_setup(weapon_type: bool) -> void:
 	animator_tree.set("parameters/RunCycleBlend/GreatswordBlend/blend_amount", 0.0)
 	animator_tree.set("parameters/IdleBlend/GreatswordIdleBlend/blend_amount", 0.0)
 
+func left_cast_anim(in_animation: Animation, in_miss: bool = false) -> void:
+	# Note: Later replace greatsword test with the animation library
+	miss = in_miss
+
+	animator_tree.set("parameters/IdleBlend/LeftArmBlend/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)# or enum 1
+
+
+	await attack_completed#timer.timeout
+
+	return
+	# Always add call method tracks for resolving the damage
+	
+
 func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 # Note: Later replace greatsword test with the animation library
 	miss = in_miss
@@ -102,12 +115,7 @@ func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 	#var is_attacking: bool = animator_tree.get("parameters/conditions/IsAttacking")
 	animator_tree.set("parameters/conditions/IsAttacking", true)
 	# Animation stand-in
-	var timer = Timer.new()
-	
-	timer.one_shot = true
-	timer.autostart = true
-	timer.wait_time = in_animation.length
-	add_child(timer)
+
 	await attack_completed#timer.timeout
 	animator_tree.set("parameters/conditions/IsAttacking", false)
 	return
@@ -120,6 +128,17 @@ func attack_landed() -> void:
 		miss = false
 		return
 	trigger_camera_shake()
+
+func toggle_head_cancel(use: bool = false, set_to: bool = false) -> void:
+	if use:
+		animator_tree.set("parameters/IdleBlend/HeadCancelBlend/blend_amount", set_to)
+	else:
+		var prev: float = float(animator_tree.get("parameters/IdleBlend/HeadCancelBlend/blend_amount"))
+		if prev == 1.0:
+			animator_tree.set("parameters/IdleBlend/HeadCancelBlend/blend_amount", 1.0)
+		else:
+			animator_tree.set("parameters/IdleBlend/HeadCancelBlend/blend_amount", 1.0)
+
 
 func trigger_camera_shake() -> void:
 	var strength = 0.1 # the maximum shake strength. The higher, the messier

@@ -51,7 +51,8 @@ func on_hit_target() -> void:
 	global_transform.origin = target_position
 	target_hit.emit()
 	
-	trigger_camera_shake()
+	if !miss:
+		trigger_camera_shake()
 
 	# Handle trail effect
 	remove_trail_effect()
@@ -65,8 +66,8 @@ func on_hit_target() -> void:
 
 func trigger_camera_shake() -> void:
 	var strength = 0.15 # the maximum shake strength. The higher, the messier
-	var shake_time = 0.2 # how much it will last
-	var shake_frequency = 50 # will apply 250 shakes per `shake_time`
+	var shake_time = 0.3 # how much it will last
+	var shake_frequency = 50 # will apply 'n' shakes per `shake_time`
 
 	CameraShake.instance.shake(strength, shake_time, shake_frequency)
 
@@ -74,8 +75,7 @@ func trigger_camera_shake() -> void:
 func remove_trail_effect() -> void:
 	trail_3d.remove_on_completion = true
 	trail_3d.trailEnabled = false
-	#get_child(0).remove_child(trail_3d)
-	#get_parent().add_child(trail_3d)
+
 	trail_3d.reparent(self.get_parent())
 
 # Spawns the fireball hit VFX at the target position

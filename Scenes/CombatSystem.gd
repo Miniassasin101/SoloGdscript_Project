@@ -105,7 +105,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		# If defender wins, determine parry effectiveness
 		if defender_success_level >= attacker_success_level:
 			parry_success = true
-		if target_unit.equipment.equipped_items.front() != null:
+		if !target_unit.equipment.equipped_items.is_empty():
 			parrying_weapon_size = target_unit.equipment.equipped_items.front().size
 
 	if !defender_wants_reaction:

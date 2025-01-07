@@ -2,6 +2,7 @@ class_name Testing
 extends Node3D
 
 @export var unit: Unit
+
 @export var camerashake: CameraShake
 @onready var unit_action_system: UnitActionSystem = $"../UnitActionSystem"
 @onready var unit_ai: UnitAI = $"../UnitAI"
@@ -49,10 +50,20 @@ func test_pathfinding() -> void:
 
 func handle_right_mouse_click() -> void:
 	if Input.is_action_just_pressed("right_mouse"):
+		var result = mouse_world.get_mouse_raycast_result("position")
+		var in_unit: Unit = LevelGrid.get_unit_at_grid_position(pathfinding.pathfinding_grid_system.get_grid_position(result))
 		#toggle_difficult_terrain()
 		#toggle_sword_hold()
 		#trigger_attack_anim()
-		trigger_camera_shake()
+		#trigger_camera_shake()
+		# Animation stand-in
+
+		unit.target = in_unit
+		unit.testbool = !unit.testbool
+		unit.animator.toggle_head_cancel()
+		print_debug(unit.testbool)
+
+
 		
 
 func trigger_camera_shake() -> void:

@@ -135,9 +135,6 @@ transform = Transform3D(0.565549, 0.0711323, -0.821642, -0.704513, 0.559594, -0.
 [node name="LeftHandEquipmentSocketBone" parent="Rig_001/Skeleton3D" index="1"]
 transform = Transform3D(-0.50858, 0.562962, 0.651475, 0.815853, 0.556917, 0.155652, -0.275192, 0.610669, -0.742531, -0.143997, 1.24159, 0.378857)
 
-[node name="EquippedItem3D" parent="Rig_001/Skeleton3D/LeftHandEquipmentSocketBone/RightHandSocket" index="0" node_paths=PackedStringArray("unit")]
-unit = NodePath("../../../../..")
-
 [node name="Body_001" parent="Rig_001/Skeleton3D" index="2"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
@@ -183,6 +180,7 @@ surface_material_override/0 = ExtResource("2_ahxat")
 
 [node name="UnitAnimationTree" parent="." index="2"]
 parameters/IdleBlend/GreatswordIdleBlend/blend_amount = 0
+parameters/IdleBlend/HeadCancelBlend/blend_amount = 0
 parameters/RunCycleBlend/GreatswordBlend/blend_amount = 0
 
 [node name="GameplayAttributeMap" parent="." index="6"]
