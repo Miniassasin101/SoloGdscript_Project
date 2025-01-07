@@ -1,6 +1,5 @@
 [gd_scene load_steps=102 format=4 uid="uid://ckh4ee1mgwjn4"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
 [ext_resource type="Material" uid="uid://cpccbvm86p68o" path="res://Hero_Game/Art/Materials/CelShadedMat.tres" id="3_bhmb0"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/equipped_item_3d.gd" id="4_3lwao"]
@@ -31,12 +30,218 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Body.gd" id="29_f43xc"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/BodyPart.gd" id="30_uvroa"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/inventory.gd" id="34_0tyum"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/equipment.gd" id="34_6brpe"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/item.gd" id="35_icsct"]
 [ext_resource type="Resource" uid="uid://bh2no358biy4l" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/ParryResource.tres" id="38_1p8t2"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/equipment_slot.gd" id="38_3xk7x"]
 [ext_resource type="Resource" uid="uid://cdvdn0jqh0akb" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/DitherResource.tres" id="39_1xl8t"]
 [ext_resource type="Resource" uid="uid://boojk1je30typ" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/IdleResource.tres" id="40_8r1ak"]
+
+[sub_resource type="GDScript" id="GDScript_rni60"]
+script/source = "class_name Unit
+extends Node3D
+
+# Reference to the LevelGrid node.
+
+var action_system: UnitActionSystem
+
+@export_category(\"References\")
+@export var animator: UnitAnimator
+@export var body: Body
+@export var inventory: Inventory
+@export var equipment: Equipment
+
+@export_category(\"Sockets\")
+@export var right_hand_socket: Node3D
+@export var shoot_point: Node3D
+
+@export_category(\"\")
+var ability_container: AbilityContainer
+var attribute_map: GameplayAttributeMap
+var unit_manager: UnitManager = get_parent()
+# The grid position of this unit.
+var grid_position: GridPosition
+var is_holding: bool = false
+var unit_name: String = \"null\"
+# Reference to the action array node attached to this unit.
+@onready var action_array: Array[Action]
+var target_unit: Unit
+
+@export var action_points_max: int = 2
+@onready var action_points: int = action_points_max
+
+@export var is_enemy: bool = false
+
+# Replace with string of weapon group later or a check if holding weapon to determine what anim to use
+@export var holding_weapon: bool = true
+
+@export var death_vfx_scene: PackedScene
+
+@export var shoulder_height: float = 1.7
+
+
+
+
+func _ready() -> void:
+	unit_manager = get_parent()
+	action_system = unit_manager.unit_action_system
+	# Initialize the unit's grid position based on its current world position.
+	grid_position = LevelGrid.get_grid_position(global_transform.origin)
+	# Register this unit at its grid position in the level grid.
+	LevelGrid.set_unit_at_grid_position(grid_position, self)
+	action_array = []
+	for child in get_children():
+		if child is Action:
+			action_array.append(child)
+		if child is AbilityContainer:
+			ability_container = child
+		if child is GameplayAttributeMap:
+			attribute_map = child
+		if child is Inventory:
+			inventory = child
+		if child is Equipment:
+			equipment = child
+	attribute_map.attribute_changed.connect(on_attribute_changed)
+	animator.weapon_setup(holding_weapon)
+	SignalBus.on_turn_changed.connect(on_turn_changed)
+	SignalBus.on_round_changed.connect(on_round_changed)
+	SignalBus.add_unit.emit(self)
+
+
+
+
+func _process(_delta: float) -> void:
+	# Update the unit's grid position if it has moved to a new grid cell.
+	var new_grid_position: GridPosition = LevelGrid.get_grid_position(global_transform.origin)
+	if new_grid_position != grid_position:
+		# Notify the level grid that the unit has moved.
+		LevelGrid.unit_moved_grid_position(self, grid_position, new_grid_position)
+		grid_position = new_grid_position
+
+func update_weapon_anims() -> void:
+	animator.weapon_setup(holding_weapon)
+
+
+func try_spend_action_points_to_take_action(action: Action) -> bool:
+	if can_spend_action_points_to_take_action(action):
+		spend_action_points(action.get_action_points_cost())
+		return true
+	return false
+
+func try_spend_ability_points_to_use_ability(ability: Ability) -> bool:
+	if can_spend_ability_points_to_use_ability(ability):
+		spend_ability_points(ability.ap_cost)
+		return true
+	return false
+
+func can_spend_action_points_to_take_action(action: Action) -> bool:
+	if action_points >= action.get_action_points_cost():
+		return true
+	else:
+		return false
+
+func can_spend_ability_points_to_use_ability(ability: Ability) -> bool:
+	var ap_remain: int = int(attribute_map.get_attribute_by_name(\"action_points\").current_value)
+	# Replace action points with ability points later
+	if ap_remain >= ability.ap_cost:
+		return true
+	else:
+		return false
+
+
+func spend_action_points(amount: int) -> void:
+
+	action_points -= amount
+	SignalBus.emit_signal(\"action_points_changed\")
+	SignalBus.emit_signal(\"update_stat_bars\")
+
+func spend_ability_points(amount: int) -> void:
+	attribute_map.get_attribute_by_name(\"action_points\").current_value -= amount
+	# Note: Change to ability points later
+	SignalBus.emit_signal(\"action_points_changed\")
+	SignalBus.emit_signal(\"update_stat_bars\")
+
+
+
+
+func on_dead() -> void:
+	var death_effect = death_vfx_scene.instantiate() as Node3D
+	get_tree().root.add_child(death_effect)
+	death_effect.global_transform.origin = self.global_position
+	if death_effect.get_child_count() > 0 and death_effect.get_child(0) is GPUParticles3D:
+		death_effect.get_child(0).emitting = true
+	LevelGrid.remove_unit_at_grid_position(grid_position, self)
+	SignalBus.remove_unit.emit(self)
+	
+	queue_free()
+
+func on_attribute_changed(_attribute: AttributeSpec):
+	SignalBus.emit_signal(\"update_stat_bars\")
+	if attribute_map.get_attribute_by_name(\"health\").current_value <= 0:
+		on_dead()
+
+# Will probably have to swap turn with round later
+func on_turn_changed() -> void:
+	if is_enemy and !TurnSystem.instance.is_player_turn or !is_enemy and TurnSystem.instance.is_player_turn:
+		action_points = action_points_max
+		
+		SignalBus.emit_signal(\"action_points_changed\")
+		SignalBus.emit_signal(\"update_stat_bars\")
+
+func on_round_changed() -> void:
+	attribute_map.get_attribute_by_name(\"action_points\").current_value = attribute_map.get_attribute_by_name(\"action_points\").maximum_value
+	SignalBus.emit_signal(\"action_points_changed\")
+	SignalBus.emit_signal(\"update_stat_bars\")
+
+# Setters and Getters
+func _to_string() -> String:
+	# Return the unit's name as a string representation.
+	return self.name
+
+
+func has_ability(ability_name: StringName) -> bool:
+	for ability: Ability in ability_container.granted_abilities:
+		if ability.ui_name == ability_name:
+			return true
+	return false
+
+func get_animation_tree() -> AnimationTree:
+	# Search for an AnimationTree node among the unit's children.
+	for child in get_children():
+		if child is AnimationTree:
+			return child
+	# Return null if no AnimationTree was found.
+	return null
+
+func get_grid_position() -> GridPosition:
+	# Return the unit's current grid position.
+	return grid_position
+
+func get_world_position() -> Vector3:
+	return global_position
+
+func get_action_system() -> UnitActionSystem:
+	# Return the UnitActionSystem reference.
+	return action_system
+
+func get_action_array() -> Array[Action]:
+	# Return the array of actions attached to the unit.
+	return action_array
+
+func get_action_points() -> int:
+	# Return the unit's action points.
+	return action_points
+
+func get_action(action_name: String) -> Action:
+	for action in action_array:
+		if action.get_action_name() == action_name:
+			return action
+	return null  # Return null if action not found
+
+func get_target_position_with_offset(height_offset: float) -> Vector3:
+	var target_position = global_position
+	target_position.y += height_offset
+	return target_position
+"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_khrt5"]
 vertex_color_use_as_albedo = true
@@ -2300,13 +2505,432 @@ hit_range_start = 19
 hit_range_end = 20
 conditions = Array[Resource]([])
 
+[sub_resource type="GDScript" id="GDScript_452la"]
+script/source = "@icon(\"res://addons/godot_gameplay_systems/inventory_system/assets/EquipmentIcon.png\")
+@tool
+class_name Equipment extends Node
+
+
+## Handles your equipped items.
+##
+## It uses slots to determine which item can be equippend and how.
+##
+## Note: an equipment should be unique for a character.
+
+
+enum LifeCycle {
+	## One item has been activated from the inventory.
+	Activate = 0,
+	## One item has been equipped.
+	Equip = 2,
+	## One item has been removed from the inventory.
+	Remove = 3,
+	## One item has been unequipped.
+	Unequip = 4,
+}
+
+
+## Emitted when an [Item] is activated.
+signal item_activated(item: Item, activation_type: int)
+## Emitted when an [Item] is equipped on a determined [EquipmentSlot].
+signal equipped(item: Item, slot: EquipmentSlot)
+## Emitted when the [Equipment] refuses to equip an [Item] because of it's own tags requirements or no [EquipmentSlot] can be found. 
+## [br]In the last case, slot will be passed as [code]null[/code]
+signal refused_to_equip(item: Item, slot: EquipmentSlot)
+## Emitted when an [Item] is unequipped on a determined [EquipmentSlot].
+signal unequipped(item: Item, slot: EquipmentSlot)
+## Emitted when the [Equipment] refuses to unequip an [Item] because of it's own tags requirements.
+signal refused_to_unequip(item: Item, slot: EquipmentSlot)
+## Emitted when any add tag method is called.
+signal tag_added(tag: String, tags: Array[String])
+## Emitted when any remove tag method is called.
+signal tag_removed(tag: String, tags: Array[String])
+
+
+@export_category(\"Equipment\")
+## The path to the owning character.
+@export_node_path(\"Node2D\", \"Node3D\") var owner_path: NodePath = NodePath()
+## The path to the related [Inventory]. This is not necessary, unless you want to have 
+## an inventory based gameplay system.
+## [br]For example: a classic Doom/Quake-like game, will not have an inventory system, 
+## all weapons are set at startup and can be used only if some tags are set.
+@export_node_path(\"Inventory\") var inventory_path: NodePath = NodePath()
+## Slots available in current [Equipment].
+@export var slots_editor: Array[EquipmentSlot] = []
+## An array of tags which describe the state of the equipment.
+@export var tags: Array[String] = []
+
+@export_group(\"Gameplay\", \"gameplay_\")
+@export var gameplay_equip_automatically: bool = false
+
+var slots: Array[EquipmentSlot] = []
+
+## All equipped [Item]s.
+var equipped_items: Array[Item]:
+	get:
+		var items: Array[Item]
+
+		for slot in slots:
+			if slot.has_equipped_item:
+				items.append(slot.equipped)
+
+		return items
+
+
+## The related [Inventory] searched by [member Equipment.inventory_path]. 
+var inventory: Inventory
+
+var unit: Unit
+
+## Used internally to handle a [signal Inventory.item_activated] signal.
+func _handle_item_activated(item: Item, activation_type: int) -> void:
+	_handle_life_cycle(LifeCycle.Activate, item)
+	item_activated.emit(item, activation_type)
+		
+
+## Used internally to handle a [signal Inventory.item_added] signal.
+func _handle_item_added(item: Item) -> void:
+	if gameplay_equip_automatically:
+		var slot = find_slot_by_item(item)
+
+		if slot != null and not slot.has_equipped_item:
+			equip(item)
+
+
+## Used internally to handle a [signal EquipmentSlot.item_added] signal.
+func _handle_item_equipped(item: Item, slot: EquipmentSlot, in_unit: Unit):
+	if in_unit != get_node(owner_path):
+		return
+	equipped.emit(item, slot)
+	item._equip(self, slot)
+	_handle_life_cycle(LifeCycle.Equip, item)
+	equip_weapon(item, in_unit)
+	
+		
+
+func equip_weapon(item: Item, in_unit: Unit) -> void:
+	var itemscene = item.scene.instantiate()
+	#in_unit.right_hand_socket.add_child(itemscene)
+
+## Used internally to handle a [signal Inventory.item_removed] signal.
+func _handle_item_removed(item: Item) -> void:
+	unequip(item)
+	_handle_life_cycle(LifeCycle.Remove, item)
+
+
+## Handles tags internally. Do not call it manually.
+func _handle_life_cycle(life_cycle: LifeCycle, item: Item) -> void:
+	match life_cycle:
+		LifeCycle.Activate:
+			add_tags(item.tags_added_on_activation)
+			remove_tags(item.tags_removed_on_activation)
+			return
+		LifeCycle.Equip:
+			add_tags(item.tags_added_on_equip)
+			remove_tags(item.tags_removed_on_equip)
+			return
+		LifeCycle.Remove:
+			add_tags(item.tags_added_on_remove)
+			remove_tags(item.tags_removed_on_remove)
+		LifeCycle.Unequip:
+			add_tags(item.tags_added_on_unequip)
+			remove_tags(item.tags_removed_on_unequip)
+			return
+
+
+## Used internally to handle a [signal EquipmentSlot.refused_to_equip] signal.
+func _handle_item_refused_to_equip(item: Item, slot: EquipmentSlot):
+	refused_to_equip.emit(item, slot)	
+
+
+## Used internally to handle a [signal EquipmentSlot.item_unequipped] signal.
+func _handle_item_unequipped(item: Item, slot: EquipmentSlot, in_unit: Unit):
+	unequipped.emit(item, slot)	
+	item._unequip(self, slot)
+	_handle_life_cycle(LifeCycle.Unequip, item)
+
+
+## Binds slots signals
+func _ready() -> void:
+	setup()
+
+
+## Activates an [Item]. 
+## [br]If an [Inventory] is bound to this equipment, the [method Inventory.activate] will be called.
+## [br]Otherwise, the [method Item.activate] method will be called directly.
+func activate(item: Item, activation_type: int = 0) -> void:
+	if inventory:
+		inventory.activate(item, activation_type)
+	else:
+		if can_activate(item, activation_type):
+			item._activate(ItemActivationEvent.new(self, activation_type))
+			item_activated.emit(item, activation_type)
+			_handle_life_cycle(LifeCycle.Activate, item)
+
+
+## Adds one tag.
+func add_tag(tag: String) -> void:
+	if not tags.has(tag):
+		tags.append(tag)
+		tag_added.emit(tag, tags)
+
+
+## Adds many tags.
+func add_tags(_tags: Array[String]) -> void:
+	for t in _tags:
+		add_tag(t)
+
+
+## Checks if an [Item] can be directly activated by this [Equipment].
+func can_activate(item: Item, activation_type: int) -> bool:
+	if item.tags_required_to_activate.size() > 0:
+		for t in item.tags_required_to_activate:
+			if not tags.has(t):
+				return false
+		
+	return is_equipped(item) and item._can_activate(ItemActivationEvent.new(self, activation_type))
+
+
+## Checks if an [Item] can be equipped or not based on 
+## it's own [member Item.tags_required_to_equip] property.
+## [br]If the [Item] has no tags set, it always return [code]true[/code], 
+## otherwise it check that all the tags specified are included 
+## in the current [member Equipment.tags] member.
+func can_equip(item: Item) -> bool:
+	if item.tags_required_to_equip.size() == 0:
+		return true
+		
+	for tag in item.tags_required_to_equip:
+		if not tags.has(tag):
+			return false
+	
+	return true
+	
+
+## Checks if an [Item] can be unequipped or not based on 
+## it's own [member Item.tags_required_to_unequip] property.
+## [br]If the [Item] has no tags set, it always return [code]true[/code], 
+## otherwise it check that all the tags specified are included 
+## in the current [member Equipment.tags] member.
+func can_unequip(item: Item) -> bool:
+	if item.tags_required_to_unequip.size() == 0:
+		return true
+
+	for tag in item.tags_required_to_unequip:
+		if not tags.has(tag):
+			return false
+
+	return true
+
+
+## Finds the first suitable [EquipmentSlot] and equips the [Item].
+## [br]Passing [code]skip_tags_check[/code] to [code]true[/code], 
+## the check against [member Item.tags_required_to_equip] will be skipped.
+func equip(item: Item, skip_tags_check: bool = false) -> void:
+	var slot = find_slot_by_item(item)
+
+	if not slot:
+		refused_to_equip.emit(item, slot)
+		return
+
+	if skip_tags_check:
+		if slot.has_equipped_item:
+			slot.unequip()
+		slot.equip(item)
+		return
+	else:
+		if can_equip(item):
+			if slot.has_equipped_item:
+				slot.unequip()
+			slot.equip(item)
+
+			return
+	
+	refused_to_equip.emit(item, slot)
+
+
+## Equips the passed [Item] whose slot satisfies a [Callable] predicate.
+## [br]
+## [br]Useful to equip on slots which accept the same [Item] like charms or rings in diablo-like equipments.
+## [br]
+## [br]Note: the [EquipmentSlot] will check in any case if [method Equipment.can_accept] returns [code]true[/code] before calling the predicate.
+## [br]
+## [br]
+## [code]
+## equipment.equip_by(my_item, func (slot: EquipmentSlot) -> bool: return slot.is_free)
+## [/code]
+## [br]Passing [code]skip_tags_check[/code] to [code]true[/code], 
+## the check against [member Item.tags_required_to_equip] will be skipped.
+func equip_by(item: Item, predicate: Callable, skip_tags_check: bool = false) -> void:
+	var slot = find_slot_by_item(item)
+	
+	if slot == null:
+		refused_to_equip.emit(item, slot)
+		return
+	
+	var predicate_result = predicate.call(slot);
+	
+	if skip_tags_check and predicate_result:
+		slot.equip(item)
+		return
+	
+	if can_equip(item) and predicate_result:
+		slot.equip(item)
+		return
+			
+	refused_to_equip.emit(item, slot)
+		
+
+
+## Finds the first [Item] which satisfies the [Callable] predicate.
+## [br]Returns [code]null[/code] if none is found.
+func find_item_by(predicate: Callable) -> Item:
+	for item in equipped_items:
+		if predicate.call(item):
+			return item
+	
+	return null
+
+
+## Finds the first [EquipmentSlot] which satisfies the [Callable] predicate.
+## [br]Returns [code]null[/code] if none is found.
+func find_slot_by(predicate: Callable) -> EquipmentSlot:
+	for slot in slots:
+		if predicate.call(slot):
+			return slot
+	return null
+
+
+## Finds the first [EquipmentSlot] that can equip the passed [Item].
+func find_slot_by_item(item: Item) -> EquipmentSlot:
+	return find_slot_by(func (x: EquipmentSlot): return x.can_equip(item))
+
+
+## Checks if a tag is contained in this [Equipment].
+func has_tag(tag: String) -> bool:
+	return tags.has(tag)
+
+
+
+## Checks if all these tags are contained in this [Equipment].
+func has_tags(_tags: Array[String]) -> bool:
+	for t in _tags:
+		if not tags.has(t):
+			return false
+	
+	return true
+
+
+## Checks if the [Item] is equipped.
+func is_equipped(item: Item) -> bool:
+	var slot = find_slot_by_item(item)
+	
+	if slot == null:
+		return false
+	
+	return slot.has_equipped_item and slot.equipped.name == item.name
+
+
+## Removes one tag.
+func remove_tag(tag: String) -> void:
+	var index = tags.find(tag)
+	
+	if index >= 0:
+		tags.remove_at(index)
+		tag_removed.emit(tags)
+
+
+## Removes many tags.
+func remove_tags(_tags: Array[String]) -> void:
+	for t in _tags:
+		remove_tag(t)
+
+
+## Programmatically setups an [Equipment]
+func setup() -> void:
+	if not inventory_path.is_empty():
+		inventory = get_node(inventory_path) as Inventory
+
+	if not Engine.is_editor_hint() and not owner_path.is_empty():
+		var _owner = get_node(owner_path)
+		_owner.set_meta(\"ggsEquipment\", self)
+
+	if inventory != null:
+		if not inventory.item_added.is_connected(_handle_item_activated):
+			inventory.item_activated.connect(_handle_item_activated)
+
+		if not inventory.item_added.is_connected(_handle_item_added):
+			inventory.item_added.connect(_handle_item_added)
+			
+		if not inventory.item_removed.is_connected(_handle_item_removed):
+			inventory.item_removed.connect(_handle_item_removed)
+	
+	instantiate_slots()
+	
+	for slot in slots:
+		slot.unit = get_node(owner_path)
+		if not slot.item_equipped.is_connected(_handle_item_equipped):
+			slot.item_equipped.connect(_handle_item_equipped)
+		
+		if not slot.item_refused_to_equip.is_connected(_handle_item_refused_to_equip):
+			slot.item_refused_to_equip.connect(_handle_item_refused_to_equip)
+
+		if not slot.item_unequipped.is_connected(_handle_item_unequipped):
+			slot.item_unequipped.connect(_handle_item_unequipped)
+			
+
+func instantiate_slots() -> void:
+	for slot in slots_editor:
+		slots.append(slot.duplicate(true))
+		print(\"Slot: \", slot)
+	print(\"Slots: \", slots)
+
+## Finds the first slot whose equipped [member Item.name] equals to the passed [member Item.name] and unequips it.
+## [br]Passing [code]skip_tags_check[/code] to [code]true[/code], 
+## the check against [member Item.tags_required_to_equip] will be skipped.
+func unequip(item: Item, skip_tags_check: bool = false) -> void:
+	var slot = find_slot_by_item(item)
+	
+	if slot == null:
+		return
+	elif slot.has_equipped_item and slot.equipped.name == item.name and skip_tags_check:
+		slot.unequip()
+		return
+	elif slot.has_equipped_item and slot.equipped.name == item.name and can_unequip(item):
+		slot.unequip()
+		return
+
+
+## Unequips the first [EquipmentSlot] which satisfies the [Callable] predicate.
+## [br]Passing [code]skip_tags_check[/code] to [code]true[/code], 
+## the check against [member Item.tags_required_to_equip] will be skipped.
+func unequip_by(predicate: Callable, skip_tags_check: bool = false) -> void:
+	for slot in slots:
+		if slot.has_equipped_item and predicate.call(slot) and skip_tags_check:
+			slot.unequip()
+			return
+		elif slot.has_equipped_item and predicate.call(slot) and can_unequip(slot.equipped):
+			slot.unequip()
+			return
+
+
+## Unequips all slots. ## [br]Passing [code]skip_tags_check[/code] to [code]true[/code], 
+## the check against [member Item.tags_required_to_equip] will be skipped.
+func unequip_all(skip_tags_check: bool = false) -> void:
+	for slot in slots:
+		if slot.has_equipped_item and skip_tags_check:
+			slot.unequip()
+		elif slot.has_equipped_item and can_unequip(slot.equipped):
+			slot.unequip()
+"
+
 [sub_resource type="Resource" id="Resource_nsk3p"]
 script = ExtResource("38_3xk7x")
 name = "RightHand"
 accepted_items = Array[ExtResource("35_icsct")]([])
 
 [node name="DawnUnit" type="Node3D" node_paths=PackedStringArray("animator", "body", "inventory", "equipment", "right_hand_socket", "shoot_point")]
-script = ExtResource("1_y16nl")
+script = SubResource("GDScript_rni60")
 animator = NodePath("UnitAnimator")
 body = NodePath("Body")
 inventory = NodePath("Inventory")
@@ -2314,6 +2938,7 @@ equipment = NodePath("Equipment")
 right_hand_socket = NodePath("Rig_001/Skeleton3D/LeftHandEquipmentSocketBone/RightHandSocket")
 shoot_point = NodePath("Rig_001/Skeleton3D/RightHandEquipmentSocketBoneAttatchment/ShootPoint")
 death_vfx_scene = ExtResource("2_2wk6w")
+shoulder_height = 1.0
 
 [node name="Rig_001" type="Node3D" parent="."]
 transform = Transform3D(0.772515, 0, 0, 0, 0.772515, 0, 0, 0, 0.772515, 0, 0, 0)
@@ -3532,7 +4157,7 @@ bones/172/rotation = Quaternion(-2.57559e-42, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.515507, 0.052904, -0.85525, -0.73085, 0.548201, -0.406613, 0.447338, 0.834671, 0.321267, 0.268752, 1.14933, 0.237106)
+transform = Transform3D(0.603343, 0.0847675, -0.792964, -0.68267, 0.568892, -0.45861, 0.412236, 0.818032, 0.401105, 0.278737, 1.16478, 0.243869)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3540,15 +4165,16 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.48979, 0.587364, 0.64429, 0.818822, 0.563683, 0.108591, -0.299393, 0.580746, -0.757032, -0.146172, 1.23444, 0.374693)
+transform = Transform3D(-0.523431, 0.543666, 0.656085, 0.81254, 0.550286, 0.192257, -0.256511, 0.633729, -0.729787, -0.142315, 1.24702, 0.382229)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
 [node name="RightHandSocket" type="Node3D" parent="Rig_001/Skeleton3D/LeftHandEquipmentSocketBone"]
 transform = Transform3D(0.0911744, 0.125808, -0.987859, -0.973272, -0.198726, -0.115136, -0.210797, 0.97195, 0.104326, 0.00527489, 0.0422065, 0.0300578)
 
-[node name="EquippedItem3D" type="Node3D" parent="Rig_001/Skeleton3D/LeftHandEquipmentSocketBone/RightHandSocket"]
+[node name="EquippedItem3D" type="Node3D" parent="Rig_001/Skeleton3D/LeftHandEquipmentSocketBone/RightHandSocket" node_paths=PackedStringArray("unit")]
 script = ExtResource("4_3lwao")
+unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="Body_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
@@ -3680,7 +4306,7 @@ owner_path = NodePath("..")
 equipment_path = NodePath("../Equipment")
 
 [node name="Equipment" type="Node" parent="."]
-script = ExtResource("34_6brpe")
+script = SubResource("GDScript_452la")
 owner_path = NodePath("..")
 inventory_path = NodePath("../Inventory")
 slots_editor = Array[ExtResource("38_3xk7x")]([SubResource("Resource_nsk3p")])

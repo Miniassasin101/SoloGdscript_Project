@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://cqqsm2gpif3dw"]
+[gd_scene load_steps=11 format=3 uid="uid://cqqsm2gpif3dw"]
 
 [ext_resource type="Script" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.gd" id="1_s4tfa"]
 [ext_resource type="PackedScene" uid="uid://p6evu7hnt4o3" path="res://Hero_Game/Prefabs/UI_Prefabs/CharacterSheetPartPanel.tscn" id="2_n5j6h"]
+[ext_resource type="Script" path="res://Hero_Game/Prefabs/UI_Prefabs/WeaponsGridContainer.gd" id="3_6ibqs"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvosu"]
 bg_color = Color(0.132, 0.147, 0.15, 0.945098)
@@ -43,7 +44,9 @@ grow_end = -3.0
 color = Color(0.466667, 0.466667, 0.466667, 1)
 vertical = true
 
-[node name="UnitCharacterSheetUI" type="Control" node_paths=PackedStringArray("unit_name_label", "action_points_label", "unused_label_1", "combat_skill_label", "evade_skill_label", "damage_modifier_label", "initiative_bonus_label", "experience_rolls_label", "movement_rate_label", "unused_label_2", "size_label", "power_label", "dexterity_label", "endurance_label", "mind_label", "will_label", "presence_label", "body_parts_container", "close_button")]
+[sub_resource type="Theme" id="Theme_32rw0"]
+
+[node name="UnitCharacterSheetUI" type="Control" node_paths=PackedStringArray("unit_name_label", "action_points_label", "unused_label_1", "combat_skill_label", "evade_skill_label", "damage_modifier_label", "initiative_bonus_label", "experience_rolls_label", "movement_rate_label", "unused_label_2", "size_label", "power_label", "dexterity_label", "endurance_label", "mind_label", "will_label", "presence_label", "body_parts_container", "weapons_grid_container", "close_button")]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 2.0
@@ -70,6 +73,7 @@ mind_label = NodePath("MarginContainer/TabContainer/PanelContainer/VBoxContainer
 will_label = NodePath("MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer6/PanelContainer/VBoxContainer/WillLabel")
 presence_label = NodePath("MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer7/PanelContainer/VBoxContainer/PresenceLabel")
 body_parts_container = NodePath("MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/BodyMarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/BodyPartsVBoxContainer")
+weapons_grid_container = NodePath("MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer")
 close_button = NodePath("MarginContainer/CloseButton")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -599,49 +603,51 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer"]
+[node name="WeaponsGridContainer" type="GridContainer" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer"]
 layout_mode = 2
+theme = SubResource("Theme_32rw0")
+columns = 5
+script = ExtResource("3_6ibqs")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="WeaponNameTag" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer"]
 layout_mode = 2
+text = "WeaponName"
 
-[node name="Label" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="WeaponDamageTag" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
-text = "Weapon"
-horizontal_alignment = 1
-
-[node name="Label2" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
 text = "Damage"
-horizontal_alignment = 1
 
-[node name="Label3" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="WeaponSizeTag" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
-text = "Armor Points"
-horizontal_alignment = 1
+text = "Size"
 
-[node name="Label4" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="WeaponAPTag" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
-text = "Health"
-horizontal_alignment = 1
+text = "AP"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="WeaponHPTag" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer"]
 layout_mode = 2
+text = "HP/HP"
 
-[node name="WeaponContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="WeaponName2" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer"]
 layout_mode = 2
+text = "WeaponName"
 
-[node name="Label" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/WeaponContainer"]
+[node name="WeaponDamage2" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer"]
 layout_mode = 2
-text = "Weapon Name"
+text = "Damage"
+
+[node name="WeaponSize2" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer"]
+layout_mode = 2
+text = "Size"
+
+[node name="WeaponAP2" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer"]
+layout_mode = 2
+text = "AP"
+
+[node name="WeaponHP2" type="Label" parent="MarginContainer/TabContainer/PanelContainer/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer"]
+layout_mode = 2
+text = "HP/HP"
 
 [node name="CloseButton" type="Button" parent="MarginContainer"]
 layout_mode = 2

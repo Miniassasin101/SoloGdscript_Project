@@ -1,7 +1,6 @@
-[gd_scene load_steps=102 format=4 uid="uid://ckh4ee1mgwjn4"]
+[gd_scene load_steps=101 format=4 uid="uid://ckh4ee1mgwjn4"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
-[ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
 [ext_resource type="Material" uid="uid://cpccbvm86p68o" path="res://Hero_Game/Art/Materials/CelShadedMat.tres" id="3_bhmb0"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/equipped_item_3d.gd" id="4_3lwao"]
 [ext_resource type="Animation" uid="uid://c1vw5vdfih7mb" path="res://Hero_Game/Animations/DawnAnims/A-Pose.res" id="4_88hlo"]
@@ -2305,15 +2304,8 @@ script = ExtResource("38_3xk7x")
 name = "RightHand"
 accepted_items = Array[ExtResource("35_icsct")]([])
 
-[node name="DawnUnit" type="Node3D" node_paths=PackedStringArray("animator", "body", "inventory", "equipment", "right_hand_socket", "shoot_point")]
+[node name="DawnUnit" type="Node3D"]
 script = ExtResource("1_y16nl")
-animator = NodePath("UnitAnimator")
-body = NodePath("Body")
-inventory = NodePath("Inventory")
-equipment = NodePath("Equipment")
-right_hand_socket = NodePath("Rig_001/Skeleton3D/LeftHandEquipmentSocketBone/RightHandSocket")
-shoot_point = NodePath("Rig_001/Skeleton3D/RightHandEquipmentSocketBoneAttatchment/ShootPoint")
-death_vfx_scene = ExtResource("2_2wk6w")
 
 [node name="Rig_001" type="Node3D" parent="."]
 transform = Transform3D(0.772515, 0, 0, 0, 0.772515, 0, 0, 0, 0.772515, 0, 0, 0)
@@ -3532,7 +3524,7 @@ bones/172/rotation = Quaternion(-2.57559e-42, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.515507, 0.052904, -0.85525, -0.73085, 0.548201, -0.406613, 0.447338, 0.834671, 0.321267, 0.268752, 1.14933, 0.237106)
+transform = Transform3D(0.498909, 0.0459635, -0.865435, -0.736888, 0.548108, -0.395693, 0.456165, 0.835143, 0.307326, 0.266522, 1.14868, 0.234551)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3540,7 +3532,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.48979, 0.587364, 0.64429, 0.818822, 0.563683, 0.108591, -0.299393, 0.580746, -0.757032, -0.146172, 1.23444, 0.374693)
+transform = Transform3D(-0.484843, 0.594721, 0.641276, 0.817909, 0.568006, 0.0916187, -0.30976, 0.568926, -0.761821, -0.147081, 1.23408, 0.371773)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 

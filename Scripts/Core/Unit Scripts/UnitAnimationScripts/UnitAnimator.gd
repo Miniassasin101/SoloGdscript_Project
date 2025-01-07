@@ -88,7 +88,7 @@ func melee_attack_anim(in_animation: Animation) -> void:
 	attack_anim.set_animation(anim_path)
 	#GreatSwordTest1/Greatsword_Swing_001
 
-	var is_attacking: bool = animator_tree.get("parameters/conditions/IsAttacking")
+	#var is_attacking: bool = animator_tree.get("parameters/conditions/IsAttacking")
 	animator_tree.set("parameters/conditions/IsAttacking", true)
 	# Animation stand-in
 	var timer = Timer.new()

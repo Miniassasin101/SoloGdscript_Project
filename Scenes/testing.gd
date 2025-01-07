@@ -143,8 +143,15 @@ func test_n() -> void:
 
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
-		#open_character_sheet()
+		open_character_sheet()
 		equip_weapon()
+
+func test_shift_c() -> void:
+	if Input.is_action_just_pressed("testkey_shift_c"):
+		#open_character_sheet()
+		pass
+
+
 
 func equip_weapon() -> void:
 	# Grab the unit under the mouse or whichever unit you want
@@ -154,7 +161,9 @@ func equip_weapon() -> void:
 	var unit: Unit = LevelGrid.get_unit_at_grid_position(
 		pathfinding.pathfinding_grid_system.get_grid_position(result)
 	)
-	var testitem_original: Item = preload("res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponTest.tres")
+	if unit == null:
+		return
+	var testitem_original: Item = preload("res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/SwordTest.tres")
 	var testitem: Item = testitem_original.duplicate()
 	if !testbool:
 		print(unit.name)

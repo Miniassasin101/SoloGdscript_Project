@@ -95,8 +95,8 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 		for z in range(-attack_range, attack_range + 1):
 			# Check if the distance is truly within 1 tile (including diagonals).
 			var dist = sqrt(float(x*x + z*z))
-			if dist > float(attack_range):
-				continue
+			#if dist > float(attack_range):
+			#	continue
 
 			# Build a test position.
 			var offset_position = GridPosition.new(x, z)

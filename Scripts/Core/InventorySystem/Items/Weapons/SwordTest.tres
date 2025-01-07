@@ -1,14 +1,26 @@
-[gd_resource type="Resource" script_class="ItemT" load_steps=3 format=3 uid="uid://nec0yt832ogq"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://cxk0rx8ecss31"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Item.gd" id="1_2o4k8"]
-[ext_resource type="PackedScene" uid="uid://ws4usfvbsn2l" path="res://Hero_Game/Prefabs/Items/Weapons/Greatsword.tscn" id="1_v5rgj"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/Weapon.gd" id="1_pes5o"]
+[ext_resource type="PackedScene" uid="uid://ws4usfvbsn2l" path="res://Hero_Game/Prefabs/Items/Weapons/Greatsword.tscn" id="1_snv06"]
 
 [resource]
-script = ExtResource("1_2o4k8")
-name = &"Sword"
+script = ExtResource("1_pes5o")
+category = &"sword"
+die_type = 6
+die_number = 1
+flat_damage = 0
+size = 2
+reach = 2
+combat_effects = Array[StringName]([])
+encumberance = 2
+armor_points = 4
+hit_points = 8
+traits = Array[StringName]([])
+hands = 2
+name = &"Greatsword"
 can_stack = false
 decrease_stack_on_use = false
-scene = ExtResource("1_v5rgj")
+scene = ExtResource("1_snv06")
 tags = Array[String]([])
 quantity_current = 1
 quantity_max = 1

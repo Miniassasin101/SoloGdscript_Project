@@ -1,0 +1,493 @@
+[gd_scene load_steps=41 format=3 uid="uid://dl3he0bj1hlla"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
+[ext_resource type="Environment" uid="uid://c7cx2thxig2w6" path="res://Hero_Game/Scenes/TestEnvironment1.tres" id="2_ocl1f"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="2_td6d6"]
+[ext_resource type="Script" path="res://Hero_Game/Scenes/testing.gd" id="3_vw71g"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="4_8yks7"]
+[ext_resource type="PackedScene" uid="uid://bputpfvj74kol" path="res://Hero_Game/Prefabs/Grid/GridCellVisual.tscn" id="4_85pbp"]
+[ext_resource type="Animation" uid="uid://dswwaq5xbcffc" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Swing_001.res" id="5_o3n5o"]
+[ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="5_y067e"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Pathfinding/Pathfinding.gd" id="6_3wgmn"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Pathfinding/ObstacleManager.gd" id="6_ni1mu"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/TurnSystem.gd" id="6_rwbm0"]
+[ext_resource type="PackedScene" uid="uid://b37juamn5pbrv" path="res://WallTestInst.tscn" id="7_snusx"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitAI/UnitAI.gd" id="8_kmwtl"]
+[ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="8_paohs"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="9_rt187"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitManager.gd" id="10_iw061"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
+[ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/UI_Prefabs/ActionButtonUI.tscn" id="11_jk6uv"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
+[ext_resource type="Script" path="res://Hero_Game/Scenes/CombatSystem.gd" id="16_f3oa4"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
+[ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
+[ext_resource type="Script" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
+[ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
+[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/3ds_shaders/PixelationS.gdshader" id="43_hww07"]
+[ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
+[ext_resource type="Shader" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_owyi7"]
+material = ExtResource("5_y067e")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fnkdd"]
+material = ExtResource("8_paohs")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_vv6bh"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pqthu"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_uo0hi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mh8jn"]
+render_priority = 0
+shader = ExtResource("43_hww07")
+shader_parameter/jitter = 0.5
+shader_parameter/jitter_z_coordinate = true
+shader_parameter/jitter_depth_independent = true
+shader_parameter/affine_texture_mapping = true
+shader_parameter/alpha_scissor = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_sh5a7"]
+font_size = 25
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5ega"]
+bg_color = Color(0.15, 0.15, 0.15, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_size = 2
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bwm3i"]
+font_size = 21
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7m53g"]
+render_priority = 0
+shader = ExtResource("53_fbtsm")
+shader_parameter/color_depth = 5
+shader_parameter/dithering = true
+shader_parameter/resolution_scale = 4
+
+[sub_resource type="QuadMesh" id="QuadMesh_bteft"]
+material = SubResource("ShaderMaterial_7m53g")
+size = Vector2(2, 2)
+
+[node name="Level" type="Node3D"]
+
+[node name="Debug" type="Node" parent="."]
+script = ExtResource("1_7xwui")
+control_enemy_debug = true
+attacker_success_debug = true
+parry_fail_debug = true
+grid_dimensions = Vector2(20, 10)
+
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting"]
+environment = ExtResource("2_ocl1f")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(0.624316, -0.517834, 0.584874, -0.358336, 0.475453, 0.803455, -0.694136, -0.711191, 0.111274, -5.04075, 2.35, -0.618277)
+light_energy = 0.634
+shadow_enabled = true
+shadow_bias = 0.4
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.505
+directional_shadow_max_distance = 27.1
+
+[node name="LevelGrid" type="Node3D" parent="."]
+
+[node name="GridSystemVisual" type="Node3D" parent="LevelGrid"]
+script = ExtResource("1_fqt43")
+GRID_CELL_VISUAL = ExtResource("4_85pbp")
+
+[node name="GridSystemTest" type="Node3D" parent="."]
+script = ExtResource("3_vw71g")
+animlib = Array[Animation]([ExtResource("5_o3n5o")])
+
+[node name="Pathfinding" type="Node" parent="."]
+script = ExtResource("6_3wgmn")
+
+[node name="Objects" type="Node" parent="."]
+
+[node name="ObstacleManager" type="Node" parent="Objects"]
+script = ExtResource("6_ni1mu")
+
+[node name="SM_Buildings_Wall_1x3_14" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 34.1052, -0.0286835, 2.85341)
+metadata/_edit_group_ = true
+
+[node name="SM_Buildings_Wall_1x3_18" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(1.14127e-07, 0, -1, 0, 1, 0, 0.870308, 0, 1.31134e-07, 34.1052, -0.0286634, 2.85341)
+metadata/_edit_group_ = true
+
+[node name="SM_Buildings_Wall_1x3_19" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(7.85433e-09, 0, -1, 0, 1, 0, 0.0598954, 0, 1.31134e-07, 18.7385, -0.0286762, 13.2039)
+metadata/_edit_group_ = true
+
+[node name="SM_Buildings_Wall_1x3_26" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(1.67034e-08, 0, -1, 0, 1, 0, 0.127377, 0, 1.31134e-07, 22.9502, -0.0286767, 7.38198)
+metadata/_edit_group_ = true
+
+[node name="SM_Buildings_Wall_1x3_27" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(1.67034e-08, 0, -1, 0, 1, 0, 0.127377, 0, 1.31134e-07, 22.9502, -0.0286722, 13.382)
+metadata/_edit_group_ = true
+
+[node name="SM_Buildings_Wall_1x3_23" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(7.85433e-09, 0, -6.3953, 0, 1.0232, 0, 0.0598953, 0, 8.38643e-07, 32.7152, -0.0293376, 7.40398)
+metadata/_edit_group_ = true
+
+[node name="SM_Buildings_Wall_1x3_24" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(7.85433e-09, 0, -6.3953, 0, 1.0232, 0, 0.0598953, 0, 8.38643e-07, 32.7152, -0.0293313, 15.306)
+metadata/_edit_group_ = true
+
+[node name="SM_Buildings_Wall_1x3_25" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(0.0598954, 0, 3.10176e-07, 0, 0.270309, 0, -1.04724e-08, 0, 1.774, 23.0946, -0.0077522, 19.6141)
+metadata/_edit_group_ = true
+
+[node name="SM_Buildings_Wall_1x3_20" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(7.85433e-09, 0, -1, 0, 1, 0, 0.0598954, 0, 1.31134e-07, 10.8153, 0.426486, 13.2652)
+metadata/_edit_group_ = true
+
+[node name="SM_Buildings_Wall_1x3_21" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(7.85433e-09, 0, -1, 0, 1, 0, 0.0598954, 0, 1.31134e-07, 14.7854, -0.0286795, 13.1818)
+metadata/_edit_group_ = true
+
+[node name="SM_Buildings_Wall_1x3_22" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(2.69264e-08, 0, -3.65584, 0, 0.587273, 0, 0.205335, 0, 4.79405e-07, 2.82303, -0.0168598, 13.284)
+metadata/_edit_group_ = true
+
+[node name="SM_Buildings_Wall_1x3_17" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 32.3974, -0.0286664, 26.4515)
+metadata/_edit_group_ = true
+
+[node name="MouseWorld" type="Node3D" parent="." node_paths=PackedStringArray("raycast", "mouse_visual")]
+script = ExtResource("4_8yks7")
+raycast = NodePath("UnitActionRay")
+mouse_visual = NodePath("MouseVisual")
+
+[node name="MouseVisual" type="MeshInstance3D" parent="MouseWorld"]
+transform = Transform3D(0.332613, 0, 0, 0, 0.332613, 0, 0, 0, 0.332613, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_owyi7")
+
+[node name="UnitActionRay" type="RayCast3D" parent="MouseWorld"]
+collision_mask = 0
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="UnitActionSystem" type="Node" parent="." node_paths=PackedStringArray("mouse_world", "raycast")]
+script = ExtResource("2_td6d6")
+mouse_world = NodePath("../MouseWorld")
+raycast = NodePath("../MouseWorld/UnitActionRay")
+
+[node name="UnitAI" type="Node" parent="."]
+script = ExtResource("8_kmwtl")
+
+[node name="UnitManager" type="Node" parent="." node_paths=PackedStringArray("unit_action_system")]
+script = ExtResource("10_iw061")
+unit_action_system = NodePath("../UnitActionSystem")
+
+[node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
+holding_weapon = false
+
+[node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
+is_enemy = true
+holding_weapon = false
+
+[node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
+script = ExtResource("6_rwbm0")
+unit_manager = NodePath("../UnitManager")
+
+[node name="CombatSystem" type="Node" parent="."]
+script = ExtResource("16_f3oa4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(32.7711, -2.64261e-05, 0.046329, 2.63892e-05, 32.7711, 2.57785e-05, -0.046329, -2.57406e-05, 32.7711, 24.867, 0, 26.089)
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("PlaneMesh_fnkdd")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_vv6bh")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.06028, 0)
+script = ExtResource("9_rt187")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("BoxShape3D_pqthu")
+
+[node name="CamOrigin" type="Node3D" parent="Player"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Player/CamOrigin"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+collision_mask = 2
+spring_length = 20.0
+
+[node name="fCamera" type="Camera3D" parent="Player/CamOrigin/SpringArm3D"]
+
+[node name="CameraShake" type="Node" parent="Player"]
+script = ExtResource("20_lbku0")
+camera_path = NodePath("../CamOrigin/SpringArm3D/fCamera")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.04805, 1.08465, -3.22367)
+mesh = SubResource("CapsuleMesh_uo0hi")
+surface_material_override/0 = SubResource("ShaderMaterial_mh8jn")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("action_button_container", "reaction_button_container", "ability_points_text")]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = -114.0
+offset_bottom = -114.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("10_nqefp")
+action_button_prefab = ExtResource("11_jk6uv")
+action_button_container = NodePath("ActionButtonsContainer")
+reaction_button_container = NodePath("ReactionButtonsContainer")
+ability_points_text = NodePath("AbilityPointsLabel")
+metadata/_edit_use_anchors_ = true
+
+[node name="ActionButtonsContainer" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -28.0
+offset_right = 32.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="ActionButtonUI" parent="UILayer/UnitActionSystemUI/ActionButtonsContainer" instance=ExtResource("11_jk6uv")]
+visible = false
+layout_mode = 2
+
+[node name="ReactionButtonsContainer" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -28.0
+offset_right = 32.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="ReactionButtonUI" parent="UILayer/UnitActionSystemUI/ReactionButtonsContainer" instance=ExtResource("11_jk6uv")]
+layout_mode = 2
+
+[node name="AbilityPointsLabel" type="Label" parent="UILayer/UnitActionSystemUI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -29.0
+offset_top = -53.0
+offset_right = 31.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 1
+text = "Press \"N\" to start combat"
+label_settings = SubResource("LabelSettings_sh5a7")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("end_turn_button", "end_turn_container", "round_counter_label", "turn_system", "enemy_turn_container")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("12_m6vvv")
+end_turn_button = NodePath("EndTurnContainer/MarginContainer/EndTurnButton")
+end_turn_container = NodePath("EndTurnContainer")
+round_counter_label = NodePath("TurnCountContainer/MarginContainer/TurnCounterLabel")
+turn_system = NodePath("../../TurnSystem")
+enemy_turn_container = NodePath("EnemyTurnContainer")
+metadata/_edit_use_anchors_ = true
+
+[node name="TurnCountContainer" type="PanelContainer" parent="UILayer/TurnSystemUI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -36.0
+offset_top = 17.0
+offset_right = 35.0
+offset_bottom = 53.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/TurnCountContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TurnCounterLabel" type="Label" parent="UILayer/TurnSystemUI/TurnCountContainer/MarginContainer"]
+layout_mode = 2
+text = "Turn 1
+"
+label_settings = SubResource("LabelSettings_bwm3i")
+
+[node name="EndTurnContainer" type="PanelContainer" parent="UILayer/TurnSystemUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -120.0
+offset_top = 17.0
+offset_right = -24.0
+offset_bottom = 54.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/EndTurnContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="EndTurnButton" type="Button" parent="UILayer/TurnSystemUI/EndTurnContainer/MarginContainer"]
+layout_mode = 2
+text = "END TURN"
+
+[node name="EnemyTurnContainer" type="PanelContainer" parent="UILayer/TurnSystemUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -149.0
+offset_top = -124.0
+offset_right = 151.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/EnemyTurnContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="EnemyTurnLabel" type="Label" parent="UILayer/TurnSystemUI/EnemyTurnContainer/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.69, 0.69, 1)
+theme_override_font_sizes/font_size = 50
+text = "Enemy Turn"
+horizontal_alignment = 1
+
+[node name="UnitStatsUI" type="Control" parent="UILayer" node_paths=PackedStringArray("unit_manager")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("17_y4lpf")
+unit_manager = NodePath("../../UnitManager")
+unit_stats_bar_scene = ExtResource("18_cp12p")
+show_stats_for_all_units = true
+metadata/_edit_use_anchors_ = true
+
+[node name="UnitStatsContainer" type="PanelContainer" parent="UILayer/UnitStatsUI"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 21.0
+offset_top = -18.0
+offset_right = 92.0
+offset_bottom = 18.0
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UnitStatsUI/UnitStatsContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="UnitStatsContainer" type="VBoxContainer" parent="UILayer/UnitStatsUI/UnitStatsContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UILayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -88.0
+offset_top = 153.0
+offset_right = -48.0
+offset_bottom = 176.0
+grow_horizontal = 0
+script = ExtResource("21_dna0q")
+metadata/_edit_use_anchors_ = true
+
+[node name="UnitCharacterSheetUI" parent="UILayer" instance=ExtResource("26_7hc4r")]
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_bteft")
+
+[connection signal="pressed" from="UILayer/TurnSystemUI/EndTurnContainer/MarginContainer/EndTurnButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
