@@ -50,21 +50,23 @@ func test_pathfinding() -> void:
 
 func handle_right_mouse_click() -> void:
 	if Input.is_action_just_pressed("right_mouse"):
-		var result = mouse_world.get_mouse_raycast_result("position")
-		var in_unit: Unit = LevelGrid.get_unit_at_grid_position(pathfinding.pathfinding_grid_system.get_grid_position(result))
-		#toggle_difficult_terrain()
-		#toggle_sword_hold()
-		#trigger_attack_anim()
-		#trigger_camera_shake()
-		# Animation stand-in
-
-		unit.target = in_unit
-		unit.testbool = !unit.testbool
-		unit.animator.toggle_head_cancel()
-		print_debug(unit.testbool)
-
-
+		toggle_look_at_unit()
+		print_front_tiles()
 		
+
+func print_front_tiles() -> void:
+	unit.set_facing()
+	var grid_positions: Array[GridPosition] = AbilityUtils.get_front_tiles(unit)
+	for gridpos: GridPosition in grid_positions:
+		print_debug(gridpos.to_str())
+
+func toggle_look_at_unit() -> void:
+	var result = mouse_world.get_mouse_raycast_result("position")
+	var in_unit: Unit = LevelGrid.get_unit_at_grid_position(pathfinding.pathfinding_grid_system.get_grid_position(result))
+	if unit.animator.is_looking:
+		unit.animator.look_at_toggle()
+	unit.animator.look_at_toggle(in_unit)
+
 
 func trigger_camera_shake() -> void:
 	var strength = 0.2 # the maximum shake strenght. The higher, the messier

@@ -1,4 +1,4 @@
-[gd_scene load_steps=106 format=4 uid="uid://ckh4ee1mgwjn4"]
+[gd_scene load_steps=104 format=4 uid="uid://ckh4ee1mgwjn4"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
@@ -2130,13 +2130,6 @@ blend_point_3/pos = Vector2(-1, 0)
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_857p3"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_14tfi"]
-animation = &"DawnLib/A-Pose"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_m8eip"]
-filter_enabled = true
-filters = ["Rig_001/Skeleton3D:DEF_head.001"]
-
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gbte4"]
 animation = &"DawnLib/IdleAnim"
 
@@ -2154,13 +2147,9 @@ play_mode = 1
 animation = &"GreatSwordTest1/Idle_Greatsword_shoulder_001"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_7p1gf"]
-graph_offset = Vector2(-228.996, 84.9563)
+graph_offset = Vector2(-356.594, -38.0732)
 nodes/GreatswordIdleBlend/node = SubResource("AnimationNodeBlend2_857p3")
 nodes/GreatswordIdleBlend/position = Vector2(640, 100)
-nodes/HeadCancel/node = SubResource("AnimationNodeAnimation_14tfi")
-nodes/HeadCancel/position = Vector2(700, 480)
-nodes/HeadCancelBlend/node = SubResource("AnimationNodeBlend2_m8eip")
-nodes/HeadCancelBlend/position = Vector2(1120, 160)
 nodes/IdleBase/node = SubResource("AnimationNodeAnimation_gbte4")
 nodes/IdleBase/position = Vector2(280, 40)
 nodes/LeftArmBlend/node = SubResource("AnimationNodeOneShot_o2e4w")
@@ -2169,8 +2158,8 @@ nodes/LeftHandCast/node = SubResource("AnimationNodeAnimation_a8f2c")
 nodes/LeftHandCast/position = Vector2(540, 320)
 nodes/WeaponIdle/node = SubResource("AnimationNodeAnimation_hd3hl")
 nodes/WeaponIdle/position = Vector2(140, 200)
-nodes/output/position = Vector2(1300, 120)
-node_connections = [&"GreatswordIdleBlend", 0, &"IdleBase", &"GreatswordIdleBlend", 1, &"WeaponIdle", &"HeadCancelBlend", 0, &"LeftArmBlend", &"HeadCancelBlend", 1, &"HeadCancel", &"LeftArmBlend", 0, &"GreatswordIdleBlend", &"LeftArmBlend", 1, &"LeftHandCast", &"output", 0, &"HeadCancelBlend"]
+nodes/output/position = Vector2(1420, 120)
+node_connections = [&"GreatswordIdleBlend", 0, &"IdleBase", &"GreatswordIdleBlend", 1, &"WeaponIdle", &"LeftArmBlend", 0, &"GreatswordIdleBlend", &"LeftArmBlend", 1, &"LeftHandCast", &"output", 0, &"LeftArmBlend"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qbpsd"]
 animation = &"DawnLib/RunCycle"
@@ -2331,7 +2320,7 @@ script = ExtResource("38_3xk7x")
 name = "RightHand"
 accepted_items = Array[ExtResource("35_icsct")]([])
 
-[node name="DawnUnit" type="Node3D" node_paths=PackedStringArray("skeleton", "animator", "body", "inventory", "equipment", "right_hand_socket", "shoot_point", "neck_target")]
+[node name="DawnUnit" type="Node3D" node_paths=PackedStringArray("skeleton", "animator", "body", "inventory", "equipment", "right_hand_socket", "shoot_point", "neck_target", "head_location")]
 script = ExtResource("1_y16nl")
 skeleton = NodePath("Rig_001/Skeleton3D")
 animator = NodePath("UnitAnimator")
@@ -2341,6 +2330,7 @@ equipment = NodePath("Equipment")
 right_hand_socket = NodePath("Rig_001/Skeleton3D/LeftHandEquipmentSocketBone/RightHandSocket")
 shoot_point = NodePath("Rig_001/Skeleton3D/RightHandEquipmentSocketBoneAttatchment/ShootPoint")
 neck_target = NodePath("NeckTarget")
+head_location = NodePath("")
 death_vfx_scene = ExtResource("2_2wk6w")
 
 [node name="Rig_001" type="Node3D" parent="."]
@@ -3560,7 +3550,7 @@ bones/172/rotation = Quaternion(-2.57559e-42, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.589295, 0.0796626, -0.803981, -0.690957, 0.565415, -0.450427, 0.4187, 0.820951, 0.38824, 0.277094, 1.16225, 0.242726)
+transform = Transform3D(-0.145679, 0.189077, -0.971096, -0.248861, -0.957009, -0.149001, -0.957521, 0.219962, 0.18647, 0.39947, 0.736604, -0.0174065)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3568,7 +3558,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.517821, 0.550928, 0.654477, 0.813879, 0.552941, 0.178483, -0.263556, 0.625088, -0.734713, -0.142954, 1.24495, 0.380972)
+transform = Transform3D(0.730355, 0.0276636, 0.682508, -0.140077, 0.98401, 0.110013, -0.668551, -0.175952, 0.722551, -0.523668, 1.47619, 0.185099)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3667,19 +3657,23 @@ anim_player = NodePath("../Animator")
 parameters/conditions/IsAttacking = false
 parameters/conditions/IsWalking = false
 parameters/IWR/blend_position = Vector2(0.0074389, 0.299401)
-parameters/IdleBlend/GreatswordIdleBlend/blend_amount = 0.0
-parameters/IdleBlend/HeadCancelBlend/blend_amount = 1.0
+parameters/IdleBlend/GreatswordIdleBlend/blend_amount = 1.0
 parameters/IdleBlend/LeftArmBlend/active = false
 parameters/IdleBlend/LeftArmBlend/internal_active = false
 parameters/IdleBlend/LeftArmBlend/request = 0
 parameters/RunCycleBlend/GreatswordBlend/blend_amount = 0.0
 
-[node name="UnitAnimator" type="Node" parent="." node_paths=PackedStringArray("animator", "animator_tree", "shoot_point")]
+[node name="UnitAnimator" type="Node" parent="." node_paths=PackedStringArray("animator", "animator_tree", "shoot_point", "skeleton", "neck_target")]
 script = ExtResource("15_50hb7")
 animator = NodePath("../Animator")
 animator_tree = NodePath("../UnitAnimationTree")
 fireball_projectile_prefab = ExtResource("16_3df4h")
 shoot_point = NodePath("../Rig_001/Skeleton3D/RightHandEquipmentSocketBoneAttatchment/ShootPoint")
+skeleton = NodePath("../Rig_001/Skeleton3D")
+neck_target = NodePath("../NeckTarget")
+neck_rot_speed = 8.0
+max_horizontal_angle = 70
+max_vertical_angle = 10
 
 [node name="UnitArea3D" type="Area3D" parent="."]
 collision_layer = 8

@@ -180,7 +180,6 @@ surface_material_override/0 = ExtResource("2_ahxat")
 
 [node name="UnitAnimationTree" parent="." index="2"]
 parameters/IdleBlend/GreatswordIdleBlend/blend_amount = 0
-parameters/IdleBlend/HeadCancelBlend/blend_amount = 0
 parameters/RunCycleBlend/GreatswordBlend/blend_amount = 0
 
 [node name="GameplayAttributeMap" parent="." index="6"]

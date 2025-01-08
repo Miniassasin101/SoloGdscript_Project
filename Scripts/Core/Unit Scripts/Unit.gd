@@ -23,7 +23,9 @@ var new_rotation: Quaternion
 ## Should stay between 0 and 180 usually
 @export var max_horizontal_angle: int = 90
 @export var max_vertical_angle: int = 20
-var bone_smooth_rot
+@export var neck_rot_speed: float = 2.0
+var bone_smooth_rot: float = 0.0
+@export var head_location: Marker3D
 
 
 
@@ -94,73 +96,11 @@ func _process(delta: float) -> void:
 		# Notify the level grid that the unit has moved.
 		LevelGrid.unit_moved_grid_position(self, grid_position, new_grid_position)
 		grid_position = new_grid_position
-	if testbool:
-		look_at_object(delta)
-
-
-func look_at_target(target: Node3D, bone_name: String = "DEF_neck.001", clamp_angle: float = 55.0, interpolation_time: float = 0.2) -> void:
-	"""
-	Makes the specified bone (default: Head) look at the target node.
-	Parameters:
-		- target: The node to look at (Node3D).
-		- bone_name: The name of the bone to rotate (default: "Head").
-		- clamp_angle: The maximum angle the head can turn (in degrees).
-		- interpolation_time: The time (in seconds) for smooth rotation.
-	"""
-	if not is_instance_valid(target) or skeleton == null:
-		print_debug("Invalid target or missing skeleton.")
-		return
-
-	# Get the current position of the bone in world space
-	var bone_global_transform = skeleton.get_bone_global_pose(skeleton.find_bone(bone_name))
-	var bone_world_position = bone_global_transform.origin
-
-	# Get the target's world position
-	var target_position = target.global_transform.origin
-
-	# Calculate the direction vector to the target
-	var look_direction = (target_position - bone_world_position).normalized()
-
-	# Calculate the current bone's forward direction
-	var current_bone_forward = bone_global_transform.basis.z.normalized()
-
-	# Calculate the angle between the current direction and the look direction
-	var angle_to_target = rad_to_deg(acos(current_bone_forward.dot(look_direction)))
-
-	# Clamp the rotation angle to the maximum allowed (clamp_angle)
-	if angle_to_target > clamp_angle:
-		print_debug("Clamping head rotation.")
-		var axis_of_rotation = current_bone_forward.cross(look_direction).normalized()
-		look_direction = current_bone_forward.rotated(axis_of_rotation, deg_to_rad(clamp_angle))
-
-	# Compute the desired rotation
-	var look_at_transform = Transform3D()
-	look_at_transform.origin = bone_world_position
-	look_at_transform.basis = Basis().looking_at(look_direction, Vector3.UP)
-
-	# Apply interpolation for smooth rotation
-	var interpolated_basis = bone_global_transform.basis.slerp(look_at_transform.basis, clamp(1.0 / interpolation_time, 0, 1))
-	var bonename: String = skeleton.get_bone_name(skeleton.find_bone(bone_name))
-	# Apply the new rotation to the bone
-	bone_global_transform.basis = interpolated_basis
-	skeleton.set_bone_global_pose(skeleton.find_bone(bone_name), bone_global_transform)
-
-func look_at_object(delta: float):
-	var neck_bone = skeleton.find_bone("DEF_neck.001")
-	neck_target.look_at(look_target.global_position, Vector3.UP, true)
-	new_rotation = Quaternion.from_euler(neck_target.rotation)
-	skeleton.set_bone_pose_rotation(neck_bone, new_rotation)
 
 
 func update_weapon_anims() -> void:
 	animator.weapon_setup(holding_weapon)
 
-
-func try_spend_action_points_to_take_action(action: Action) -> bool:
-	if can_spend_action_points_to_take_action(action):
-		spend_action_points(action.get_action_points_cost())
-		return true
-	return false
 
 func try_spend_ability_points_to_use_ability(ability: Ability) -> bool:
 	if can_spend_ability_points_to_use_ability(ability):
@@ -168,11 +108,6 @@ func try_spend_ability_points_to_use_ability(ability: Ability) -> bool:
 		return true
 	return false
 
-func can_spend_action_points_to_take_action(action: Action) -> bool:
-	if action_points >= action.get_action_points_cost():
-		return true
-	else:
-		return false
 
 func can_spend_ability_points_to_use_ability(ability: Ability) -> bool:
 	var ap_remain: int = int(attribute_map.get_attribute_by_name("action_points").current_value)
@@ -183,11 +118,6 @@ func can_spend_ability_points_to_use_ability(ability: Ability) -> bool:
 		return false
 
 
-func spend_action_points(amount: int) -> void:
-
-	action_points -= amount
-	SignalBus.emit_signal("action_points_changed")
-	SignalBus.emit_signal("update_stat_bars")
 
 func spend_ability_points(amount: int) -> void:
 	attribute_map.get_attribute_by_name("action_points").current_value -= amount
@@ -258,19 +188,7 @@ func get_action_system() -> UnitActionSystem:
 	# Return the UnitActionSystem reference.
 	return action_system
 
-func get_action_array() -> Array[Action]:
-	# Return the array of actions attached to the unit.
-	return action_array
 
-func get_action_points() -> int:
-	# Return the unit's action points.
-	return action_points
-
-func get_action(action_name: String) -> Action:
-	for action in action_array:
-		if action.get_action_name() == action_name:
-			return action
-	return null  # Return null if action not found
 
 func get_target_position_with_offset(height_offset: float) -> Vector3:
 	var target_position = global_position

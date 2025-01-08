@@ -8,6 +8,120 @@ func get_ability_from_container():
 func get_ability_from_unit():
 	pass
 
+func get_front_tiles(unit: Unit) -> Array[GridPosition]:
+	var facing: int = unit.facing
+	var front_tiles: Array[GridPosition] = []
+	var grid_position: GridPosition = unit.grid_position
+
+	# Get the grid positions of the three front tiles based on the facing direction
+	match facing:
+		0:  # Facing North
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z - 1))  # Left front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1))      # Center front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z - 1))  # Right front
+		1:  # Facing East
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z - 1))  # Left front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z))      # Center front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z + 1))  # Right front
+		2:  # Facing South
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z + 1))  # Left front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z + 1))      # Center front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z + 1))  # Right front
+		3:  # Facing West
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z + 1))  # Left front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z))      # Center front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z - 1))  # Right front
+
+	return front_tiles.filter(func(gridpos: GridPosition): return gridpos != null)  # Remove null values
+
+
+func get_side_tiles(unit: Unit) -> Array[GridPosition]:
+	var facing = unit.facing
+	var side_tiles = []
+	var grid_position = unit.grid_position
+
+	# Get the grid positions of the side tiles based on the facing direction
+	match facing:
+		0:  # Facing North
+			side_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z))  # Left
+			side_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z))  # Right
+		1:  # Facing East
+			side_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1))  # Left
+			side_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z + 1))  # Right
+		2:  # Facing South
+			side_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z))  # Left
+			side_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z))  # Right
+		3:  # Facing West
+			side_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z + 1))  # Left
+			side_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1))  # Right
+
+	return side_tiles.filter(func(gridpos): return gridpos != null) # Remove null values
+
+
+func get_back_tiles(unit: Unit) -> Array[GridPosition]:
+	var facing: int = unit.facing
+	var back_tiles: Array[GridPosition] = []
+	var grid_position: GridPosition = unit.grid_position
+
+	# Get the grid positions of the three back tiles based on the facing direction
+	match facing:
+		0:  # Facing North
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z + 1))  # Left back
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z + 1))      # Center back
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z + 1))  # Right back
+		1:  # Facing East
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z + 1))  # Left back
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z))      # Center back
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z - 1))  # Right back
+		2:  # Facing South
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z - 1))  # Left back
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1))      # Center back
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z - 1))  # Right back
+		3:  # Facing West
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z - 1))  # Left back
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z))      # Center back
+			back_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z + 1))  # Right back
+
+	return back_tiles.filter(func(gridpos: GridPosition): return gridpos != null)  # Remove null values
+
+
+func get_right_side_tile(unit: Unit) -> GridPosition:
+	var facing = unit.facing
+	var grid_position = unit.grid_position
+
+	# Get the grid position of the right side tile based on the facing direction
+	match facing:
+		0:  # Facing North
+			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z)
+		1:  # Facing East
+			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z + 1)
+		2:  # Facing South
+			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z)
+		3:  # Facing West
+			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1)
+
+	return null
+
+
+func get_left_side_tile(unit: Unit) -> GridPosition:
+	var facing = unit.facing
+	var grid_position = unit.grid_position
+
+	# Get the grid position of the left side tile based on the facing direction
+	match facing:
+		0:  # Facing North
+			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z)
+		1:  # Facing East
+			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1)
+		2:  # Facing South
+			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z)
+		3:  # Facing West
+			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z + 1)
+
+	return null
+
+
+
 func check_success_level(skill: int, in_roll: int) -> int:
 	# Check for critical failure
 	if in_roll == 99 or in_roll == 100:

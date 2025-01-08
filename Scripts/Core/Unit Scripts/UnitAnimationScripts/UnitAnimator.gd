@@ -12,7 +12,13 @@ signal attack_completed
 @export var fireball_projectile_prefab: PackedScene
 @export var shoot_point: Node3D
 @export var height_offset: float = 1.5  # Height offset to aim towards upper body
-
+@export_category("Head Look Variables")
+@export var skeleton: Skeleton3D
+@export var neck_bone_name: String = "DEF_neck.001"
+@export var neck_target: Marker3D
+@export var neck_rot_speed: float = 2.0
+@export var max_horizontal_angle: int = 90
+@export var max_vertical_angle: int = 20
 # Variables
 @onready var unit: Unit = get_parent()
 var fireball_instance: Projectile
@@ -21,6 +27,12 @@ var shoot_action: ShootAction
 var target_unit: Unit
 var stored_damage: int
 var projectile: Projectile
+
+# Neck Look Variables
+var bone_smooth_rot: float = 0.0
+var target_rotation: Quaternion
+var is_looking: bool = false
+var look_target: Node3D = null
 
 # Rotation Variables
 var is_rotating: bool = false
@@ -55,6 +67,49 @@ func _physics_process(delta: float) -> void:
 		rotate_unit_towards_target_position_process(delta)
 	if is_moving:
 		move_along_curve_process(delta)
+	if look_target and skeleton and is_looking:
+		update_look_at(delta)
+
+## Function to be used to trigger and disable looking at a target. Just needs to be called with no arguments to turn off.
+func look_at_toggle(target: Node3D = null) -> void:
+	if target == null:
+		is_looking = false
+	look_target = target
+	is_looking = true
+
+func update_look_at(delta: float) -> void:
+	"""
+	Updates the neck bone to look at the assigned target.
+	This ensures smooth and clamped rotation to prevent unnatural movements.
+	"""
+	var neck_bone = skeleton.find_bone(neck_bone_name)
+	if neck_bone == -1:
+		push_error("Neck Bone Not Found at ", self)
+		return  # Bail out if the neck bone is not found
+
+	# Get the parent bone's rotation
+	var parent_bone = skeleton.get_bone_parent(neck_bone)
+	var parent_global_pose: Transform3D = skeleton.get_bone_global_pose(parent_bone)
+	var parent_rotation: Quaternion = parent_global_pose.basis.get_rotation_quaternion()
+	
+	# Calculate the neck's target rotation (look at target position)
+	neck_target.look_at((look_target.global_position + Vector3(0.0, 0.3, 0.0)), Vector3.UP, true)
+	var target_rotation_degrees: Vector3 = neck_target.rotation_degrees
+
+	# Clamp the rotation to the desired range
+	target_rotation_degrees.x = clamp(target_rotation_degrees.x, -max_vertical_angle, max_vertical_angle)
+	target_rotation_degrees.y = clamp(target_rotation_degrees.y, -max_horizontal_angle, max_horizontal_angle)
+
+	# Convert to radians and apply smoothing
+	bone_smooth_rot = lerp_angle(bone_smooth_rot, deg_to_rad(target_rotation_degrees.y), neck_rot_speed * delta)
+	var final_rotation: Quaternion = Quaternion.from_euler(Vector3(deg_to_rad(target_rotation_degrees.x), bone_smooth_rot, 0))
+
+	# Remove the parent's rotation influence
+	final_rotation = parent_rotation.inverse() * final_rotation
+
+	# Apply the final rotation to the neck bone
+	skeleton.set_bone_pose_rotation(neck_bone, final_rotation)
+
 
 # Animate Movement Along Curve
 # Handles setting up movement parameters and starting movement
@@ -102,6 +157,7 @@ func left_cast_anim(in_animation: Animation, in_miss: bool = false) -> void:
 
 func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 # Note: Later replace greatsword test with the animation library
+	look_at_toggle()
 	miss = in_miss
 	var root: AnimationNodeStateMachine = animator_tree.tree_root
 	var attack: AnimationNodeBlendTree = root.get_node("Attack")
@@ -118,6 +174,7 @@ func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 
 	await attack_completed#timer.timeout
 	animator_tree.set("parameters/conditions/IsAttacking", false)
+	look_at_toggle(look_target)
 	return
 	# Always add call method tracks for resolving the damage
 
@@ -129,15 +186,7 @@ func attack_landed() -> void:
 		return
 	trigger_camera_shake()
 
-func toggle_head_cancel(use: bool = false, set_to: bool = false) -> void:
-	if use:
-		animator_tree.set("parameters/IdleBlend/HeadCancelBlend/blend_amount", set_to)
-	else:
-		var prev: float = float(animator_tree.get("parameters/IdleBlend/HeadCancelBlend/blend_amount"))
-		if prev == 1.0:
-			animator_tree.set("parameters/IdleBlend/HeadCancelBlend/blend_amount", 1.0)
-		else:
-			animator_tree.set("parameters/IdleBlend/HeadCancelBlend/blend_amount", 1.0)
+
 
 
 func trigger_camera_shake() -> void:
