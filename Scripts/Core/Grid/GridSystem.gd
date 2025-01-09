@@ -9,7 +9,7 @@ var width: int
 var height: int
 
 # Size of each cell in the grid.
-var cell_size: float
+var cell_size: float #FIXME: Add methodology to scale the grid visual based on the cell size
 
 # 2D array of GridObject instances.
 var grid_object_array: Array = []
@@ -110,7 +110,7 @@ func update_walkability_from_bounding_boxes(bounding_boxes: Array) -> void:
 			for aabb: AABB in bounding_boxes:
 				if aabb.has_point(world_position):
 					is_walkable = false
-					break
+					break # FIXME: get rid of break, use return instead
 			
 			# Update the grid object's walkability
 			var grid_object = get_grid_object(grid_position)
@@ -154,6 +154,13 @@ func get_grid_position_from_grid_position(ingrid: GridPosition) -> GridPosition:
 	else:
 		return ingrid
 
+
+"""
+func get_grid_position_from_grid_position
+
+
+
+"""
 # Helper function to check if coordinates are within grid bounds.
 func is_valid_grid_coords(x: int, z: int) -> bool:
 	return x >= 0 and x < width and z >= 0 and z < height
