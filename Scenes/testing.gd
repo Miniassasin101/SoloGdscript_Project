@@ -13,6 +13,7 @@ extends Node3D
 
 @export var animlib: Array[Animation]
 var testbool: bool = false
+var timescalebool: bool = false
 # Called every frame
 func _process(_delta: float) -> void:
 	test_pathfinding()
@@ -50,9 +51,24 @@ func test_pathfinding() -> void:
 
 func handle_right_mouse_click() -> void:
 	if Input.is_action_just_pressed("right_mouse"):
-		toggle_look_at_unit()
-		print_front_tiles()
-		
+		#toggle_look_at_unit()
+		#print_front_tiles()
+		#toggle_anims_speed()
+		toggle_engine_speed()
+
+
+func toggle_engine_speed() -> void:
+	if timescalebool:
+		Engine.time_scale = 1.0
+		timescalebool = false
+		return
+	Engine.time_scale = 0.1
+	timescalebool = true
+
+
+func toggle_anims_speed() -> void:
+	for unit in UnitManager.instance.units:
+		unit.animator.toggle_slowdown()
 
 func print_front_tiles() -> void:
 	unit.set_facing()

@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://6tcoop2kh2oa"]
+
+[ext_resource type="Script" path="res://Hero_Game/Prefabs/Units/ColorMarker.gd" id="1_fjlpv"]
+[ext_resource type="Material" uid="uid://dtqdanspgrlg2" path="res://Hero_Game/Art/Materials/ColorMarkerMats/ColorMarkerYellow.tres" id="2_sk483"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_e581j"]
+
+[node name="ColorMarker" type="Node3D"]
+script = ExtResource("1_fjlpv")
+scale_speed = 3.0
+target_scale = 0.7
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.682737, 0, 0, 0, 0.682737, 0, 0, 0, 0.682737, 0, 0, 0)
+mesh = SubResource("QuadMesh_e581j")
+surface_material_override/0 = ExtResource("2_sk483")

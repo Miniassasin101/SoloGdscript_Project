@@ -19,6 +19,10 @@ signal attack_completed
 @export var neck_rot_speed: float = 2.0
 @export var max_horizontal_angle: int = 90
 @export var max_vertical_angle: int = 20
+@export_category("Body Location Variables")
+@export var chest_point: Marker3D 
+@export_category("Attack Variables")
+@export var weapon_trail_length: int = 50
 # Variables
 @onready var unit: Unit = get_parent()
 var fireball_instance: Projectile
@@ -27,6 +31,9 @@ var shoot_action: ShootAction
 var target_unit: Unit
 var stored_damage: int
 var projectile: Projectile
+
+# Slowmo Variables
+var is_slowed: bool = false
 
 # Neck Look Variables
 var bone_smooth_rot: float = 0.0
@@ -53,6 +60,8 @@ var stopping_distance: float = 0.0
 
 # Attack Variables:
 var miss: bool = false
+var weapon_trail_is_active: bool = false
+
 
 # Ready Function - Called when the node enters the scene tree for the first time
 func _ready() -> void:
@@ -158,6 +167,7 @@ func left_cast_anim(in_animation: Animation, in_miss: bool = false) -> void:
 func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 # Note: Later replace greatsword test with the animation library
 	look_at_toggle()
+
 	miss = in_miss
 	var root: AnimationNodeStateMachine = animator_tree.tree_root
 	var attack: AnimationNodeBlendTree = root.get_node("Attack")
@@ -175,27 +185,98 @@ func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 	await attack_completed#timer.timeout
 	animator_tree.set("parameters/conditions/IsAttacking", false)
 	look_at_toggle(look_target)
+
 	return
 	# Always add call method tracks for resolving the damage
 
+func weapon_trail_toggle() -> void:
+	var weapon: Item = unit.equipment.equipped_items.front()
+	var trail: GPUTrail3D
+	if weapon:
+		trail = weapon.get_object().get_child(0)
+	if !weapon_trail_is_active:
+		trail.set_visibility(true)
+		weapon_trail_is_active = true
+		return
+	trail.set_visibility(false)
+	weapon_trail_is_active = false
 
 func attack_landed() -> void:
 	attack_completed.emit()
 	if miss:
 		miss = false
+		toggle_engine_slowdown(true)
+		await get_tree().create_timer(0.01).timeout
+		toggle_engine_slowdown()
 		return
 	trigger_camera_shake()
+	toggle_slowdown()
+	await get_tree().create_timer(0.3).timeout
+	toggle_slowdown()
 
 
+func toggle_slowdown() -> void:
+	var speed: float = animator.get_speed_scale()
+	if !is_slowed:
+			#Engine.set_time_scale(0.01)
+			set_timescales(0.0)
+			is_slowed = true
+
+	else:
+		#Engine.set_time_scale(1.0)
+		set_timescales(1.0)
+		is_slowed = false
+
+		return
+
+
+func toggle_engine_slowdown(toggle: bool = false) -> void:
+	var speed: float = animator.get_speed_scale()
+	if !is_slowed:
+			Engine.set_time_scale(0.01)
+			is_slowed = true
+
+	else:
+		Engine.set_time_scale(1.0)
+		is_slowed = false
+
+		return
+
+func set_timescales(val: float) -> void:
+	animator_tree.set("parameters/Attack/TimeScale/scale", val)
+	animator_tree.set("parameters/IdleBlend/TimeScale/scale", val)
 
 
 func trigger_camera_shake() -> void:
 	var strength = 0.1 # the maximum shake strength. The higher, the messier
-	var shake_time = 0.2 # how much it will last
+	var shake_time = 0.3 # how much it will last
 	var shake_frequency = 50 # will apply 250 shakes per `shake_time`
 
 	CameraShake.instance.shake(strength, shake_time, shake_frequency)
 
+func trigger_camera_shake_small() -> void:
+	var strength = 0.04 # the maximum shake strength. The higher, the messier
+	var shake_time = 0.1 # how much it will last
+	var shake_frequency = 20 # will apply 250 shakes per `shake_time`
+
+	CameraShake.instance.shake(strength, shake_time, shake_frequency)
+
+func trigger_camera_shake_tiny() -> void:
+	var strength = 0.02 # the maximum shake strength. The higher, the messier
+	var shake_time = 0.07 # how much it will last
+	var shake_frequency = 20 # will apply 250 shakes per `shake_time`
+
+	CameraShake.instance.shake(strength, shake_time, shake_frequency)
+
+func trigger_hit_fx(in_hit_fx: PackedScene, originator: Vector3) -> void:
+	var hit_fx = in_hit_fx.instantiate() as Node3D
+	#get_tree().root.add_child(hit_fx)
+	unit.add_child(hit_fx)
+	hit_fx.global_position = chest_point.global_position#unit.get_world_position() + Vector3(0.0, 1.0, 0.0)
+	hit_fx.global_rotation = -originator#chest_point.global_rotation
+	
+
+	hit_fx.get_child(0).emitting = true
 
 func testprint() -> void:
 	print_debug("AnimTestPrint")
@@ -268,26 +349,6 @@ func on_stop_moving() -> void:
 	is_moving = false
 	movement_completed.emit()
 
-# Shooting Functions
-# Handles shooting a projectile towards a target
-func on_shoot(target_unit_in: Unit, _shooting_unit: Unit, damage: int) -> void:
-	if fireball_projectile_prefab and shoot_point:
-		# Instantiate the fireball
-		fireball_instance = fireball_projectile_prefab.instantiate()
-
-		var target_unit_shoot_at_position: Vector3 = target_unit_in.get_position()
-		print(target_unit_shoot_at_position.y)
-		target_unit_shoot_at_position.y = shoot_point.global_position.y
-		print(target_unit_shoot_at_position.y)
-		
-		# Add the fireball to the root or the appropriate scene node
-		get_tree().root.add_child(fireball_instance)
-		# Set the fireball's initial position
-		fireball_instance.global_transform.origin = shoot_point.global_transform.origin
-		fireball_instance.target_hit.connect(trigger_damage)
-		fireball_instance.setup(target_unit_shoot_at_position, true)
-		target_unit = target_unit_in
-		stored_damage = damage
 
 # Handles the damage triggering when the projectile hits the target
 func trigger_damage() -> void:
@@ -296,10 +357,5 @@ func trigger_damage() -> void:
 # Connect Signals
 # Connects signals from move and shoot actions
 func connect_signals():
-	move_action = unit.get_action("Move")
-	shoot_action = unit.get_action("Shoot")
-	if move_action:
-		move_action.on_start_moving.connect(on_start_moving)
-		move_action.on_stop_moving.connect(on_stop_moving)
-	if shoot_action:
-		shoot_action.on_shoot.connect(on_shoot)
+	#depreciated
+	pass

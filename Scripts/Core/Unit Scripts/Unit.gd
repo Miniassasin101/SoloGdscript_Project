@@ -11,21 +11,13 @@ var action_system: UnitActionSystem
 @export var body: Body #abstract of stats and health of each limb
 @export var inventory: Inventory
 @export var equipment: Equipment
+@export var color_marker: ColorMarker
 
 @export_category("Sockets")
 @export var right_hand_socket: Node3D
 @export var shoot_point: Node3D
 
-@export_category("Head Look")
-@export var neck_target: Marker3D
-@export var look_target: Node3D
-var new_rotation: Quaternion
-## Should stay between 0 and 180 usually
-@export var max_horizontal_angle: int = 90
-@export var max_vertical_angle: int = 20
-@export var neck_rot_speed: float = 2.0
-var bone_smooth_rot: float = 0.0
-@export var head_location: Marker3D
+
 
 
 
@@ -42,8 +34,6 @@ var unit_name: String = "null"
 @onready var action_array: Array[Action]
 var target_unit: Unit
 
-@export var action_points_max: int = 2
-@onready var action_points: int = action_points_max
 
 @export var is_enemy: bool = false
 
@@ -82,7 +72,6 @@ func _ready() -> void:
 			equipment = child
 	attribute_map.attribute_changed.connect(on_attribute_changed)
 	animator.weapon_setup(holding_weapon)
-	SignalBus.on_turn_changed.connect(on_turn_changed)
 	SignalBus.on_round_changed.connect(on_round_changed)
 	SignalBus.add_unit.emit(self)
 
@@ -144,13 +133,7 @@ func on_attribute_changed(_attribute: AttributeSpec):
 	if attribute_map.get_attribute_by_name("health").current_value <= 0:
 		on_dead()
 
-# Will probably have to swap turn with round later
-func on_turn_changed() -> void:
-	if is_enemy and !TurnSystem.instance.is_player_turn or !is_enemy and TurnSystem.instance.is_player_turn:
-		action_points = action_points_max
-		
-		SignalBus.emit_signal("action_points_changed")
-		SignalBus.emit_signal("update_stat_bars")
+
 
 func on_round_changed() -> void:
 	attribute_map.get_attribute_by_name("action_points").current_value = attribute_map.get_attribute_by_name("action_points").maximum_value
@@ -195,6 +178,12 @@ func get_target_position_with_offset(height_offset: float) -> Vector3:
 	target_position.y += height_offset
 	return target_position
 
+
+func set_color_marker(color: StringName) -> void:
+	color_marker.set_color(color)
+
+func set_color_marker_visible(is_visible: bool) -> void:
+	color_marker.set_visibility(is_visible)
 
 func set_facing() -> void:
 	"""

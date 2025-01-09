@@ -31,6 +31,8 @@ signal is_player_turn
 
 signal on_book_keeping_ended
 
+signal hide_success
+
 signal action_points_changed
 
 signal update_stat_bars

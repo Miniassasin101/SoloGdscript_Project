@@ -184,9 +184,9 @@ func show_weapon_details_popup(weapon: Weapon) -> void:
 	weapon_info_container.add_child(damage_label)
 
 	# Weapon size
-	var size_label = Label.new()
-	size_label.text = "Size: %s" % _map_size_to_text(weapon.size)
-	weapon_info_container.add_child(size_label)
+	var weapon_size_label = Label.new()
+	weapon_size_label.text = "Size: %s" % _map_size_to_text(weapon.size)
+	weapon_info_container.add_child(weapon_size_label)
 
 	# Weapon reach
 	var reach_label = Label.new()
@@ -235,8 +235,8 @@ func show_weapon_details_popup(weapon: Weapon) -> void:
 ##
 # Maps the `size` integer to a readable text description.
 ##
-func _map_size_to_text(size: int) -> String:
-	match size:
+func _map_size_to_text(map_size: int) -> String:
+	match map_size:
 		0:
 			return "Small"
 		1:

@@ -135,47 +135,47 @@ transform = Transform3D(0.565549, 0.0711323, -0.821642, -0.704513, 0.559594, -0.
 [node name="LeftHandEquipmentSocketBone" parent="Rig_001/Skeleton3D" index="1"]
 transform = Transform3D(-0.50858, 0.562962, 0.651475, 0.815853, 0.556917, 0.155652, -0.275192, 0.610669, -0.742531, -0.143997, 1.24159, 0.378857)
 
-[node name="Body_001" parent="Rig_001/Skeleton3D" index="2"]
+[node name="Body_001" parent="Rig_001/Skeleton3D" index="3"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Collar_001" parent="Rig_001/Skeleton3D" index="3"]
+[node name="Collar_001" parent="Rig_001/Skeleton3D" index="4"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Eye_L" parent="Rig_001/Skeleton3D" index="4"]
+[node name="Eye_L" parent="Rig_001/Skeleton3D" index="5"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Eye_R" parent="Rig_001/Skeleton3D" index="5"]
+[node name="Eye_R" parent="Rig_001/Skeleton3D" index="6"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Eyebrow_L" parent="Rig_001/Skeleton3D" index="6"]
+[node name="Eyebrow_L" parent="Rig_001/Skeleton3D" index="7"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Eyebrow_R" parent="Rig_001/Skeleton3D" index="7"]
+[node name="Eyebrow_R" parent="Rig_001/Skeleton3D" index="8"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Flower Emblem_001" parent="Rig_001/Skeleton3D" index="8"]
+[node name="Flower Emblem_001" parent="Rig_001/Skeleton3D" index="9"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Hair Tufts_001" parent="Rig_001/Skeleton3D" index="9"]
+[node name="Hair Tufts_001" parent="Rig_001/Skeleton3D" index="10"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Main Hair_001" parent="Rig_001/Skeleton3D" index="10"]
+[node name="Main Hair_001" parent="Rig_001/Skeleton3D" index="11"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Pants_001" parent="Rig_001/Skeleton3D" index="11"]
+[node name="Pants_001" parent="Rig_001/Skeleton3D" index="12"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Pupil_L" parent="Rig_001/Skeleton3D" index="12"]
+[node name="Pupil_L" parent="Rig_001/Skeleton3D" index="13"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Pupil_R" parent="Rig_001/Skeleton3D" index="13"]
+[node name="Pupil_R" parent="Rig_001/Skeleton3D" index="14"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="SHirt_001" parent="Rig_001/Skeleton3D" index="14"]
+[node name="SHirt_001" parent="Rig_001/Skeleton3D" index="15"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.016647, -0.0134158, 0)
 surface_material_override/0 = ExtResource("2_ahxat")
 
-[node name="Waistcloth_belt_001" parent="Rig_001/Skeleton3D" index="15"]
+[node name="Waistcloth_belt_001" parent="Rig_001/Skeleton3D" index="16"]
 surface_material_override/0 = ExtResource("2_ahxat")
 
 [node name="UnitAnimationTree" parent="." index="2"]

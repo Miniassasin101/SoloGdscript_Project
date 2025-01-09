@@ -1,4 +1,4 @@
-[gd_scene load_steps=104 format=4 uid="uid://ckh4ee1mgwjn4"]
+[gd_scene load_steps=107 format=4 uid="uid://ckh4ee1mgwjn4"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
@@ -35,6 +35,7 @@
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/item.gd" id="35_icsct"]
 [ext_resource type="Resource" uid="uid://bh2no358biy4l" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/ParryResource.tres" id="38_1p8t2"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/equipment_slot.gd" id="38_3xk7x"]
+[ext_resource type="PackedScene" uid="uid://6tcoop2kh2oa" path="res://Hero_Game/Prefabs/Units/ColorMarker.tscn" id="38_7osw2"]
 [ext_resource type="Resource" uid="uid://cdvdn0jqh0akb" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/DitherResource.tres" id="39_1xl8t"]
 [ext_resource type="Resource" uid="uid://boojk1je30typ" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/IdleResource.tres" id="40_8r1ak"]
 
@@ -2099,12 +2100,16 @@ _data = {
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lpni8"]
 animation = &"GreatSwordTest1/Greatsword_Swing_001"
 
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_7wboq"]
+
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_dm84i"]
-graph_offset = Vector2(-230.791, 131.182)
+graph_offset = Vector2(-344.869, 61.883)
 nodes/AttackAnimation/node = SubResource("AnimationNodeAnimation_lpni8")
 nodes/AttackAnimation/position = Vector2(100, 240)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_7wboq")
+nodes/TimeScale/position = Vector2(480, 260)
 nodes/output/position = Vector2(640, 220)
-node_connections = [&"output", 0, &"AttackAnimation"]
+node_connections = [&"TimeScale", 0, &"AttackAnimation", &"output", 0, &"TimeScale"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sa4xv"]
 animation = &"Animations/Idle"
@@ -2143,11 +2148,13 @@ fadeout_time = 0.1
 animation = &"GreatSwordTest1/Left_Hand_Cast_001"
 play_mode = 1
 
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_8umkx"]
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hd3hl"]
 animation = &"GreatSwordTest1/Idle_Greatsword_shoulder_001"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_7p1gf"]
-graph_offset = Vector2(-356.594, -38.0732)
+graph_offset = Vector2(189.515, 47.4999)
 nodes/GreatswordIdleBlend/node = SubResource("AnimationNodeBlend2_857p3")
 nodes/GreatswordIdleBlend/position = Vector2(640, 100)
 nodes/IdleBase/node = SubResource("AnimationNodeAnimation_gbte4")
@@ -2156,10 +2163,12 @@ nodes/LeftArmBlend/node = SubResource("AnimationNodeOneShot_o2e4w")
 nodes/LeftArmBlend/position = Vector2(900, 120)
 nodes/LeftHandCast/node = SubResource("AnimationNodeAnimation_a8f2c")
 nodes/LeftHandCast/position = Vector2(540, 320)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_8umkx")
+nodes/TimeScale/position = Vector2(1230.43, 108.986)
 nodes/WeaponIdle/node = SubResource("AnimationNodeAnimation_hd3hl")
 nodes/WeaponIdle/position = Vector2(140, 200)
 nodes/output/position = Vector2(1420, 120)
-node_connections = [&"GreatswordIdleBlend", 0, &"IdleBase", &"GreatswordIdleBlend", 1, &"WeaponIdle", &"LeftArmBlend", 0, &"GreatswordIdleBlend", &"LeftArmBlend", 1, &"LeftHandCast", &"output", 0, &"LeftArmBlend"]
+node_connections = [&"GreatswordIdleBlend", 0, &"IdleBase", &"GreatswordIdleBlend", 1, &"WeaponIdle", &"LeftArmBlend", 0, &"GreatswordIdleBlend", &"LeftArmBlend", 1, &"LeftHandCast", &"TimeScale", 0, &"LeftArmBlend", &"output", 0, &"TimeScale"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qbpsd"]
 animation = &"DawnLib/RunCycle"
@@ -2320,17 +2329,16 @@ script = ExtResource("38_3xk7x")
 name = "RightHand"
 accepted_items = Array[ExtResource("35_icsct")]([])
 
-[node name="DawnUnit" type="Node3D" node_paths=PackedStringArray("skeleton", "animator", "body", "inventory", "equipment", "right_hand_socket", "shoot_point", "neck_target", "head_location")]
+[node name="DawnUnit" type="Node3D" node_paths=PackedStringArray("skeleton", "animator", "body", "inventory", "equipment", "color_marker", "right_hand_socket", "shoot_point")]
 script = ExtResource("1_y16nl")
 skeleton = NodePath("Rig_001/Skeleton3D")
 animator = NodePath("UnitAnimator")
 body = NodePath("Body")
 inventory = NodePath("Inventory")
 equipment = NodePath("Equipment")
+color_marker = NodePath("ColorMarker")
 right_hand_socket = NodePath("Rig_001/Skeleton3D/LeftHandEquipmentSocketBone/RightHandSocket")
 shoot_point = NodePath("Rig_001/Skeleton3D/RightHandEquipmentSocketBoneAttatchment/ShootPoint")
-neck_target = NodePath("NeckTarget")
-head_location = NodePath("")
 death_vfx_scene = ExtResource("2_2wk6w")
 
 [node name="Rig_001" type="Node3D" parent="."]
@@ -3550,7 +3558,7 @@ bones/172/rotation = Quaternion(-2.57559e-42, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.145679, 0.189077, -0.971096, -0.248861, -0.957009, -0.149001, -0.957521, 0.219962, 0.18647, 0.39947, 0.736604, -0.0174065)
+transform = Transform3D(-0.092992, 0.340474, -0.935644, -0.248405, -0.917934, -0.309341, -0.964182, 0.203653, 0.169936, 0.398686, 0.738357, -0.0298962)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3558,7 +3566,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.730355, 0.0276636, 0.682508, -0.140077, 0.98401, 0.110013, -0.668551, -0.175952, 0.722551, -0.523668, 1.47619, 0.185099)
+transform = Transform3D(0.748336, 0.0392935, 0.662155, -0.169483, 0.976436, 0.133598, -0.641302, -0.2122, 0.737362, -0.525378, 1.48623, 0.162311)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3569,6 +3577,11 @@ transform = Transform3D(0.0911744, 0.125808, -0.987859, -0.973272, -0.198726, -0
 script = ExtResource("4_3lwao")
 unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
+transform = Transform3D(0.932306, -0.00472289, 0.361639, -0.00510233, 0.999643, 0.0262089, -0.361634, -0.02628, 0.93195, 0.0458392, 1.06826, 0.0425109)
+bone_name = "DEF_chest.001"
+bone_idx = 5
 
 [node name="Body_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
 mesh = SubResource("ArrayMesh_e5heh")
@@ -3656,14 +3669,16 @@ tree_root = SubResource("AnimationNodeStateMachine_md4wi")
 anim_player = NodePath("../Animator")
 parameters/conditions/IsAttacking = false
 parameters/conditions/IsWalking = false
+parameters/Attack/TimeScale/scale = 1.0
 parameters/IWR/blend_position = Vector2(0.0074389, 0.299401)
 parameters/IdleBlend/GreatswordIdleBlend/blend_amount = 1.0
 parameters/IdleBlend/LeftArmBlend/active = false
 parameters/IdleBlend/LeftArmBlend/internal_active = false
 parameters/IdleBlend/LeftArmBlend/request = 0
+parameters/IdleBlend/TimeScale/scale = 1.0
 parameters/RunCycleBlend/GreatswordBlend/blend_amount = 0.0
 
-[node name="UnitAnimator" type="Node" parent="." node_paths=PackedStringArray("animator", "animator_tree", "shoot_point", "skeleton", "neck_target")]
+[node name="UnitAnimator" type="Node" parent="." node_paths=PackedStringArray("animator", "animator_tree", "shoot_point", "skeleton", "neck_target", "chest_point")]
 script = ExtResource("15_50hb7")
 animator = NodePath("../Animator")
 animator_tree = NodePath("../UnitAnimationTree")
@@ -3674,6 +3689,7 @@ neck_target = NodePath("../NeckTarget")
 neck_rot_speed = 8.0
 max_horizontal_angle = 70
 max_vertical_angle = 10
+chest_point = NodePath("../ChestPointMarker")
 
 [node name="UnitArea3D" type="Area3D" parent="."]
 collision_layer = 8
@@ -3717,3 +3733,12 @@ slots_editor = Array[ExtResource("38_3xk7x")]([SubResource("Resource_nsk3p")])
 
 [node name="NeckTarget" type="Marker3D" parent="."]
 visible = false
+
+[node name="AboveMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72144, 0)
+
+[node name="ChestPointMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.896088, 0.197046)
+
+[node name="ColorMarker" parent="." instance=ExtResource("38_7osw2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.80718, 0)

@@ -7,6 +7,8 @@ extends Ability
 ################################################
 @export var animation: Animation
 
+@export var hit_vfx: PackedScene
+
 @export_group("Attributes")
 ## The damage die used. Example: 6 means a six sided die or a "d6".
 @export var damage: int = 6
@@ -96,10 +98,6 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 	# We'll check squares in a small range around the user.
 	for x in range(-attack_range, attack_range + 1):
 		for z in range(-attack_range, attack_range + 1):
-			# Check if the distance is truly within 1 tile (including diagonals).
-			var dist = sqrt(float(x*x + z*z))
-			#if dist > float(attack_range):
-			#	continue
 
 			# Build a test position.
 			var offset_position = GridPosition.new(x, z)
@@ -181,12 +179,16 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 # This function is the heart of the melee sequence.
 ##
 func melee_attack_anim() -> void:
-	# 1) Toggle the "IsAttacking" parameter to start the melee animation.
+
+
+	# 1) If your animator signals when the attack hits or finishes,
+	#    you can "await" that signal here. For example:
 	await unit.animator.melee_attack_anim(animation, event.miss)
 
-	# 2) If your animator signals when the attack hits or finishes,
-	#    you can "await" that signal here. For example:
-
+	# 2) Here you can trigger any hit fx on the ability by passing it to the target unit's animator:
+	var target_unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
+	if !event.miss:
+		target_unit.animator.trigger_hit_fx(hit_vfx, unit.get_global_rotation())
 
 	# 3) Now that the animation is presumably done or at the hit frame, apply damage.
 	apply_effect()

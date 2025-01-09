@@ -4,6 +4,7 @@ extends Node
 static var instance: CombatSystem = null
 var declaration_reaction_queue: Array[Unit] = []
 var initiative_order: Array[Unit] = []
+@export var marker_visibility_time: float = 1.5
 
 func _ready() -> void:
 	if instance != null:
@@ -92,6 +93,9 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		print_debug("Attacker missed.")
 		ret_event.miss = true
 
+	# Show Attacker's marker
+	show_success(attacking_unit, attacker_success_level)
+
 	# Attacker succeeded, prompt defender for a reaction
 	var defender_success_level: int = 0
 	var defender_wants_reaction: bool = true  # Example prompt
@@ -101,12 +105,14 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 
 	if defender_wants_reaction:
 		defender_success_level = await reaction(target_unit, attacking_unit)
+		show_success(target_unit, defender_success_level)
 
 		# If defender wins, determine parry effectiveness
 		if defender_success_level >= attacker_success_level:
 			parry_success = true
 		if !target_unit.equipment.equipped_items.is_empty():
 			parrying_weapon_size = target_unit.equipment.equipped_items.front().size
+	hide_all_success_level()
 
 	if !defender_wants_reaction:
 		return ret_event
@@ -177,3 +183,25 @@ parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	print_debug("Final damage dealt: ", damage_total)
 
 	return damage_total
+
+
+# Helper Functions
+
+# Show the attacker's success level marker
+func show_success(in_unit: Unit, success_level: int) -> void:
+	var marker_color = get_color_for_success_level(success_level)
+	in_unit.set_color_marker(marker_color)  # Emit a signal to show the marker
+	in_unit.set_color_marker_visible(true)
+
+func hide_all_success_level() -> void:
+	await get_tree().create_timer(marker_visibility_time).timeout
+	SignalBus.hide_success.emit()
+
+# Utility to map success levels to colors
+func get_color_for_success_level(success_level: int) -> StringName:
+	match success_level:
+		2: return "blue"   # Critical Success
+		1: return "green"  # Success
+		0: return "yellow" # Failure/Miss
+		-1: return "red"    # Critical Failure
+		_: return "white"  # Default color (unexpected value)

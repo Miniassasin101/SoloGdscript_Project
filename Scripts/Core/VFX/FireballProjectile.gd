@@ -48,10 +48,11 @@ func check_collision(delta: float) -> void:
 # Handles what happens when the projectile hits the target
 func on_hit_target() -> void:
 	# Snap to target position
-	global_transform.origin = target_position
+	#global_transform.origin = target_position
 	target_hit.emit()
 	
 	if !miss:
+		global_transform.origin = target_position
 		trigger_camera_shake()
 
 	# Handle trail effect

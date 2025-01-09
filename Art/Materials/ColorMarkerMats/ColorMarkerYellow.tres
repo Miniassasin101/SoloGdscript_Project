@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dtqdanspgrlg2"]
+
+[ext_resource type="Texture2D" uid="uid://f8d7m0fhky1j" path="res://Hero_Game/Art/Textures/Noise Textures/T_VFX_basic1.PNG" id="1_g3w74"]
+
+[resource]
+blend_mode = 1
+shading_mode = 0
+diffuse_mode = 3
+albedo_color = Color(0.9, 1, 0, 1)
+albedo_texture = ExtResource("1_g3w74")
+billboard_mode = 1
+billboard_keep_scale = true

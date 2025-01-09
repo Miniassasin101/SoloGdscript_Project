@@ -23,7 +23,8 @@ func _ready() -> void:
 
 func test_equip_units(sword: Weapon) -> void:
 	for unit: Unit in units:
-		unit.equipment.equip(sword)
+		var new_sword = sword.duplicate()
+		unit.equipment.equip(new_sword)
 # Initializes the units by storing references to all child units.
 func initialize_units() -> void:
 	# Iterate through all children and add those of type Unit to the units array
