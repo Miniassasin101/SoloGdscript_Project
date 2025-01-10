@@ -6,6 +6,8 @@ var declaration_reaction_queue: Array[Unit] = []
 var initiative_order: Array[Unit] = []
 @export var marker_visibility_time: float = 1.5
 
+
+
 func _ready() -> void:
 	if instance != null:
 		push_error("There's more than one CombatSystem! - " + str(instance))
@@ -13,21 +15,31 @@ func _ready() -> void:
 		return
 	instance = self
 
+
+
 func book_keeping() -> void:
 	# Apply poison, bleed, persistent effects, etc.
 	SignalBus.on_book_keeping_ended.emit()
 
+
+
 func start_turn(unit: Unit) -> void:
 	print_debug("CombatSystem Turn Started: ", unit)
+
+
 
 func interrupt_turn(_unit: Unit) -> void:
 	SignalBus.continue_turn.emit()
 	print_debug("Turn Interrupted")
 
+
+
 func declare_action(action: Ability, event: ActivationEvent) -> void:
 	# Possibly prompt others if they can react to the declaration itself.
 	await check_declaration_reaction_queue(action, event)
 	print_debug("Action Declared: ", action.ui_name)
+
+
 
 func check_declaration_reaction_queue(_action: Ability, _event: ActivationEvent) -> void:
 	# This is where you could prompt units who have "hold actions" or special abilities 
@@ -37,6 +49,8 @@ func check_declaration_reaction_queue(_action: Ability, _event: ActivationEvent)
 			interrupt_turn(unit)
 			await SignalBus.continue_turn
 	# Additional logic can be added here per Mythras optional rules.
+
+
 
 func reaction(reacting_unit: Unit, attacking_unit: Unit) -> int:
 	# Prompt UI or AI to choose a reaction ability (e.g., a parry, an evade).
@@ -73,6 +87,8 @@ func reaction(reacting_unit: Unit, attacking_unit: Unit) -> int:
 	print_debug("Defender Success Level: ", defender_success_level)
 	return defender_success_level
 
+
+
 func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var weapon: Weapon = event.weapon
 	var attacking_unit: Unit = event.character
@@ -108,7 +124,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		show_success(target_unit, defender_success_level)
 
 		# If defender wins, determine parry effectiveness
-		if defender_success_level >= attacker_success_level:
+		if defender_success_level >= 1:
 			parry_success = true
 		if !target_unit.equipment.equipped_items.is_empty():
 			parrying_weapon_size = target_unit.equipment.equipped_items.front().size
@@ -125,26 +141,34 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	if ret_event.miss:
 		return ret_event
 
-
+	# FIXME: rn on a fail and crit fail a special effect is gotten
 	# Determine success differential
 	var differential: int = attacker_success_level - defender_success_level
+	
 	if differential > 0:
 		print_debug("Attacker wins. Applying damage. Also prompt special effects")
 
 		ret_event.rolled_damage = roll_damage(action, event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
-		return ret_event
+
 	elif differential == 0:
 		print_debug("It's a tie - no special effects.")
 		ret_event.rolled_damage = roll_damage(action, event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
-		return ret_event
+
 	else:
 		print_debug("Defender wins. Prompt Special Effects")
 		ret_event.rolled_damage = roll_damage(action, event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
-		return ret_event
+
+	
+	return ret_event
+
+func get_parry_level() -> void:
+	pass
 
 func get_hit_location(target_unit: Unit) -> BodyPart:
 	var ret = target_unit.body.roll_hit_location()
 	return ret
+
+
 
 # FIXME: 
 func roll_damage(ability: Ability, _event: ActivationEvent, _target_unit: Unit, hit_location: BodyPart,  

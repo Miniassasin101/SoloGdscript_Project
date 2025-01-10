@@ -104,6 +104,7 @@ func next_turn() -> void:
 			turn_number = 1
 			current_cycle += 1
 			print_debug("Current Cycle: ", current_cycle)
+			SignalBus.emit_signal("on_cycle_changed")
 			reset_cycle_actions()
 		else:
 			# End of round
@@ -127,6 +128,7 @@ func end_turn() -> void:
 			turn_number = 1
 			current_cycle += 1
 			print_debug("Current Cycle: ", current_cycle)
+
 			reset_cycle_actions()
 			start_turn()
 			return

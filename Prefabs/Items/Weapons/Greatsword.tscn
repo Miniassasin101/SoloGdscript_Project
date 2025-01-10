@@ -34,13 +34,13 @@ surface_material_override/0 = ExtResource("2_g8fl0")
 [node name="GPUTrail3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(0.433149, -3.63507e-08, -3.63507e-08, 3.63507e-08, -1.89335e-08, 0.433149, -3.63507e-08, -0.433149, -1.89335e-08, -3.88015e-08, 4.8502e-08, -0.96496)
 visible = false
-amount = 40
-lifetime = 40.0
+amount = 20
+lifetime = 20.0
 explosiveness = 1.0
 process_material = SubResource("ShaderMaterial_apep7")
 draw_pass_1 = SubResource("QuadMesh_68yls")
 script = ExtResource("7_6i45n")
-length = 40
+length = 20
 length_seconds = 0.666667
 color_ramp = ExtResource("5_oh5wc")
 curve = ExtResource("6_2wqi4")

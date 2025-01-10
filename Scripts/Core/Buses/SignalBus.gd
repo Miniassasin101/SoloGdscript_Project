@@ -19,6 +19,8 @@ signal end_turn
 
 signal on_turn_changed
 
+signal on_cycle_changed
+
 signal continue_turn
 
 signal on_player_reaction

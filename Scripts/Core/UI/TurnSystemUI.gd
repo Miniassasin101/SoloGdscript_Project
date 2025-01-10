@@ -4,11 +4,14 @@ extends Control
 @export var end_turn_button: Button
 @export var end_turn_container: PanelContainer
 @export var round_counter_label: Label
+@export var cycle_counter_label: Label
 @export var turn_system: TurnSystem
 @export var enemy_turn_container: PanelContainer
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.on_turn_changed.connect(on_turn_changed)
+	SignalBus.on_cycle_changed.connect(on_cycle_changed)
+	
 
 	update_turn_label()
 
@@ -22,8 +25,14 @@ func on_turn_changed() -> void:
 	update_enemy_turn_visual()
 	update_turn_label()
 
+func on_cycle_changed() -> void:
+	update_cycle_label()
+
 func update_turn_label() -> void:
 	round_counter_label.text = "Round " + str(turn_system.round_number)
+
+func update_cycle_label() -> void:
+	cycle_counter_label.text = "Cycle " + str(turn_system.current_cycle)
 
 func update_enemy_turn_visual() -> void:
 	var is_player_turn: bool = TurnSystem.instance.is_player_turn
