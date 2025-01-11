@@ -12,6 +12,7 @@ stopping_distance = 0.1
 acceleration_timer = 0.5
 rotation_acceleration_timer = 0.5
 ui_name = "Move"
+movement_gait = 3
 cooldown_duration = 0.0
 cooldown_continuos = false
 grant_automatic = true

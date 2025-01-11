@@ -133,7 +133,7 @@ func animate_movement_along_curve(move_speed_in: float, movement_curve_in: Curve
 	current_speed = 0.1  # Initial movement speed
 	curve_travel_offset = 0.0
 	is_moving = true
-	animator_tree.set("parameters/conditions/IsWalking", true)
+	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsWalking", true)
 
 func equipment_anim_check(in_unit: Unit) -> void:
 	if in_unit != unit:
@@ -145,17 +145,17 @@ func equipment_anim_check(in_unit: Unit) -> void:
 
 func weapon_setup(weapon_type: bool) -> void:
 	if weapon_type:
-		animator_tree.set("parameters/RunCycleBlend/GreatswordBlend/blend_amount", 1.0)
-		animator_tree.set("parameters/IdleBlend/GreatswordIdleBlend/blend_amount", 1.0)
+		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/GreatswordBlend/blend_amount", 1.0)
+		animator_tree.set("parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 1.0)
 		return
-	animator_tree.set("parameters/RunCycleBlend/GreatswordBlend/blend_amount", 0.0)
-	animator_tree.set("parameters/IdleBlend/GreatswordIdleBlend/blend_amount", 0.0)
+	animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/GreatswordBlend/blend_amount", 0.0)
+	animator_tree.set("parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 0.0)
 
 func left_cast_anim(in_animation: Animation, in_miss: bool = false) -> void:
 	# Note: Later replace greatsword test with the animation library
 	miss = in_miss
 
-	animator_tree.set("parameters/IdleBlend/LeftArmBlend/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)# or enum 1
+	animator_tree.set("parameters/Main/AnimationNodeStateMachine/IdleBlend/LeftArmBlend/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)# or enum 1
 
 
 	await attack_completed#timer.timeout
@@ -163,31 +163,61 @@ func left_cast_anim(in_animation: Animation, in_miss: bool = false) -> void:
 	return
 	# Always add call method tracks for resolving the damage
 	
+func play_animation_by_name(animation_name: String, blend_time: float = 0.5) -> void:
+	# Get the AnimationTree's state machine root
+	var root: AnimationNodeStateMachine = animator_tree.tree_root as AnimationNodeStateMachine
+	if root == null:
+		push_error("AnimationTree does not have a valid StateMachine root.")
+		return
+	
+	var main: AnimationNodeBlendTree = root.get_node("Main")
+	
+	var one_shot: AnimationNodeAnimation = main.get_node("OneShotAnimation")
+	
+	
+	
+	var anim_path: String = ("GreatSwordTest1/" + animation_name)
+	
+	one_shot.set_animation(anim_path)
 
+	
+
+	
+	#one_shot_node.set("request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+
+	animator_tree.set("parameters/Main/OneShotBlend/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+	print("firing: ", anim_path)
+	await get_tree().create_timer(1.0).timeout
+	print("done")
+	return
+
+
+	# NOTE: Always add call method tracks for resolving the damage
 func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 # Note: Later replace greatsword test with the animation library
 	look_at_toggle()
 
 	miss = in_miss
 	var root: AnimationNodeStateMachine = animator_tree.tree_root
-	var attack: AnimationNodeBlendTree = root.get_node("Attack")
+	var main: AnimationNodeBlendTree = root.get_node("Main")
+	var state_mach: AnimationNodeStateMachine = main.get_node("AnimationNodeStateMachine")
+	var attack: AnimationNodeBlendTree = state_mach.get_node("Attack")
 	var attack_anim: AnimationNodeAnimation = attack.get_node("AttackAnimation")
 	var animation: StringName = attack_anim.get_animation()
-	print("Old Animation: ", animation)
+	print_debug("Old Animation: ", animation)
 	var anim_path: String = ("GreatSwordTest1/" + in_animation.resource_name)
 	attack_anim.set_animation(anim_path)
 	#GreatSwordTest1/Greatsword_Swing_001
 
 	#var is_attacking: bool = animator_tree.get("parameters/conditions/IsAttacking")
-	animator_tree.set("parameters/conditions/IsAttacking", true)
+	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsAttacking", true)
 	# Animation stand-in
 
 	await attack_completed#timer.timeout
-	animator_tree.set("parameters/conditions/IsAttacking", false)
+	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsAttacking", false)
 	look_at_toggle(look_target)
 
 	return
-	# Always add call method tracks for resolving the damage
 
 func weapon_trail_toggle() -> void:
 	var weapon: Item = unit.equipment.equipped_items.front()
@@ -205,9 +235,14 @@ func attack_landed() -> void:
 	attack_completed.emit()
 	if miss:
 		miss = false
+		"""
 		toggle_engine_slowdown(true)
-		await get_tree().create_timer(0.01).timeout
+		await get_tree().create_timer(1.0, true, false, true).timeout
 		toggle_engine_slowdown()
+		"""
+		toggle_slowdown(0.1)
+		await get_tree().create_timer(1.3).timeout
+		toggle_slowdown()
 		return
 	trigger_camera_shake()
 	toggle_slowdown()
@@ -215,15 +250,15 @@ func attack_landed() -> void:
 	toggle_slowdown()
 
 
-func toggle_slowdown() -> void:
+func toggle_slowdown(speed_scale: float = 0.0) -> void:
 	var speed: float = animator.get_speed_scale()
 	if !is_slowed:
-			#Engine.set_time_scale(0.01)
-			set_timescales(0.0)
+
+			set_timescales(speed_scale)
 			is_slowed = true
 
 	else:
-		#Engine.set_time_scale(1.0)
+
 		set_timescales(1.0)
 		is_slowed = false
 
@@ -243,8 +278,7 @@ func toggle_engine_slowdown(toggle: bool = false) -> void:
 		return
 
 func set_timescales(val: float) -> void:
-	animator_tree.set("parameters/Attack/TimeScale/scale", val)
-	animator_tree.set("parameters/IdleBlend/TimeScale/scale", val)
+	animator_tree.set("parameters/Main/TimeScale/scale", val)
 
 
 func trigger_camera_shake() -> void:
@@ -277,6 +311,7 @@ func trigger_hit_fx(in_hit_fx: PackedScene, originator: Vector3) -> void:
 	
 
 	hit_fx.get_child(0).emitting = true
+
 
 func testprint() -> void:
 	print_debug("AnimTestPrint")
@@ -342,20 +377,9 @@ func rotate_unit_towards_target_position_process(delta: float):
 
 # Movement State Handlers
 func on_start_moving() -> void:
-	animator_tree.set("parameters/conditions/IsWalking", true)
+	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsWalking", true)
 
 func on_stop_moving() -> void:
-	animator_tree.set("parameters/conditions/IsWalking", false)
+	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsWalking", false)
 	is_moving = false
 	movement_completed.emit()
-
-
-# Handles the damage triggering when the projectile hits the target
-func trigger_damage() -> void:
-	target_unit.damage(stored_damage)
-
-# Connect Signals
-# Connects signals from move and shoot actions
-func connect_signals():
-	#depreciated
-	pass

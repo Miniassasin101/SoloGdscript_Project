@@ -90,7 +90,7 @@ func get_conditions_for_part(part_name: String) -> Array:
 	return part.conditions if part != null else []
 
 func roll_hit_location() -> BodyPart:
-	var roll = AbilityUtils.roll(20) 
+	var roll = Utilities.roll(20) 
 	for part in body_parts:
 		if roll >= part.hit_range_start and roll <= part.hit_range_end:
 			return part

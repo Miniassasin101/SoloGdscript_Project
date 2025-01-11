@@ -1,4 +1,4 @@
-[gd_scene load_steps=107 format=4 uid="uid://ckh4ee1mgwjn4"]
+[gd_scene load_steps=95 format=4 uid="uid://ckh4ee1mgwjn4"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
@@ -14,24 +14,28 @@
 [ext_resource type="Animation" uid="uid://cwyml0jir450h" path="res://Hero_Game/Animations/DawnAnims/Test_Idle_Stance.res" id="11_y80ok"]
 [ext_resource type="Animation" uid="uid://cyuq3syq8f58p" path="res://Hero_Game/Animations/DawnAnims/WarmupRollTest.res" id="12_fxhv2"]
 [ext_resource type="Animation" uid="uid://d0yutt0ytk8p4" path="res://Hero_Game/Animations/DawnAnims/WarmupRollTest_001.res" id="13_1tbmr"]
-[ext_resource type="Curve" uid="uid://ds3cwr48a54i0" path="res://Hero_Game/Animations/Curves/AnimationBLendCurve.tres" id="14_6wpgq"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitAnimationScripts/UnitAnimator.gd" id="15_50hb7"]
 [ext_resource type="AnimationLibrary" uid="uid://dcgmvmqj2i3hi" path="res://Hero_Game/Animations/AnimationLibraries/GreatSwordTest1_lib.res" id="15_skiok"]
 [ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/VFX/fireball_mesh.tscn" id="16_3df4h"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://bwus84v6qro73" path="res://Hero_Game/Animations/AnimationNodes/AnimationNodeTest1.tres" id="16_ro1bg"]
 [ext_resource type="Material" uid="uid://beyldvm0u84n0" path="res://Hero_Game/Art/Materials/UnitSelectedVisual.tres" id="17_l3n52"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitSelectedVisual.gd" id="18_id2ra"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/gameplay_attribute_map.gd" id="19_4283r"]
 [ext_resource type="Resource" uid="uid://bqwjl5qldj4b3" path="res://Hero_Game/Scripts/AbilitySystemTest/AttributeTables/HumanoidAttributesTable.tres" id="20_xrhce"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/ability_container.gd" id="22_250xw"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/ability.gd" id="23_1urwx"]
-[ext_resource type="Resource" uid="uid://knnn4c4diq6f" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/FireballResource.tres" id="24_6kacr"]
-[ext_resource type="Resource" uid="uid://crgywdemy0bgk" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/StrongFireballResource.tres" id="25_33lcd"]
+[ext_resource type="Resource" uid="uid://knnn4c4diq6f" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/AttackAbilities/FireballResource.tres" id="24_6kacr"]
+[ext_resource type="Resource" uid="uid://crgywdemy0bgk" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/AttackAbilities/StrongFireballResource.tres" id="25_33lcd"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/MoveAbility.gd" id="26_a5eeq"]
-[ext_resource type="Resource" uid="uid://d1s052aojsqxf" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/MeleeTest.tres" id="27_lclct"]
+[ext_resource type="Resource" uid="uid://d1s052aojsqxf" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/AttackAbilities/MeleeTest.tres" id="27_lclct"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Body.gd" id="29_f43xc"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/BodyPart.gd" id="30_uvroa"]
+[ext_resource type="Resource" uid="uid://qgaber1n5dae" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/DabAbilityResource.tres" id="32_qle3s"]
+[ext_resource type="Animation" uid="uid://b03wersgtloek" path="res://Hero_Game/Animations/AnimsSwordTest/Test_Dab_Action.res" id="33_p2d5c"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/inventory.gd" id="34_0tyum"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/equipment.gd" id="34_6brpe"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/DabAbility.gd" id="34_nsbb5"]
+[ext_resource type="Animation" uid="uid://dswwaq5xbcffc" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Swing_001.res" id="35_58x2o"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/item.gd" id="35_icsct"]
 [ext_resource type="Resource" uid="uid://bh2no358biy4l" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/ParryResource.tres" id="38_1p8t2"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/equipment_slot.gd" id="38_3xk7x"]
@@ -2097,140 +2101,35 @@ _data = {
 "WarmupRollTest_001": ExtResource("13_1tbmr")
 }
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lpni8"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_10yvm"]
 animation = &"GreatSwordTest1/Greatsword_Swing_001"
 
-[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_7wboq"]
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_5llx0"]
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_dm84i"]
-graph_offset = Vector2(-344.869, 61.883)
-nodes/AttackAnimation/node = SubResource("AnimationNodeAnimation_lpni8")
-nodes/AttackAnimation/position = Vector2(100, 240)
-nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_7wboq")
-nodes/TimeScale/position = Vector2(480, 260)
-nodes/output/position = Vector2(640, 220)
-node_connections = [&"TimeScale", 0, &"AttackAnimation", &"output", 0, &"TimeScale"]
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_ej8db"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sa4xv"]
-animation = &"Animations/Idle"
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_0x0ln"]
+graph_offset = Vector2(-357.818, 75)
+nodes/AnimationNodeStateMachine/node = ExtResource("16_ro1bg")
+nodes/AnimationNodeStateMachine/position = Vector2(0, 100)
+nodes/OneShotAnimation/node = SubResource("AnimationNodeAnimation_10yvm")
+nodes/OneShotAnimation/position = Vector2(-60, 320)
+nodes/OneShotBlend/node = SubResource("AnimationNodeOneShot_5llx0")
+nodes/OneShotBlend/position = Vector2(320, 200)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_ej8db")
+nodes/TimeScale/position = Vector2(540, 240)
+nodes/output/position = Vector2(720, 200)
+node_connections = [&"OneShotBlend", 0, &"AnimationNodeStateMachine", &"OneShotBlend", 1, &"OneShotAnimation", &"TimeScale", 0, &"OneShotBlend", &"output", 0, &"TimeScale"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7y37l"]
-animation = &"Animations/firing run"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2wv4o"]
-animation = &"Animations/Strafe"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_87gep"]
-animation = &"Animations/Strafe2"
-
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_a87e8"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_sa4xv")
-blend_point_0/pos = Vector2(0, 0)
-blend_point_1/node = SubResource("AnimationNodeAnimation_7y37l")
-blend_point_1/pos = Vector2(0, 1)
-blend_point_2/node = SubResource("AnimationNodeAnimation_2wv4o")
-blend_point_2/pos = Vector2(1, 0)
-blend_point_3/node = SubResource("AnimationNodeAnimation_87gep")
-blend_point_3/pos = Vector2(-1, 0)
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_857p3"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gbte4"]
-animation = &"DawnLib/IdleAnim"
-
-[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_o2e4w"]
-filter_enabled = true
-filters = ["Rig_001/Skeleton3D:CTRL_index.L.001", "Rig_001/Skeleton3D:CTRL_index.L.002", "Rig_001/Skeleton3D:CTRL_index.L.003", "Rig_001/Skeleton3D:CTRL_thumb.L.001", "Rig_001/Skeleton3D:CTRL_thumb.L.002", "Rig_001/Skeleton3D:CTRL_thumb.L.003", "Rig_001/Skeleton3D:CTRL_thumb_base.L.001", "Rig_001/Skeleton3D:DEF_bicep.L.001", "Rig_001/Skeleton3D:DEF_bicep.L.002", "Rig_001/Skeleton3D:DEF_forearm.L.001", "Rig_001/Skeleton3D:DEF_forearm.L.002", "Rig_001/Skeleton3D:DEF_hand.L.001", "Rig_001/Skeleton3D:DEF_index.L.001", "Rig_001/Skeleton3D:DEF_index.L.002", "Rig_001/Skeleton3D:DEF_index.L.003", "Rig_001/Skeleton3D:DEF_thumb.L.001", "Rig_001/Skeleton3D:DEF_thumb.L.002", "Rig_001/Skeleton3D:DEF_thumb.L.003", "Rig_001/Skeleton3D:DEF_thumb_base.L.001", "UnitAnimator"]
-fadein_time = 0.1
-fadeout_time = 0.1
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_a8f2c"]
-animation = &"GreatSwordTest1/Left_Hand_Cast_001"
-play_mode = 1
-
-[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_8umkx"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hd3hl"]
-animation = &"GreatSwordTest1/Idle_Greatsword_shoulder_001"
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_7p1gf"]
-graph_offset = Vector2(189.515, 47.4999)
-nodes/GreatswordIdleBlend/node = SubResource("AnimationNodeBlend2_857p3")
-nodes/GreatswordIdleBlend/position = Vector2(640, 100)
-nodes/IdleBase/node = SubResource("AnimationNodeAnimation_gbte4")
-nodes/IdleBase/position = Vector2(280, 40)
-nodes/LeftArmBlend/node = SubResource("AnimationNodeOneShot_o2e4w")
-nodes/LeftArmBlend/position = Vector2(900, 120)
-nodes/LeftHandCast/node = SubResource("AnimationNodeAnimation_a8f2c")
-nodes/LeftHandCast/position = Vector2(540, 320)
-nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_8umkx")
-nodes/TimeScale/position = Vector2(1230.43, 108.986)
-nodes/WeaponIdle/node = SubResource("AnimationNodeAnimation_hd3hl")
-nodes/WeaponIdle/position = Vector2(140, 200)
-nodes/output/position = Vector2(1420, 120)
-node_connections = [&"GreatswordIdleBlend", 0, &"IdleBase", &"GreatswordIdleBlend", 1, &"WeaponIdle", &"LeftArmBlend", 0, &"GreatswordIdleBlend", &"LeftArmBlend", 1, &"LeftHandCast", &"TimeScale", 0, &"LeftArmBlend", &"output", 0, &"TimeScale"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qbpsd"]
-animation = &"DawnLib/RunCycle"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tk8fg"]
-animation = &"GreatSwordTest1/Idle_Greatsword_shoulder"
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_a3c5v"]
-filter_enabled = true
-filters = ["Rig_001/Skeleton3D:CTRL_index.R.001", "Rig_001/Skeleton3D:CTRL_index.R.002", "Rig_001/Skeleton3D:CTRL_index.R.003", "Rig_001/Skeleton3D:CTRL_thumb.R.001", "Rig_001/Skeleton3D:CTRL_thumb.R.002", "Rig_001/Skeleton3D:CTRL_thumb.R.003", "Rig_001/Skeleton3D:CTRL_thumb_base.R.001", "Rig_001/Skeleton3D:DEF_bicep.R.001", "Rig_001/Skeleton3D:DEF_bicep.R.002", "Rig_001/Skeleton3D:DEF_forearm.R.001", "Rig_001/Skeleton3D:DEF_forearm.R.002", "Rig_001/Skeleton3D:DEF_hand.R.001", "Rig_001/Skeleton3D:DEF_index.R.001", "Rig_001/Skeleton3D:DEF_index.R.002", "Rig_001/Skeleton3D:DEF_index.R.003", "Rig_001/Skeleton3D:DEF_thumb.R.001", "Rig_001/Skeleton3D:DEF_thumb.R.002", "Rig_001/Skeleton3D:DEF_thumb.R.003", "Rig_001/Skeleton3D:DEF_thumb_base.R.001"]
-
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3mqw0"]
-graph_offset = Vector2(-633.031, -12.1636)
-nodes/Animation/node = SubResource("AnimationNodeAnimation_tk8fg")
-nodes/Animation/position = Vector2(-180, 260)
-"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_qbpsd")
-"nodes/Animation 2/position" = Vector2(0, 40)
-nodes/GreatswordBlend/node = SubResource("AnimationNodeBlend2_a3c5v")
-nodes/GreatswordBlend/position = Vector2(280, 220)
-nodes/output/position = Vector2(700, 200)
-node_connections = [&"GreatswordBlend", 0, &"Animation 2", &"GreatswordBlend", 1, &"Animation", &"output", 0, &"GreatswordBlend"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c24eu"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fv1s5"]
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t3jc8"]
-xfade_time = 0.25
-xfade_curve = ExtResource("14_6wpgq")
-advance_mode = 2
-advance_condition = &"IsWalking"
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_aax3e"]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e5md4"]
-xfade_time = 0.25
-xfade_curve = ExtResource("14_6wpgq")
-advance_mode = 2
-advance_expression = "get(\"parameters/conditions/IsWalking\") == false"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r4mtb"]
-xfade_time = 0.1
-xfade_curve = ExtResource("14_6wpgq")
-advance_mode = 2
-advance_condition = &"IsAttacking"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jen6d"]
-xfade_time = 0.2
-xfade_curve = ExtResource("14_6wpgq")
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_md4wi"]
-states/Attack/node = SubResource("AnimationNodeBlendTree_dm84i")
-states/Attack/position = Vector2(495, 330)
-states/End/position = Vector2(785, 162)
-states/IWR/node = SubResource("AnimationNodeBlendSpace2D_a87e8")
-states/IWR/position = Vector2(465, 59)
-states/IdleBlend/node = SubResource("AnimationNodeBlendTree_7p1gf")
-states/IdleBlend/position = Vector2(286, 330)
-states/RunCycleBlend/node = SubResource("AnimationNodeBlendTree_3mqw0")
-states/RunCycleBlend/position = Vector2(286, 469)
-states/Start/position = Vector2(-29, 307)
-transitions = ["Start", "IdleBlend", SubResource("AnimationNodeStateMachineTransition_c24eu"), "IdleBlend", "RunCycleBlend", SubResource("AnimationNodeStateMachineTransition_t3jc8"), "RunCycleBlend", "IdleBlend", SubResource("AnimationNodeStateMachineTransition_e5md4"), "IdleBlend", "Attack", SubResource("AnimationNodeStateMachineTransition_r4mtb"), "Attack", "IdleBlend", SubResource("AnimationNodeStateMachineTransition_jen6d")]
-graph_offset = Vector2(-161, 229)
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_kcblg"]
+states/Main/node = SubResource("AnimationNodeBlendTree_0x0ln")
+states/Main/position = Vector2(486, 105)
+transitions = ["Start", "Main", SubResource("AnimationNodeStateMachineTransition_fv1s5"), "Main", "End", SubResource("AnimationNodeStateMachineTransition_aax3e")]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6sf0u"]
 size = Vector3(1.20703, 2, 0.819702)
@@ -2241,19 +2140,72 @@ material = ExtResource("17_l3n52")
 [sub_resource type="Resource" id="Resource_sefws"]
 script = ExtResource("26_a5eeq")
 max_move_distance = 4
-ap_cost = 1
+ap_cost = 0
 rotate_speed = 7.0
 move_speed = 7.0
 stopping_distance = 0.1
 acceleration_timer = 0.5
 rotation_acceleration_timer = 0.5
 ui_name = "Move"
+movement_gait = 3
 cooldown_duration = 0.0
 cooldown_continuos = false
 grant_automatic = true
 grant_tags = Array[String]([])
 grant_tags_required = Array[String]([])
-tags_type = Array[String](["action"])
+tags_type = Array[String](["move"])
+tags_activation = Array[String]([])
+tags_activation_required = Array[String]([])
+tags_block = Array[String]([])
+tags_cancellation_required = Array[String]([])
+tags_cooldown_start = Array[String]([])
+tags_cooldown_end = Array[String]([])
+tags_end_blocking = Array[String]([])
+tags_to_remove_on_activation = Array[String]([])
+tags_to_remove_on_block = Array[String]([])
+tags_to_remove_on_cancellation = Array[String]([])
+tags_to_remove_on_cooldown_start = Array[String]([])
+tags_to_remove_on_cooldown_end = Array[String]([])
+tags_to_remove_on_end = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_cyj61"]
+script = ExtResource("34_nsbb5")
+animation = ExtResource("33_p2d5c")
+ap_cost = 0
+ui_name = "Hold Dab"
+movement_gait = 0
+cooldown_duration = 0.0
+cooldown_continuos = false
+grant_automatic = true
+grant_tags = Array[String]([])
+grant_tags_required = Array[String]([])
+tags_type = Array[String](["free"])
+tags_activation = Array[String]([])
+tags_activation_required = Array[String]([])
+tags_block = Array[String]([])
+tags_cancellation_required = Array[String]([])
+tags_cooldown_start = Array[String]([])
+tags_cooldown_end = Array[String]([])
+tags_end_blocking = Array[String]([])
+tags_to_remove_on_activation = Array[String]([])
+tags_to_remove_on_block = Array[String]([])
+tags_to_remove_on_cancellation = Array[String]([])
+tags_to_remove_on_cooldown_start = Array[String]([])
+tags_to_remove_on_cooldown_end = Array[String]([])
+tags_to_remove_on_end = Array[String]([])
+
+[sub_resource type="Resource" id="Resource_yhnmf"]
+script = ExtResource("34_nsbb5")
+animation = ExtResource("35_58x2o")
+ap_cost = 0
+ui_name = "DabRun"
+movement_gait = 2
+cooldown_duration = 0.0
+cooldown_continuos = false
+grant_automatic = true
+grant_tags = Array[String]([])
+grant_tags_required = Array[String]([])
+tags_type = Array[String](["free"])
 tags_activation = Array[String]([])
 tags_activation_required = Array[String]([])
 tags_block = Array[String]([])
@@ -3558,7 +3510,7 @@ bones/172/rotation = Quaternion(-2.57559e-42, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.116776, 0.272941, -0.954917, -0.249662, -0.938687, -0.237772, -0.961266, 0.210641, 0.177759, 0.399032, 0.737537, -0.0242827)
+transform = Transform3D(0.502449, 0.0475608, -0.863298, -0.736372, 0.546801, -0.398453, 0.453102, 0.835911, 0.309762, 0.267216, 1.14772, 0.235571)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3566,7 +3518,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.740367, 0.0339776, 0.671344, -0.156396, 0.980022, 0.122875, -0.653756, -0.195968, 0.73089, -0.524677, 1.48179, 0.172626)
+transform = Transform3D(-0.485271, 0.59341, 0.642166, 0.818558, 0.566502, 0.0950761, -0.307369, 0.571787, -0.760647, -0.146838, 1.23321, 0.372958)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3579,7 +3531,7 @@ unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.932297, -0.0044936, 0.361666, -0.00379141, 0.999747, 0.022195, -0.361674, -0.0220636, 0.932043, 0.0456179, 1.06672, 0.043622)
+transform = Transform3D(0.832387, 0.0142292, 0.554012, 0.00890285, 0.999198, -0.0390396, -0.554123, 0.0374283, 0.831593, -0.000401566, 1.02529, 0.0131753)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 
@@ -3665,18 +3617,22 @@ autoplay = "Armature_004Action"
 process_thread_group = 1
 process_thread_group_order = 0
 process_thread_messages = 1
-tree_root = SubResource("AnimationNodeStateMachine_md4wi")
+tree_root = SubResource("AnimationNodeStateMachine_kcblg")
 anim_player = NodePath("../Animator")
-parameters/conditions/IsAttacking = false
-parameters/conditions/IsWalking = false
-parameters/Attack/TimeScale/scale = 1.0
-parameters/IWR/blend_position = Vector2(0.0074389, 0.299401)
-parameters/IdleBlend/GreatswordIdleBlend/blend_amount = 1.0
-parameters/IdleBlend/LeftArmBlend/active = false
-parameters/IdleBlend/LeftArmBlend/internal_active = false
-parameters/IdleBlend/LeftArmBlend/request = 0
-parameters/IdleBlend/TimeScale/scale = 1.0
-parameters/RunCycleBlend/GreatswordBlend/blend_amount = 0.0
+parameters/Main/AnimationNodeStateMachine/conditions/IsAttacking = false
+parameters/Main/AnimationNodeStateMachine/conditions/IsWalking = false
+parameters/Main/AnimationNodeStateMachine/Attack/TimeScale/scale = 1.0
+parameters/Main/AnimationNodeStateMachine/IWR/blend_position = Vector2(0, 0)
+parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount = 0
+parameters/Main/AnimationNodeStateMachine/IdleBlend/LeftArmBlend/active = false
+parameters/Main/AnimationNodeStateMachine/IdleBlend/LeftArmBlend/internal_active = false
+parameters/Main/AnimationNodeStateMachine/IdleBlend/LeftArmBlend/request = 0
+parameters/Main/AnimationNodeStateMachine/IdleBlend/TimeScale/scale = 1.0
+parameters/Main/AnimationNodeStateMachine/RunCycleBlend/GreatswordBlend/blend_amount = 0
+parameters/Main/OneShotBlend/active = false
+parameters/Main/OneShotBlend/internal_active = false
+parameters/Main/OneShotBlend/request = 0
+parameters/Main/TimeScale/scale = 1.0
 
 [node name="UnitAnimator" type="Node" parent="." node_paths=PackedStringArray("animator", "animator_tree", "shoot_point", "skeleton", "neck_target", "chest_point")]
 script = ExtResource("15_50hb7")
@@ -3714,7 +3670,7 @@ attributes_table = ExtResource("20_xrhce")
 [node name="AbilityContainer" type="Node" parent="."]
 script = ExtResource("22_250xw")
 gameplay_attribute_map_path = NodePath("../GameplayAttributeMap")
-abilities = Array[ExtResource("23_1urwx")]([ExtResource("24_6kacr"), ExtResource("25_33lcd"), ExtResource("27_lclct"), SubResource("Resource_sefws"), ExtResource("38_1p8t2"), ExtResource("39_1xl8t"), ExtResource("40_8r1ak")])
+abilities = Array[ExtResource("23_1urwx")]([ExtResource("24_6kacr"), ExtResource("25_33lcd"), ExtResource("27_lclct"), SubResource("Resource_sefws"), ExtResource("38_1p8t2"), ExtResource("39_1xl8t"), ExtResource("40_8r1ak"), ExtResource("32_qle3s"), SubResource("Resource_cyj61"), SubResource("Resource_yhnmf")])
 
 [node name="Body" type="Node" parent="."]
 script = ExtResource("29_f43xc")

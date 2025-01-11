@@ -192,9 +192,9 @@ func melee_attack_anim() -> void:
 
 	# 3) Now that the animation is presumably done or at the hit frame, apply damage.
 	apply_effect()
-
 	# 4) Optionally end the ability if everything is done.
 	if can_end(event):
+		event.successful = true
 		end_ability(event)
 
 

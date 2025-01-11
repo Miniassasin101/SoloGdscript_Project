@@ -73,15 +73,18 @@ func _populate_from_unit(unit: Unit) -> void:
 	assert(is_instance_valid(unit.attribute_map))
 
 	# Basic Labels
-	unit_name_label.text = unit.name if is_instance_valid(unit) else "n/a"
-	action_points_label.text = _get_attribute_or_na(unit, "action_points")
+	if is_instance_valid(unit):
+		unit_name_label.text = unit.name
+	else:
+		unit_name_label.text = "n/a"
+	action_points_label.text = "AP: " + _get_attribute_or_na(unit, "action_points")
 	unused_label_1.text = ""
-	combat_skill_label.text = _get_attribute_or_na(unit, "combat_skill")
+	combat_skill_label.text = "CB: " + _get_attribute_or_na(unit, "combat_skill")
 	evade_skill_label.text = _get_attribute_or_na(unit, "evade_skill")
 	damage_modifier_label.text = _get_attribute_or_na(unit, "damage_modifier")
 	initiative_bonus_label.text = _get_attribute_or_na(unit, "initiative_bonus")
 	experience_rolls_label.text = _get_attribute_or_na(unit, "experience_rolls")
-	movement_rate_label.text = _get_attribute_or_na(unit, "movement_rate")
+	movement_rate_label.text = "MOV: " + _get_attribute_or_na(unit, "movement_rate")
 	unused_label_2.text = ""
 
 	size_label.text = _get_attribute_or_na(unit, "size")

@@ -6,6 +6,7 @@
 script = ExtResource("1_prqkb")
 ap_cost = 0
 ui_name = "Dither"
+movement_gait = 3
 cooldown_duration = 0.0
 cooldown_continuos = false
 grant_automatic = true

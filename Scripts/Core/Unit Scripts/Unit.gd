@@ -20,8 +20,6 @@ var action_system: UnitActionSystem
 
 
 
-
-
 @export_category("")
 var ability_container: AbilityContainer
 var attribute_map: GameplayAttributeMap
@@ -31,7 +29,6 @@ var grid_position: GridPosition
 var is_holding: bool = false
 var unit_name: String = "null"
 # Reference to the action array node attached to this unit.
-@onready var action_array: Array[Action]
 var target_unit: Unit
 
 
@@ -50,6 +47,17 @@ var target: Unit = null
 
 var testbool: bool = false
 
+
+# Movement Variables
+var current_gait: int = Utilities.MovementGait.HOLD_GROUND
+var movement_done_in_first_cycle: bool = false
+var movement_done_in_second_cycle: bool = false
+
+# Ability Variables
+## Is the first ability used in the round. Determines possible movement gaits for the rest of the round
+var previous_ability: Ability = null
+
+
 func _ready() -> void:
 	unit_manager = get_parent()
 	action_system = unit_manager.unit_action_system
@@ -58,10 +66,8 @@ func _ready() -> void:
 	# Register this unit at its grid position in the level grid.
 	LevelGrid.set_unit_at_grid_position(grid_position, self)
 	set_facing()
-	action_array = []
+
 	for child in get_children():
-		if child is Action:
-			action_array.append(child)
 		if child is AbilityContainer:
 			ability_container = child
 		if child is GameplayAttributeMap:
@@ -178,6 +184,11 @@ func get_target_position_with_offset(height_offset: float) -> Vector3:
 	target_position.y += height_offset
 	return target_position
 
+func get_movement_rate() -> float:
+	return attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
+
+func set_gait(gait: int) -> void:
+	current_gait = gait
 
 func set_color_marker(color: StringName) -> void:
 	color_marker.set_color(color)

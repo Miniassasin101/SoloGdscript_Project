@@ -72,7 +72,7 @@ func toggle_anims_speed() -> void:
 
 func print_front_tiles() -> void:
 	unit.set_facing()
-	var grid_positions: Array[GridPosition] = AbilityUtils.get_front_tiles(unit)
+	var grid_positions: Array[GridPosition] = Utilities.get_front_tiles(unit)
 	for gridpos: GridPosition in grid_positions:
 		print_debug(gridpos.to_str())
 
@@ -173,7 +173,7 @@ func test_n() -> void:
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
 		open_character_sheet()
-		equip_weapon()
+		#equip_weapon()
 
 func test_shift_c() -> void:
 	if Input.is_action_just_pressed("testkey_shift_c"):
@@ -203,7 +203,6 @@ func equip_weapon() -> void:
 		return
 	unit.equipment.equip(testitem)
 	var slot: EquipmentSlot = unit.equipment.find_slot_by_item(testitem)
-	print("Slot: ", slot.name)
 	testbool = false
 	unit.holding_weapon = true
 	unit.update_weapon_anims()

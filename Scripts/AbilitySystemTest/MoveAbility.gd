@@ -40,6 +40,8 @@ var unit: Unit = null
 
 
 
+
+
 func try_activate(_event: ActivationEvent) -> void:
 	super.try_activate(_event)
 	event = _event
@@ -94,6 +96,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	await unit.animator.movement_completed
 	is_moving = false
 	if can_end(event):
+		event.successful = true
 		end_ability(event)
 
 

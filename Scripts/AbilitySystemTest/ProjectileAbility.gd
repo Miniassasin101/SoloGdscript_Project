@@ -100,6 +100,7 @@ func apply_effect() -> void:
 	LevelGrid.get_unit_at_grid_position(event.target_grid_position).add_child(effect)
 	
 	if can_end(event):
+		event.successful = true
 		end_ability(event)
 
 

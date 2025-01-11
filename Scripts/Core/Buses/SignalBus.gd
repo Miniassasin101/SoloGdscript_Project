@@ -13,6 +13,9 @@ signal update_grid_visual
 
 signal ability_complete(ability: Ability)
 
+# Used as separate for on_ability_ended in UnitActionSystem.
+signal ability_complete_next(ability: Ability)
+
 signal ability_started
 
 signal end_turn
@@ -21,11 +24,21 @@ signal on_turn_changed
 
 signal on_cycle_changed
 
+signal on_phase_changed
+
+
+signal on_ui_update ## updates all ui
+
+
+signal next_phase
+
 signal continue_turn
 
 signal on_player_reaction
 
 signal reaction_selected
+
+signal gait_selected(gait: int)
 
 signal on_round_changed
 

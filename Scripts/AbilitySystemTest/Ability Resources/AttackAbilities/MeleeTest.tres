@@ -14,6 +14,7 @@ flat_damage = 0
 attack_range = 1
 ap_cost = 1
 ui_name = "Melee"
+movement_gait = 1
 cooldown_duration = 0.0
 cooldown_continuos = false
 grant_automatic = true

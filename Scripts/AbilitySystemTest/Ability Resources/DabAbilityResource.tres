@@ -1,25 +1,20 @@
-[gd_resource type="Resource" script_class="ProjectileAbility" load_steps=4 format=3 uid="uid://knnn4c4diq6f"]
+[gd_resource type="Resource" script_class="DabAbility" load_steps=3 format=3 uid="uid://qgaber1n5dae"]
 
-[ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/VFX/fireball_mesh.tscn" id="1_8y4qy"]
-[ext_resource type="Animation" uid="uid://7welfvxasjgq" path="res://Hero_Game/Animations/AnimsSwordTest/Left_Hand_Cast_001.res" id="1_i3uij"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/ProjectileAbility.gd" id="2_csomy"]
+[ext_resource type="Animation" uid="uid://dswwaq5xbcffc" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Swing_001.res" id="1_fgvev"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/DabAbility.gd" id="1_o24lm"]
 
 [resource]
-script = ExtResource("2_csomy")
-animation = ExtResource("1_i3uij")
-damage = 5
-die_number = 1
-flat_damage = 1
-attack_range = 5
-ap_cost = 1
-projectile = ExtResource("1_8y4qy")
-ui_name = "Fireball"
+script = ExtResource("1_o24lm")
+animation = ExtResource("1_fgvev")
+ap_cost = 0
+ui_name = "DabWalk"
+movement_gait = 1
 cooldown_duration = 0.0
 cooldown_continuos = false
 grant_automatic = true
 grant_tags = Array[String]([])
 grant_tags_required = Array[String]([])
-tags_type = Array[String](["action"])
+tags_type = Array[String](["free"])
 tags_activation = Array[String]([])
 tags_activation_required = Array[String]([])
 tags_block = Array[String]([])

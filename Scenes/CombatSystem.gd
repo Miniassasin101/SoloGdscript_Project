@@ -1,11 +1,26 @@
 class_name CombatSystem
 extends Node
 
+signal on_action_phase_start
+signal on_movement_phase_start
+
+# Enum for phases of a turn
+enum TurnPhase { ACTION_PHASE, MOVEMENT_PHASE }
+
+# Variables
 static var instance: CombatSystem = null
 var declaration_reaction_queue: Array[Unit] = []
 var initiative_order: Array[Unit] = []
 @export var marker_visibility_time: float = 1.5
+@export_category("References")
+@export var unit_action_system_ui: UnitActionSystemUI
 
+
+# NOTE: Maybe add a idle phase for before battle
+var current_phase: TurnPhase:
+	set(phase):
+		current_phase = phase
+		SignalBus.on_phase_changed.emit()
 
 
 func _ready() -> void:
@@ -16,7 +31,7 @@ func _ready() -> void:
 	instance = self
 
 
-
+# Tracks and handles any over time effects or spells
 func book_keeping() -> void:
 	# Apply poison, bleed, persistent effects, etc.
 	SignalBus.on_book_keeping_ended.emit()
@@ -25,9 +40,47 @@ func book_keeping() -> void:
 
 func start_turn(unit: Unit) -> void:
 	print_debug("CombatSystem Turn Started: ", unit)
+	current_phase = TurnPhase.ACTION_PHASE  # Start with the Action Phase
+	#unit_action_system_ui.create_unit_action_buttons()
+	SignalBus.on_ui_update.emit()
+	handle_phase(unit)
+
+func handle_phase(unit: Unit) -> void:
+	match current_phase:
+		TurnPhase.ACTION_PHASE:
+			print_debug("Action Phase for: ", unit)
+			on_action_phase_start.emit()
+			# Handle the logic for Action Phase
+			await SignalBus.next_phase
+			# Once complete, transition to Movement Phase
+			transition_phase(TurnPhase.MOVEMENT_PHASE, unit)
+
+		TurnPhase.MOVEMENT_PHASE:
+			print_debug("Movement Phase for: ", unit)
+			on_movement_phase_start.emit()
+			await unit_action_system_ui.on_movement_phase_start()
+			print_debug("Movement Gait determined")
+			await unit_action_system_ui.movement_handler()
+			# Handle the logic for Movement Phase
+			await SignalBus.end_turn
+			# End turn after Movement Phase
+			end_turn(unit)
 
 
 
+func transition_phase(next_phase: TurnPhase, unit: Unit) -> void:
+	current_phase = next_phase
+	handle_phase(unit)
+
+func end_turn(unit: Unit) -> void:
+	print_debug("Turn Ended for: ", unit)
+	#transition_phase(TurnPhase.ACTION_PHASE, TurnSystem.instance.current_unit_turn)
+	# Proceed to the next unit in the initiative order or other logic
+	#SignalBus.on_turn_ended.emit()
+
+
+
+# Pretty much only done by Interrupt Action
 func interrupt_turn(_unit: Unit) -> void:
 	SignalBus.continue_turn.emit()
 	print_debug("Turn Interrupted")
@@ -79,11 +132,11 @@ func reaction(reacting_unit: Unit, attacking_unit: Unit) -> int:
 	# For example, if parry: skill = combat_skill
 	# If evade: skill = evade skill
 	var defend_skill_value = reacting_unit.attribute_map.get_attribute_by_name("combat_skill").current_buffed_value
-	var defending_roll = AbilityUtils.roll(100)
+	var defending_roll = Utilities.roll(100)
 	print_debug("Defend Skill Value: ", defend_skill_value)
 	print_debug("Defend Roll: ", defending_roll)
 
-	var defender_success_level = AbilityUtils.check_success_level(defend_skill_value, defending_roll)
+	var defender_success_level = Utilities.check_success_level(defend_skill_value, defending_roll)
 	print_debug("Defender Success Level: ", defender_success_level)
 	return defender_success_level
 
@@ -95,11 +148,11 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 
 	var attacker_combat_skill = event.attribute_map.get_attribute_by_name("combat_skill").current_buffed_value
-	var attacker_roll: int = AbilityUtils.roll(100)
+	var attacker_roll: int = Utilities.roll(100)
 	print_debug("Attacker Combat Skill: ", attacker_combat_skill)
 	print_debug("Attacker Roll: ", attacker_roll)
 
-	var attacker_success_level: int = AbilityUtils.check_success_level(attacker_combat_skill, attacker_roll)
+	var attacker_success_level: int = Utilities.check_success_level(attacker_combat_skill, attacker_roll)
 	print_debug("Attacker Success Level: ", attacker_success_level)
 	var ret_event: ActivationEvent = event
 	if LevelDebug.instance.attacker_success_debug == true:
@@ -177,10 +230,10 @@ parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	var weapon: Weapon = _event.weapon
 	var damage_total: int = 0
 	if weapon:
-		damage_total += AbilityUtils.roll(weapon.die_type, weapon.die_number)
+		damage_total += Utilities.roll(weapon.die_type, weapon.die_number)
 		damage_total += weapon.flat_damage
 	else:
-		damage_total += AbilityUtils.roll(ability.damage, ability.die_number)
+		damage_total += Utilities.roll(ability.damage, ability.die_number)
 		damage_total += ability.flat_damage
 
 	print_debug("Base damage rolled: ", damage_total)
@@ -229,3 +282,10 @@ func get_color_for_success_level(success_level: int) -> StringName:
 		0: return "yellow" # Failure/Miss
 		-1: return "red"    # Critical Failure
 		_: return "white"  # Default color (unexpected value)
+
+
+func get_current_phase_name() -> String:
+	if current_phase == TurnPhase.ACTION_PHASE:
+		return "Action"
+	else:
+		return "Move"

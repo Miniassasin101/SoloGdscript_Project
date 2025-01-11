@@ -1,19 +1,20 @@
-[gd_resource type="Resource" script_class="ProjectileAbility" load_steps=4 format=3 uid="uid://crgywdemy0bgk"]
+[gd_resource type="Resource" script_class="ProjectileAbility" load_steps=4 format=3 uid="uid://knnn4c4diq6f"]
 
-[ext_resource type="Animation" uid="uid://7welfvxasjgq" path="res://Hero_Game/Animations/AnimsSwordTest/Left_Hand_Cast_001.res" id="1_3wita"]
-[ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/VFX/fireball_mesh.tscn" id="1_nusuh"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/ProjectileAbility.gd" id="2_og3a5"]
+[ext_resource type="Animation" uid="uid://7welfvxasjgq" path="res://Hero_Game/Animations/AnimsSwordTest/Left_Hand_Cast_001.res" id="1_6yk42"]
+[ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/VFX/fireball_mesh.tscn" id="2_8m2li"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/ProjectileAbility.gd" id="3_nbwlu"]
 
 [resource]
-script = ExtResource("2_og3a5")
-animation = ExtResource("1_3wita")
-damage = 10
-die_number = 3
+script = ExtResource("3_nbwlu")
+animation = ExtResource("1_6yk42")
+damage = 5
+die_number = 1
 flat_damage = 1
-attack_range = 15
+attack_range = 5
 ap_cost = 1
-projectile = ExtResource("1_nusuh")
-ui_name = "S-Fireball"
+projectile = ExtResource("2_8m2li")
+ui_name = "Fireball"
+movement_gait = 2
 cooldown_duration = 0.0
 cooldown_continuos = false
 grant_automatic = true

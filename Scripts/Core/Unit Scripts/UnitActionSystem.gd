@@ -39,6 +39,7 @@ func _ready() -> void:
 	
 	SignalBus.selected_ability_changed.connect(set_selected_ability)
 	SignalBus.ability_complete.connect(clear_busy)
+	SignalBus.ability_complete_next.connect(on_ability_ended)
 
 
 
@@ -66,9 +67,10 @@ func handle_selected_ability() -> void:
 		# Check if it's a proactive action (assuming selected_ability is always proactive if used during player's turn)
 		if TurnSystem.instance.is_player_turn or LevelDebug.instance.control_enemy_debug:
 			# Check if we've already taken a proactive action this cycle
-			if TurnSystem.instance.has_taken_proactive_action_this_cycle(selected_unit):
+			if TurnSystem.instance.has_taken_proactive_action_this_cycle(selected_unit) and check_ability_type_invalid(selected_ability):
 				print_debug("You have already taken a proactive action this cycle!")
 				return
+			
 
 			
 		var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
@@ -82,10 +84,26 @@ func handle_selected_ability() -> void:
 					set_busy()
 					SignalBus.emit_signal("ability_started")
 					
-					# Mark that we have taken a proactive action this cycle
-					TurnSystem.instance.mark_proactive_action_taken(selected_unit)
+					# Mark that we have taken a proactive action this cycle if the ability is of type "action"
+					if selected_ability.tags_type.has("action"):
+						TurnSystem.instance.mark_proactive_action_taken(selected_unit)
+
+func check_ability_type_invalid(in_ability: Ability) -> bool:
+	var tags: Array[String] = in_ability.tags_type
+	if tags.has("reaction") or tags.has("action"):
+		return true
+	return false
+			
+	#(func(number): return number > 5))
+
+	return true
 
 
+func on_ability_ended(ability: Ability) -> void:
+	print_debug("Ability Ended Test")
+	TurnSystem.instance.current_unit_turn.previous_ability = ability
+	SignalBus.next_phase.emit()
+	#CombatSystem.instance.handle_phase()
 
 
 

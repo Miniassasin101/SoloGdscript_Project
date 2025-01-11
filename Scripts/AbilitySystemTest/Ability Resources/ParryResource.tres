@@ -6,6 +6,7 @@
 script = ExtResource("1_7jtcn")
 ap_cost = 1
 ui_name = "Parry"
+movement_gait = 1
 cooldown_duration = 0.0
 cooldown_continuos = false
 grant_automatic = true

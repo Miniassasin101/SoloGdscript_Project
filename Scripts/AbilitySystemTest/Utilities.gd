@@ -2,6 +2,31 @@
 ## Manages any utilities and calculations for the ability system
 extends Node
 
+enum MovementGait {
+	HOLD_GROUND,
+	WALK,
+	RUN,
+	SPRINT
+}
+
+# Speed multipliers for each gait (times the unit’s base movement rate).
+const GAIT_SPEED_MULTIPLIER = {
+	MovementGait.HOLD_GROUND: 0,
+	MovementGait.WALK: 1.0,
+	MovementGait.RUN: 3.0,
+	MovementGait.SPRINT: 5.0
+}
+
+# Allowed actions for each gait 
+# (strings here are just examples; adapt them to your actual action names)
+const GAIT_ALLOWED_ACTIONS = {
+	MovementGait.HOLD_GROUND: ["Attack", "Cast Magic", "Delay", "Dither", "Evade", "Interrupt", "Parry", "Ready Weapon", "Ward Location"],
+	MovementGait.WALK: ["Attack (ranged only)", "Cast Magic (ranged only)", "Delay", "Dither", "Evade", "Interrupt", "Parry", "Ready Weapon", "Ward Location"],
+	MovementGait.RUN: ["Dither", "Ward Location", "Evade"],
+	MovementGait.SPRINT: ["Dither"]
+}
+
+
 func get_ability_from_container():
 	pass
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=43 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -71,6 +71,17 @@ shadow_offset = Vector2(1, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_bwm3i"]
 font_size = 21
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_8hl20"]
+color = Color(0.601223, 0.601223, 0.601223, 1)
+grow_begin = 2.0
+grow_end = 7.0
+vertical = true
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_a6kyb"]
+color = Color(0.6, 0.6, 0.6, 1)
+grow_begin = 0.0
+grow_end = 0.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7m53g"]
 render_priority = 0
 shader = ExtResource("53_fbtsm")
@@ -110,9 +121,8 @@ directional_shadow_max_distance = 27.1
 script = ExtResource("1_fqt43")
 GRID_CELL_VISUAL = ExtResource("4_85pbp")
 
-[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit")]
+[node name="GridSystemTest" type="Node3D" parent="."]
 script = ExtResource("3_vw71g")
-unit = NodePath("../UnitManager/DawnUnit")
 animlib = Array[Animation]([ExtResource("5_o3n5o")])
 
 [node name="Pathfinding" type="Node" parent="."]
@@ -200,19 +210,21 @@ unit_action_system = NodePath("../UnitActionSystem")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
-holding_weapon = false
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
+
+[node name="DawnUnit3" parent="UnitManager" instance=ExtResource("52_cckm4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 6)
 is_enemy = true
-holding_weapon = false
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
 script = ExtResource("6_rwbm0")
 unit_manager = NodePath("../UnitManager")
 
-[node name="CombatSystem" type="Node" parent="."]
+[node name="CombatSystem" type="Node" parent="." node_paths=PackedStringArray("unit_action_system_ui")]
 script = ExtResource("16_f3oa4")
+unit_action_system_ui = NodePath("../UILayer/UnitActionSystemUI")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(32.7711, -2.64261e-05, 0.046329, 2.63892e-05, 32.7711, 2.57785e-05, -0.046329, -2.57406e-05, 32.7711, 24.867, 0, 26.089)
@@ -254,7 +266,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_mh8jn")
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
-[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("action_button_container", "reaction_button_container", "ability_points_text")]
+[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system_ui", "action_button_container", "reaction_button_container", "gait_button_container", "ability_points_text")]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -269,9 +281,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("10_nqefp")
+turn_system_ui = NodePath("../TurnSystemUI")
 action_button_prefab = ExtResource("11_jk6uv")
 action_button_container = NodePath("ActionButtonsContainer")
 reaction_button_container = NodePath("ReactionButtonsContainer")
+gait_button_container = NodePath("GaitButtonsContainer")
 ability_points_text = NodePath("AbilityPointsLabel")
 metadata/_edit_use_anchors_ = true
 
@@ -315,6 +329,26 @@ alignment = 1
 [node name="ReactionButtonUI" parent="UILayer/UnitActionSystemUI/ReactionButtonsContainer" instance=ExtResource("11_jk6uv")]
 layout_mode = 2
 
+[node name="GaitButtonsContainer" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -28.0
+offset_right = 32.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="GaitButtonUI" parent="UILayer/UnitActionSystemUI/GaitButtonsContainer" instance=ExtResource("11_jk6uv")]
+layout_mode = 2
+
 [node name="AbilityPointsLabel" type="Label" parent="UILayer/UnitActionSystemUI"]
 layout_mode = 1
 anchors_preset = 7
@@ -334,7 +368,7 @@ label_settings = SubResource("LabelSettings_sh5a7")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("end_turn_button", "end_turn_container", "round_counter_label", "cycle_counter_label", "turn_system", "enemy_turn_container")]
+[node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system", "combat_system", "end_turn_container", "end_turn_button", "end_phase_container", "end_phase_button", "turn_phase_label", "round_counter_label", "cycle_counter_label", "movement_gait_label", "enemy_turn_container")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -343,11 +377,16 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("12_m6vvv")
-end_turn_button = NodePath("EndTurnContainer/MarginContainer/EndTurnButton")
-end_turn_container = NodePath("EndTurnContainer")
-round_counter_label = NodePath("TurnCountContainer/MarginContainer/VBoxContainer/MarginContainer/RoundCounterLabel")
-cycle_counter_label = NodePath("TurnCountContainer/MarginContainer/VBoxContainer/MarginContainer2/CycleCounterLabel")
 turn_system = NodePath("../../TurnSystem")
+combat_system = NodePath("../../CombatSystem")
+end_turn_container = NodePath("EndTurnContainer")
+end_turn_button = NodePath("EndTurnContainer/MarginContainer/EndTurnButton")
+end_phase_container = NodePath("EndActionPhaseContainer")
+end_phase_button = NodePath("EndActionPhaseContainer/MarginContainer/EndPhaseButton")
+turn_phase_label = NodePath("TurnCountContainer/VBoxContainer/MarginContainer2/TurnPhaseLabel")
+round_counter_label = NodePath("TurnCountContainer/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer/RoundCounterLabel")
+cycle_counter_label = NodePath("TurnCountContainer/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer2/CycleCounterLabel")
+movement_gait_label = NodePath("TurnCountContainer/VBoxContainer/MarginContainer3/MovementGaitLabel")
 enemy_turn_container = NodePath("EnemyTurnContainer")
 metadata/_edit_use_anchors_ = true
 
@@ -365,33 +404,65 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
 
-[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/TurnCountContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/TurnSystemUI/TurnCountContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/TurnSystemUI/TurnCountContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/TurnCountContainer/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="RoundCounterLabel" type="Label" parent="UILayer/TurnSystemUI/TurnCountContainer/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="RoundCounterLabel" type="Label" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 text = "Round 1
 "
 label_settings = SubResource("LabelSettings_bwm3i")
 horizontal_alignment = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="UILayer/TurnSystemUI/TurnCountContainer/MarginContainer/VBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+theme_override_styles/separator = SubResource("StyleBoxLine_8hl20")
+
+[node name="MarginContainer2" type="MarginContainer" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="CycleCounterLabel" type="Label" parent="UILayer/TurnSystemUI/TurnCountContainer/MarginContainer/VBoxContainer/MarginContainer2"]
+[node name="CycleCounterLabel" type="Label" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer/MarginContainer/HBoxContainer/MarginContainer2"]
 layout_mode = 2
 text = "Cycle 1
 "
+label_settings = SubResource("LabelSettings_bwm3i")
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_a6kyb")
+
+[node name="MarginContainer2" type="MarginContainer" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TurnPhaseLabel" type="Label" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+text = "Combat Phase
+"
+label_settings = SubResource("LabelSettings_bwm3i")
+horizontal_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MovementGaitLabel" type="Label" parent="UILayer/TurnSystemUI/TurnCountContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+text = "Movement Gait"
 label_settings = SubResource("LabelSettings_bwm3i")
 horizontal_alignment = 1
 
@@ -417,6 +488,31 @@ theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
 [node name="EndTurnButton" type="Button" parent="UILayer/TurnSystemUI/EndTurnContainer/MarginContainer"]
+layout_mode = 2
+text = "END TURN"
+
+[node name="EndActionPhaseContainer" type="PanelContainer" parent="UILayer/TurnSystemUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -120.0
+offset_top = 17.0
+offset_right = -24.0
+offset_bottom = 54.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/TurnSystemUI/EndActionPhaseContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="EndPhaseButton" type="Button" parent="UILayer/TurnSystemUI/EndActionPhaseContainer/MarginContainer"]
 layout_mode = 2
 text = "END TURN"
 
@@ -503,9 +599,11 @@ script = ExtResource("21_dna0q")
 metadata/_edit_use_anchors_ = true
 
 [node name="UnitCharacterSheetUI" parent="UILayer" instance=ExtResource("26_7hc4r")]
+visible = false
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_bteft")
 
 [connection signal="pressed" from="UILayer/TurnSystemUI/EndTurnContainer/MarginContainer/EndTurnButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
+[connection signal="pressed" from="UILayer/TurnSystemUI/EndActionPhaseContainer/MarginContainer/EndPhaseButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]

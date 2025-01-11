@@ -1,8 +1,11 @@
 @tool
-class_name DitherAbility extends Ability
+class_name DabAbility extends Ability
+
+## A test ability free action that can play any animation it's passed so long as it is in the greatsword library
+
 
 ## Example tooltip comment, put directly above the line(s) they reference
-
+@export var animation: Animation
 @export_group("Attributes")
 @export var ap_cost: int = 0
 
@@ -24,7 +27,7 @@ func try_activate(_event: ActivationEvent) -> void:
 			push_error("no unit: " + event.to_string())
 			end_ability(event)
 			return
-
+	""" # Timer code
 	# Animation stand-in
 	var timer = Timer.new()
 	
@@ -32,8 +35,8 @@ func try_activate(_event: ActivationEvent) -> void:
 	timer.autostart = true
 	timer.wait_time = 0.5
 	event.character.add_child(timer)
-	await timer.timeout
-	# FIXME: add an (await unit.animator.dither flourish animation)
+	"""
+	await perform_animation()
 
 
 	if can_end(event):
@@ -41,6 +44,9 @@ func try_activate(_event: ActivationEvent) -> void:
 		end_ability(event)
 
 
+func perform_animation() -> void:
+	await unit.animator.play_animation_by_name(animation.resource_name)#"GreatSwordTest1/" + 
+	return
 
 
 
@@ -50,11 +56,18 @@ func can_activate(_event: ActivationEvent) -> bool:
 	if !super.can_activate(_event):
 		return false
 	# Should always be able to dither
+	var valid_grid_position_list = get_valid_ability_target_grid_position_list(_event)
+	for x in valid_grid_position_list:
+		if x._equals(_event.target_grid_position):
+			return true
+	return false
 
-	return true
 
 
-
+func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
+	var ret: Array[GridPosition] = []
+	ret.append(_event.character.get_grid_position())
+	return ret
 
 
 # Gets the best AI action for a specified grid position.
