@@ -65,9 +65,20 @@ func unit_moved_grid_position(unit: Unit, from_grid_position: GridPosition, to_g
 func get_grid_position(world_position: Vector3) -> GridPosition:
 	return grid_system.get_grid_position(world_position)
 
+func get_grid_positions_from_grid_positions(in_grids: Array[GridPosition]) -> Array[GridPosition]:
+	return grid_system.get_grid_positions_from_grid_positions(in_grids)
+
+
 # Converts a grid position to a world position
 func get_world_position(grid_position: GridPosition) -> Vector3:
 	return grid_system.get_world_position(grid_position.x, grid_position.z)
+
+func get_world_positions(grid_positions: Array[GridPosition]) -> Array[Vector3]:
+	var ret_array: Array[Vector3] = []
+	for grid_position: GridPosition in grid_positions:
+		ret_array.append(grid_system.get_world_position_from_grid_position(grid_position))
+	return ret_array
+
 
 func get_width() -> int:
 	return grid_system.width

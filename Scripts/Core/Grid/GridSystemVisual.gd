@@ -44,7 +44,7 @@ func initialize_grid_visuals() -> void:
 			var grid_position: GridPosition = GridPosition.new(x, z)
 
 			# Instantiate the visual prefab.
-			var cell_instance: Node3D = GRID_CELL_VISUAL.instantiate()
+			var cell_instance: GridSystemVisualSingle = GRID_CELL_VISUAL.instantiate()
 
 			# Set the position of the cell in the world.
 			cell_instance.transform.origin = LevelGrid.get_world_position(grid_position)
@@ -64,16 +64,34 @@ func initialize_grid_visuals() -> void:
 func _process(_delta: float) -> void:
 	pass
 
-func mark_red() -> void:
-	for row in grid_visuals:
-		for cell in row:
-			pass
+func mark_red(grid_positions: Array[GridPosition]) -> void:
+	# Iterate over all grid positions
+	for grid_position in grid_positions:
+		var x: int = grid_position.x
+		var z: int = grid_position.z
 
+		# Check if the grid position is within bounds
+		if x >= 0 and x < LevelGrid.get_width() and z >= 0 and z < LevelGrid.get_height():
+			var cell: GridSystemVisualSingle = grid_visuals[x][z]
+			if cell != null:
+				cell.update_visual(true)  # Mark the cell as red
+
+func unmark_red(grid_positions: Array[GridPosition]) -> void:
+	# Iterate over all grid positions
+	for grid_position in grid_positions:
+		var x: int = grid_position.x
+		var z: int = grid_position.z
+
+		# Check if the grid position is within bounds
+		if x >= 0 and x < LevelGrid.get_width() and z >= 0 and z < LevelGrid.get_height():
+			var cell: GridSystemVisualSingle = grid_visuals[x][z]
+			if cell != null:
+				cell.update_visual(false)  # Mark the cell as red
 
 func hide_all_grid_positions() -> void:
 	# Hide all grid cell visuals.
 	for row in grid_visuals:
-		for cell in row:
+		for cell: GridSystemVisualSingle in row:
 			cell.visible = false
 
 func show_grid_positions(grid_positions: Array) -> void:

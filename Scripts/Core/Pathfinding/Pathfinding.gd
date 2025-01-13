@@ -23,6 +23,23 @@ func _ready() -> void:
 	astar = CustomAStar3D.new()
 	setup_astar()
 
+
+func get_path_package(gridpos: GridPosition, in_unit: Unit = null, to_get_path: bool = false, 
+get_cost: bool = false, get_neighbors: bool = false) -> PathPackage:
+	
+	var path_pack: PathPackage = PathPackage.new(0.0)
+	if to_get_path:
+		path_pack.set_path(find_path(in_unit.get_grid_position(), gridpos))
+	
+	if get_cost:
+		path_pack.set_cost(get_path_cost(in_unit.get_grid_position(), gridpos))
+	
+	if get_neighbors:
+		path_pack.set_neighbors(find_neighbors(gridpos))
+
+	return path_pack
+
+
 # Function to find the path between two grid positions.
 func find_path(start_grid_position: GridPosition, end_grid_position: GridPosition) -> Array[GridPosition]:
 	# Get the point IDs in AStar3D for the start and end positions.

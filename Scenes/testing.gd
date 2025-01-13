@@ -54,7 +54,21 @@ func handle_right_mouse_click() -> void:
 		#toggle_look_at_unit()
 		#print_front_tiles()
 		#toggle_anims_speed()
-		toggle_engine_speed()
+		#toggle_engine_speed()
+		#make_tiles_red()
+		#make_cone_tiles_red()
+		turn_unit_towards_facing()
+		#set_facing()
+
+func set_facing() -> void:
+	unit.set_facing()
+
+func turn_unit_towards_facing() -> void:
+	unit.animator.rotate_unit_towards_facing(0)
+	await get_tree().create_timer(2.5).timeout
+	print_debug(unit.facing)
+	unit.facing = 0
+	print_debug(unit.facing)
 
 
 func toggle_engine_speed() -> void:
@@ -67,7 +81,7 @@ func toggle_engine_speed() -> void:
 
 
 func toggle_anims_speed() -> void:
-	for unit in UnitManager.instance.units:
+	for u: Unit in UnitManager.instance.units:
 		unit.animator.toggle_slowdown()
 
 func print_front_tiles() -> void:
@@ -75,6 +89,28 @@ func print_front_tiles() -> void:
 	var grid_positions: Array[GridPosition] = Utilities.get_front_tiles(unit)
 	for gridpos: GridPosition in grid_positions:
 		print_debug(gridpos.to_str())
+
+
+func make_tiles_red() -> void:
+	unit.set_facing()
+	var grid_positions: Array[GridPosition] = []
+	grid_positions.append_array(Utilities.get_front_tiles(unit))
+	grid_positions.append(Utilities.get_left_side_tile(unit))
+	if testbool:
+		GridSystemVisual.instance.unmark_red(grid_positions)
+	GridSystemVisual.instance.mark_red(grid_positions)
+	testbool = true
+
+func make_cone_tiles_red() -> void:
+	var grid_positions: Array[GridPosition] = []
+	grid_positions.append_array(Utilities.get_front_cone(unit, 5))
+	if testbool:
+		GridSystemVisual.instance.unmark_red(grid_positions)
+		testbool = false
+		return
+	GridSystemVisual.instance.mark_red(grid_positions)
+	testbool = true
+
 
 func toggle_look_at_unit() -> void:
 	var result = mouse_world.get_mouse_raycast_result("position")
@@ -172,8 +208,10 @@ func test_n() -> void:
 
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
-		open_character_sheet()
+		#open_character_sheet()
 		#equip_weapon()
+		print_debug(unit.get_grid_position().to_str())
+		print_debug(unit.get_world_position())
 
 func test_shift_c() -> void:
 	if Input.is_action_just_pressed("testkey_shift_c"):
@@ -187,25 +225,25 @@ func equip_weapon() -> void:
 	var result = mouse_world.get_mouse_raycast_result("position")
 	if !result:
 		return
-	var unit: Unit = LevelGrid.get_unit_at_grid_position(
+	var test_unit: Unit = LevelGrid.get_unit_at_grid_position(
 		pathfinding.pathfinding_grid_system.get_grid_position(result)
 	)
-	if unit == null:
+	if test_unit == null:
 		return
 	var testitem_original: Item = preload("res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/SwordTest.tres")
 	var testitem: Item = testitem_original.duplicate()
 	if !testbool:
-		print(unit.name)
-		unit.inventory.add_item(testitem)
-		for item: Item in unit.inventory.items:
+		print(test_unit.name)
+		test_unit.inventory.add_item(testitem)
+		for item: Item in test_unit.inventory.items:
 			print("Item: ", item.name)
 		testbool = true
 		return
-	unit.equipment.equip(testitem)
-	var slot: EquipmentSlot = unit.equipment.find_slot_by_item(testitem)
+	test_unit.equipment.equip(testitem)
+	var slot: EquipmentSlot = test_unit.equipment.find_slot_by_item(testitem)
 	testbool = false
-	unit.holding_weapon = true
-	unit.update_weapon_anims()
+	test_unit.holding_weapon = true
+	test_unit.update_weapon_anims()
 
 
 

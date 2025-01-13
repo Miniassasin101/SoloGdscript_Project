@@ -2,6 +2,8 @@
 ## Manages any utilities and calculations for the ability system
 extends Node
 
+# Enum and Const
+
 enum MovementGait {
 	HOLD_GROUND,
 	WALK,
@@ -110,6 +112,11 @@ func get_back_tiles(unit: Unit) -> Array[GridPosition]:
 	return back_tiles.filter(func(gridpos: GridPosition): return gridpos != null)  # Remove null values
 
 
+
+
+
+# Functions to get tiles within immidiate range.
+
 func get_right_side_tile(unit: Unit) -> GridPosition:
 	var facing = unit.facing
 	var grid_position = unit.grid_position
@@ -146,6 +153,142 @@ func get_left_side_tile(unit: Unit) -> GridPosition:
 	return null
 
 
+
+
+# Functions to get cones:
+
+# Function to get front cone tiles
+func get_front_cone(unit: Unit, max_range: int) -> Array[GridPosition]:
+	var facing: int = unit.facing
+	var front_cone: Array[GridPosition] = []
+	var grid_position: GridPosition = unit.grid_position
+
+	for distance in range(1, max_range + 1):
+		for offset in range(-distance, distance + 1):
+			var temp_pos: GridPosition = null
+			match facing:
+				0:  # North
+					temp_pos = GridPosition.new(grid_position.x + offset, grid_position.z - distance)
+				1:  # East
+					temp_pos = GridPosition.new(grid_position.x + distance, grid_position.z + offset)
+				2:  # South
+					temp_pos = GridPosition.new(grid_position.x + offset, grid_position.z + distance)
+				3:  # West
+					temp_pos = GridPosition.new(grid_position.x - distance, grid_position.z + offset)
+			if temp_pos != null and LevelGrid.is_valid_grid_position(temp_pos):
+				front_cone.append(temp_pos)
+
+	return LevelGrid.get_grid_positions_from_grid_positions(front_cone)
+
+# Function to get back cone tiles
+func get_back_cone(unit: Unit, max_range: int) -> Array[GridPosition]:
+	var facing: int = unit.facing
+	var back_cone: Array[GridPosition] = []
+	var grid_position: GridPosition = unit.grid_position
+
+	for distance in range(1, max_range + 1):
+		for offset in range(-distance, distance + 1):
+			var temp_pos: GridPosition = null
+			match facing:
+				0:  # North
+					temp_pos = GridPosition.new(grid_position.x + offset, grid_position.z + distance)
+				1:  # East
+					temp_pos = GridPosition.new(grid_position.x - distance, grid_position.z + offset)
+				2:  # South
+					temp_pos = GridPosition.new(grid_position.x + offset, grid_position.z - distance)
+				3:  # West
+					temp_pos = GridPosition.new(grid_position.x + distance, grid_position.z + offset)
+			if temp_pos != null and LevelGrid.is_valid_grid_position(temp_pos):
+				back_cone.append(temp_pos)
+
+	return LevelGrid.get_grid_positions_from_grid_positions(back_cone)
+
+# Function to get side cone tiles
+func get_side_cone(unit: Unit, max_range: int) -> Array[GridPosition]:
+	var facing: int = unit.facing
+	var side_cone: Array[GridPosition] = []
+	var grid_position: GridPosition = unit.grid_position
+
+	for distance in range(1, max_range + 1):
+		for offset in range(-distance, distance + 1):
+			var left_pos: GridPosition = null
+			var right_pos: GridPosition = null
+			match facing:
+				0:  # North
+					left_pos = GridPosition.new(grid_position.x - distance, grid_position.z + offset)
+					right_pos = GridPosition.new(grid_position.x + distance, grid_position.z + offset)
+				1:  # East
+					left_pos = GridPosition.new(grid_position.x + offset, grid_position.z - distance)
+					right_pos = GridPosition.new(grid_position.x + offset, grid_position.z + distance)
+				2:  # South
+					left_pos = GridPosition.new(grid_position.x + distance, grid_position.z + offset)
+					right_pos = GridPosition.new(grid_position.x - distance, grid_position.z + offset)
+				3:  # West
+					left_pos = GridPosition.new(grid_position.x + offset, grid_position.z + distance)
+					right_pos = GridPosition.new(grid_position.x + offset, grid_position.z - distance)
+
+			if left_pos != null and LevelGrid.is_valid_grid_position(left_pos):
+				side_cone.append(left_pos)
+			if right_pos != null and LevelGrid.is_valid_grid_position(right_pos):
+				side_cone.append(right_pos)
+
+	return LevelGrid.get_grid_positions_from_grid_positions(side_cone)
+
+
+# Function to get left cone tiles
+func get_left_cone(unit: Unit, max_range: int) -> Array[GridPosition]:
+	var facing: int = unit.facing
+	var left_cone: Array[GridPosition] = []
+	var grid_position: GridPosition = unit.grid_position
+
+	for distance in range(1, max_range + 1):
+		for offset in range(-distance, distance + 1):
+			var temp_pos: GridPosition = null
+			match facing:
+				0:  # North
+					temp_pos = GridPosition.new(grid_position.x - distance, grid_position.z + offset)
+				1:  # East
+					temp_pos = GridPosition.new(grid_position.x + offset, grid_position.z - distance)
+				2:  # South
+					temp_pos = GridPosition.new(grid_position.x + distance, grid_position.z + offset)
+				3:  # West
+					temp_pos = GridPosition.new(grid_position.x + offset, grid_position.z + distance)
+
+			if temp_pos != null and LevelGrid.is_valid_grid_position(temp_pos):
+				left_cone.append(temp_pos)
+				
+
+	return LevelGrid.get_grid_positions_from_grid_positions(left_cone)
+
+# Function to get right cone tiles
+func get_right_cone(unit: Unit, max_range: int) -> Array[GridPosition]:
+	var facing: int = unit.facing
+	var right_cone: Array[GridPosition] = []
+	var grid_position: GridPosition = unit.grid_position
+
+	for distance in range(1, max_range + 1):
+		for offset in range(-distance, distance + 1):
+			var temp_pos: GridPosition = null
+			match facing:
+				0:  # North
+					temp_pos = GridPosition.new(grid_position.x + distance, grid_position.z + offset)
+				1:  # East
+					temp_pos = GridPosition.new(grid_position.x + offset, grid_position.z + distance)
+				2:  # South
+					temp_pos = GridPosition.new(grid_position.x - distance, grid_position.z + offset)
+				3:  # West
+					temp_pos = GridPosition.new(grid_position.x + offset, grid_position.z - distance)
+
+			if temp_pos != null and LevelGrid.is_valid_grid_position(temp_pos):
+				right_cone.append(temp_pos)
+
+	return right_cone
+
+
+
+
+
+# Calculation Functions for Skills and other die rolls
 
 func check_success_level(skill: int, in_roll: int) -> int:
 	# Check for critical failure
@@ -206,7 +349,7 @@ func calculate(derived_from: Array[String], calculation_type: int, specs: Dictio
 			push_error("Invalid calculation type: %d" % calculation_type)
 			return -1
 
-
+## Stand in for any logic for getting values from tables
 func table_calc(total: int, table_incr: int, table_mod: int) -> int:
 	# 1) Divide total by 5 and round up
 	var base_value = ceili(float(total) / float(table_incr))

@@ -55,8 +55,8 @@ func disappear() -> void:
 	growing = false
 
 # Method to set visibility of the marker
-func set_visibility(is_visible: bool) -> void:
-	if is_visible:
+func set_visibility(is_vis: bool) -> void:
+	if is_vis:
 		appear()
 	else:
 		disappear()

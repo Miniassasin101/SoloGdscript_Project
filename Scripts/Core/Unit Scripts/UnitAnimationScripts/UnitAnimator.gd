@@ -151,7 +151,7 @@ func weapon_setup(weapon_type: bool) -> void:
 	animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/GreatswordBlend/blend_amount", 0.0)
 	animator_tree.set("parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 0.0)
 
-func left_cast_anim(in_animation: Animation, in_miss: bool = false) -> void:
+func left_cast_anim(_in_animation: Animation, in_miss: bool = false) -> void:
 	# Note: Later replace greatsword test with the animation library
 	miss = in_miss
 
@@ -251,18 +251,15 @@ func attack_landed() -> void:
 
 
 func toggle_slowdown(speed_scale: float = 0.0) -> void:
-	var speed: float = animator.get_speed_scale()
-	if !is_slowed:
 
+	if !is_slowed:
 			set_timescales(speed_scale)
 			is_slowed = true
 
 	else:
-
 		set_timescales(1.0)
 		is_slowed = false
 
-		return
 
 
 func toggle_engine_slowdown(toggle: bool = false) -> void:
@@ -364,6 +361,37 @@ func rotate_unit_towards_target_position(grid_position: GridPosition) -> void:
 	is_rotating = true
 	facing_direction = (LevelGrid.get_world_position(grid_position) - unit.get_world_position()).normalized()
 
+	"""
+	Sets the facing variable based on the unit's current rotation.
+	Values in parentheses assume unit is rotated 0 degrees.
+	Facing values:
+	- 0: 180 degrees (facing North(back))
+	- 1: 90 degrees (facing East(left))
+	- 2: 0 degrees (facing South(front))
+	- 3: -90 degrees (facing West(right))
+	"""
+
+
+func rotate_unit_towards_facing(facing: int) -> void:
+	var gridpos: GridPosition = unit.get_grid_position()
+	var new_gridpos: GridPosition = GridPosition.new(gridpos.x, gridpos.z)
+	match facing:
+		0:
+			new_gridpos.z -= 1
+			rotate_unit_towards_target_position(new_gridpos)
+
+		1:
+			new_gridpos.x += 1
+			rotate_unit_towards_target_position(new_gridpos)
+
+		2:
+			new_gridpos.z += 1
+			rotate_unit_towards_target_position(new_gridpos)
+
+		3:
+			new_gridpos.x -= 1
+			rotate_unit_towards_target_position(new_gridpos)
+
 func rotate_unit_towards_target_position_process(delta: float):
 	var target_rotation = Basis.looking_at(facing_direction, Vector3.UP, true)
 	unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
@@ -371,7 +399,7 @@ func rotate_unit_towards_target_position_process(delta: float):
 
 	# Check if the rotation is close enough to stop rotating
 	var current_direction = unit.global_transform.basis.z.normalized()
-	if current_direction.dot(facing_direction) > 0.99:
+	if current_direction.dot(facing_direction) > 1:#0.999:
 		is_rotating = false  # Stop rotating if we're almost facing the target
 		rotation_completed.emit()
 
@@ -382,4 +410,5 @@ func on_start_moving() -> void:
 func on_stop_moving() -> void:
 	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsWalking", false)
 	is_moving = false
+	await get_tree().create_timer(0.2)
 	movement_completed.emit()

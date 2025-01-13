@@ -25,7 +25,10 @@ var ability_container: AbilityContainer
 var attribute_map: GameplayAttributeMap
 var unit_manager: UnitManager = get_parent()
 # The grid position of this unit.
-var grid_position: GridPosition
+var grid_position: GridPosition:
+	set(val):
+		print_debug("New Grid Position: ", val.to_str())
+		grid_position = val
 var is_holding: bool = false
 var unit_name: String = "null"
 # Reference to the action array node attached to this unit.
@@ -42,6 +45,8 @@ var target_unit: Unit
 @export var shoulder_height: float = 1.7
 
 var facing: int = 2
+
+var distance_moved_this_turn: float = 0.0
 
 var target: Unit = null
 
@@ -79,6 +84,7 @@ func _ready() -> void:
 	attribute_map.attribute_changed.connect(on_attribute_changed)
 	animator.weapon_setup(holding_weapon)
 	SignalBus.on_round_changed.connect(on_round_changed)
+	SignalBus.on_cycle_changed.connect(on_reset_distance_moved)
 	SignalBus.add_unit.emit(self)
 
 
@@ -139,7 +145,8 @@ func on_attribute_changed(_attribute: AttributeSpec):
 	if attribute_map.get_attribute_by_name("health").current_value <= 0:
 		on_dead()
 
-
+func on_reset_distance_moved() -> void:
+	set_distance_moved(0.0)
 
 func on_round_changed() -> void:
 	attribute_map.get_attribute_by_name("action_points").current_value = attribute_map.get_attribute_by_name("action_points").maximum_value
@@ -187,18 +194,26 @@ func get_target_position_with_offset(height_offset: float) -> Vector3:
 func get_movement_rate() -> float:
 	return attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
 
+func set_distance_moved(val: float) -> void:
+	distance_moved_this_turn = val
+
+func add_distance_moved(val: float) -> void:
+	distance_moved_this_turn += val
+	
+
 func set_gait(gait: int) -> void:
 	current_gait = gait
 
 func set_color_marker(color: StringName) -> void:
 	color_marker.set_color(color)
 
-func set_color_marker_visible(is_visible: bool) -> void:
-	color_marker.set_visibility(is_visible)
+func set_color_marker_visible(is_vis: bool) -> void:
+	color_marker.set_visibility(is_vis)
 
 func set_facing() -> void:
 	"""
 	Sets the facing variable based on the unit's current rotation.
+	Values in parentheses assume unit is rotated 0 degrees.
 	Facing values:
 	- 0: 180 degrees (facing North(back))
 	- 1: 90 degrees (facing East(left))

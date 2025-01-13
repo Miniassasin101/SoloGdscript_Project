@@ -41,6 +41,7 @@ func connect_global_signals() -> void:
 	SignalBus.add_unit.connect(_on_add_unit)
 	SignalBus.remove_unit.connect(_on_remove_unit)
 
+
 # React to the global "add_unit" signal
 func _on_add_unit(unit: Unit) -> void:
 	add_unit(unit)

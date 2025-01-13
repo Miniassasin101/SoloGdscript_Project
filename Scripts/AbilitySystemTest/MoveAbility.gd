@@ -6,6 +6,7 @@ class_name MoveAbility extends Ability
 @export_group("Attributes")
 ## Maximum movement distance for the unit.
 @export var max_move_distance: int = 3
+@export var use_max_move_distance: bool = false
 @export var ap_cost: int = 1
 @export var rotate_speed: float = 4.0  ## Speed for rotating the unit
 @export var move_speed: float = 5.5
@@ -48,6 +49,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	# Retrieve target position from the event
 	target_position = event.target_grid_position
 	unit = event.character
+
 	if not unit or not target_position:
 		if can_end(event):
 			push_error("either no target position or no unit: " + event.to_string())
@@ -55,8 +57,8 @@ func try_activate(_event: ActivationEvent) -> void:
 			return
 	#getting the grid positions from the pathfinding
 	position_list = []
-	var grid_position_list: Array[GridPosition] = (Pathfinding.instance
-	.find_path(unit.get_grid_position(), target_position))
+	var path_package: PathPackage = Pathfinding.instance.get_path_package(target_position, unit, true, true)
+	var grid_position_list: Array[GridPosition] = path_package.get_path()
 	
 	if grid_position_list.is_empty():
 		push_error("No valid path found to target position: " + target_position.to_str())
@@ -67,8 +69,8 @@ func try_activate(_event: ActivationEvent) -> void:
 	movement_curve = Curve3D.new()
 	movement_curve.bake_interval = 0.2  # Adjust for smoothness
 	
-	for position: GridPosition in grid_position_list:
-		position_list.append(LevelGrid.get_world_position(position))
+
+	position_list.append_array(LevelGrid.get_world_positions(path_package.get_path()))
 	
 	# Add points to the curve
 	for i in range(position_list.size()):
@@ -93,7 +95,12 @@ func try_activate(_event: ActivationEvent) -> void:
 
 	unit.animator.animate_movement_along_curve(move_speed, movement_curve, curve_length, 
 	acceleration_timer, rotation_acceleration_timer, stopping_distance, rotate_speed)
-	await unit.animator.movement_completed
+	await unit.animator.movement_completed # add another signal for interruption
+	unit.add_distance_moved(path_package.get_cost())
+	if unit.current_gait >= Utilities.MovementGait.RUN:
+		unit.animator.rotate_unit_towards_facing(unit.facing)
+
+	
 	is_moving = false
 	if can_end(event):
 		event.successful = true
@@ -117,34 +124,43 @@ func can_activate(_event: ActivationEvent) -> bool:
 
 
 ## Gets a list of valid grid positions for movement.
-func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
+func get_valid_ability_target_grid_position_list_depreciated(_event: ActivationEvent) -> Array[GridPosition]:
 	if _event.character.get_grid_position() == null:
 		return []
-	var self_unit = _event.character.get_grid_position()
+	var self_unit_pos = _event.character.get_grid_position()
+
+
 	var valid_grid_position_list: Array[GridPosition] = []  # Initialize an empty array for valid grid positions.
+	var max_range: float = float(max_move_distance) if use_max_move_distance else get_max_move_from_gait(_event)
+	#if use_max_move_distance:
+	#	max_range = max_move_distance
+	#else:
+	#	max_range = get_max_move_from_gait(_event)
+		
+
 
 	# Loop through the x and z ranges based on max_move_distance.
-	for x in range(-max_move_distance, max_move_distance + 1):
-		for z in range(-max_move_distance, max_move_distance + 1):
+	for x in range(-max_range, max_range + 1):
+		for z in range(-max_range, max_range + 1):
 			# Create an offset grid position.
 			var offset_grid_position = GridPosition.new(x, z)
 			# Calculate the test grid position.
-			var temp_grid_position: GridPosition = self_unit.add(offset_grid_position)
+			var temp_grid_position: GridPosition = self_unit_pos.add(offset_grid_position)
 			var test_grid_object: GridObject = LevelGrid.grid_system.get_grid_object(temp_grid_position)
 			if test_grid_object == null:
 				continue
 			var test_grid_position: GridPosition = test_grid_object.get_grid_position()
 
 			# Skip invalid or occupied grid positions.
-			if not LevelGrid.is_valid_grid_position(test_grid_position) or self_unit.equals(test_grid_position) or LevelGrid.has_any_unit_on_grid_position(test_grid_position):
+			if not LevelGrid.is_valid_grid_position(test_grid_position) or self_unit_pos.equals(test_grid_position) or LevelGrid.has_any_unit_on_grid_position(test_grid_position):
 				continue
 			
 			if not Pathfinding.instance.is_walkable(test_grid_position):
 				continue
 			
-			if not Pathfinding.instance.is_path_available(self_unit, test_grid_position):
+			if not Pathfinding.instance.is_path_available(self_unit_pos, test_grid_position):
 				continue
-			if Pathfinding.instance.get_path_cost(self_unit, test_grid_position) > max_move_distance:
+			if Pathfinding.instance.get_path_cost(self_unit_pos, test_grid_position) > max_range: #- distance moved this turn
 				# Path length is too long
 				continue
 			# Add the valid grid position to the list.
@@ -152,6 +168,90 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 
 	return valid_grid_position_list
 
+
+func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
+	var self_unit_pos = _event.character.get_grid_position()
+	if self_unit_pos == null:
+		return []
+
+	var valid_grid_position_list: Array[GridPosition] = []
+	var max_range: float = float(max_move_distance) if use_max_move_distance else get_max_move_from_gait(_event)
+	var gait: int = _event.character.current_gait
+
+	# Check if gait is RUN or SPRINT
+	if gait in [Utilities.MovementGait.RUN, Utilities.MovementGait.SPRINT]:
+		# Generate front-facing cone tiles
+		var facing: int = _event.character.facing
+		var front_tiles: Array[GridPosition] = []
+
+		for distance in range(1, max_range + 1):
+			for offset in range(-distance, distance + 1):
+				var temp_pos: GridPosition = null
+				match facing:
+					0:  # North
+						temp_pos = GridPosition.new(self_unit_pos.x + offset, self_unit_pos.z - distance)
+					1:  # East
+						temp_pos = GridPosition.new(self_unit_pos.x + distance, self_unit_pos.z + offset)
+					2:  # South
+						temp_pos = GridPosition.new(self_unit_pos.x + offset, self_unit_pos.z + distance)
+					3:  # West
+						temp_pos = GridPosition.new(self_unit_pos.x - distance, self_unit_pos.z + offset)
+
+				if temp_pos != null and LevelGrid.is_valid_grid_position(temp_pos):
+					front_tiles.append(temp_pos)
+
+		# Validate front tiles
+		for grid_pos in front_tiles:
+			if not LevelGrid.is_valid_grid_position(grid_pos) or LevelGrid.has_any_unit_on_grid_position(grid_pos):
+				continue
+			if not Pathfinding.instance.is_walkable(grid_pos):
+				continue
+			if Pathfinding.instance.get_path_cost(self_unit_pos, grid_pos) > max_range:
+				continue
+			valid_grid_position_list.append(grid_pos)
+
+	else:
+		# Standard behavior for other gaits
+		for x in range(-max_range, max_range + 1):
+			for z in range(-max_range, max_range + 1):
+				var offset_grid_position = GridPosition.new(x, z)
+				var temp_grid_position: GridPosition = self_unit_pos.add(offset_grid_position)
+				if not LevelGrid.is_valid_grid_position(temp_grid_position) or self_unit_pos.equals(temp_grid_position):
+					continue
+				if not LevelGrid.has_any_unit_on_grid_position(temp_grid_position):
+					valid_grid_position_list.append(temp_grid_position)
+
+	return valid_grid_position_list
+
+
+
+
+func get_max_move_from_gait(_event: ActivationEvent) -> float:
+	var in_unit: Unit = _event.character
+	var move_rate: float = in_unit.attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
+	var gait: int = in_unit.current_gait
+	var ret_move: float = 0.0
+	match gait:
+		Utilities.MovementGait.HOLD_GROUND:
+			push_error("Move Ability Called when gait is HOLD_GROUND on unit: ", unit.name)
+			return 0.0
+
+		Utilities.MovementGait.WALK:
+			ret_move += (move_rate/2.0)
+		
+		Utilities.MovementGait.RUN:
+			ret_move += ((move_rate * 3.0) / 2.0)
+
+		Utilities.MovementGait.RUN:
+			ret_move += ((move_rate * 3) / 2.0)
+
+		Utilities.MovementGait.SPRINT:
+			ret_move += ((move_rate * 5) / 2.0)
+		_:
+			push_error("Invalid Gait on unit: ", in_unit.name)
+			ret_move += 0.0
+	
+	return maxf((ret_move - in_unit.distance_moved_this_turn), 0.0)
 
 # Gets the best AI action for a specified grid position.
 func get_enemy_ai_ability(_event: ActivationEvent) -> EnemyAIAction:

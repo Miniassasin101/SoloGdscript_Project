@@ -55,14 +55,22 @@ func create_unit_action_buttons() -> void:
 	for action_button in action_button_container.get_children():
 		action_button.queue_free()
 	
-	for ability: Ability in selected_unit.ability_container.granted_abilities:
-		if ability.tags_type.has("reaction") or ability.tags_type.has("move"):
+	var granted_abilities = selected_unit.ability_container.granted_abilities
+	
+	for ability: Ability in granted_abilities:
+		if ability.tags_type.has("reaction") or ability.tags_type.has("move") or ability.tags_type.has("free"):
 			continue # FIXME: Replace with actual Tag logic later
 		if !verify_gait_allowed(selected_unit.current_gait, ability):
 			continue
 		var ability_button_ui = action_button_prefab.instantiate()
 		ability_button_ui.set_base_ability(ability)
 		action_button_container.add_child(ability_button_ui)
+	
+	# This is put at the end so free actions are placed in the back
+	create_unit_free_action_buttons(granted_abilities)
+	
+	# adds a next phase button at the very end 
+	create_next_phase_button()
 
 
 func create_unit_action_buttons_move_phase() -> void:
@@ -70,18 +78,40 @@ func create_unit_action_buttons_move_phase() -> void:
 		return
 	for action_button in action_button_container.get_children():
 		action_button.queue_free()
+	var granted_abilities = selected_unit.ability_container.granted_abilities
 	
-	for ability: Ability in selected_unit.ability_container.granted_abilities:
-		if ability.tags_type.has("reaction") or ability.tags_type.has("action"):
+	for ability: Ability in granted_abilities:
+		if ability.tags_type.has("reaction") or ability.tags_type.has("action") or ability.tags_type.has("free"):
 			continue
 		if selected_unit.current_gait == Utilities.MovementGait.HOLD_GROUND and ability.tags_type.has("move"):
 			continue
 		if verify_gait_allowed(selected_unit.current_gait, ability) == false:
 			continue
-		var ability_button_ui = action_button_prefab.instantiate()
-		ability_button_ui.set_base_ability(ability)
+		var ability_button_ui: ActionButtonUI = action_button_prefab.instantiate()
+		ability_button_ui.set_base_ability(ability) # Always call a setup function on the button when adding.
 		action_button_container.add_child(ability_button_ui)
+	
+	# This is put at the end so free actions are placed in the back
+	create_unit_free_action_buttons(granted_abilities)
+	
+	# adds a next phase button at the very end 
+	#create_next_phase_button()
 
+
+func create_unit_free_action_buttons(granted_abilities: Array[Ability]) -> void:
+	for ability: Ability in granted_abilities:
+		if ability.tags_type.has("free"):
+			var ability_button_ui: ActionButtonUI = action_button_prefab.instantiate()
+			ability_button_ui.set_base_ability(ability)
+			action_button_container.add_child(ability_button_ui)
+
+
+## Determines if a next_phase button needs to be made.
+func create_next_phase_button() -> void:
+	if TurnSystem.instance.current_unit_turn.attribute_map.get_attribute_by_name("action_points").current_buffed_value == 0:
+		var ability_button_ui: ActionButtonUI = action_button_prefab.instantiate()
+		ability_button_ui.set_no_ap()
+		action_button_container.add_child(ability_button_ui)
 
 func verify_gait_allowed(current_gait: int, in_ability: Ability) -> bool:
 	if current_gait > in_ability.movement_gait:
@@ -131,21 +161,27 @@ func on_movement_phase_start() -> void:
 	var cycle_num: int = TurnSystem.instance.current_cycle
 	if cycle_num >= 3: 
 		movement_phase_late_cycle() # NOTE: make await later.
-	elif cycle_num == 1 or (TurnSystem.instance.current_unit_turn.current_gait == Utilities.MovementGait.HOLD_GROUND):
-		await movement_phase_first_cycle()
+	elif (cycle_num == 1) or ((TurnSystem.instance.current_unit_turn.current_gait == Utilities.MovementGait.HOLD_GROUND) and cycle_num == 2):
+		await movement_phase_first_two_cycles()
 	action_button_container.set_visible(true)
 	gait_button_container.set_visible(false)
 	return
+
+
+
 
 
 func movement_phase_late_cycle() -> void:
 	print_debug("Cycle is 3 or more: Movement not allowed.")
 	return
 
-
-func movement_phase_first_cycle() -> void:
+# FIXME: WRONGGGG
+func movement_phase_first_two_cycles() -> void:
 	#prompt gait based on previous action
-	var allowed_gait: int = TurnSystem.instance.current_unit_turn.previous_ability.movement_gait
+	var allowed_gait: int = (
+TurnSystem.instance.current_unit_turn.previous_ability.movement_gait if 
+TurnSystem.instance.current_unit_turn.previous_ability else 0
+)
 	
 	create_unit_gait_buttons(allowed_gait + 1)
 	await continue_turn

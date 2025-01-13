@@ -121,8 +121,9 @@ directional_shadow_max_distance = 27.1
 script = ExtResource("1_fqt43")
 GRID_CELL_VISUAL = ExtResource("4_85pbp")
 
-[node name="GridSystemTest" type="Node3D" parent="."]
+[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit")]
 script = ExtResource("3_vw71g")
+unit = NodePath("../UnitManager/DawnUnit")
 animlib = Array[Animation]([ExtResource("5_o3n5o")])
 
 [node name="Pathfinding" type="Node" parent="."]
@@ -209,7 +210,7 @@ script = ExtResource("10_iw061")
 unit_action_system = NodePath("../UnitActionSystem")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, 6)
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)

@@ -26,6 +26,8 @@ var combat_started: bool = false
 
 static var instance: TurnSystem = null
 
+
+
 func _ready() -> void:
 	if instance != null:
 		push_error("There's more than one TurnSystem! - " + str(instance))
@@ -36,6 +38,9 @@ func _ready() -> void:
 	SignalBus.on_book_keeping_ended.connect(on_book_keeping_ended)
 	setup_initiative()
 
+
+## Initiative Functions
+# FIXME: Make happen on combat start rather than ready later.
 func setup_initiative() -> void:
 	initiative_order = []
 	var units: Array[Unit] = unit_manager.get_all_units()
@@ -60,14 +65,15 @@ func setup_initiative() -> void:
 		initiative_order.append(entry["unit"])
 	prints("Unit Initiative", initiatives)
 	
-	# NOTE: Later should probably change to store initiatives of units somewhere in case they change or need referencing
 
-# Custom compare function for sorting initiatives descending by initiative value
+
+## Custom compare function for sorting initiatives descending by initiative value.
 func _compare_initiative(a, b) -> int:
 	return b["initiative"] < a["initiative"]
 
 
-
+## This is the first function that is called when combat begins. Will return with an error if initiative hasnt been rolled
+## Likely it should also probably trigger initiative at the same time.
 func start_combat() -> void:
 	if initiative_order.is_empty():
 		push_error("No units in initiative")
@@ -75,6 +81,12 @@ func start_combat() -> void:
 	combat_started = true
 	start_round()
 
+
+## Is called immediately after combat starts, as well as at the start of every round.\n
+## Sets [code]current_cycle[/code] and [code]turn_number[/code] to 1 at the start of a new round.\n
+## Then the [code]current_unit_turn[/code] is set to the first unit in the initiative order.
+## Also sets player turn, calls book_keeping, and updates ui to reflect cycle and turn number changes.
+## If it's the player's turn, then the selected unit is also set.
 func start_round() -> void:
 	current_cycle = 1
 	turn_number = 1

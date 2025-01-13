@@ -26,6 +26,7 @@ signal on_cycle_changed
 
 signal on_phase_changed
 
+#signal reset_distance_moved
 
 signal on_ui_update ## updates all ui
 

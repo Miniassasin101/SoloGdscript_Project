@@ -93,10 +93,7 @@ func check_ability_type_invalid(in_ability: Ability) -> bool:
 	if tags.has("reaction") or tags.has("action"):
 		return true
 	return false
-			
-	#(func(number): return number > 5))
 
-	return true
 
 
 func on_ability_ended(ability: Ability) -> void:
