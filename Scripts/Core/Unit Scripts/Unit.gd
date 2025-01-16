@@ -1,8 +1,13 @@
 class_name Unit
 extends Node3D
 
-# Reference to the LevelGrid node.
 
+# Signals
+signal facing_changed(new_facing: int)
+
+
+
+# Variables
 var action_system: UnitActionSystem
 
 @export_category("References")
@@ -39,22 +44,19 @@ var target_unit: Unit
 
 # Replace with string of weapon group later or a check if holding weapon to determine what anim to use
 @export var holding_weapon: bool = true
-
 @export var death_vfx_scene: PackedScene
-
 @export var shoulder_height: float = 1.7
-
-var facing: int = 2
-
-var distance_moved_this_turn: float = 0.0
-
+var facing: int = 2:
+	set(val):
+		facing = val
+		facing_changed.emit(facing)
 var target: Unit = null
-
 var testbool: bool = false
 
 
 # Movement Variables
 var current_gait: int = Utilities.MovementGait.HOLD_GROUND
+var distance_moved_this_turn: float = 0.0
 var movement_done_in_first_cycle: bool = false
 var movement_done_in_second_cycle: bool = false
 
@@ -62,6 +64,9 @@ var movement_done_in_second_cycle: bool = false
 ## Is the first ability used in the round. Determines possible movement gaits for the rest of the round
 var previous_ability: Ability = null
 
+
+
+# Methods
 
 func _ready() -> void:
 	unit_manager = get_parent()
@@ -234,3 +239,4 @@ func set_facing() -> void:
 		facing = 3  # Facing left
 
 	print_debug("Unit facing direction set to: ", facing)
+	facing_changed.emit(facing)

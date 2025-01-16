@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="MeleeAbility" load_steps=4 format=3 uid="uid://d1s052aojsqxf"]
 
-[ext_resource type="Animation" uid="uid://dswwaq5xbcffc" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Swing_001.res" id="1_psm1r"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/MeleeAbility.gd" id="1_tlytc"]
-[ext_resource type="PackedScene" uid="uid://uejihqtfr66u" path="res://Hero_Game/Prefabs/VFX/WeaponHitVFX.tscn" id="2_2tsh0"]
+[ext_resource type="Animation" uid="uid://dswwaq5xbcffc" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Swing_001.res" id="1_kpxro"]
+[ext_resource type="PackedScene" uid="uid://uejihqtfr66u" path="res://Hero_Game/Prefabs/VFX/WeaponHitVFX.tscn" id="2_sultn"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/MeleeAbility.gd" id="3_xkae0"]
 
 [resource]
-script = ExtResource("1_tlytc")
-animation = ExtResource("1_psm1r")
-hit_vfx = ExtResource("2_2tsh0")
+script = ExtResource("3_xkae0")
+animation = ExtResource("1_kpxro")
+hit_vfx = ExtResource("2_sultn")
 damage = 6
 die_number = 1
 flat_damage = 0

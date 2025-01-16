@@ -101,7 +101,7 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 
 			# Build a test position.
 			var offset_position = GridPosition.new(x, z)
-			var candidate_position = _event.character.get_grid_position().add(offset_position)
+			var candidate_position = offset_position.add(_event.character.get_grid_position())
 
 			# Ensure the candidate position is valid in the LevelGrid.
 			if not LevelGrid.is_valid_grid_position(candidate_position):
@@ -186,7 +186,7 @@ func melee_attack_anim() -> void:
 	await unit.animator.melee_attack_anim(animation, event.miss)
 
 	# 2) Here you can trigger any hit fx on the ability by passing it to the target unit's animator:
-	var target_unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
+	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	if !event.miss:
 		target_unit.animator.trigger_hit_fx(hit_vfx, unit.get_global_rotation())
 
@@ -196,6 +196,9 @@ func melee_attack_anim() -> void:
 	if can_end(event):
 		event.successful = true
 		end_ability(event)
+	
+	await unit.get_tree().create_timer(3.0).timeout
+	target_unit.animator.rotate_unit_towards_facing()
 
 
 ##

@@ -372,9 +372,11 @@ func rotate_unit_towards_target_position(grid_position: GridPosition) -> void:
 	"""
 
 
-func rotate_unit_towards_facing(facing: int) -> void:
+func rotate_unit_towards_facing(in_facing: int = -1) -> void:
 	var gridpos: GridPosition = unit.get_grid_position()
 	var new_gridpos: GridPosition = GridPosition.new(gridpos.x, gridpos.z)
+	var facing = in_facing if (in_facing >= 0) else unit.facing
+	
 	match facing:
 		0:
 			new_gridpos.z -= 1
@@ -399,7 +401,7 @@ func rotate_unit_towards_target_position_process(delta: float):
 
 	# Check if the rotation is close enough to stop rotating
 	var current_direction = unit.global_transform.basis.z.normalized()
-	if current_direction.dot(facing_direction) > 1:#0.999:
+	if current_direction.dot(facing_direction) > 0.9999:
 		is_rotating = false  # Stop rotating if we're almost facing the target
 		rotation_completed.emit()
 

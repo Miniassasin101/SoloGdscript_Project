@@ -71,9 +71,11 @@ func handle_phase(unit: Unit) -> void:
 func transition_phase(next_phase: TurnPhase, unit: Unit) -> void:
 	current_phase = next_phase
 	handle_phase(unit)
+	SignalBus.on_ui_update.emit()
 
 func end_turn(unit: Unit) -> void:
 	print_debug("Turn Ended for: ", unit)
+	unit.animator.rotate_unit_towards_facing()
 	#transition_phase(TurnPhase.ACTION_PHASE, TurnSystem.instance.current_unit_turn)
 	# Proceed to the next unit in the initiative order or other logic
 	#SignalBus.on_turn_ended.emit()
@@ -126,7 +128,7 @@ func reaction(reacting_unit: Unit, attacking_unit: Unit) -> int:
 	if reacted_ability.ui_name == "Dither":
 		print_debug(reacting_unit._to_string(), " Dithered")
 		return 0
-	
+
 
 	# After activation, we assume reaction is a skill roll. In Mythras:
 	# For example, if parry: skill = combat_skill

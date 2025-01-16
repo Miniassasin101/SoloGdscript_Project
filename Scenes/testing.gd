@@ -65,10 +65,10 @@ func set_facing() -> void:
 
 func turn_unit_towards_facing() -> void:
 	unit.animator.rotate_unit_towards_facing(0)
+	unit.facing = 0
 	await get_tree().create_timer(2.5).timeout
 	print_debug(unit.facing)
-	unit.facing = 0
-	print_debug(unit.facing)
+
 
 
 func toggle_engine_speed() -> void:
@@ -117,7 +117,8 @@ func toggle_look_at_unit() -> void:
 	var in_unit: Unit = LevelGrid.get_unit_at_grid_position(pathfinding.pathfinding_grid_system.get_grid_position(result))
 	if unit.animator.is_looking:
 		unit.animator.look_at_toggle()
-	unit.animator.look_at_toggle(in_unit)
+	if in_unit and in_unit != unit:
+		unit.animator.look_at_toggle(in_unit)
 
 
 func trigger_camera_shake() -> void:

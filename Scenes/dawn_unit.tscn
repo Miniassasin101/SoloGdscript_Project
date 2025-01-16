@@ -1,4 +1,4 @@
-[gd_scene load_steps=95 format=4 uid="uid://ckh4ee1mgwjn4"]
+[gd_scene load_steps=98 format=4 uid="uid://ckh4ee1mgwjn4"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
@@ -27,7 +27,7 @@
 [ext_resource type="Resource" uid="uid://knnn4c4diq6f" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/AttackAbilities/FireballResource.tres" id="24_6kacr"]
 [ext_resource type="Resource" uid="uid://crgywdemy0bgk" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/AttackAbilities/StrongFireballResource.tres" id="25_33lcd"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/MoveAbility.gd" id="26_a5eeq"]
-[ext_resource type="Resource" uid="uid://d1s052aojsqxf" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/AttackAbilities/MeleeTest.tres" id="27_lclct"]
+[ext_resource type="Resource" uid="uid://d1s052aojsqxf" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/AttackAbilities/MeleeTestResource.tres" id="27_lclct"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Body.gd" id="29_f43xc"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/BodyPart.gd" id="30_uvroa"]
 [ext_resource type="Resource" uid="uid://qgaber1n5dae" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/DabAbilityResource.tres" id="32_qle3s"]
@@ -42,6 +42,8 @@
 [ext_resource type="PackedScene" uid="uid://6tcoop2kh2oa" path="res://Hero_Game/Prefabs/Units/ColorMarker.tscn" id="38_7osw2"]
 [ext_resource type="Resource" uid="uid://cdvdn0jqh0akb" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/DitherResource.tres" id="39_1xl8t"]
 [ext_resource type="Resource" uid="uid://boojk1je30typ" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/IdleResource.tres" id="40_8r1ak"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/FacingArrowManager.gd" id="43_ygndu"]
+[ext_resource type="ArrayMesh" uid="uid://xx66bmhi8byu" path="res://Hero_Game/Prefabs/BasicShapes/Arrow_Plane.res" id="44_r3umq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_khrt5"]
 vertex_color_use_as_albedo = true
@@ -1359,7 +1361,7 @@ tracks/70/enabled = true
 tracks/70/path = NodePath("Rig_001/Skeleton3D:MCH_IK_spine.004")
 tracks/70/interp = 1
 tracks/70/loop_wrap = true
-tracks/70/keys = PackedFloat32Array(0, 1, -4.84676e-27, -8.88178e-16, 2.19023e-42, 1)
+tracks/70/keys = PackedFloat32Array(0, 1, -4.84676e-27, -8.88178e-16, 0, 1)
 tracks/71/type = "scale_3d"
 tracks/71/imported = true
 tracks/71/enabled = true
@@ -1415,7 +1417,7 @@ tracks/78/enabled = true
 tracks/78/path = NodePath("Rig_001/Skeleton3D:MCH_IK_spine.008")
 tracks/78/interp = 1
 tracks/78/loop_wrap = true
-tracks/78/keys = PackedFloat32Array(0, 1, 0, 0, -1.43493e-42, 1)
+tracks/78/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
 tracks/79/type = "scale_3d"
 tracks/79/imported = true
 tracks/79/enabled = true
@@ -2031,7 +2033,7 @@ tracks/166/enabled = true
 tracks/166/path = NodePath("Rig_001/Skeleton3D:DEF_spine.007")
 tracks/166/interp = 1
 tracks/166/loop_wrap = true
-tracks/166/keys = PackedFloat32Array(0, 1, -2.57559e-42, 1.19209e-07, 2.16073e-35, 1)
+tracks/166/keys = PackedFloat32Array(0, 1, 0, 1.19209e-07, 2.16073e-35, 1)
 tracks/167/type = "scale_3d"
 tracks/167/imported = true
 tracks/167/enabled = true
@@ -2052,7 +2054,7 @@ tracks/169/enabled = true
 tracks/169/path = NodePath("Rig_001/Skeleton3D:DEF_spine.008")
 tracks/169/interp = 1
 tracks/169/loop_wrap = true
-tracks/169/keys = PackedFloat32Array(0, 1, -2.57559e-42, 1.19209e-07, 2.16073e-35, 1)
+tracks/169/keys = PackedFloat32Array(0, 1, 0, 1.19209e-07, 2.16073e-35, 1)
 tracks/170/type = "scale_3d"
 tracks/170/imported = true
 tracks/170/enabled = true
@@ -2073,7 +2075,7 @@ tracks/172/enabled = true
 tracks/172/path = NodePath("Rig_001/Skeleton3D:DEF_spine.009")
 tracks/172/interp = 1
 tracks/172/loop_wrap = true
-tracks/172/keys = PackedFloat32Array(0, 1, -2.57559e-42, 1.19209e-07, 2.16073e-35, 1)
+tracks/172/keys = PackedFloat32Array(0, 1, 0, 1.19209e-07, 2.16073e-35, 1)
 tracks/173/type = "scale_3d"
 tracks/173/imported = true
 tracks/173/enabled = true
@@ -2136,6 +2138,11 @@ size = Vector3(1.20703, 2, 0.819702)
 
 [sub_resource type="QuadMesh" id="QuadMesh_tmejj"]
 material = ExtResource("17_l3n52")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0qo0v"]
+shading_mode = 0
+specular_mode = 1
+albedo_color = Color(0.271029, 0.613876, 0.461304, 1)
 
 [sub_resource type="Resource" id="Resource_sefws"]
 script = ExtResource("26_a5eeq")
@@ -2298,6 +2305,7 @@ death_vfx_scene = ExtResource("2_2wk6w")
 transform = Transform3D(0.809731, 0, 0, 0, 0.809731, 0, 0, 0, 0.809731, 0, 0, 0)
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Rig_001"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 bones/0/name = "CTRL_global.001"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
@@ -2947,7 +2955,7 @@ bones/92/parent = 91
 bones/92/rest = Transform3D(1, 0, 0, 0, 1, 1.13091e-26, 0, -1.13091e-26, 1, 0, 0.015743, -8.58281e-28)
 bones/92/enabled = true
 bones/92/position = Vector3(0, 0.015743, -8.58281e-28)
-bones/92/rotation = Quaternion(-4.84676e-27, -8.88178e-16, 2.19023e-42, 1)
+bones/92/rotation = Quaternion(-4.84676e-27, -8.88178e-16, 0, 1)
 bones/92/scale = Vector3(1, 0.999996, 1)
 bones/93/name = "MCH_IK_spine.005"
 bones/93/parent = 92
@@ -2975,7 +2983,7 @@ bones/96/parent = 95
 bones/96/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0158154, 0)
 bones/96/enabled = true
 bones/96/position = Vector3(0, 0.0158154, 0)
-bones/96/rotation = Quaternion(0, 0, -1.43493e-42, 1)
+bones/96/rotation = Quaternion(0, 0, 0, 1)
 bones/96/scale = Vector3(0.999993, 1.00002, 0.999993)
 bones/97/name = "MCH_IK_spine.009"
 bones/97/parent = 96
@@ -3493,25 +3501,25 @@ bones/170/parent = -1
 bones/170/rest = Transform3D(1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, 0, 1.02908, -9.0783e-22)
 bones/170/enabled = true
 bones/170/position = Vector3(0, 1.02908, 2.24588e-09)
-bones/170/rotation = Quaternion(-2.57559e-42, 1.19209e-07, 2.16073e-35, 1)
+bones/170/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/170/scale = Vector3(1, 0.999992, 1)
 bones/171/name = "DEF_spine.008"
 bones/171/parent = -1
 bones/171/rest = Transform3D(1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, 0, 1.0449, -9.0783e-22)
 bones/171/enabled = true
 bones/171/position = Vector3(0, 1.0449, 1.99634e-09)
-bones/171/rotation = Quaternion(-2.57559e-42, 1.19209e-07, 2.16073e-35, 1)
+bones/171/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/171/scale = Vector3(0.999996, 1.00001, 0.999996)
 bones/172/name = "DEF_spine.009"
 bones/172/parent = -1
 bones/172/rest = Transform3D(1, 0, 2.38419e-07, 0, 1, 0, -2.38419e-07, 0, 1, 0, 1.06071, 0)
 bones/172/enabled = true
 bones/172/position = Vector3(0, 1.06071, 7.48617e-10)
-bones/172/rotation = Quaternion(-2.57559e-42, 1.19209e-07, 2.16073e-35, 1)
+bones/172/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.499916, 0.0451514, -0.864896, -0.73648, 0.547638, -0.397102, 0.45572, 0.835496, 0.307026, 0.265662, 1.14935, 0.234836)
+transform = Transform3D(0.509922, 0.0506656, -0.858727, -0.733203, 0.547675, -0.403071, 0.449882, 0.835156, 0.31642, 0.268077, 1.14861, 0.236536)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3519,7 +3527,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.48512, 0.59536, 0.640473, 0.817734, 0.568345, 0.0910729, -0.309788, 0.567918, -0.762562, -0.147664, 1.23439, 0.37222)
+transform = Transform3D(-0.487947, 0.589992, 0.643286, 0.81867, 0.564989, 0.102798, -0.302799, 0.576799, -0.758694, -0.146447, 1.23386, 0.374014)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3532,7 +3540,7 @@ unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.832295, 0.0132801, 0.554174, 0.00830942, 0.999302, -0.0364267, -0.554271, 0.0349225, 0.831603, -0.000310546, 1.02647, 0.0103681)
+transform = Transform3D(0.832352, 0.0138686, 0.554074, 0.0086777, 0.999238, -0.0380472, -0.55418, 0.0364767, 0.831597, -0.00039904, 1.02679, 0.0127665)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 
@@ -3662,6 +3670,21 @@ visible = false
 cast_shadow = 0
 mesh = SubResource("QuadMesh_tmejj")
 script = ExtResource("18_id2ra")
+
+[node name="FacingArrowRemoteTransform" type="RemoteTransform3D" parent="."]
+remote_path = NodePath("../FacingArrow")
+update_rotation = false
+
+[node name="FacingArrow" type="Node3D" parent="." node_paths=PackedStringArray("unit")]
+top_level = true
+script = ExtResource("43_ygndu")
+unit = NodePath("..")
+
+[node name="FacingArrowMeshInstance" type="MeshInstance3D" parent="FacingArrow"]
+transform = Transform3D(-1.69678e-08, 0, -0.388177, 0, 0.388177, 0, 0.388177, 0, -1.69678e-08, 0, 0.001, 0.435181)
+mesh = ExtResource("44_r3umq")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_0qo0v")
 
 [node name="GameplayAttributeMap" type="Node" parent="."]
 script = ExtResource("19_4283r")

@@ -1,17 +1,15 @@
 @tool
-class_name ParryAbility extends Ability
+class_name ChangeFacingAbility extends Ability
 
 ## Example tooltip comment, put directly above the line(s) they reference
 
 @export_group("Attributes")
-@export var ap_cost: int = 1
+@export var ap_cost: int = 0
 
 
-
-var start_timer: float = 0.1
 var event: ActivationEvent = null
 var unit: Unit = null
-
+var gait: int
 # NOTE: Logic for which parry animation to use will go here, depends on character and weapon.
 # By default will use strike animation.
 
@@ -26,31 +24,27 @@ func try_activate(_event: ActivationEvent) -> void:
 			push_error("no unit: " + event.to_string())
 			end_ability(event)
 			return
-	
+	gait = unit.current_gait
 
-	var timer = Timer.new()
-	
-	timer.one_shot = true
-	timer.autostart = true
-	timer.wait_time = 1.0
-	#event.character.add_child(timer)
-	#await timer.timeout
-	#await unit.animator.movement_completed
 	rotate_unit_towards_target_enemy(event)
+
+
+#func prompt_facing#
+
+
+
 func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 	var animator: UnitAnimator = unit.animator
 	animator.rotate_unit_towards_target_position(event.target_grid_position)
 	await animator.rotation_completed
-	
-	""" Test Timer
 	var timer = Timer.new()
+	
 	timer.one_shot = true
 	timer.autostart = true
 	timer.wait_time = 0.5
+
 	event.character.add_child(timer)
 	await timer.timeout
-	"""
-	
 	if can_end(event):
 		end_ability(event)
 
@@ -61,19 +55,44 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 
 
 func can_activate(_event: ActivationEvent) -> bool:
-	if !super.can_activate(_event):
+	if not super.can_activate(_event):
 		return false
-	#Add logic here to check to see if the user can parry the attack, given data like:
-	#weapon has attacking trait. user is stunned. User is facing the wrong way, ect.
-	
-	#var valid_grid_position_list = get_valid_ability_target_grid_position_list(_event)
 
-	return true
+	# We get all valid target squares in range, then check if the event target is among them.
+	var valid_positions = get_valid_ability_target_grid_position_list(_event)
+	for pos in valid_positions:
+		if pos._equals(_event.target_grid_position):
+			return true
+	return false
 
 
-## Gets a list of valid grid positions for movement.
+## Gets a list of valid grid positions for facing.\n
+## Should be the positions directly in front of, behind, and to the side of the unit.
 func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
-	return []
+	var valid_grid_position_list: Array[GridPosition] = []
+
+	# Get the unit's current grid position.
+	var current_position = _event.character.get_grid_position()
+
+	# Define the relative offsets for adjacent positions (up, down, left, right).
+	var offsets = [
+		GridPosition.new(0, 1),   # Up
+		GridPosition.new(0, -1),  # Down
+		GridPosition.new(-1, 0),  # Left
+		GridPosition.new(1, 0)    # Right
+	]
+
+	# Check each adjacent position.
+	for offset in offsets:
+		var candidate_position = current_position.add(offset)
+
+		# Ensure the candidate position is valid in the LevelGrid.
+		if not LevelGrid.is_valid_grid_position(candidate_position):
+			continue
+
+		valid_grid_position_list.append(candidate_position)
+
+	return valid_grid_position_list
 
 
 

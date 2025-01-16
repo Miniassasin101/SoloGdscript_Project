@@ -20,8 +20,10 @@ func _ready() -> void:
 		return
 	instance = self
 	SignalBus.update_grid_visual.connect(update_grid_visual)
+	SignalBus.selected_unit_changed.connect(on_selected_unit_changed)
 	initialize_grid_visuals()
-	#update_grid_visual()
+
+
 
 func initialize_grid_visuals() -> void:
 	# Ensure LevelGrid singleton is properly loaded.
@@ -63,6 +65,11 @@ func initialize_grid_visuals() -> void:
 
 func _process(_delta: float) -> void:
 	pass
+
+
+func on_selected_unit_changed(_unit: Unit) -> void:
+	update_grid_visual()
+
 
 func mark_red(grid_positions: Array[GridPosition]) -> void:
 	# Iterate over all grid positions
