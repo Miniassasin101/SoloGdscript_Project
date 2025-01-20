@@ -354,6 +354,44 @@ func get_right_cone(unit: Unit, max_range: int) -> Array[GridPosition]:
 	return right_cone
 
 
+func get_shell_cone_from_behind(unit: Unit, max_range: int) -> Array[GridPosition]:
+	var shell_positions: Array[GridPosition] = []
+	var behind_pos: GridPosition = get_back_tile(unit)
+	if behind_pos == null:
+		return shell_positions  # nothing if no behind tile
+
+	var facing: int = unit.facing
+	for distance in range(1, max_range + 1):
+		for offset in range(-distance, distance + 1):
+			var temp_pos: GridPosition = null
+			match facing:
+				FACING.NORTH:
+					temp_pos = LevelGrid.grid_system.get_grid_position_from_coords(
+						behind_pos.x + offset, 
+						behind_pos.z - distance
+					)
+				FACING.EAST:
+					temp_pos = LevelGrid.grid_system.get_grid_position_from_coords(
+						behind_pos.x + distance,
+						behind_pos.z + offset
+					)
+				FACING.SOUTH:
+					temp_pos = LevelGrid.grid_system.get_grid_position_from_coords(
+						behind_pos.x + offset, 
+						behind_pos.z + distance
+					)
+				FACING.WEST:
+					temp_pos = LevelGrid.grid_system.get_grid_position_from_coords(
+						behind_pos.x - distance,
+						behind_pos.z + offset
+					)
+
+			if temp_pos != null and LevelGrid.is_valid_grid_position(temp_pos):
+				shell_positions.append(temp_pos)
+	return shell_positions
+
+
+
 
 
 

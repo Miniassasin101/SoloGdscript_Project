@@ -110,6 +110,16 @@ func show_grid_positions(grid_positions: Array) -> void:
 		if x >= 0 and x < LevelGrid.get_width() and z >= 0 and z < LevelGrid.get_height():
 			grid_visuals[x][z].visible = true
 
+func hide_grid_positions(grid_positions: Array) -> void:
+	# Show specified grid cell visuals.
+	for grid_position in grid_positions:
+		var x: int = grid_position.x
+		var z: int = grid_position.z
+		# Check if the position is within grid bounds.
+		if x >= 0 and x < LevelGrid.get_width() and z >= 0 and z < LevelGrid.get_height():
+			grid_visuals[x][z].visible = false
+
+
 func update_grid_visual_pathfinding(grid_list: Array[GridPosition]):
 	if !grid_list.is_empty():
 		hide_all_grid_positions()
@@ -124,7 +134,7 @@ func update_grid_visual() -> void:
 	selected_ability = UnitActionSystem.instance.get_selected_ability()
 	if selected_ability != null:
 		if UnitActionSystem.instance.selected_unit != null:
-			show_grid_positions(UnitActionSystem.instance
+			show_grid_positions(await UnitActionSystem.instance
 			.selected_unit.ability_container.get_valid_ability_target_grid_position_list(selected_ability)
 			)
 		

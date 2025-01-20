@@ -202,7 +202,7 @@ func get_movement_rate() -> float:
 func get_max_move_left() -> float:
 	var move_rate = attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
 	var speed_multiplier = Utilities.GAIT_SPEED_MULTIPLIER.get(current_gait)
-	return (move_rate * speed_multiplier) - distance_moved_this_turn
+	return ((move_rate * speed_multiplier)/2) - distance_moved_this_turn
 
 
 func set_distance_moved(val: float) -> void:

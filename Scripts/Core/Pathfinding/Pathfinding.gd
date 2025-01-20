@@ -177,6 +177,42 @@ func enable_point(grid_position: GridPosition) -> void:
 	if astar.has_point(point_id):
 		astar.set_point_disabled(point_id, false)
 
+
+func disable_grid_positions(pos_list: Array[GridPosition]) -> void:
+	for gp in pos_list:
+		var point_id = get_grid_point_id(gp)
+		if astar.has_point(point_id):
+			astar.set_point_disabled(point_id, true)
+
+func enable_grid_positions(pos_list: Array[GridPosition]) -> void:
+	for gp in pos_list:
+		var point_id = get_grid_point_id(gp)
+		if astar.has_point(point_id):
+			astar.set_point_disabled(point_id, false)
+
+
+
+func temporarily_disable(pos_list: Array[GridPosition]) -> Array[GridPosition]:
+	# Returns the positions actually disabled so you can re‐enable them later
+	var actually_disabled: Array[GridPosition] = []
+	for gp in pos_list:
+		var point_id = get_grid_point_id(gp)
+		if astar.has_point(point_id) and not astar.is_point_disabled(point_id):
+			astar.set_point_disabled(point_id, true)
+			actually_disabled.append(gp)
+	return actually_disabled
+
+func reenable_positions(pos_list: Array[GridPosition]) -> void:
+	for gp in pos_list:
+		var point_id = get_grid_point_id(gp)
+		if astar.has_point(point_id):
+			astar.set_point_disabled(point_id, false)
+
+
+
+
+
+
 # Returns the total cost of the path between two points.
 func get_path_cost(start_grid_position: GridPosition, end_grid_position: GridPosition) -> float:
 	var start_id = get_grid_point_id(start_grid_position)
