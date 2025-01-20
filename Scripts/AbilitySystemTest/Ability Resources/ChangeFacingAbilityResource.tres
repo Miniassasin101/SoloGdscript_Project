@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="ChangeFacingAbility" load_steps=2 format=3 uid="uid://bfbjtl7piwa6a"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/ChangeFacingAbility.gd" id="1_6n4ux"]
+
+[resource]
+script = ExtResource("1_6n4ux")
+ap_cost = 0
+movement_cost = 2.0
+ui_name = "Turn"
+movement_gait = 3
+cooldown_duration = 0.0
+cooldown_continuos = false
+grant_automatic = true
+grant_tags = Array[String]([])
+grant_tags_required = Array[String]([])
+tags_type = Array[String](["free"])
+tags_activation = Array[String]([])
+tags_activation_required = Array[String]([])
+tags_block = Array[String]([])
+tags_cancellation_required = Array[String]([])
+tags_cooldown_start = Array[String]([])
+tags_cooldown_end = Array[String]([])
+tags_end_blocking = Array[String]([])
+tags_to_remove_on_activation = Array[String]([])
+tags_to_remove_on_block = Array[String]([])
+tags_to_remove_on_cancellation = Array[String]([])
+tags_to_remove_on_cooldown_start = Array[String]([])
+tags_to_remove_on_cooldown_end = Array[String]([])
+tags_to_remove_on_end = Array[String]([])

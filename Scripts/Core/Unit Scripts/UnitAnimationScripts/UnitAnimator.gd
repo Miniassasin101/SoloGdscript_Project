@@ -361,16 +361,15 @@ func rotate_unit_towards_target_position(grid_position: GridPosition) -> void:
 	is_rotating = true
 	facing_direction = (LevelGrid.get_world_position(grid_position) - unit.get_world_position()).normalized()
 
-	"""
-	Sets the facing variable based on the unit's current rotation.
-	Values in parentheses assume unit is rotated 0 degrees.
-	Facing values:
-	- 0: 180 degrees (facing North(back))
-	- 1: 90 degrees (facing East(left))
-	- 2: 0 degrees (facing South(front))
-	- 3: -90 degrees (facing West(right))
-	"""
-
+"""
+Sets the facing variable based on the unit's current rotation.
+Values in parentheses assume unit is rotated 0 degrees.
+Facing values:
+- 0: 180 degrees (facing North(back))
+- 1: 90 degrees (facing East(left))
+- 2: 0 degrees (facing South(front))
+- 3: -90 degrees (facing West(right))
+"""
 
 func rotate_unit_towards_facing(in_facing: int = -1) -> void:
 	var gridpos: GridPosition = unit.get_grid_position()

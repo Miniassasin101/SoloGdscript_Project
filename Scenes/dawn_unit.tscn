@@ -1,4 +1,4 @@
-[gd_scene load_steps=98 format=4 uid="uid://ckh4ee1mgwjn4"]
+[gd_scene load_steps=99 format=4 uid="uid://ckh4ee1mgwjn4"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
@@ -40,6 +40,7 @@
 [ext_resource type="Resource" uid="uid://bh2no358biy4l" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/ParryResource.tres" id="38_1p8t2"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/equipment_slot.gd" id="38_3xk7x"]
 [ext_resource type="PackedScene" uid="uid://6tcoop2kh2oa" path="res://Hero_Game/Prefabs/Units/ColorMarker.tscn" id="38_7osw2"]
+[ext_resource type="Resource" uid="uid://bfbjtl7piwa6a" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/ChangeFacingAbilityResource.tres" id="38_xnfjd"]
 [ext_resource type="Resource" uid="uid://cdvdn0jqh0akb" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/DitherResource.tres" id="39_1xl8t"]
 [ext_resource type="Resource" uid="uid://boojk1je30typ" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/IdleResource.tres" id="40_8r1ak"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/FacingArrowManager.gd" id="43_ygndu"]
@@ -2305,7 +2306,6 @@ death_vfx_scene = ExtResource("2_2wk6w")
 transform = Transform3D(0.809731, 0, 0, 0, 0.809731, 0, 0, 0, 0.809731, 0, 0, 0)
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Rig_001"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 bones/0/name = "CTRL_global.001"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
@@ -3519,7 +3519,7 @@ bones/172/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.509922, 0.0506656, -0.858727, -0.733203, 0.547675, -0.403071, 0.449882, 0.835156, 0.31642, 0.268077, 1.14861, 0.236536)
+transform = Transform3D(0.600584, 0.0838253, -0.795156, -0.684391, 0.568091, -0.457035, 0.41341, 0.818685, 0.398556, 0.279104, 1.16776, 0.242911)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3527,7 +3527,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.487947, 0.589992, 0.643286, 0.81867, 0.564989, 0.102798, -0.302799, 0.576799, -0.758694, -0.146447, 1.23386, 0.374014)
+transform = Transform3D(-0.522339, 0.545096, 0.655768, 0.812864, 0.55069, 0.18972, -0.257709, 0.632148, -0.730736, -0.142083, 1.25049, 0.3811)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3540,7 +3540,7 @@ unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.832352, 0.0138686, 0.554074, 0.0086777, 0.999238, -0.0380472, -0.55418, 0.0364767, 0.831597, -0.00039904, 1.02679, 0.0127665)
+transform = Transform3D(0.831228, 0.00198047, 0.555929, 0.00123998, 0.999985, -0.00541634, -0.555931, 0.00519166, 0.831212, 4.28944e-05, 1.05445, 0.000239529)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 
@@ -3694,7 +3694,7 @@ attributes_table = ExtResource("20_xrhce")
 [node name="AbilityContainer" type="Node" parent="."]
 script = ExtResource("22_250xw")
 gameplay_attribute_map_path = NodePath("../GameplayAttributeMap")
-abilities = Array[ExtResource("23_1urwx")]([ExtResource("24_6kacr"), ExtResource("25_33lcd"), ExtResource("27_lclct"), SubResource("Resource_sefws"), ExtResource("38_1p8t2"), ExtResource("39_1xl8t"), ExtResource("40_8r1ak"), ExtResource("32_qle3s"), SubResource("Resource_cyj61"), SubResource("Resource_yhnmf")])
+abilities = Array[ExtResource("23_1urwx")]([ExtResource("24_6kacr"), ExtResource("25_33lcd"), ExtResource("27_lclct"), SubResource("Resource_sefws"), ExtResource("38_1p8t2"), ExtResource("39_1xl8t"), ExtResource("40_8r1ak"), ExtResource("32_qle3s"), SubResource("Resource_cyj61"), SubResource("Resource_yhnmf"), ExtResource("38_xnfjd")])
 
 [node name="Body" type="Node" parent="."]
 script = ExtResource("29_f43xc")

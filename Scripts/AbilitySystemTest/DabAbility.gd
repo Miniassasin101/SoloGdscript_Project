@@ -36,7 +36,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	timer.wait_time = 0.5
 	event.character.add_child(timer)
 	"""
-	await perform_animation()
+	await perform_animation() # Always be careful to wait for the animation to complete
 
 
 	if can_end(event):

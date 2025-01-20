@@ -56,11 +56,12 @@ func _process(_delta: float) -> void:
 		if !TurnSystem.instance.is_player_turn or !TurnSystem.instance.combat_started:
 			#return
 			print_debug("Temporary Fix: is_action_just_pressed(left_mouse)")
+		handle_selected_ability()
 		# Attempt to select a unit
-		if try_handle_unit_selection():
-			return
-		else:
-			handle_selected_ability()
+		#if try_handle_unit_selection():
+		#	return
+		#else:
+		#	handle_selected_ability()
 
 func handle_selected_ability() -> void:
 	if selected_unit and selected_ability:

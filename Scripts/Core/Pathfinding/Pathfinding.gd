@@ -24,8 +24,14 @@ func _ready() -> void:
 	setup_astar()
 
 
+func get_front_cone() -> void:
+	Utilities
+
+
+
+
 func get_path_package(gridpos: GridPosition, in_unit: Unit = null, to_get_path: bool = false, 
-get_cost: bool = false, get_neighbors: bool = false) -> PathPackage:
+	get_cost: bool = false, get_neighbors: bool = false) -> PathPackage:
 	
 	var path_pack: PathPackage = PathPackage.new(0.0)
 	if to_get_path:

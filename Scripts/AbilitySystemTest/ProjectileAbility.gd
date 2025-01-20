@@ -74,9 +74,10 @@ func shoot_projectile() -> void:
 	projectile_instance.global_transform.origin = unit.shoot_point.global_transform.origin
 	projectile_instance.global_transform.basis = unit.shoot_point.global_transform.basis
 	projectile_instance.target_hit.connect(apply_effect)
-	
 	await unit.get_tree().create_timer(3.0).timeout
-	LevelGrid.get_unit_at_grid_position(event.target_grid_position).animator.rotate_unit_towards_facing()
+	unit.animator.rotate_unit_towards_facing()
+	
+
 	
 
 func apply_effect() -> void:
@@ -105,6 +106,7 @@ func apply_effect() -> void:
 	if can_end(event):
 		event.successful = true
 		end_ability(event)
+
 
 
 

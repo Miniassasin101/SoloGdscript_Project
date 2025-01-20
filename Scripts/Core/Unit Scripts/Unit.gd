@@ -35,7 +35,7 @@ var grid_position: GridPosition:
 		print_debug("New Grid Position: ", val.to_str())
 		grid_position = val
 var is_holding: bool = false
-var unit_name: String = "null"
+@export var unit_name: String = "null"
 # Reference to the action array node attached to this unit.
 var target_unit: Unit
 
@@ -199,6 +199,12 @@ func get_target_position_with_offset(height_offset: float) -> Vector3:
 func get_movement_rate() -> float:
 	return attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
 
+func get_max_move_left() -> float:
+	var move_rate = attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
+	var speed_multiplier = Utilities.GAIT_SPEED_MULTIPLIER.get(current_gait)
+	return (move_rate * speed_multiplier) - distance_moved_this_turn
+
+
 func set_distance_moved(val: float) -> void:
 	distance_moved_this_turn = val
 
@@ -214,6 +220,11 @@ func set_color_marker(color: StringName) -> void:
 
 func set_color_marker_visible(is_vis: bool) -> void:
 	color_marker.set_visibility(is_vis)
+
+func set_facing_then_rotate(in_facing: int) -> void:
+	facing = in_facing
+	animator.rotate_unit_towards_facing(in_facing)
+
 
 func set_facing() -> void:
 	"""

@@ -11,7 +11,7 @@ enum MovementGait {
 	SPRINT
 }
 
-# Speed multipliers for each gait (times the unit’s base movement rate).
+## Speed multipliers for each gait (times the unit’s base movement rate).
 const GAIT_SPEED_MULTIPLIER = {
 	MovementGait.HOLD_GROUND: 0,
 	MovementGait.WALK: 1.0,
@@ -19,8 +19,18 @@ const GAIT_SPEED_MULTIPLIER = {
 	MovementGait.SPRINT: 5.0
 }
 
-# Allowed actions for each gait 
-# (strings here are just examples; adapt them to your actual action names)
+## Is the game's internal facing system.
+## North = -z, East = +x, South = +z, West = -x.
+enum FACING {
+	NORTH,
+	EAST,
+	SOUTH,
+	WEST
+}
+
+
+## Allowed actions for each gait 
+## (strings here are just examples; adapt them to your actual action names)
 const GAIT_ALLOWED_ACTIONS = {
 	MovementGait.HOLD_GROUND: ["Attack", "Cast Magic", "Delay", "Dither", "Evade", "Interrupt", "Parry", "Ready Weapon", "Ward Location"],
 	MovementGait.WALK: ["Attack (ranged only)", "Cast Magic (ranged only)", "Delay", "Dither", "Evade", "Interrupt", "Parry", "Ready Weapon", "Ward Location"],
@@ -34,6 +44,27 @@ func get_ability_from_container():
 
 func get_ability_from_unit():
 	pass
+
+
+
+func get_adjacent_tiles_no_diagonal(unit: Unit) -> Array[GridPosition]:
+	var ret_tiles: Array[GridPosition] = []
+	ret_tiles.append(get_back_tile(unit))
+	ret_tiles.append_array(get_side_tiles(unit))
+	ret_tiles.append(get_front_tile(unit))
+
+	return ret_tiles.filter(func(gridpos): return gridpos != null) # Remove null values
+	
+
+func get_adjacent_tiles_with_diagonal(unit: Unit) -> Array[GridPosition]:
+	var ret_tiles: Array[GridPosition] = []
+	ret_tiles.append(get_back_tiles(unit))
+	ret_tiles.append(get_side_tiles(unit))
+	ret_tiles.append(get_front_tiles(unit))
+
+	return ret_tiles.filter(func(gridpos): return gridpos != null) # Remove null values
+
+
 
 func get_front_tiles(unit: Unit) -> Array[GridPosition]:
 	var facing: int = unit.facing
@@ -62,10 +93,31 @@ func get_front_tiles(unit: Unit) -> Array[GridPosition]:
 	return front_tiles.filter(func(gridpos: GridPosition): return gridpos != null)  # Remove null values
 
 
+
+func get_front_tile(unit: Unit) -> GridPosition:
+	var facing: int = unit.facing
+	var grid_position: GridPosition = unit.grid_position
+
+	# Get the grid positions of the three front tiles based on the facing direction
+	match facing:
+		0:  # Facing North
+			return (LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1))      # Center front
+		1:  # Facing East
+			return (LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z))      # Center front
+		2:  # Facing South
+			return (LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z + 1))      # Center front
+		3:  # Facing West
+			return (LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z))      # Center front
+	push_error("Facing not set on ", unit)
+	return null
+
+
+
+
 func get_side_tiles(unit: Unit) -> Array[GridPosition]:
-	var facing = unit.facing
-	var side_tiles = []
-	var grid_position = unit.grid_position
+	var facing: int = unit.facing
+	var side_tiles: Array[GridPosition] = []
+	var grid_position: GridPosition = unit.grid_position
 
 	# Get the grid positions of the side tiles based on the facing direction
 	match facing:
@@ -83,6 +135,8 @@ func get_side_tiles(unit: Unit) -> Array[GridPosition]:
 			side_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1))  # Right
 
 	return side_tiles.filter(func(gridpos): return gridpos != null) # Remove null values
+
+
 
 
 func get_back_tiles(unit: Unit) -> Array[GridPosition]:
@@ -112,14 +166,29 @@ func get_back_tiles(unit: Unit) -> Array[GridPosition]:
 	return back_tiles.filter(func(gridpos: GridPosition): return gridpos != null)  # Remove null values
 
 
+func get_back_tile(unit: Unit) -> GridPosition:
+	var facing: int = unit.facing
+	var grid_position: GridPosition = unit.grid_position
 
+	# Get the grid positions of the three back tiles based on the facing direction
+	match facing:
+		0:  # Facing North
+			return (LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z + 1))      # Center back
+		1:  # Facing East
+			return (LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z))      # Center back
+		2:  # Facing South
+			return (LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1))      # Center back
+		3:  # Facing West
+			return (LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z))      # Center back
+	push_error("Facing not set on ", unit)
+	return null
 
 
 # Functions to get tiles within immidiate range.
 
 func get_right_side_tile(unit: Unit) -> GridPosition:
-	var facing = unit.facing
-	var grid_position = unit.grid_position
+	var facing: int = unit.facing
+	var grid_position: GridPosition = unit.grid_position
 
 	# Get the grid position of the right side tile based on the facing direction
 	match facing:
@@ -131,13 +200,13 @@ func get_right_side_tile(unit: Unit) -> GridPosition:
 			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z)
 		3:  # Facing West
 			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1)
-
+	push_error("Facing not set on ", unit)
 	return null
 
 
 func get_left_side_tile(unit: Unit) -> GridPosition:
-	var facing = unit.facing
-	var grid_position = unit.grid_position
+	var facing: int = unit.facing
+	var grid_position: GridPosition = unit.grid_position
 
 	# Get the grid position of the left side tile based on the facing direction
 	match facing:
@@ -149,7 +218,7 @@ func get_left_side_tile(unit: Unit) -> GridPosition:
 			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z)
 		3:  # Facing West
 			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z + 1)
-
+	push_error("Facing not set on ", unit)
 	return null
 
 
