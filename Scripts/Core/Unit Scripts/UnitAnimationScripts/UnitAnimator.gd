@@ -163,7 +163,7 @@ func left_cast_anim(_in_animation: Animation, in_miss: bool = false) -> void:
 	return
 	# Always add call method tracks for resolving the damage
 	
-func play_animation_by_name(animation_name: String, blend_time: float = 0.5) -> void:
+func play_animation_by_name(animation_name: String, _blend_time: float = 0.5) -> void:
 	# Get the AnimationTree's state machine root
 	var root: AnimationNodeStateMachine = animator_tree.tree_root as AnimationNodeStateMachine
 	if root == null:
@@ -262,8 +262,8 @@ func toggle_slowdown(speed_scale: float = 0.0) -> void:
 
 
 
-func toggle_engine_slowdown(toggle: bool = false) -> void:
-	var speed: float = animator.get_speed_scale()
+func toggle_engine_slowdown(_toggle: bool = false) -> void:
+	#var speed: float = animator.get_speed_scale()
 	if !is_slowed:
 			Engine.set_time_scale(0.01)
 			is_slowed = true
@@ -348,8 +348,8 @@ func move_along_curve_process(delta: float) -> void:
 			rotate_speed = move_rotate_speed  # Default rotation speed
 
 		# Smoothly rotate the unit towards the movement direction
-		var target_rotation = Basis.looking_at(move_direction, Vector3.UP, true)
-		unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
+		var tar_rot = Basis.looking_at(move_direction, Vector3.UP, true)
+		unit.global_transform.basis = unit.global_transform.basis.slerp(tar_rot, delta * rotate_speed)
 		unit.global_transform.basis = unit.global_transform.basis.orthonormalized()
 
 	# Increment the travel offset along the curve
@@ -394,8 +394,8 @@ func rotate_unit_towards_facing(in_facing: int = -1) -> void:
 			rotate_unit_towards_target_position(new_gridpos)
 
 func rotate_unit_towards_target_position_process(delta: float):
-	var target_rotation = Basis.looking_at(facing_direction, Vector3.UP, true)
-	unit.global_transform.basis = unit.global_transform.basis.slerp(target_rotation, delta * rotate_speed)
+	var tar_rot = Basis.looking_at(facing_direction, Vector3.UP, true)
+	unit.global_transform.basis = unit.global_transform.basis.slerp(tar_rot, delta * rotate_speed)
 	unit.global_transform.basis = unit.global_transform.basis.orthonormalized()
 
 	# Check if the rotation is close enough to stop rotating
@@ -411,5 +411,5 @@ func on_start_moving() -> void:
 func on_stop_moving() -> void:
 	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsWalking", false)
 	is_moving = false
-	await get_tree().create_timer(0.2)
+	#await get_tree().create_timer(0.2).timeout
 	movement_completed.emit()

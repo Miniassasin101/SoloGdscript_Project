@@ -14,6 +14,7 @@ var units_to_create_for: Array
 func _ready() -> void:
 	instantiate_stats_bars()
 	SignalBus.update_stat_bars.connect(_on_update_stats_bars)
+	SignalBus.on_ui_update.connect(_on_update_stats_bars)
 
 # Instantiate a stats bar for each unit in the unit manager.
 func instantiate_stats_bars() -> void:

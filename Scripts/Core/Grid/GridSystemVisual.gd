@@ -134,7 +134,7 @@ func update_grid_visual() -> void:
 	selected_ability = UnitActionSystem.instance.get_selected_ability()
 	if selected_ability != null:
 		if UnitActionSystem.instance.selected_unit != null:
-			show_grid_positions(await UnitActionSystem.instance
+			show_grid_positions(UnitActionSystem.instance
 			.selected_unit.ability_container.get_valid_ability_target_grid_position_list(selected_ability)
 			)
 		

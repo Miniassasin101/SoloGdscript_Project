@@ -116,7 +116,7 @@ func can_activate(_event: ActivationEvent) -> bool:
 	if !super.can_activate(_event):
 		return false
 
-	var valid_grid_position_list = await get_valid_ability_target_grid_position_list(_event)
+	var valid_grid_position_list = get_valid_ability_target_grid_position_list(_event)
 	for x: GridPosition in valid_grid_position_list:
 		if x._equals(_event.target_grid_position):
 			return true
@@ -227,28 +227,28 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 		# Filter out blocked or out-of-range squares from front cone.
 		var final_front_cone: Array[GridPosition] = []
 		for fc in front_cone:
-			if Pathfinding.instance.is_walkable(fc) and not LevelGrid.has_any_unit_on_grid_position(fc):
+			if Pathfinding.instance.is_walkable(fc):
 				# We'll do a path cost check later; for now just keep it
 				final_front_cone.append(fc)
 
 		# 2) Make a large shell from behind, remove intersection with the front.
-		var shell_positions = Utilities.get_shell_cone_from_behind(in_unit, max_range)
+		var shell_positions: Array[GridPosition] = Utilities.get_shell_cone_from_behind(in_unit, max_range)
+
 		for fpos in final_front_cone:
 			shell_positions.erase(fpos)  # remove any that appear in front cone
 
 		# 3) Temporarily disable the shell squares that are currently enabled.
-		var actually_disabled = Pathfinding.instance.temporarily_disable(shell_positions)
+		var actually_disabled: Array[GridPosition] = Pathfinding.instance.temporarily_disable(shell_positions)
 
 		# 4) Now check which squares in front_cone are truly reachable 
 		#    (meaning there's a path that doesn't rely on going behind).
 		for candidate: GridPosition in final_front_cone:
 			# If we can path from our current tile to candidate with cost <= max_range, keep it.
 			# (You can also use is_path_available or your path cost logic.)
-			var path_cost = Pathfinding.instance.get_path_cost(self_unit_pos, candidate)
+			var path_cost: float = Pathfinding.instance.get_path_cost(self_unit_pos, candidate)
 			var path_available: bool = Pathfinding.instance.is_path_available(self_unit_pos, candidate)
-			if (path_cost <= max_range and path_cost < INF) and (path_available):
+			if (path_cost <= max_range and path_cost < INF) and (path_available) and not LevelGrid.has_any_unit_on_grid_position(candidate):
 				valid_positions.append(candidate)
-
 
 
 

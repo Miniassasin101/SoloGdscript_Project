@@ -178,5 +178,14 @@ func end_round() -> void:
 	turn_number = 1
 
 	print_debug("Round Ended. New Round Number: ", round_number)
-	start_round()
 	SignalBus.on_round_changed.emit()
+	start_round()
+
+
+
+
+
+
+# Getters and setters
+func get_current_unit() -> Unit:
+	return current_unit_turn

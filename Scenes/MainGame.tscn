@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=40 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -26,7 +26,6 @@
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
-[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/3ds_shaders/PixelationS.gdshader" id="43_hww07"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
 [ext_resource type="Shader" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
 
@@ -40,17 +39,6 @@ material = ExtResource("8_paohs")
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pqthu"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_uo0hi"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mh8jn"]
-render_priority = 0
-shader = ExtResource("43_hww07")
-shader_parameter/jitter = 0.5
-shader_parameter/jitter_z_coordinate = true
-shader_parameter/jitter_depth_independent = true
-shader_parameter/affine_texture_mapping = true
-shader_parameter/alpha_scissor = 1.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_sh5a7"]
 font_size = 25
@@ -135,51 +123,51 @@ script = ExtResource("6_3wgmn")
 script = ExtResource("6_ni1mu")
 
 [node name="SM_Buildings_Wall_1x3_14" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 34.1052, -0.0286835, 2.85341)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 34.1052, -0.0286835, 4.85341)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_18" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(1.14127e-07, 0, -1, 0, 1, 0, 0.870308, 0, 1.31134e-07, 34.1052, -0.0286634, 2.85341)
+transform = Transform3D(1.14127e-07, 0, -1, 0, 1, 0, 0.870308, 0, 1.31134e-07, 34.1052, -0.0286634, 4.85341)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_19" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(7.85433e-09, 0, -1, 0, 1, 0, 0.0598954, 0, 1.31134e-07, 18.7385, -0.0286762, 13.2039)
+transform = Transform3D(7.85433e-09, 0, -1, 0, 1, 0, 0.0598954, 0, 1.31134e-07, 18.7385, -0.0286762, 15.2039)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_26" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(1.67034e-08, 0, -1, 0, 1, 0, 0.127377, 0, 1.31134e-07, 22.9502, -0.0286767, 7.38198)
+transform = Transform3D(1.67034e-08, 0, -1, 0, 1, 0, 0.127377, 0, 1.31134e-07, 22.9502, -0.0286767, 9.38198)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_27" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(1.67034e-08, 0, -1, 0, 1, 0, 0.127377, 0, 1.31134e-07, 22.9502, -0.0286722, 13.382)
+transform = Transform3D(1.67034e-08, 0, -1, 0, 1, 0, 0.127377, 0, 1.31134e-07, 22.9502, -0.0286722, 15.382)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_23" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(7.85433e-09, 0, -6.3953, 0, 1.0232, 0, 0.0598953, 0, 8.38643e-07, 32.7152, -0.0293376, 7.40398)
+transform = Transform3D(7.85433e-09, 0, -6.3953, 0, 1.0232, 0, 0.0598953, 0, 8.38643e-07, 32.7152, -0.0293376, 9.40398)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_24" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(7.85433e-09, 0, -6.3953, 0, 1.0232, 0, 0.0598953, 0, 8.38643e-07, 32.7152, -0.0293313, 15.306)
+transform = Transform3D(7.85433e-09, 0, -6.3953, 0, 1.0232, 0, 0.0598953, 0, 8.38643e-07, 32.7152, -0.0293313, 17.306)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_25" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(0.0598954, 0, 3.10176e-07, 0, 0.270309, 0, -1.04724e-08, 0, 1.774, 23.0946, -0.0077522, 19.6141)
+transform = Transform3D(0.0598954, 0, 3.10176e-07, 0, 0.270309, 0, -1.04724e-08, 0, 1.774, 23.0946, -0.0077522, 21.6141)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_20" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(7.85433e-09, 0, -1, 0, 1, 0, 0.0598954, 0, 1.31134e-07, 10.8153, 0.426486, 13.2652)
+transform = Transform3D(7.85433e-09, 0, -1, 0, 1, 0, 0.0598954, 0, 1.31134e-07, 10.8153, 0.426486, 15.2652)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_21" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(7.85433e-09, 0, -1, 0, 1, 0, 0.0598954, 0, 1.31134e-07, 14.7854, -0.0286795, 13.1818)
+transform = Transform3D(7.85433e-09, 0, -1, 0, 1, 0, 0.0598954, 0, 1.31134e-07, 14.7854, -0.0286795, 15.1818)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_22" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(2.69264e-08, 0, -3.65584, 0, 0.587273, 0, 0.205335, 0, 4.79405e-07, 2.82303, -0.0168598, 13.284)
+transform = Transform3D(2.69264e-08, 0, -3.65584, 0, 0.587273, 0, 0.205335, 0, 4.79405e-07, 2.82303, -0.0168598, 15.284)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_17" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 32.3974, -0.0286664, 26.4515)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 32.3974, -0.0286664, 28.4515)
 metadata/_edit_group_ = true
 
 [node name="MouseWorld" type="Node3D" parent="." node_paths=PackedStringArray("raycast", "mouse_visual")]
@@ -246,6 +234,7 @@ shape = SubResource("ConcavePolygonShape3D_vv6bh")
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.06028, 0)
 script = ExtResource("9_rt187")
+Location_Speed = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("BoxShape3D_pqthu")
@@ -262,11 +251,6 @@ spring_length = 20.0
 [node name="CameraShake" type="Node" parent="Player"]
 script = ExtResource("20_lbku0")
 camera_path = NodePath("../CamOrigin/SpringArm3D/fCamera")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.04805, 1.08465, -3.22367)
-mesh = SubResource("CapsuleMesh_uo0hi")
-surface_material_override/0 = SubResource("ShaderMaterial_mh8jn")
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 

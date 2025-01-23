@@ -60,7 +60,7 @@ func handle_phase(unit: Unit) -> void:
 			on_movement_phase_start.emit()
 			await unit_action_system_ui.on_movement_phase_start()
 			print_debug("Movement Gait determined")
-			await unit_action_system_ui.movement_handler()
+			unit_action_system_ui.movement_handler() # make await later
 			# Handle the logic for Movement Phase
 			await SignalBus.end_turn
 			# End turn after Movement Phase

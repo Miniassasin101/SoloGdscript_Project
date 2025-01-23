@@ -76,6 +76,7 @@ func shoot_projectile() -> void:
 	projectile_instance.target_hit.connect(apply_effect)
 	await unit.get_tree().create_timer(3.0).timeout
 	unit.animator.rotate_unit_towards_facing()
+	LevelGrid.get_unit_at_grid_position(event.target_grid_position).animator.rotate_unit_towards_facing()
 	
 
 	

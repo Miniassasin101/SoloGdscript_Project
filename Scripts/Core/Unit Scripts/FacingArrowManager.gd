@@ -33,8 +33,8 @@ func _process(delta: float) -> void:
 func _on_facing_changed(new_facing: int) -> void:
 	rotate_arrow_towards_facing(new_facing)
 
-func set_arrow_visibility(is_visible: bool) -> void:
-	set_visible(is_visible)
+func set_arrow_visibility(is_vis: bool) -> void:
+	set_visible(is_vis)
 
 # Rotate the arrow towards the unit's new facing direction
 func rotate_arrow_towards_facing(new_facing: int) -> void:
@@ -50,5 +50,5 @@ func rotate_arrow_towards_facing(new_facing: int) -> void:
 			direction = Vector3(-1, 0, 0)
 	
 	# Calculate the target rotation
-	target_rotation = Basis().looking_at(direction, Vector3.UP)
+	target_rotation = Basis.looking_at(direction, Vector3.UP)
 	is_rotating = true

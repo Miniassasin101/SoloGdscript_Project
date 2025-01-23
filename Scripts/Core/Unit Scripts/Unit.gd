@@ -95,7 +95,7 @@ func _ready() -> void:
 
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# Update the unit's grid position if it has moved to a new grid cell.
 	var new_grid_position: GridPosition = LevelGrid.get_grid_position(global_transform.origin)
 	if new_grid_position != grid_position:
@@ -207,9 +207,12 @@ func get_max_move_left() -> float:
 
 func set_distance_moved(val: float) -> void:
 	distance_moved_this_turn = val
+	SignalBus.update_stat_bars.emit()
 
 func add_distance_moved(val: float) -> void:
+	print_debug("Distance Moved: ", val)
 	distance_moved_this_turn += val
+	SignalBus.update_stat_bars.emit()
 	
 
 func set_gait(gait: int) -> void:

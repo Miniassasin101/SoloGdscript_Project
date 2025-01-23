@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ws4usfvbsn2l"]
+[gd_scene load_steps=11 format=3 uid="uid://ws4usfvbsn2l"]
 
 [ext_resource type="ArrayMesh" uid="uid://clq4o2souep2c" path="res://Hero_Game/Art/SelfAssets/WeaponAssets/WeaponMeshes/Greatsword_Cube_001.res" id="1_w1yhh"]
 [ext_resource type="Material" uid="uid://cpccbvm86p68o" path="res://Hero_Game/Art/Materials/CelShadedMat.tres" id="2_g8fl0"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://crk6pkb7e5rwc" path="res://addons/GPUTrail-main/defaults/texture.tres" id="5_oh5wc"]
 [ext_resource type="Texture2D" uid="uid://ct31fhxvcragr" path="res://addons/GPUTrail-main/defaults/curve.tres" id="6_2wqi4"]
 [ext_resource type="Script" path="res://addons/GPUTrail-main/GPUTrail3D.gd" id="7_6i45n"]
-[ext_resource type="Texture2D" uid="uid://b4f26hgvuyt18" path="res://Hero_Game/Art/Textures/Noise Textures/fire_trail_texture.jpg" id="7_8xqg5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_apep7"]
 shader = ExtResource("3_ay403")
@@ -19,7 +18,7 @@ shader = ExtResource("4_gakp0")
 shader_parameter/uv_offset = Vector2(0, 0)
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 shader_parameter/flags = 42
-shader_parameter/tex = ExtResource("7_8xqg5")
+shader_parameter/tex = ExtResource("5_oh5wc")
 shader_parameter/color_ramp = ExtResource("5_oh5wc")
 shader_parameter/curve = ExtResource("6_2wqi4")
 
@@ -33,17 +32,17 @@ skeleton = NodePath("../..")
 surface_material_override/0 = ExtResource("2_g8fl0")
 
 [node name="GPUTrail3D" type="GPUParticles3D" parent="."]
-transform = Transform3D(0.433149, -3.63507e-08, -3.63507e-08, 3.63507e-08, -1.89335e-08, 0.433149, -3.63507e-08, -0.433149, -1.89335e-08, -3.88015e-08, 4.8502e-08, -0.96496)
+transform = Transform3D(0.433149, -3.63507e-08, -3.63507e-08, 3.63507e-08, -1.89335e-08, 0.433149, -3.63507e-08, -0.433149, -1.89335e-08, -3.88015e-08, 4.85019e-08, -0.96496)
 visible = false
-amount = 9
-lifetime = 9.0
+amount = 120
+lifetime = 120.0
 explosiveness = 1.0
+fixed_fps = 120
 process_material = SubResource("ShaderMaterial_apep7")
 draw_pass_1 = SubResource("QuadMesh_68yls")
 script = ExtResource("7_6i45n")
-length = 9
-length_seconds = 0.3
-texture = ExtResource("7_8xqg5")
+length = 120
+length_seconds = 1.0
 color_ramp = ExtResource("5_oh5wc")
 curve = ExtResource("6_2wqi4")
 use_red_as_alpha = true

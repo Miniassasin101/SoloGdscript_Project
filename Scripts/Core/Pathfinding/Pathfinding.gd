@@ -24,8 +24,6 @@ func _ready() -> void:
 	setup_astar()
 
 
-func get_front_cone() -> void:
-	Utilities
 
 
 
@@ -49,8 +47,8 @@ func get_path_package(gridpos: GridPosition, in_unit: Unit = null, to_get_path: 
 # Function to find the path between two grid positions.
 func find_path(start_grid_position: GridPosition, end_grid_position: GridPosition) -> Array[GridPosition]:
 	# Get the point IDs in AStar3D for the start and end positions.
-	var start_id = astar.get_closest_point(pathfinding_grid_system.get_world_position(start_grid_position.x, start_grid_position.z))
-	var end_id = astar.get_closest_point(pathfinding_grid_system.get_world_position(end_grid_position.x, end_grid_position.z))
+	var start_id = get_grid_point_id(start_grid_position)     #astar.get_closest_point(pathfinding_grid_system.get_world_position(start_grid_position.x, start_grid_position.z))
+	var end_id = get_grid_point_id(end_grid_position)    #astar.get_closest_point(pathfinding_grid_system.get_world_position(end_grid_position.x, end_grid_position.z))
 	
 	# Initialize an empty array for the path.
 	var grid_path: Array[GridPosition] = []
@@ -241,7 +239,8 @@ func update_astar_costs() -> void:
 
 # Checks if a path between two grid positions is available.
 func is_path_available(start_grid_position: GridPosition, end_grid_position: GridPosition) -> bool:
-	if find_path(start_grid_position, end_grid_position).size() > 0:
+	var path_size: int = find_path(start_grid_position, end_grid_position).size()
+	if path_size > 0:
 		return true
 	else:
 		return false

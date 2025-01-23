@@ -354,7 +354,7 @@ func get_right_cone(unit: Unit, max_range: int) -> Array[GridPosition]:
 	return right_cone
 
 
-func get_shell_cone_from_behind(unit: Unit, max_range: int) -> Array[GridPosition]:
+func get_shell_cone_from_behind(unit: Unit, max_range: float) -> Array[GridPosition]:
 	var shell_positions: Array[GridPosition] = []
 	var behind_pos: GridPosition = get_back_tile(unit)
 	if behind_pos == null:
@@ -388,6 +388,7 @@ func get_shell_cone_from_behind(unit: Unit, max_range: int) -> Array[GridPositio
 
 			if temp_pos != null and LevelGrid.is_valid_grid_position(temp_pos):
 				shell_positions.append(temp_pos)
+	shell_positions.append_array(get_back_tiles(unit))
 	return shell_positions
 
 

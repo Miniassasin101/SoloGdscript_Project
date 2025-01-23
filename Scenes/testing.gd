@@ -177,9 +177,9 @@ func toggle_difficult_terrain() -> void:
 # Prints out all of the stats of the unit under the mouse
 func print_statblock() -> void:
 	var result = mouse_world.get_mouse_raycast_result("position")
-	var unit: Unit = LevelGrid.get_unit_at_grid_position(pathfinding.pathfinding_grid_system.get_grid_position(result))
-	var attributes_dict = unit.attribute_map.get_attributes_dict()
-	print(unit.name)
+	var in_unit: Unit = LevelGrid.get_unit_at_grid_position(pathfinding.pathfinding_grid_system.get_grid_position(result))
+	var attributes_dict = in_unit.attribute_map.get_attributes_dict()
+	print(in_unit.name)
 	for attribute_name in attributes_dict.keys():
 		var attribute_value = attributes_dict[attribute_name]
 		print(attribute_name, ": ", attribute_value)
@@ -241,7 +241,7 @@ func equip_weapon() -> void:
 		testbool = true
 		return
 	test_unit.equipment.equip(testitem)
-	var slot: EquipmentSlot = test_unit.equipment.find_slot_by_item(testitem)
+	#var slot: EquipmentSlot = test_unit.equipment.find_slot_by_item(testitem)
 	testbool = false
 	test_unit.holding_weapon = true
 	test_unit.update_weapon_anims()

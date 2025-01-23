@@ -16,7 +16,7 @@ var Zoom_Interp: float
 
 # Location variables
 var Location_Desired: Vector3
-var Location_Speed: float
+@export var Location_Speed: float = 1.0
 var Location_Interp: float
 # Rotation variables
 var Rotation_Desired: Vector3
@@ -42,7 +42,7 @@ func _ready():
 	
 	# Initialize location and rotation to the current transform of the CharacterBody3D
 	Location_Desired = transform.origin
-	Location_Speed = 1.0
+	#Location_Speed = 1.0
 	Location_Interp = 5
 	
 	Rotation_Desired = rotation

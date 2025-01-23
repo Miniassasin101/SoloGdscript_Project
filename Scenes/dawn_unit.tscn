@@ -3519,7 +3519,7 @@ bones/172/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.499914, 0.0451254, -0.864899, -0.736484, 0.547621, -0.397118, 0.455717, 0.835509, 0.306997, 0.265639, 1.14937, 0.234829)
+transform = Transform3D(0.504231, 0.0488865, -0.862184, -0.735877, 0.546806, -0.399359, 0.451925, 0.835831, 0.311691, 0.268133, 1.15607, 0.234954)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3527,7 +3527,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.485119, 0.595365, 0.640469, 0.817753, 0.568313, 0.0911095, -0.309743, 0.567944, -0.762561, -0.147671, 1.23439, 0.37222)
+transform = Transform3D(-0.485857, 0.592687, 0.64239, 0.819254, 0.564923, 0.0984102, -0.304574, 0.574094, -0.760033, -0.146359, 1.24149, 0.372205)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3540,7 +3540,7 @@ unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.832294, 0.0132677, 0.554176, 0.00830176, 0.999303, -0.0363927, -0.554273, 0.0348901, 0.831603, -0.000302876, 1.02651, 0.0102607)
+transform = Transform3D(0.831672, 0.00676885, 0.555227, 0.00423711, 0.999819, -0.0185358, -0.555252, 0.0177682, 0.831493, 0.000107516, 1.0437, 0.00124779)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 
@@ -3580,6 +3580,7 @@ skin = SubResource("Skin_uciyu")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Hair Tufts_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_vxjig")
 skin = SubResource("Skin_uciyu")
 surface_material_override/0 = ExtResource("3_bhmb0")
