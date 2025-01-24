@@ -76,16 +76,18 @@ func shoot_projectile() -> void:
 	projectile_instance.target_hit.connect(apply_effect)
 	await unit.get_tree().create_timer(3.0).timeout
 	unit.animator.rotate_unit_towards_facing()
-	LevelGrid.get_unit_at_grid_position(event.target_grid_position).animator.rotate_unit_towards_facing()
+	SignalBus.rotate_unit_towards_facing.emit(LevelGrid.get_unit_at_grid_position(event.target_grid_position))
+
 	
 
 	
 
 func apply_effect() -> void:
+	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	# creating a new [GameplayEffect] resource
-	var effect = GameplayEffect.new()
+	var effect: GameplayEffect = GameplayEffect.new()
 	# creating a new [AttributeEffect] resource
-	var health_effect = AttributeEffect.new()
+	var health_effect: AttributeEffect = AttributeEffect.new()
 	
 	health_effect.attribute_name = "health"
 	health_effect.minimum_value = -event.rolled_damage
@@ -102,7 +104,8 @@ func apply_effect() -> void:
 	effect.attributes_affected.append(health_effect)
 	effect.attributes_affected.append(part_effect)
 	
-	LevelGrid.get_unit_at_grid_position(event.target_grid_position).add_child(effect)
+	target_unit.add_child(effect)
+	super.spawn_damage_label(target_unit, event.rolled_damage)
 	
 	if can_end(event):
 		event.successful = true

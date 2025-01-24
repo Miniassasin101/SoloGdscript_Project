@@ -230,3 +230,4 @@ func apply_effect() -> void:
 	var target_unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	if target_unit:
 		target_unit.add_child(effect)
+	super.spawn_damage_label(target_unit, event.rolled_damage)

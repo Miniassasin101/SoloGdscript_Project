@@ -14,6 +14,8 @@ var initiative_order: Array[Unit] = []
 @export var marker_visibility_time: float = 1.5
 @export_category("References")
 @export var unit_action_system_ui: UnitActionSystemUI
+@export_category("Special Effects")
+@export var special_effects: Array[SpecialEffect]
 
 
 # NOTE: Maybe add a idle phase for before battle
@@ -144,10 +146,23 @@ func reaction(reacting_unit: Unit, attacking_unit: Unit) -> int:
 
 
 
+func prompt_special_effect_choice(event: ActivationEvent) -> ActivationEvent:
+	#here the ui will be prompted for the user to choose a number of special effects equal to the degree of level of success
+	var ret_effects: Array[SpecialEffect] = []
+	for effect: SpecialEffect in special_effects:
+		if effect.can_activate(event):
+			ret_effects.append(effect)
+	event.special_effects.append_array(ret_effects)
+	SignalBus.on_player_special_effect.emit(event.winning_unit, ret_effects)
+	await SignalBus.special_effects_chosen
+	return event
+
+
 func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var weapon: Weapon = event.weapon
 	var attacking_unit: Unit = event.character
 	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
+	event.target_unit = target_unit
 
 	var attacker_combat_skill = event.attribute_map.get_attribute_by_name("combat_skill").current_buffed_value
 	var attacker_roll: int = Utilities.roll(100)
@@ -163,7 +178,11 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	if attacker_success_level <= 0:
 		print_debug("Attacker missed.")
 		ret_event.miss = true
-
+	ret_event.attacker_success_level = attacker_success_level
+	if attacker_success_level == 2:
+		ret_event.attacker_critical = true
+	elif attacker_success_level == -1:
+		ret_event.attacker_fumble = true
 	# Show Attacker's marker
 	show_success(attacking_unit, attacker_success_level)
 
@@ -183,10 +202,18 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 			parry_success = true
 		if !target_unit.equipment.equipped_items.is_empty():
 			parrying_weapon_size = target_unit.equipment.equipped_items.front().size
+	
+	ret_event.defender_success_level = defender_success_level
+	if defender_success_level == 2:
+		ret_event.defender_critical = true
+	elif defender_success_level == -1:
+		ret_event.defender_fumble = true
+	
 	hide_all_success_level()
 
 	if !defender_wants_reaction:
 		return ret_event
+
 	if LevelDebug.instance.parry_fail_debug:
 		parry_success = false
 	var hit_location: BodyPart = get_hit_location(target_unit)
@@ -202,16 +229,22 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	
 	if differential > 0:
 		print_debug("Attacker wins. Applying damage. Also prompt special effects")
-
-		ret_event.rolled_damage = roll_damage(action, event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
+		ret_event.set_winning_unit(attacking_unit)
+		await prompt_special_effect_choice(ret_event)
+		
+		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
 
 	elif differential == 0:
 		print_debug("It's a tie - no special effects.")
-		ret_event.rolled_damage = roll_damage(action, event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
+		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
 
 	else:
 		print_debug("Defender wins. Prompt Special Effects")
-		ret_event.rolled_damage = roll_damage(action, event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
+		
+		ret_event.set_winning_unit(target_unit)
+		await prompt_special_effect_choice(ret_event)
+		
+		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
 
 	
 	return ret_event

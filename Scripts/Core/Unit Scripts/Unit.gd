@@ -10,6 +10,7 @@ signal facing_changed(new_facing: int)
 # Variables
 var action_system: UnitActionSystem
 
+@export var ui_name: String = "null"
 @export_category("References")
 @export var skeleton: Skeleton3D
 @export var animator: UnitAnimator
@@ -17,6 +18,7 @@ var action_system: UnitActionSystem
 @export var inventory: Inventory
 @export var equipment: Equipment
 @export var color_marker: ColorMarker
+@export var chest_marker: Marker3D
 
 @export_category("Sockets")
 @export var right_hand_socket: Node3D
@@ -35,7 +37,6 @@ var grid_position: GridPosition:
 		print_debug("New Grid Position: ", val.to_str())
 		grid_position = val
 var is_holding: bool = false
-@export var unit_name: String = "null"
 # Reference to the action array node attached to this unit.
 var target_unit: Unit
 
@@ -90,6 +91,7 @@ func _ready() -> void:
 	animator.weapon_setup(holding_weapon)
 	SignalBus.on_round_changed.connect(on_round_changed)
 	SignalBus.on_cycle_changed.connect(on_reset_distance_moved)
+	SignalBus.rotate_unit_towards_facing.connect(on_rotate_unit_toward_facing)
 	SignalBus.add_unit.emit(self)
 
 
@@ -158,6 +160,10 @@ func on_round_changed() -> void:
 	SignalBus.emit_signal("action_points_changed")
 	SignalBus.emit_signal("update_stat_bars")
 
+func on_rotate_unit_toward_facing(in_unit: Unit) -> void:
+	if self == in_unit:
+		animator.rotate_unit_towards_facing()
+
 # Setters and Getters
 func _to_string() -> String:
 	# Return the unit's name as a string representation.
@@ -190,6 +196,8 @@ func get_action_system() -> UnitActionSystem:
 	return action_system
 
 
+func get_world_position_chest() -> Vector3:
+	return chest_marker.global_position
 
 func get_target_position_with_offset(height_offset: float) -> Vector3:
 	var target_position = global_position
@@ -204,6 +212,8 @@ func get_max_move_left() -> float:
 	var speed_multiplier = Utilities.GAIT_SPEED_MULTIPLIER.get(current_gait)
 	return ((move_rate * speed_multiplier)/2) - distance_moved_this_turn
 
+func get_random_hit_location() -> BodyPart:
+	return body.roll_hit_location()
 
 func set_distance_moved(val: float) -> void:
 	distance_moved_this_turn = val

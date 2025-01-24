@@ -4,18 +4,22 @@ extends Node
 
 signal continue_turn
 
-@export_category("Refrerences")
+@export_category("References")
 @export var turn_system_ui: TurnSystemUI
 
-
-@export_category("")
 @export var action_button_prefab: PackedScene
+@export var special_effect_button_prefab: PackedScene
 @export var action_button_container: BoxContainer
 @export var reaction_button_container: BoxContainer
 @export var gait_button_container: BoxContainer
+@export var special_effect_button_container: HBoxContainer
 @export var ability_points_text: Label
+
+@export_category("")
 var selected_unit: Unit
 var reacting_unit: Unit = null
+
+var special_effects: Array[SpecialEffect]
 
 
 
@@ -24,6 +28,7 @@ func _ready() -> void:
 	SignalBus.action_points_changed.connect(_update_ability_points)
 	SignalBus.on_turn_changed.connect(on_turn_changed)
 	SignalBus.on_player_reaction.connect(on_player_reaction)
+	SignalBus.on_player_special_effect.connect(on_player_special_effect)
 	SignalBus.gait_selected.connect(on_gait_selected)
 	
 	SignalBus.on_ui_update.connect(on_ui_update)
@@ -33,8 +38,7 @@ func _ready() -> void:
 	create_unit_action_buttons()
 	create_unit_reaction_buttons()
 	_update_ability_points()
-	reaction_button_container.visible = false
-	gait_button_container.visible = false
+	toggle_containers_visibility_off_except(action_button_container)
 
 
 func on_ui_update() -> void:
@@ -134,6 +138,17 @@ func create_unit_reaction_buttons() -> void:
 			reaction_button_container.add_child(ability_button_ui)
 
 
+func create_unit_special_effect_buttons() -> void:
+	if !reacting_unit:
+		return
+	for special_effect_button: SpecialEffectButtonUI in special_effect_button_container.get_children():
+		special_effect_button.queue_free()
+	
+	for effect: SpecialEffect in special_effects:
+		var effect_button_ui: SpecialEffectButtonUI = special_effect_button_prefab.instantiate()
+		effect_button_ui.set_special_effect(effect)
+		special_effect_button_container.add_child(effect_button_ui)
+
 
 func on_selected_unit_changed(unit: Unit) -> void:
 	selected_unit = unit
@@ -143,32 +158,49 @@ func on_selected_unit_changed(unit: Unit) -> void:
 
 
 func on_player_reaction(unit: Unit) -> void:
-	reaction_button_container.visible = true
-	action_button_container.visible = false
+	toggle_containers_visibility_off_except(reaction_button_container)
 	reacting_unit = unit
 	print_debug("Selected Unit Ui Is: ", unit._to_string())
 	create_unit_reaction_buttons()
 	await SignalBus.reaction_selected
 	print_debug("Reaction Selected")
-	reaction_button_container.visible = false
-	#action_button_container.visible = true
+	toggle_containers_visibility_off_except()
+
+
+## This function is passed a unit and a parsed list of special effects to choose from before emmitting the chosen effect.
+func on_player_special_effect(unit: Unit, in_special_effects: Array[SpecialEffect]) -> void:
+	toggle_containers_visibility_off_except(special_effect_button_container)
+	reacting_unit = unit
+	special_effects = in_special_effects
+	print_debug("Selected Unit Ui Is: ", unit._to_string())
+	create_unit_special_effect_buttons()
+	await get_tree().create_timer(5.0).timeout
+	print_debug("finished")
+
 
 
 func on_movement_phase_start() -> void:
 	#await get_tree().create_timer(0.2).timeout
-	action_button_container.set_visible(false)
-	gait_button_container.set_visible(true)
+	#action_button_container.set_visible(false)
+	#gait_button_container.set_visible(true)
+	toggle_containers_visibility_off_except(gait_button_container)
 	var cycle_num: int = TurnSystem.instance.current_cycle
 	if cycle_num >= 3: 
 		movement_phase_late_cycle() # NOTE: make await later.
 	elif (cycle_num == 1) or ((TurnSystem.instance.current_unit_turn.current_gait == Utilities.MovementGait.HOLD_GROUND) and cycle_num == 2):
 		await movement_phase_first_two_cycles()
-	action_button_container.set_visible(true)
-	gait_button_container.set_visible(false)
+	toggle_containers_visibility_off_except(action_button_container)
 	return
 
 
-
+func toggle_containers_visibility_off_except(container: Container = null) -> void:
+	action_button_container.set_visible(false)
+	gait_button_container.set_visible(false)
+	reaction_button_container.set_visible(false)
+	special_effect_button_container.set_visible(false)
+	
+	if container:
+		container.set_visible(true)
 
 
 func movement_phase_late_cycle() -> void:

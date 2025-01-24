@@ -12,8 +12,14 @@ extends Node3D
 @onready var unit_stats_ui: UnitStatsUI = $"../UILayer/UnitStatsUI"
 
 @export var animlib: Array[Animation]
+
+@export var special_effects: Array[SpecialEffect]
+
+
 var testbool: bool = false
 var timescalebool: bool = false
+
+
 # Called every frame
 func _process(_delta: float) -> void:
 	test_pathfinding()
@@ -209,17 +215,20 @@ func test_n() -> void:
 
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
-		#open_character_sheet()
+		open_character_sheet()
 		#equip_weapon()
-		print_debug(unit.get_grid_position().to_str())
-		print_debug(unit.get_world_position())
+		#open_special_effect_buttons()
+		pass
+
+
 
 func test_shift_c() -> void:
 	if Input.is_action_just_pressed("testkey_shift_c"):
 		#open_character_sheet()
 		pass
 
-
+func open_special_effect_buttons() -> void:
+	SignalBus.on_player_special_effect.emit(unit, special_effects)
 
 func equip_weapon() -> void:
 	# Grab the unit under the mouse or whichever unit you want

@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=47 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Pathfinding/ObstacleManager.gd" id="6_ni1mu"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/TurnSystem.gd" id="6_rwbm0"]
 [ext_resource type="PackedScene" uid="uid://b37juamn5pbrv" path="res://WallTestInst.tscn" id="7_snusx"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/AccidentalInjuryEffect.gd" id="8_3ubv2"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitAI/UnitAI.gd" id="8_kmwtl"]
 [ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="8_paohs"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="9_rt187"]
@@ -20,14 +21,28 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
 [ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/UI_Prefabs/ActionButtonUI.tscn" id="11_jk6uv"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
-[ext_resource type="Script" path="res://Hero_Game/Scenes/CombatSystem.gd" id="16_f3oa4"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/CombatSystem.gd" id="16_f3oa4"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffect.gd" id="18_hnk25"]
+[ext_resource type="Resource" uid="uid://cjxj1gnefr71c" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/AccidentalInjuryEffectResource.tres" id="19_xdtf5"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
+[ext_resource type="Script" path="res://Hero_Game/Scenes/UILayer.gd" id="21_3ffgk"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
+[ext_resource type="PackedScene" uid="uid://bs8kc22xgwd2d" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.tscn" id="22_67ysf"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
+[ext_resource type="PackedScene" uid="uid://bc3pj0ahlf2m6" path="res://Hero_Game/Prefabs/UI_Prefabs/SpecialEffectButtonUI.tscn" id="27_naquh"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
 [ext_resource type="Shader" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
+
+[sub_resource type="Resource" id="Resource_vhtwd"]
+script = ExtResource("8_3ubv2")
+ui_name = &"Injury"
+activation_phase = 1
+activation_allowed = 2
+weapon_types_allowed = Array[String]([])
+stackable = false
+roll_required = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_owyi7"]
 material = ExtResource("5_y067e")
@@ -86,6 +101,8 @@ size = Vector2(2, 2)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
+attacker_success_debug = true
+parry_fail_debug = true
 auto_equip_debug = true
 grid_dimensions = Vector2(15, 10)
 
@@ -113,6 +130,7 @@ GRID_CELL_VISUAL = ExtResource("4_85pbp")
 script = ExtResource("3_vw71g")
 unit = NodePath("../UnitManager/DawnUnit")
 animlib = Array[Animation]([ExtResource("5_o3n5o")])
+special_effects = Array[ExtResource("18_hnk25")]([SubResource("Resource_vhtwd")])
 
 [node name="Pathfinding" type="Node" parent="."]
 script = ExtResource("6_3wgmn")
@@ -199,15 +217,15 @@ unit_action_system = NodePath("../UnitActionSystem")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, 6)
-unit_name = "Dawn1"
+ui_name = "Blue"
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
-unit_name = "Dawn2"
+ui_name = "Red"
 
 [node name="DawnUnit3" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 6)
-unit_name = "Dawn3"
+ui_name = "Green"
 is_enemy = true
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
@@ -217,6 +235,7 @@ unit_manager = NodePath("../UnitManager")
 [node name="CombatSystem" type="Node" parent="." node_paths=PackedStringArray("unit_action_system_ui")]
 script = ExtResource("16_f3oa4")
 unit_action_system_ui = NodePath("../UILayer/UnitActionSystemUI")
+special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5")])
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(32.7711, -2.64261e-05, 0.046329, 2.63892e-05, 32.7711, 2.57785e-05, -0.046329, -2.57406e-05, 32.7711, 24.867, 0, 26.089)
@@ -253,8 +272,10 @@ script = ExtResource("20_lbku0")
 camera_path = NodePath("../CamOrigin/SpringArm3D/fCamera")
 
 [node name="UILayer" type="CanvasLayer" parent="."]
+script = ExtResource("21_3ffgk")
+damage_number_scene = ExtResource("22_67ysf")
 
-[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system_ui", "action_button_container", "reaction_button_container", "gait_button_container", "ability_points_text")]
+[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system_ui", "action_button_container", "reaction_button_container", "gait_button_container", "special_effect_button_container", "ability_points_text")]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -271,9 +292,11 @@ mouse_filter = 2
 script = ExtResource("10_nqefp")
 turn_system_ui = NodePath("../TurnSystemUI")
 action_button_prefab = ExtResource("11_jk6uv")
+special_effect_button_prefab = ExtResource("27_naquh")
 action_button_container = NodePath("ActionButtonsContainer")
 reaction_button_container = NodePath("ReactionButtonsContainer")
 gait_button_container = NodePath("GaitButtonsContainer")
+special_effect_button_container = NodePath("ScrollContainer/SpecialEffectButtonsContainer")
 ability_points_text = NodePath("AbilityPointsLabel")
 metadata/_edit_use_anchors_ = true
 
@@ -335,6 +358,28 @@ theme_override_constants/separation = 12
 alignment = 1
 
 [node name="GaitButtonUI" parent="UILayer/UnitActionSystemUI/GaitButtonsContainer" instance=ExtResource("11_jk6uv")]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UILayer/UnitActionSystemUI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -280.0
+offset_right = 319.0
+offset_bottom = 61.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="SpecialEffectButtonsContainer" type="HBoxContainer" parent="UILayer/UnitActionSystemUI/ScrollContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="SpecialEffectButtonUI" parent="UILayer/UnitActionSystemUI/ScrollContainer/SpecialEffectButtonsContainer" instance=ExtResource("27_naquh")]
 layout_mode = 2
 
 [node name="AbilityPointsLabel" type="Label" parent="UILayer/UnitActionSystemUI"]

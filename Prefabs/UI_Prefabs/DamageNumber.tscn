@@ -1,0 +1,131 @@
+[gd_scene load_steps=5 format=3 uid="uid://bs8kc22xgwd2d"]
+
+[ext_resource type="Script" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.gd" id="1_b8o46"]
+
+[sub_resource type="Animation" id="Animation_2hhp2"]
+resource_name = "DamageNumberAnim"
+length = 3.33334
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 1.5, 2.43333),
+"transitions": PackedFloat32Array(1, 0.353553, 0.353553, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(3, 3), Vector2(3, 3), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.566667, 0.833333, 1, 2.43333),
+"transitions": PackedFloat32Array(1, 0.435275, 1, 0.965936, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(35, -45), Vector2(65.5101, -64.0688), Vector2(67, -65), Vector2(67.6888, -64.3112), Vector2(73, -59)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Node2D/DamageNumber:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 1.66667, 2.43333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.89, 0.19224, 0.1424, 0.0470588), Color(0.89, 0.19224, 0.1424, 1), Color(0.89, 0.19224, 0.1424, 1), Color(0.89, 0.19224, 0.1424, 0)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(3.33333),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_eswh3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.3, 0.3)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Node2D/DamageNumber:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.89, 0.19224, 0.1424, 0.0470588)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0w07m"]
+_data = {
+"DamageNumberAnim": SubResource("Animation_2hhp2"),
+"RESET": SubResource("Animation_eswh3")
+}
+
+[node name="Damage_Number_Root" type="Control" node_paths=PackedStringArray("animator", "number_label")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_b8o46")
+animator = NodePath("AnimationPlayer")
+number_label = NodePath("Node2D/DamageNumber")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0w07m")
+}
+
+[node name="Node2D" type="Node2D" parent="."]
+scale = Vector2(0.3, 0.3)
+
+[node name="DamageNumber" type="Label" parent="Node2D"]
+self_modulate = Color(0.89, 0.19224, 0.1424, 0.0470588)
+offset_left = -21.0
+offset_top = -11.3333
+offset_right = 64.0
+offset_bottom = 30.6667
+scale = Vector2(0.5, 0.5)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 30
+text = "420
+"
+horizontal_alignment = 1

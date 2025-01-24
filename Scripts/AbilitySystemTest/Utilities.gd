@@ -484,3 +484,21 @@ func lookup_table_value(derived_from: Array[StringName], table: Dictionary, spec
 	else:
 		push_error("Key '%s' not found in lookup table." % key)
 		return -1
+
+
+
+func spawn_damage_label(in_unit: Unit, damage_val: float) -> void:
+	var chest_pos: Vector3 = in_unit.get_world_position_chest()
+	var camera: Camera3D = MouseWorld.instance.camera
+	# Assume 'camera' is a reference to your Camera3D node
+	var screen_pos: Vector2 = camera.unproject_position(chest_pos)
+	
+	# Now instance the label
+	var damage_label_scene: PackedScene = UILayer.instance.damage_number_scene
+	var damage_label = damage_label_scene.instantiate() as DamageNumber
+	UILayer.instance.add_child(damage_label)
+	# Position it in screen-space
+	damage_label.set_position(screen_pos)
+	
+	# Initialize the label's text, color, etc.
+	damage_label.play(str(damage_val))

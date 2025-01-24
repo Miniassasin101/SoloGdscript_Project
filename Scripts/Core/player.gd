@@ -67,6 +67,10 @@ func _physics_process(delta: float):
 	# Interpolate rotation using shortest path
 	update_rotation(delta)
 
+	var hovered_control = get_viewport().gui_get_hovered_control()
+	if hovered_control != null:
+		return
+	
 	# Handle player movement
 	handle_movement()
 

@@ -8,22 +8,21 @@
 [ext_resource type="Texture2D" uid="uid://ct31fhxvcragr" path="res://addons/GPUTrail-main/defaults/curve.tres" id="6_2wqi4"]
 [ext_resource type="Script" path="res://addons/GPUTrail-main/GPUTrail3D.gd" id="7_6i45n"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_apep7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_auytw"]
 shader = ExtResource("3_ay403")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_834dn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yknik"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_gakp0")
 shader_parameter/uv_offset = Vector2(0, 0)
 shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
-shader_parameter/flags = 42
-shader_parameter/tex = ExtResource("5_oh5wc")
+shader_parameter/flags = 40
 shader_parameter/color_ramp = ExtResource("5_oh5wc")
 shader_parameter/curve = ExtResource("6_2wqi4")
 
-[sub_resource type="QuadMesh" id="QuadMesh_68yls"]
-material = SubResource("ShaderMaterial_834dn")
+[sub_resource type="QuadMesh" id="QuadMesh_e5p4i"]
+material = SubResource("ShaderMaterial_yknik")
 
 [node name="Greatsword" type="MeshInstance3D"]
 transform = Transform3D(1.38456, 2.79835e-15, -5.56739e-08, 0, 1.38456, 6.95924e-08, 5.56739e-08, -6.95924e-08, 1.38456, 0, 0, 0)
@@ -31,19 +30,18 @@ mesh = ExtResource("1_w1yhh")
 skeleton = NodePath("../..")
 surface_material_override/0 = ExtResource("2_g8fl0")
 
-[node name="GPUTrail3D" type="GPUParticles3D" parent="."]
-transform = Transform3D(0.433149, -3.63507e-08, -3.63507e-08, 3.63507e-08, -1.89335e-08, 0.433149, -3.63507e-08, -0.433149, -1.89335e-08, -3.88015e-08, 4.85019e-08, -0.96496)
+[node name="GPUTrail3D2" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.596289, -2.39771e-08, -2.39771e-08, 2.39771e-08, -2.60646e-08, 0.596289, -2.39771e-08, -0.596289, -2.60646e-08, -3.26579e-08, 4.08225e-08, -0.812174)
 visible = false
-amount = 120
-lifetime = 120.0
+amount = 90
+lifetime = 90.0
 explosiveness = 1.0
-fixed_fps = 120
-process_material = SubResource("ShaderMaterial_apep7")
-draw_pass_1 = SubResource("QuadMesh_68yls")
+fixed_fps = 180
+process_material = SubResource("ShaderMaterial_auytw")
+draw_pass_1 = SubResource("QuadMesh_e5p4i")
 script = ExtResource("7_6i45n")
-length = 120
-length_seconds = 1.0
+length = 90
+length_seconds = 0.5
 color_ramp = ExtResource("5_oh5wc")
 curve = ExtResource("6_2wqi4")
-use_red_as_alpha = true
 _defaults_have_been_set = true

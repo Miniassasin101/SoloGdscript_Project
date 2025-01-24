@@ -30,12 +30,17 @@ signal on_phase_changed
 
 signal on_ui_update ## updates all ui
 
+signal rotate_unit_towards_facing(unit: Unit)
 
 signal next_phase
 
 signal continue_turn
 
 signal on_player_reaction
+
+signal on_player_special_effect(unit: Unit, special_effects: Array[SpecialEffect])
+
+signal special_effects_chosen
 
 signal reaction_selected
 

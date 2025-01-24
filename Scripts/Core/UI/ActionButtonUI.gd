@@ -13,7 +13,8 @@ enum SpecialCase {
 	NONE,
 	GAIT,
 	NO_AP,
-	REACTION
+	REACTION,
+	SPECIAL_EFFECT
 }
 
 var special_case: int = SpecialCase.NONE
