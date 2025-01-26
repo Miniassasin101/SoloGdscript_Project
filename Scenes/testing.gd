@@ -63,8 +63,9 @@ func handle_right_mouse_click() -> void:
 		#toggle_engine_speed()
 		#make_tiles_red()
 		#make_cone_tiles_red()
-		turn_unit_towards_facing()
+		#turn_unit_towards_facing()
 		#set_facing()
+		pass
 
 func set_facing() -> void:
 	unit.set_facing()

@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://4uwpx7r25fdg"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlotContainer.gd" id="1_nas4y"]
+[ext_resource type="PackedScene" uid="uid://bc3pj0ahlf2m6" path="res://Hero_Game/Prefabs/UI_Prefabs/DroppablePanelUI.tscn" id="2_n1fnh"]
+[ext_resource type="PackedScene" uid="uid://4oeb7dptn08v" path="res://Hero_Game/Prefabs/UI_Prefabs/MouseEventDroppableSlot.tscn" id="3_c1mim"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qr5px"]
+bg_color = Color(0.0847337, 0.652103, 0.871968, 1)
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0.09, 0.09, 0.09, 0.643137)
+shadow_size = 4
+
+[node name="MouseEventDroppableSlotContainer" type="PanelContainer" node_paths=PackedStringArray("slot_hbox_container")]
+offset_right = 68.0
+offset_bottom = 68.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qr5px")
+script = ExtResource("1_nas4y")
+slot_hbox_container = NodePath("MarginContainer/MouseEventDroppableSlotHContainer")
+droppable_panel_prefab = ExtResource("2_n1fnh")
+mouse_event_droppable_slot = ExtResource("3_c1mim")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="MouseEventDroppableSlotHContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="MouseEventDroppableSlot" parent="MarginContainer/MouseEventDroppableSlotHContainer" instance=ExtResource("3_c1mim")]
+layout_mode = 2
+
+[node name="DroppablePanelUI" parent="MarginContainer/MouseEventDroppableSlotHContainer/MouseEventDroppableSlot" instance=ExtResource("2_n1fnh")]
+layout_mode = 2

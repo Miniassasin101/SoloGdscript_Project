@@ -145,15 +145,16 @@ func reaction(reacting_unit: Unit, attacking_unit: Unit) -> int:
 	return defender_success_level
 
 
-
-func prompt_special_effect_choice(event: ActivationEvent) -> ActivationEvent:
+## Prompts the ui for the user to choose their special effects.
+## The abs_def is the number of success levels difference there were, determining how many special effects can be chosen.
+func prompt_special_effect_choice(event: ActivationEvent, abs_dif: int) -> ActivationEvent:
 	#here the ui will be prompted for the user to choose a number of special effects equal to the degree of level of success
 	var ret_effects: Array[SpecialEffect] = []
 	for effect: SpecialEffect in special_effects:
 		if effect.can_activate(event):
 			ret_effects.append(effect)
 	event.special_effects.append_array(ret_effects)
-	SignalBus.on_player_special_effect.emit(event.winning_unit, ret_effects)
+	SignalBus.on_player_special_effect.emit(event.winning_unit, ret_effects, abs_dif)
 	await SignalBus.special_effects_chosen
 	return event
 
@@ -226,11 +227,12 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	# FIXME: rn on a fail and crit fail a special effect is gotten
 	# Determine success differential
 	var differential: int = attacker_success_level - defender_success_level
-	
+	var abs_dif: int = abs(differential) # shows by how much the success was
 	if differential > 0:
 		print_debug("Attacker wins. Applying damage. Also prompt special effects")
 		ret_event.set_winning_unit(attacking_unit)
-		await prompt_special_effect_choice(ret_event)
+
+		await prompt_special_effect_choice(ret_event, abs_dif)
 		
 		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
 
@@ -242,7 +244,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		print_debug("Defender wins. Prompt Special Effects")
 		
 		ret_event.set_winning_unit(target_unit)
-		await prompt_special_effect_choice(ret_event)
+		await prompt_special_effect_choice(ret_event, abs_dif)
 		
 		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
 

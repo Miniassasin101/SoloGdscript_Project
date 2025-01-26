@@ -19,7 +19,6 @@ corner_radius_bottom_left = 3
 corner_detail = 5
 shadow_size = 2
 shadow_offset = Vector2(1, 1)
-anti_aliasing = false
 
 [node name="ActionButtonUI" type="Button" node_paths=PackedStringArray("button_text", "button")]
 custom_minimum_size = Vector2(60, 60)

@@ -3520,7 +3520,7 @@ bones/172/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.499923, 0.0451825, -0.864891, -0.736437, 0.547727, -0.39706, 0.455783, 0.835437, 0.307095, 0.265733, 1.14932, 0.234846)
+transform = Transform3D(0.602562, 0.08448, -0.793588, -0.68314, 0.56869, -0.458161, 0.4126, 0.818202, 0.400383, 0.278647, 1.16463, 0.243803)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3528,7 +3528,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.48511, 0.595368, 0.640473, 0.817683, 0.568443, 0.090923, -0.30994, 0.567811, -0.76258, -0.147637, 1.23441, 0.372209)
+transform = Transform3D(-0.523122, 0.544078, 0.65599, 0.812617, 0.55044, 0.19149, -0.256899, 0.633241, -0.730074, -0.142348, 1.24689, 0.382159)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3541,7 +3541,7 @@ unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.832299, 0.013322, 0.554167, 0.00833571, 0.999297, -0.0365423, -0.554265, 0.0350335, 0.831603, -0.000333754, 1.02633, 0.0107135)
+transform = Transform3D(0.831536, 0.00531807, 0.555445, 0.00332924, 0.999888, -0.0145574, -0.555461, 0.0139542, 0.831425, -0.000135856, 1.04674, 0.00491143)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 

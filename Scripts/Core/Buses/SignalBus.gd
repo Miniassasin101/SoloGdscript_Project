@@ -38,7 +38,7 @@ signal continue_turn
 
 signal on_player_reaction
 
-signal on_player_special_effect(unit: Unit, special_effects: Array[SpecialEffect])
+signal on_player_special_effect(unit: Unit, special_effects: Array[SpecialEffect], abs_dif: int)
 
 signal special_effects_chosen
 

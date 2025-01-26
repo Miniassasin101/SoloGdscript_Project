@@ -6,3 +6,7 @@
 script = ExtResource("1_ffkfs")
 ui_name = &"Accident"
 activation_phase = 0
+activation_allowed = 2
+weapon_types_allowed = Array[String]([])
+stackable = false
+roll_required = 0

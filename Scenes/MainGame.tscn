@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=51 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -31,7 +31,9 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
 [ext_resource type="PackedScene" uid="uid://bs8kc22xgwd2d" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.tscn" id="22_67ysf"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
-[ext_resource type="PackedScene" uid="uid://bc3pj0ahlf2m6" path="res://Hero_Game/Prefabs/UI_Prefabs/SpecialEffectButtonUI.tscn" id="27_naquh"]
+[ext_resource type="PackedScene" uid="uid://bc3pj0ahlf2m6" path="res://Hero_Game/Prefabs/UI_Prefabs/DroppablePanelUI.tscn" id="27_naquh"]
+[ext_resource type="PackedScene" uid="uid://4uwpx7r25fdg" path="res://Hero_Game/Prefabs/UI_Prefabs/SpecialEffectsDragContainer.tscn" id="29_725ge"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlotController.gd" id="29_cc03n"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
 [ext_resource type="Shader" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
 
@@ -46,6 +48,24 @@ roll_required = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_owyi7"]
 material = ExtResource("5_y067e")
+
+[sub_resource type="Resource" id="Resource_c77yv"]
+script = ExtResource("18_hnk25")
+ui_name = &"TacoTest"
+activation_phase = 1
+activation_allowed = 2
+weapon_types_allowed = Array[String]([])
+stackable = true
+roll_required = 0
+
+[sub_resource type="Resource" id="Resource_d4d4a"]
+script = ExtResource("18_hnk25")
+ui_name = &"HEYO"
+activation_phase = 1
+activation_allowed = 2
+weapon_types_allowed = Array[String]([])
+stackable = false
+roll_required = 0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_fnkdd"]
 material = ExtResource("8_paohs")
@@ -102,7 +122,6 @@ size = Vector2(2, 2)
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
 attacker_success_debug = true
-parry_fail_debug = true
 auto_equip_debug = true
 grid_dimensions = Vector2(15, 10)
 
@@ -216,7 +235,7 @@ script = ExtResource("10_iw061")
 unit_action_system = NodePath("../UnitActionSystem")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, 6)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 8, 0, 8)
 ui_name = "Blue"
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
@@ -235,7 +254,7 @@ unit_manager = NodePath("../UnitManager")
 [node name="CombatSystem" type="Node" parent="." node_paths=PackedStringArray("unit_action_system_ui")]
 script = ExtResource("16_f3oa4")
 unit_action_system_ui = NodePath("../UILayer/UnitActionSystemUI")
-special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5")])
+special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), SubResource("Resource_c77yv"), SubResource("Resource_d4d4a")])
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(32.7711, -2.64261e-05, 0.046329, 2.63892e-05, 32.7711, 2.57785e-05, -0.046329, -2.57406e-05, 32.7711, 24.867, 0, 26.089)
@@ -275,7 +294,7 @@ camera_path = NodePath("../CamOrigin/SpringArm3D/fCamera")
 script = ExtResource("21_3ffgk")
 damage_number_scene = ExtResource("22_67ysf")
 
-[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system_ui", "action_button_container", "reaction_button_container", "gait_button_container", "special_effect_button_container", "ability_points_text")]
+[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system_ui", "action_button_container", "reaction_button_container", "gait_button_container", "special_effect_container", "selected_special_effect_container", "mouse_event_droppable_controller", "ability_points_text")]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -296,7 +315,9 @@ special_effect_button_prefab = ExtResource("27_naquh")
 action_button_container = NodePath("ActionButtonsContainer")
 reaction_button_container = NodePath("ReactionButtonsContainer")
 gait_button_container = NodePath("GaitButtonsContainer")
-special_effect_button_container = NodePath("ScrollContainer/SpecialEffectButtonsContainer")
+special_effect_container = NodePath("MouseEventDroppableSlotController/SpecialEffectContainer")
+selected_special_effect_container = NodePath("MouseEventDroppableSlotController/SelectedSpecialEffectContainer")
+mouse_event_droppable_controller = NodePath("MouseEventDroppableSlotController")
 ability_points_text = NodePath("AbilityPointsLabel")
 metadata/_edit_use_anchors_ = true
 
@@ -341,7 +362,6 @@ alignment = 1
 layout_mode = 2
 
 [node name="GaitButtonsContainer" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]
-visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -358,28 +378,6 @@ theme_override_constants/separation = 12
 alignment = 1
 
 [node name="GaitButtonUI" parent="UILayer/UnitActionSystemUI/GaitButtonsContainer" instance=ExtResource("11_jk6uv")]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="UILayer/UnitActionSystemUI"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -280.0
-offset_right = 319.0
-offset_bottom = 61.0
-grow_horizontal = 2
-mouse_filter = 2
-
-[node name="SpecialEffectButtonsContainer" type="HBoxContainer" parent="UILayer/UnitActionSystemUI/ScrollContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-theme_override_constants/separation = 12
-alignment = 1
-
-[node name="SpecialEffectButtonUI" parent="UILayer/UnitActionSystemUI/ScrollContainer/SpecialEffectButtonsContainer" instance=ExtResource("27_naquh")]
 layout_mode = 2
 
 [node name="AbilityPointsLabel" type="Label" parent="UILayer/UnitActionSystemUI"]
@@ -400,6 +398,39 @@ text = "Press \"N\" to start combat"
 label_settings = SubResource("LabelSettings_sh5a7")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="MouseEventDroppableSlotController" type="Control" parent="UILayer/UnitActionSystemUI" node_paths=PackedStringArray("hand_droppable_container", "active_droppable_container")]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("29_cc03n")
+hand_droppable_container = NodePath("SpecialEffectContainer")
+active_droppable_container = NodePath("SelectedSpecialEffectContainer")
+
+[node name="SpecialEffectContainer" parent="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController" node_paths=PackedStringArray("unit_action_system_ui", "droppable_controller") instance=ExtResource("29_725ge")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -54.0
+offset_right = 14.0
+grow_horizontal = 2
+unit_action_system_ui = NodePath("../..")
+droppable_controller = NodePath("..")
+
+[node name="SelectedSpecialEffectContainer" parent="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController" node_paths=PackedStringArray("unit_action_system_ui", "droppable_controller") instance=ExtResource("29_725ge")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -54.0
+offset_top = -127.0
+offset_right = 14.0
+offset_bottom = -59.0
+grow_horizontal = 2
+unit_action_system_ui = NodePath("../..")
+droppable_controller = NodePath("..")
+slot_container_type = 1
 
 [node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system", "combat_system", "end_turn_container", "end_turn_button", "end_phase_container", "end_phase_button", "turn_phase_label", "round_counter_label", "cycle_counter_label", "movement_gait_label", "enemy_turn_container")]
 layout_mode = 3

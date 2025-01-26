@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bs8kc22xgwd2d"]
 
-[ext_resource type="Script" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.gd" id="1_b8o46"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/DamageNumber.gd" id="1_b8o46"]
 
 [sub_resource type="Animation" id="Animation_2hhp2"]
 resource_name = "DamageNumberAnim"
