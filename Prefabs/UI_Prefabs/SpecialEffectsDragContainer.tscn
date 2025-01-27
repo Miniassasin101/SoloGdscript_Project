@@ -15,8 +15,13 @@ shadow_color = Color(0.09, 0.09, 0.09, 0.643137)
 shadow_size = 4
 
 [node name="MouseEventDroppableSlotContainer" type="PanelContainer" node_paths=PackedStringArray("slot_hbox_container")]
-offset_right = 68.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -34.0
+offset_right = 34.0
 offset_bottom = 68.0
+grow_horizontal = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qr5px")
 script = ExtResource("1_nas4y")
@@ -42,4 +47,10 @@ alignment = 1
 layout_mode = 2
 
 [node name="DroppablePanelUI" parent="MarginContainer/MouseEventDroppableSlotHContainer/MouseEventDroppableSlot" instance=ExtResource("2_n1fnh")]
+layout_mode = 2
+
+[node name="MouseEventDroppableSlot2" parent="MarginContainer/MouseEventDroppableSlotHContainer" instance=ExtResource("3_c1mim")]
+layout_mode = 2
+
+[node name="DroppablePanelUI" parent="MarginContainer/MouseEventDroppableSlotHContainer/MouseEventDroppableSlot2" instance=ExtResource("2_n1fnh")]
 layout_mode = 2

@@ -246,7 +246,7 @@ func attack_landed() -> void:
 		return
 	trigger_camera_shake()
 	toggle_slowdown()
-	await get_tree().create_timer(0.3).timeout
+	await get_tree().create_timer(0.4).timeout
 	toggle_slowdown()
 
 
@@ -279,7 +279,7 @@ func set_timescales(val: float) -> void:
 
 
 func trigger_camera_shake() -> void:
-	var strength = 0.1 # the maximum shake strength. The higher, the messier
+	var strength = 0.15 # the maximum shake strength. The higher, the messier
 	var shake_time = 0.3 # how much it will last
 	var shake_frequency = 50 # will apply 250 shakes per `shake_time`
 

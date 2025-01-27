@@ -44,6 +44,7 @@ func get_path_package(gridpos: GridPosition, in_unit: Unit = null, to_get_path: 
 	return path_pack
 
 
+
 # Function to find the path between two grid positions.
 func find_path(start_grid_position: GridPosition, end_grid_position: GridPosition) -> Array[GridPosition]:
 	# Get the point IDs in AStar3D for the start and end positions.

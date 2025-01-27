@@ -153,10 +153,11 @@ func prompt_special_effect_choice(event: ActivationEvent, abs_dif: int) -> Activ
 	for effect: SpecialEffect in special_effects:
 		if effect.can_activate(event):
 			ret_effects.append(effect)
-	event.special_effects.append_array(ret_effects)
 	SignalBus.on_player_special_effect.emit(event.winning_unit, ret_effects, abs_dif)
-	await SignalBus.special_effects_chosen
+	var chosen_effects: Array[SpecialEffect] = await UIBus.effects_chosen
+	event.special_effects.append_array(chosen_effects)
 	return event
+	
 
 
 func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
@@ -221,8 +222,9 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	if hit_location == null:
 		push_error("Error: null hit location on ", target_unit.name)
 	ret_event.body_part = hit_location.part_name + "_health"
-	if ret_event.miss:
+	if ret_event.miss and parry_success == false:
 		return ret_event
+
 
 	# FIXME: rn on a fail and crit fail a special effect is gotten
 	# Determine success differential
@@ -232,8 +234,11 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		print_debug("Attacker wins. Applying damage. Also prompt special effects")
 		ret_event.set_winning_unit(attacking_unit)
 
-		await prompt_special_effect_choice(ret_event, abs_dif)
+		ret_event = await prompt_special_effect_choice(ret_event, abs_dif)
 		
+		for effect in ret_event.special_effects:
+			print(effect.ui_name)
+			
 		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
 
 	elif differential == 0:
@@ -244,7 +249,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		print_debug("Defender wins. Prompt Special Effects")
 		
 		ret_event.set_winning_unit(target_unit)
-		await prompt_special_effect_choice(ret_event, abs_dif)
+		ret_event = await prompt_special_effect_choice(ret_event, abs_dif)
 		
 		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
 

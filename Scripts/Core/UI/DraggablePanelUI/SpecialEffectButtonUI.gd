@@ -116,3 +116,6 @@ func set_special_effect(in_effect: SpecialEffect) -> void:
 	special_effect = in_effect
 	stackable = special_effect.stackable
 	panel_text.set_text(in_effect.ui_name.to_upper())
+
+func get_special_effect() -> SpecialEffect:
+	return special_effect

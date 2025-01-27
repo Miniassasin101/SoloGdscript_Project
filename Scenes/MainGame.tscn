@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=53 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -53,7 +53,7 @@ material = ExtResource("5_y067e")
 script = ExtResource("18_hnk25")
 ui_name = &"TacoTest"
 activation_phase = 1
-activation_allowed = 2
+activation_allowed = 0
 weapon_types_allowed = Array[String]([])
 stackable = true
 roll_required = 0
@@ -77,6 +77,25 @@ data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_sh5a7"]
 font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_twiyq"]
+font_size = 20
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cbngh"]
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+shadow_size = 2
+shadow_offset = Vector2(1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o5ega"]
 bg_color = Color(0.15, 0.15, 0.15, 1)
@@ -121,9 +140,8 @@ size = Vector2(2, 2)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
-attacker_success_debug = true
 auto_equip_debug = true
-grid_dimensions = Vector2(15, 10)
+grid_dimensions = Vector2(15, 13)
 
 [node name="Lighting" type="Node3D" parent="."]
 
@@ -401,36 +419,62 @@ vertical_alignment = 1
 
 [node name="MouseEventDroppableSlotController" type="Control" parent="UILayer/UnitActionSystemUI" node_paths=PackedStringArray("hand_droppable_container", "active_droppable_container")]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 23.0
+offset_top = -4.0
+offset_right = 23.0
+offset_bottom = -4.0
 script = ExtResource("29_cc03n")
 hand_droppable_container = NodePath("SpecialEffectContainer")
 active_droppable_container = NodePath("SelectedSpecialEffectContainer")
 
 [node name="SpecialEffectContainer" parent="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController" node_paths=PackedStringArray("unit_action_system_ui", "droppable_controller") instance=ExtResource("29_725ge")]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
 offset_left = -54.0
 offset_right = 14.0
-grow_horizontal = 2
 unit_action_system_ui = NodePath("../..")
 droppable_controller = NodePath("..")
 
 [node name="SelectedSpecialEffectContainer" parent="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController" node_paths=PackedStringArray("unit_action_system_ui", "droppable_controller") instance=ExtResource("29_725ge")]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
 offset_left = -54.0
 offset_top = -127.0
 offset_right = 14.0
 offset_bottom = -59.0
-grow_horizontal = 2
 unit_action_system_ui = NodePath("../..")
 droppable_controller = NodePath("..")
 slot_container_type = 1
+
+[node name="ConfirmEffectButton" type="Button" parent="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+offset_left = -60.0
+offset_top = -207.0
+offset_right = 20.0
+offset_bottom = -147.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+action_mode = 0
+
+[node name="Text" type="Label" parent="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController/ConfirmEffectButton"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = 29.1381
+offset_right = 56.0
+offset_bottom = 52.1381
+rotation = -0.301942
+scale = Vector2(1.03162, 0.950021)
+text = "Confirm"
+label_settings = SubResource("LabelSettings_twiyq")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController/ConfirmEffectButton"]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 60.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cbngh")
 
 [node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system", "combat_system", "end_turn_container", "end_turn_button", "end_phase_container", "end_phase_button", "turn_phase_label", "round_counter_label", "cycle_counter_label", "movement_gait_label", "enemy_turn_container")]
 layout_mode = 3
@@ -669,5 +713,6 @@ visible = false
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_bteft")
 
+[connection signal="pressed" from="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController/ConfirmEffectButton" to="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController" method="_on_confirm_effect_button_pressed"]
 [connection signal="pressed" from="UILayer/TurnSystemUI/EndTurnContainer/MarginContainer/EndTurnButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
 [connection signal="pressed" from="UILayer/TurnSystemUI/EndActionPhaseContainer/MarginContainer/EndPhaseButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]

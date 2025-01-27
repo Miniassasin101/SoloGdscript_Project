@@ -125,64 +125,11 @@ func can_activate(_event: ActivationEvent) -> bool:
 
 
 
+
+
+
+
 func get_valid_ability_target_grid_position_list_dep(_event: ActivationEvent) -> Array[GridPosition]:
-	var in_unit: Unit = _event.character
-	var self_unit_pos = in_unit.get_grid_position()
-	if self_unit_pos == null:
-		return []
-
-	var valid_grid_position_list: Array[GridPosition] = []
-	var max_range: float = float(max_move_distance) if use_max_move_distance else in_unit.get_max_move_left()#get_max_move_from_gait(_event)
-	var gait: int = in_unit.current_gait
-
-	# Check if gait is RUN or SPRINT
-	if gait in [Utilities.MovementGait.RUN, Utilities.MovementGait.SPRINT]:
-		# Generate front-facing cone tiles
-		var facing: int = in_unit.facing
-		var front_tiles: Array[GridPosition] = []
-
-		for distance in range(1, max_range + 1):
-			for offset in range(-distance, distance + 1):
-				var temp_pos: GridPosition = null
-				match facing:
-					0:  # North
-						temp_pos = GridPosition.new(self_unit_pos.x + offset, self_unit_pos.z - distance)
-					1:  # East
-						temp_pos = GridPosition.new(self_unit_pos.x + distance, self_unit_pos.z + offset)
-					2:  # South
-						temp_pos = GridPosition.new(self_unit_pos.x + offset, self_unit_pos.z + distance)
-					3:  # West
-						temp_pos = GridPosition.new(self_unit_pos.x - distance, self_unit_pos.z + offset)
-
-				if temp_pos != null and LevelGrid.is_valid_grid_position(temp_pos):
-					front_tiles.append(temp_pos)
-
-		# Validate front tiles
-		for grid_pos in front_tiles:
-			if not LevelGrid.is_valid_grid_position(grid_pos) or LevelGrid.has_any_unit_on_grid_position(grid_pos):
-				continue
-			if not Pathfinding.instance.is_walkable(grid_pos):
-				continue
-			if Pathfinding.instance.get_path_cost(self_unit_pos, grid_pos) > max_range:
-				continue
-			valid_grid_position_list.append(grid_pos)
-
-	else:
-		# Standard behavior for other gaits
-		for x in range(-max_range, max_range + 1):
-			for z in range(-max_range, max_range + 1):
-				var offset_grid_position = GridPosition.new(x, z)
-				var temp_grid_position: GridPosition = self_unit_pos.add(offset_grid_position)
-				if not LevelGrid.is_valid_grid_position(temp_grid_position) or self_unit_pos.equals(temp_grid_position):
-					continue
-				if not LevelGrid.has_any_unit_on_grid_position(temp_grid_position):
-					valid_grid_position_list.append(temp_grid_position)
-
-	return valid_grid_position_list
-
-
-
-func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
 	var in_unit: Unit = _event.character
 	var self_unit_pos: GridPosition = in_unit.get_grid_position()
 	if self_unit_pos == null:
@@ -247,6 +194,11 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 			# (You can also use is_path_available or your path cost logic.)
 			var path_cost: float = Pathfinding.instance.get_path_cost(self_unit_pos, candidate)
 			var path_available: bool = Pathfinding.instance.is_path_available(self_unit_pos, candidate)
+			if path_available:
+				var path: Array[GridPosition] = Pathfinding.instance.find_path(self_unit_pos, candidate)
+				if !Utilities.is_cone_path_available(in_unit, path):
+					continue
+			
 			if (path_cost <= max_range and path_cost < INF) and (path_available) and not LevelGrid.has_any_unit_on_grid_position(candidate):
 				valid_positions.append(candidate)
 
@@ -258,14 +210,76 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 		# Normal behavior for other gaits
 		for x in range(-max_range, max_range + 1):
 			for z in range(-max_range, max_range + 1):
-				var temp_grid_position: GridPosition = self_unit_pos.add(
-					GridPosition.new(x, z)  # Or see if you have a get_grid_position_from_coords
+				var temp_grid_position: GridPosition = LevelGrid.grid_system.get_grid_position_from_grid_position(self_unit_pos.add(
+					GridPosition.new(x, z))  # Or see if you have a get_grid_position_from_coords
 				)
 				if not LevelGrid.is_valid_grid_position(temp_grid_position):
 					continue
+				
+				if not Pathfinding.instance.is_path_available(self_unit_pos, temp_grid_position):
+					continue
+				
 				if not self_unit_pos.equals(temp_grid_position) \
 						and not LevelGrid.has_any_unit_on_grid_position(temp_grid_position):
 					valid_positions.append(temp_grid_position)
+
+	return valid_positions
+
+
+
+func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
+	var in_unit: Unit = _event.character
+	var self_unit_pos: GridPosition = in_unit.get_grid_position()
+	if self_unit_pos == null:
+		return []
+
+	var valid_positions: Array[GridPosition] = []
+	var max_range: float = float(max_move_distance) if use_max_move_distance else in_unit.get_max_move_left()
+	var gait: int = in_unit.current_gait
+
+	if gait in [Utilities.MovementGait.RUN, Utilities.MovementGait.SPRINT]:
+		# 1) Generate all potential grid positions in the front cone
+		var front_cone: Array[GridPosition] = Utilities.get_front_cone(in_unit, int(max_range))
+
+		# 2) Filter positions based on walkability and path cost
+		var valid_front_positions: Array[GridPosition] = []
+		for pos in front_cone:
+			if LevelGrid.is_valid_grid_position(pos) and Pathfinding.instance.is_walkable(pos):
+				# Calculate cost once and reuse
+				var path_cost: float = Pathfinding.instance.get_path_cost(self_unit_pos, pos)
+				if path_cost <= max_range and path_cost < INF:
+					valid_front_positions.append(pos)
+
+		# 3) Temporarily disable shell positions that overlap
+		var shell_positions: Array[GridPosition] = Utilities.get_shell_cone_from_behind(in_unit, max_range)
+		for pos in valid_front_positions:
+			shell_positions.erase(pos)  # Remove positions already in the front cone
+		var actually_disabled: Array[GridPosition] = Pathfinding.instance.temporarily_disable(shell_positions)
+
+		# 4) Verify paths for cone availability only once
+		for candidate in valid_front_positions:
+			var path: Array[GridPosition] = Pathfinding.instance.find_path(self_unit_pos, candidate)
+			if Utilities.is_cone_path_available(in_unit, path):
+				valid_positions.append(candidate)
+
+		# Re-enable temporarily disabled positions
+		Pathfinding.instance.reenable_positions(actually_disabled)
+
+	else:
+		# Standard behavior for non-cone-based movement
+		for x in range(-max_range, max_range + 1):
+			for z in range(-max_range, max_range + 1):
+				var temp_grid_position: GridPosition = LevelGrid.grid_system.get_grid_position_from_coords(
+					self_unit_pos.x + x, 
+					self_unit_pos.z + z
+				)
+				if temp_grid_position != null and LevelGrid.is_valid_grid_position(temp_grid_position):
+					if not LevelGrid.has_any_unit_on_grid_position(temp_grid_position) \
+							and Pathfinding.instance.is_walkable(temp_grid_position):
+						# Calculate path cost once and reuse
+						var path_cost: float = Pathfinding.instance.get_path_cost(self_unit_pos, temp_grid_position)
+						if path_cost <= max_range and path_cost < INF:
+							valid_positions.append(temp_grid_position)
 
 	return valid_positions
 

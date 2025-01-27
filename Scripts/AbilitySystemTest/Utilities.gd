@@ -393,6 +393,50 @@ func get_shell_cone_from_behind(unit: Unit, max_range: float) -> Array[GridPosit
 
 
 
+func get_front_tiles_from_position(grid_position: GridPosition, facing: int) -> Array[GridPosition]:
+	var front_tiles: Array[GridPosition] = []
+
+	match facing:
+		Utilities.FACING.NORTH:
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z - 1))  # Left front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1))      # Center front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z - 1))  # Right front
+		Utilities.FACING.EAST:
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z - 1))  # Left front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z))      # Center front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z + 1))  # Right front
+		Utilities.FACING.SOUTH:
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z + 1))  # Left front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z + 1))      # Center front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z + 1))  # Right front
+		Utilities.FACING.WEST:
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z + 1))  # Left front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z))      # Center front
+			front_tiles.append(LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z - 1))  # Right front
+
+	return front_tiles.filter(func(gridpos: GridPosition): return LevelGrid.is_valid_grid_position(gridpos))
+
+
+
+func is_cone_path_available(unit: Unit, path: Array[GridPosition]) -> bool:
+	if path.is_empty():
+		return false  # No path to evaluate
+
+	var facing_direction: int = unit.facing
+
+	# Start validation from the second position in the path
+	for i in range(1, path.size()):
+		var current_position: GridPosition = path[i - 1]
+		var next_position: GridPosition = path[i]
+
+		# Get the valid front grid positions for the current position and facing direction
+		var front_positions: Array[GridPosition] = get_front_tiles_from_position(current_position, facing_direction)
+
+		# If the next step is not in the front positions, return false
+		if not front_positions.has(next_position):
+			return false
+
+	return true  # All steps are valid
 
 
 

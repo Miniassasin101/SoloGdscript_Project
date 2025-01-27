@@ -190,6 +190,7 @@ func melee_attack_anim() -> void:
 	if !event.miss:
 		target_unit.animator.trigger_hit_fx(hit_vfx, unit.get_global_rotation())
 
+	resolve_special_effects()
 	# 3) Now that the animation is presumably done or at the hit frame, apply damage.
 	apply_effect()
 	# 4) Optionally end the ability if everything is done.
@@ -200,6 +201,10 @@ func melee_attack_anim() -> void:
 	await unit.get_tree().create_timer(3.0).timeout
 	target_unit.animator.rotate_unit_towards_facing()
 
+
+func resolve_special_effects() -> void:
+	for effect in event.special_effects:
+		effect.apply(event)
 
 ##
 # Applies the damage effect to the target unit at target_position.

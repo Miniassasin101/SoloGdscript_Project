@@ -6,8 +6,8 @@
 script = ExtResource("1_llluk")
 attribute_name = "power"
 minimum_value = 0.0
-maximum_value = 30.0
-current_value = 30.0
+maximum_value = 50.0
+current_value = 50.0
 derived_from = Array[String]([])
 calculation_type = 0
 is_skill = false

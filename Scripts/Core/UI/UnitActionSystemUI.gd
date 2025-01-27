@@ -144,8 +144,7 @@ func create_unit_special_effect_buttons(abs_dif: int) -> void:
 	if !reacting_unit:
 		return
 	mouse_event_droppable_controller.setup_special_effect_slot_containers(special_effects, abs_dif)
-	#special_effect_container.setup_special_effect_slots(special_effects)
-	#selected_special_effect_container.setup_special_effect_slots(special_effects)
+	
 
 
 func on_selected_unit_changed(unit: Unit) -> void:
@@ -165,22 +164,22 @@ func on_player_reaction(unit: Unit) -> void:
 	toggle_containers_visibility_off_except()
 
 
-## This function is passed a unit and a parsed list of special effects to choose from before emmitting the chosen effect.
+## This function is passed a unit and a parsed list of special effects to choose from before emitting the chosen effect.
 func on_player_special_effect(unit: Unit, in_special_effects: Array[SpecialEffect], abs_dif: int) -> void:
-	toggle_containers_visibility_off_except([special_effect_container, selected_special_effect_container])
 	reacting_unit = unit
 	special_effects = in_special_effects
 	print_debug("Selected Unit Ui Is: ", unit._to_string())
 	create_unit_special_effect_buttons(abs_dif)
-	await get_tree().create_timer(5.0).timeout
+	toggle_containers_visibility_off_except([mouse_event_droppable_controller])
+	var ret_effects: Array[SpecialEffect] = await UIBus.effects_confirmed
+	toggle_containers_visibility_off_except()
+	UIBus.effects_chosen.emit(ret_effects)
 	print_debug("finished")
 
 
 
 func on_movement_phase_start() -> void:
 	#await get_tree().create_timer(0.2).timeout
-	#action_button_container.set_visible(false)
-	#gait_button_container.set_visible(true)
 	toggle_containers_visibility_off_except([gait_button_container])
 	var cycle_num: int = TurnSystem.instance.current_cycle
 	if cycle_num >= 3: 
@@ -191,15 +190,16 @@ func on_movement_phase_start() -> void:
 	return
 
 
-func toggle_containers_visibility_off_except(containers: Array[Container] = []) -> void:
+func toggle_containers_visibility_off_except(containers: Array[Control] = []) -> void:
 	action_button_container.set_visible(false)
 	gait_button_container.set_visible(false)
 	reaction_button_container.set_visible(false)
-	special_effect_container.set_visible(false)
-	selected_special_effect_container.set_visible(false)
+	#special_effect_container.set_visible(false)
+	#selected_special_effect_container.set_visible(false)
+	mouse_event_droppable_controller.set_visible(false)
 	
 	if !containers.is_empty():
-		for container: Container in containers:
+		for container: Control in containers:
 			container.set_visible(true)
 
 

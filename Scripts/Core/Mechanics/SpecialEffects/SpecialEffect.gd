@@ -12,7 +12,7 @@ signal effect_finished
 @export_enum("None", "Self Criticals", "Opponent Fumbles") var roll_required: int = 0
 
 
-func apply(event: ActivationEvent) -> void:
+func apply(_event: ActivationEvent) -> void:
 	
 	pass
 

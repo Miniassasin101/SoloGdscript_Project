@@ -15,7 +15,7 @@ This only can be activated by a defending unit if the attacking unit fumbles the
 # NOTE: maybe switch to event instead
 func apply(event: ActivationEvent) -> void:
 	super.apply(event)
-	var target_unit: Unit = event.target_unit
+	var target_unit: Unit = event.character
 	# Animation Stand In
 	
 	var hit_location: BodyPart = target_unit.get_random_hit_location()
@@ -57,22 +57,22 @@ func roll_damage(event: ActivationEvent) -> int:
 	
 	return damage_total
 
-func apply_effect(event) -> void:
+func apply_effect(event: ActivationEvent) -> void:
 
 	# Create a new GameplayEffect resource
 	var effect = GameplayEffect.new()
-	var target_unit: Unit = event.target_unit
+	var target_unit: Unit = event.character
 	# Prepare an AttributeEffect for health
 	var health_effect = AttributeEffect.new()
 	health_effect.attribute_name = "health"
-	health_effect.minimum_value = event.rolled_damage
-	health_effect.maximum_value = event.rolled_damage
+	health_effect.minimum_value = -event.rolled_damage
+	health_effect.maximum_value = -event.rolled_damage
 
 	# Optionally, if you want to apply damage to a specific body part
 	var part_effect = AttributeEffect.new()
 	part_effect.attribute_name = event.body_part
-	part_effect.minimum_value = event.rolled_damage
-	part_effect.maximum_value = event.rolled_damage
+	part_effect.minimum_value = -event.rolled_damage
+	part_effect.maximum_value = -event.rolled_damage
 
 	effect.attributes_affected.append(health_effect)
 	effect.attributes_affected.append(part_effect)

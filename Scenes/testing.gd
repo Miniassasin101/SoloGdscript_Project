@@ -219,6 +219,7 @@ func test_c() -> void:
 		open_character_sheet()
 		#equip_weapon()
 		#open_special_effect_buttons()
+		#print_active_special_effects()
 		pass
 
 
@@ -227,6 +228,12 @@ func test_shift_c() -> void:
 	if Input.is_action_just_pressed("testkey_shift_c"):
 		#open_character_sheet()
 		pass
+
+func print_active_special_effects() -> void:
+	var effects: Array[SpecialEffect] = MouseEventDroppableSlotController.instance.get_active_special_effects()
+	for eff in effects:
+		print(eff.ui_name)
+
 
 func open_special_effect_buttons() -> void:
 	SignalBus.on_player_special_effect.emit(unit, special_effects)
