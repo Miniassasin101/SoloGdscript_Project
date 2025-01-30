@@ -14,6 +14,7 @@ var initiative_order: Array[Unit] = []
 @export var marker_visibility_time: float = 1.5
 @export_category("References")
 @export var unit_action_system_ui: UnitActionSystemUI
+@export var book_keeping_system: BookKeepingSystem
 @export_category("Special Effects")
 @export var special_effects: Array[SpecialEffect]
 
@@ -36,6 +37,7 @@ func _ready() -> void:
 # Tracks and handles any over time effects or spells
 func book_keeping() -> void:
 	# Apply poison, bleed, persistent effects, etc.
+	book_keeping_system.run_book_keeping_check()
 	SignalBus.on_book_keeping_ended.emit()
 
 
@@ -94,6 +96,8 @@ func interrupt_turn(_unit: Unit) -> void:
 func declare_action(action: Ability, event: ActivationEvent) -> void:
 	# Possibly prompt others if they can react to the declaration itself.
 	await check_declaration_reaction_queue(action, event)
+	if event.target_unit:
+		event.target_unit.animator.on_is_being_targeted(event.unit)
 	print_debug("Action Declared: ", action.ui_name)
 
 
@@ -162,7 +166,7 @@ func prompt_special_effect_choice(event: ActivationEvent, abs_dif: int) -> Activ
 
 func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var weapon: Weapon = event.weapon
-	var attacking_unit: Unit = event.character
+	var attacking_unit: Unit = event.unit
 	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	event.target_unit = target_unit
 
@@ -222,6 +226,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	if hit_location == null:
 		push_error("Error: null hit location on ", target_unit.name)
 	ret_event.body_part = hit_location.part_name + "_health"
+	ret_event.body_part_ui_name = hit_location.part_ui_name
 	if ret_event.miss and parry_success == false:
 		return ret_event
 
@@ -308,7 +313,7 @@ parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 
 # Show the attacker's success level marker
 func show_success(in_unit: Unit, success_level: int) -> void:
-	var marker_color = get_color_for_success_level(success_level)
+	var marker_color: StringName = get_color_for_success_level(success_level)
 	in_unit.set_color_marker(marker_color)  # Emit a signal to show the marker
 	in_unit.set_color_marker_visible(true)
 

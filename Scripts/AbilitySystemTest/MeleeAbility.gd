@@ -31,6 +31,8 @@ var event: ActivationEvent = null
 var target_position: GridPosition = null
 ## Reference to the Unit using this melee ability.
 var unit: Unit
+
+var target_unit: Unit = null
 ## Cached damage roll result, if you do dice logic. 
 var rolled_damage: int = 0
 
@@ -51,11 +53,14 @@ func try_activate(_event: ActivationEvent) -> void:
 	# Store relevant data from the event.
 	event = _event
 	target_position = event.target_grid_position
-	unit = event.character
+	unit = event.unit
 
 	# Verify we have a valid Unit and a valid target position.
 	if not unit or not target_position:
 		return
+	
+	target_unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
+	event.set_target_unit(target_unit)
 
 	# First, declare the action with the CombatSystem.
 	await CombatSystem.instance.declare_action(self, event)
@@ -67,6 +72,8 @@ func try_activate(_event: ActivationEvent) -> void:
 
 	
 	add_weapon_to_event()
+	
+	
 	
 	# Rotate the Unit to face the target, then continue the action (attack).
 	rotate_unit_towards_target_enemy(event)
@@ -101,7 +108,7 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 
 			# Build a test position.
 			var offset_position = GridPosition.new(x, z)
-			var candidate_position = offset_position.add(_event.character.get_grid_position())
+			var candidate_position = offset_position.add(_event.unit.get_grid_position())
 
 			# Ensure the candidate position is valid in the LevelGrid.
 			if not LevelGrid.is_valid_grid_position(candidate_position):
@@ -110,10 +117,11 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 			# We only care if there's an enemy unit there (or some valid target).
 			if not LevelGrid.has_any_unit_on_grid_position(candidate_position):
 				continue
-
+			
+			var targ_unit: Unit = LevelGrid.get_unit_at_grid_position(candidate_position)
+			
 			# Check if the occupant is an enemy (or at least not on the same 'team').
-			var target_unit = LevelGrid.get_unit_at_grid_position(candidate_position)
-			if target_unit.is_enemy == _event.character.is_enemy:
+			if targ_unit.is_enemy == _event.unit.is_enemy:
 				# If they're on the same team, skip.
 				continue
 
@@ -186,9 +194,14 @@ func melee_attack_anim() -> void:
 	await unit.animator.melee_attack_anim(animation, event.miss)
 
 	# 2) Here you can trigger any hit fx on the ability by passing it to the target unit's animator:
-	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	if !event.miss:
 		target_unit.animator.trigger_hit_fx(hit_vfx, unit.get_global_rotation())
+		target_unit.animator.flash_red()
+		if event.rolled_damage == 0:
+			target_unit.animator
+	else:
+		target_unit.animator.flash_white()
+		Utilities.spawn_text_line(target_unit, "Miss", Color.AQUA)
 
 	resolve_special_effects()
 	# 3) Now that the animation is presumably done or at the hit frame, apply damage.
@@ -198,8 +211,12 @@ func melee_attack_anim() -> void:
 		event.successful = true
 		end_ability(event)
 	
-	await unit.get_tree().create_timer(3.0).timeout
-	target_unit.animator.rotate_unit_towards_facing()
+	await unit.get_tree().create_timer(2.0).timeout
+	if target_unit:
+		target_unit.animator.parry_reset.emit()
+		target_unit.animator.on_stop_being_targeted()
+		await unit.get_tree().create_timer(1.0).timeout
+		target_unit.animator.rotate_unit_towards_facing()
 
 
 func resolve_special_effects() -> void:
@@ -232,7 +249,12 @@ func apply_effect() -> void:
 	effect.attributes_affected.append(part_effect)
 
 	# Get the target unit from the grid and attach the effect
-	var target_unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	if target_unit:
 		target_unit.add_child(effect)
-	super.spawn_damage_label(target_unit, event.rolled_damage)
+	
+	if event.rolled_damage == 0:
+		Utilities.spawn_text_line(target_unit, "Parry", Color.FOREST_GREEN)
+		Utilities.spawn_damage_label(target_unit, event.rolled_damage, Color.AQUA, 0.2)
+	else:
+		Utilities.spawn_text_line(target_unit,event.body_part_ui_name, Color.ORANGE)
+		Utilities.spawn_damage_label(target_unit, event.rolled_damage) # Default color is crimson

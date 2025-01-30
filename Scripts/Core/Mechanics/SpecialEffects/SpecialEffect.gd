@@ -37,7 +37,7 @@ func check_specific_roll(event: ActivationEvent) -> bool:
 		return true
 
 	# Figure out if the winning unit is the attacker or the defender:
-	var user_is_attacker: bool = (event.winning_unit == event.character)
+	var user_is_attacker: bool = (event.winning_unit == event.unit)
 	var user_is_defender: bool = (event.winning_unit == event.target_unit)
 	
 	# If the winning unit is neither the attacker nor the defender,
@@ -76,7 +76,7 @@ func check_offensive_defensive(event: ActivationEvent) -> bool:
 	if event.target_unit == event.winning_unit:
 		if activation_allowed == 0:
 			return false
-	elif event.character == event.winning_unit:
+	elif event.unit == event.winning_unit:
 		if activation_allowed == 1:
 			return false
 	return true

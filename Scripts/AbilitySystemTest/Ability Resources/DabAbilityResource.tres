@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="DabAbility" load_steps=3 format=3 uid="uid://qgaber1n5dae"]
 
-[ext_resource type="Animation" uid="uid://dswwaq5xbcffc" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Swing_001.res" id="1_fgvev"]
+[ext_resource type="Animation" uid="uid://djddt3772shp3" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Parry_Idle_001.res" id="1_mkbb6"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/DabAbility.gd" id="1_o24lm"]
 
 [resource]
 script = ExtResource("1_o24lm")
-animation = ExtResource("1_fgvev")
+animation = ExtResource("1_mkbb6")
 ap_cost = 0
 ui_name = "DabWalk"
 movement_gait = 1

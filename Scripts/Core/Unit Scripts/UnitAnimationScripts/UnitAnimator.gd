@@ -6,12 +6,16 @@ extends Node
 signal rotation_completed
 signal movement_completed
 signal attack_completed
+signal parry_reset
 # Exported Variables
+@export_category("References")
 @export var animator: AnimationPlayer
 @export var animator_tree: AnimationTree
 @export var fireball_projectile_prefab: PackedScene
 @export var shoot_point: Node3D
 @export var height_offset: float = 1.5  # Height offset to aim towards upper body
+
+
 @export_category("Head Look Variables")
 @export var skeleton: Skeleton3D
 @export var neck_bone_name: String = "DEF_neck.001"
@@ -19,10 +23,19 @@ signal attack_completed
 @export var neck_rot_speed: float = 2.0
 @export var max_horizontal_angle: int = 90
 @export var max_vertical_angle: int = 20
+@export var head_look_vertical_offset: float = -3.0
+
+
 @export_category("Body Location Variables")
 @export var chest_point: Marker3D 
 @export_category("Attack Variables")
 @export var weapon_trail_length: int = 50
+@export var general_hit_flash_mat: StandardMaterial3D
+@export var white_hit_flash_mat: StandardMaterial3D
+@export var red_hit_flash_mat: StandardMaterial3D
+@export var hit_flash_time: float = 0.5
+
+
 # Variables
 @onready var unit: Unit = get_parent()
 var fireball_instance: Projectile
@@ -40,6 +53,9 @@ var bone_smooth_rot: float = 0.0
 var target_rotation: Quaternion
 var is_looking: bool = false
 var look_target: Node3D = null
+# Neck look for being targeted
+var is_being_targeted: bool = false
+
 
 # Rotation Variables
 var is_rotating: bool = false
@@ -79,6 +95,16 @@ func _physics_process(delta: float) -> void:
 	if look_target and skeleton and is_looking:
 		update_look_at(delta)
 
+
+func get_character_mesh() -> Array[MeshInstance3D]:
+	var ret_array: Array[MeshInstance3D] = []
+	for child in skeleton.get_children():
+		if child is MeshInstance3D:
+			ret_array.append(child as MeshInstance3D)
+	
+	return ret_array
+
+
 ## Function to be used to trigger and disable looking at a target. Just needs to be called with no arguments to turn off.
 func look_at_toggle(target: Node3D = null) -> void:
 	if target == null:
@@ -100,9 +126,11 @@ func update_look_at(delta: float) -> void:
 	var parent_bone = skeleton.get_bone_parent(neck_bone)
 	var parent_global_pose: Transform3D = skeleton.get_bone_global_pose(parent_bone)
 	var parent_rotation: Quaternion = parent_global_pose.basis.get_rotation_quaternion()
+	var target_pos: Vector3 = look_target.get_global_position() + Vector3(0.0, head_look_vertical_offset, 0.0)
 	
 	# Calculate the neck's target rotation (look at target position)
-	neck_target.look_at((look_target.global_position + Vector3(0.0, 0.3, 0.0)), Vector3.UP, true)
+	var neck_target_pos: Vector3 = neck_target.get_global_position()
+	neck_target.look_at(target_pos, Vector3.UP, true)
 	var target_rotation_degrees: Vector3 = neck_target.rotation_degrees
 
 	# Clamp the rotation to the desired range
@@ -174,22 +202,20 @@ func play_animation_by_name(animation_name: String, _blend_time: float = 0.5) ->
 	
 	var one_shot: AnimationNodeAnimation = main.get_node("OneShotAnimation")
 	
-	
-	
 	var anim_path: String = ("GreatSwordTest1/" + animation_name)
 	
 	one_shot.set_animation(anim_path)
-
-	
-
 	
 	#one_shot_node.set("request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 
 	animator_tree.set("parameters/Main/OneShotBlend/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 	print("firing: ", anim_path)
-	await get_tree().create_timer(1.0).timeout
+	var anim: Animation = animator.get_animation(anim_path)
+	await get_tree().create_timer(anim.length).timeout
 	print("done")
 	return
+
+
 
 
 	# NOTE: Always add call method tracks for resolving the damage
@@ -280,10 +306,19 @@ func set_timescales(val: float) -> void:
 
 func trigger_camera_shake() -> void:
 	var strength = 0.15 # the maximum shake strength. The higher, the messier
-	var shake_time = 0.3 # how much it will last
+	var shake_time = 0.4 # how much it will last
 	var shake_frequency = 50 # will apply 250 shakes per `shake_time`
 
 	CameraShake.instance.shake(strength, shake_time, shake_frequency)
+
+
+func trigger_camera_shake_large() -> void:
+	var strength = 0.3 # the maximum shake strength. The higher, the messier
+	var shake_time = 0.4 # how much it will last
+	var shake_frequency = 20 # will apply 250 shakes per `shake_time`
+
+	CameraShake.instance.shake(strength, shake_time, shake_frequency)
+
 
 func trigger_camera_shake_small() -> void:
 	var strength = 0.04 # the maximum shake strength. The higher, the messier
@@ -306,8 +341,8 @@ func trigger_hit_fx(in_hit_fx: PackedScene, originator: Vector3) -> void:
 	hit_fx.global_position = chest_point.global_position#unit.get_world_position() + Vector3(0.0, 1.0, 0.0)
 	hit_fx.global_rotation = -originator#chest_point.global_rotation
 	
-
 	hit_fx.get_child(0).emitting = true
+	
 
 
 func testprint() -> void:
@@ -403,6 +438,60 @@ func rotate_unit_towards_target_position_process(delta: float):
 	if current_direction.dot(facing_direction) > 0.9999:
 		is_rotating = false  # Stop rotating if we're almost facing the target
 		rotation_completed.emit()
+
+
+func flash_color(color: Color = Color.DEEP_SKY_BLUE, flash_time: float = hit_flash_time, flash_weapon: bool = true) -> void:
+	var unit_meshes: Array[MeshInstance3D] = get_character_mesh()
+	if flash_weapon:
+		var weapon_mesh: MeshInstance3D = unit.get_equipped_weapon().get_object() as MeshInstance3D
+		if weapon_mesh:
+			unit_meshes.append(weapon_mesh)
+	"""
+	for mesh in unit_meshes:
+		var mesh_mat: StandardMaterial3D = general_hit_flash_mat.duplicate(true)
+		mesh_mat.set_albedo(color)
+		mesh.set_material_overlay(mesh_mat)
+	
+	await get_tree().create_timer(flash_time).timeout
+	
+	for mesh in unit_meshes:
+		mesh.set_material_overlay(null)
+	"""
+	Utilities.flash_color_on_meshes(unit_meshes, color, flash_time,)
+
+
+func flash_white(flash_time: float = hit_flash_time) -> void:
+	var unit_meshes: Array[MeshInstance3D] = get_character_mesh()
+	for mesh in unit_meshes:
+		mesh.set_material_overlay(white_hit_flash_mat)
+	
+	await get_tree().create_timer(flash_time).timeout
+	
+	for mesh in unit_meshes:
+		mesh.set_material_overlay(null)
+
+
+func flash_red(flash_time: float = hit_flash_time) -> void:
+	var unit_meshes: Array[MeshInstance3D] = get_character_mesh()
+	for mesh in unit_meshes:
+		mesh.set_material_overlay(red_hit_flash_mat)
+	
+	await get_tree().create_timer(flash_time).timeout
+	
+	for mesh in unit_meshes:
+		mesh.set_material_overlay(null)
+
+
+# Targeting handlers
+func on_is_being_targeted(by_unit: Unit) -> void:
+	is_being_targeted = true
+	look_at_toggle(by_unit.above_marker)
+
+
+# function to cancel the head_look and smoothly return to normal
+func on_stop_being_targeted() -> void:
+	is_being_targeted = false
+	look_at_toggle()
 
 # Movement State Handlers
 func on_start_moving() -> void:

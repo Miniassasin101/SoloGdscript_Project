@@ -78,6 +78,7 @@ func start_combat() -> void:
 	if initiative_order.is_empty():
 		push_error("No units in initiative")
 		return
+	unit_manager.setup_units_for_combat()
 	combat_started = true
 	start_round()
 
@@ -183,9 +184,38 @@ func end_round() -> void:
 
 
 
+func on_unit_died(in_unit: Unit) -> void:
+	# Check if the unit exists in the initiative order
+	if in_unit in initiative_order:
+		var index: int = initiative_order.find(in_unit)
+		
+		# Remove the unit from the initiative order
+		initiative_order.remove_at(index)
+		print_debug("Unit removed from initiative: ", in_unit)
+
+		# Handle if the current unit is the one that died
+		if current_unit_turn == in_unit:
+			print_debug("Current unit died: ", in_unit)
+			# Move to the next turn if it was the current unit's turn
+			if initiative_order.size() > 0:
+				# Ensure the turn index stays within bounds
+				turn_number = min(turn_number, initiative_order.size())
+				current_unit_turn = initiative_order[turn_number - 1]
+				is_player_turn = !current_unit_turn.is_enemy
+				SignalBus.on_turn_changed.emit()
+				start_turn()
+			else:
+				# If no units remain, end the combat
+				print_debug("Combat ended as no units remain.")
+				combat_started = false
+				SignalBus.combat_ended.emit()
 
 
 
 # Getters and setters
 func get_current_unit() -> Unit:
 	return current_unit_turn
+
+
+func get_current_round() -> int:
+	return round_number

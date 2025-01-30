@@ -1,10 +1,12 @@
-[gd_scene load_steps=99 format=4 uid="uid://ckh4ee1mgwjn4"]
+[gd_scene load_steps=106 format=4 uid="uid://ckh4ee1mgwjn4"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
 [ext_resource type="Material" uid="uid://cpccbvm86p68o" path="res://Hero_Game/Art/Materials/CelShadedMat.tres" id="3_bhmb0"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/equipped_item_3d.gd" id="4_3lwao"]
 [ext_resource type="Animation" uid="uid://c1vw5vdfih7mb" path="res://Hero_Game/Animations/DawnAnims/A-Pose.res" id="4_88hlo"]
+[ext_resource type="Material" uid="uid://qb6lu6eg0e62" path="res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/RedHitFXMaterial.tres" id="4_c2lw4"]
+[ext_resource type="Material" uid="uid://c6p4abkil1jp" path="res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/WhiteHitFXMaterial.tres" id="4_xm57a"]
 [ext_resource type="Animation" uid="uid://c84k6o7gdrhxc" path="res://Hero_Game/Animations/DawnAnims/A-Pose_001.res" id="5_x25op"]
 [ext_resource type="Animation" uid="uid://dna3wngratl4g" path="res://Hero_Game/Animations/DawnAnims/IdleAnim.res" id="6_0ivi7"]
 [ext_resource type="Animation" uid="uid://f4vy7p1wgiys" path="res://Hero_Game/Animations/DawnAnims/RunCycle.res" id="7_8smc0"]
@@ -21,6 +23,7 @@
 [ext_resource type="Material" uid="uid://beyldvm0u84n0" path="res://Hero_Game/Art/Materials/UnitSelectedVisual.tres" id="17_l3n52"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitSelectedVisual.gd" id="18_id2ra"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/gameplay_attribute_map.gd" id="19_4283r"]
+[ext_resource type="Material" uid="uid://dbk8ugh0clsjv" path="res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/GeneralHitFXMaterial.tres" id="19_wisdh"]
 [ext_resource type="Resource" uid="uid://bqwjl5qldj4b3" path="res://Hero_Game/Scripts/AbilitySystemTest/AttributeTables/HumanoidAttributesTable.tres" id="20_xrhce"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/ability_container.gd" id="22_250xw"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/ability.gd" id="23_1urwx"]
@@ -35,14 +38,17 @@
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/inventory.gd" id="34_0tyum"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/equipment.gd" id="34_6brpe"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/DabAbility.gd" id="34_nsbb5"]
-[ext_resource type="Animation" uid="uid://dswwaq5xbcffc" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Swing_001.res" id="35_58x2o"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/item.gd" id="35_icsct"]
 [ext_resource type="Resource" uid="uid://bh2no358biy4l" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/ParryResource.tres" id="38_1p8t2"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/equipment_slot.gd" id="38_3xk7x"]
 [ext_resource type="PackedScene" uid="uid://6tcoop2kh2oa" path="res://Hero_Game/Prefabs/Units/ColorMarker.tscn" id="38_7osw2"]
 [ext_resource type="Resource" uid="uid://bfbjtl7piwa6a" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/ChangeFacingAbilityResource.tres" id="38_xnfjd"]
 [ext_resource type="Resource" uid="uid://cdvdn0jqh0akb" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/DitherResource.tres" id="39_1xl8t"]
+[ext_resource type="Animation" uid="uid://bd8rnxcdj1f4i" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Parry_1st_Half_001.res" id="39_uakyw"]
 [ext_resource type="Resource" uid="uid://boojk1je30typ" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/IdleResource.tres" id="40_8r1ak"]
+[ext_resource type="Script" path="res://Hero_Game/Scenes/ConditionsManager.gd" id="41_3dis5"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/Condition.gd" id="42_rjnvi"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/FatigueCondition.gd" id="43_t17f4"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/FacingArrowManager.gd" id="43_ygndu"]
 [ext_resource type="ArrayMesh" uid="uid://xx66bmhi8byu" path="res://Hero_Game/Prefabs/BasicShapes/Arrow_Plane.res" id="44_r3umq"]
 
@@ -2205,7 +2211,7 @@ tags_to_remove_on_end = Array[String]([])
 
 [sub_resource type="Resource" id="Resource_yhnmf"]
 script = ExtResource("34_nsbb5")
-animation = ExtResource("35_58x2o")
+animation = ExtResource("39_uakyw")
 ap_cost = 0
 ui_name = "DabRun"
 movement_gait = 2
@@ -2232,6 +2238,7 @@ tags_to_remove_on_end = Array[String]([])
 [sub_resource type="Resource" id="Resource_5aq8p"]
 script = ExtResource("30_uvroa")
 part_name = "leg_left"
+part_ui_name = "Left Leg"
 armor = 0.0
 hit_range_start = 1
 hit_range_end = 3
@@ -2240,6 +2247,7 @@ conditions = Array[Resource]([])
 [sub_resource type="Resource" id="Resource_nsmmb"]
 script = ExtResource("30_uvroa")
 part_name = "leg_right"
+part_ui_name = "Right Leg"
 armor = 0.0
 hit_range_start = 4
 hit_range_end = 6
@@ -2248,6 +2256,7 @@ conditions = Array[Resource]([])
 [sub_resource type="Resource" id="Resource_74ark"]
 script = ExtResource("30_uvroa")
 part_name = "abdomen"
+part_ui_name = "Abdomen"
 armor = 0.0
 hit_range_start = 7
 hit_range_end = 9
@@ -2256,6 +2265,7 @@ conditions = Array[Resource]([])
 [sub_resource type="Resource" id="Resource_fhch0"]
 script = ExtResource("30_uvroa")
 part_name = "chest"
+part_ui_name = "Chest"
 armor = 0.0
 hit_range_start = 10
 hit_range_end = 12
@@ -2264,6 +2274,7 @@ conditions = Array[Resource]([])
 [sub_resource type="Resource" id="Resource_7ecln"]
 script = ExtResource("30_uvroa")
 part_name = "arm_right"
+part_ui_name = ""
 armor = 0.0
 hit_range_start = 13
 hit_range_end = 15
@@ -2272,6 +2283,7 @@ conditions = Array[Resource]([])
 [sub_resource type="Resource" id="Resource_ulfuw"]
 script = ExtResource("30_uvroa")
 part_name = "arm_left"
+part_ui_name = "Left Arm"
 armor = 0.0
 hit_range_start = 16
 hit_range_end = 18
@@ -2280,17 +2292,23 @@ conditions = Array[Resource]([])
 [sub_resource type="Resource" id="Resource_tnqen"]
 script = ExtResource("30_uvroa")
 part_name = "head"
+part_ui_name = "Head"
 armor = 0.0
 hit_range_start = 19
 hit_range_end = 20
 conditions = Array[Resource]([])
+
+[sub_resource type="Resource" id="Resource_5rdfc"]
+script = ExtResource("43_t17f4")
+ui_name = "fatigue"
+condition_level = 0
 
 [sub_resource type="Resource" id="Resource_nsk3p"]
 script = ExtResource("38_3xk7x")
 name = "RightHand"
 accepted_items = Array[ExtResource("35_icsct")]([])
 
-[node name="DawnUnit" type="Node3D" node_paths=PackedStringArray("skeleton", "animator", "body", "inventory", "equipment", "color_marker", "chest_marker", "right_hand_socket", "shoot_point")]
+[node name="DawnUnit" type="Node3D" node_paths=PackedStringArray("skeleton", "animator", "body", "inventory", "equipment", "color_marker", "chest_marker", "above_marker", "conditions_manager", "right_hand_socket", "shoot_point")]
 script = ExtResource("1_y16nl")
 skeleton = NodePath("Rig_001/Skeleton3D")
 animator = NodePath("UnitAnimator")
@@ -2299,6 +2317,8 @@ inventory = NodePath("Inventory")
 equipment = NodePath("Equipment")
 color_marker = NodePath("ColorMarker")
 chest_marker = NodePath("ChestPointMarker")
+above_marker = NodePath("AboveMarker")
+conditions_manager = NodePath("ConditionsManager")
 right_hand_socket = NodePath("Rig_001/Skeleton3D/LeftHandEquipmentSocketBone/RightHandSocket")
 shoot_point = NodePath("Rig_001/Skeleton3D/RightHandEquipmentSocketBoneAttatchment/ShootPoint")
 death_vfx_scene = ExtResource("2_2wk6w")
@@ -3520,7 +3540,7 @@ bones/172/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.537114, 0.060795, -0.841316, -0.719799, 0.553036, -0.419571, 0.439771, 0.830936, 0.340803, 0.271139, 1.15307, 0.238702)
+transform = Transform3D(0.629435, 0.0941986, -0.771323, -0.666498, 0.575765, -0.473577, 0.399491, 0.81217, 0.42519, 0.281883, 1.16981, 0.245949)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3528,7 +3548,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.497751, 0.576955, 0.647586, 0.817737, 0.561019, 0.128703, -0.289052, 0.593616, -0.751045, -0.145253, 1.23747, 0.376486)
+transform = Transform3D(-0.534211, 0.529792, 0.65874, 0.809605, 0.544846, 0.218363, -0.243225, 0.649972, -0.719985, -0.141068, 1.25113, 0.384519)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3536,12 +3556,13 @@ bone_idx = 67
 transform = Transform3D(0.0911744, 0.125808, -0.987859, -0.973272, -0.198726, -0.115136, -0.210797, 0.97195, 0.104326, 0.00527489, 0.0422065, 0.0300578)
 
 [node name="EquippedItem3D" type="Node3D" parent="Rig_001/Skeleton3D/LeftHandEquipmentSocketBone/RightHandSocket" node_paths=PackedStringArray("unit")]
+transform = Transform3D(0.999983, 0.00294973, 0.00510682, -0.00135497, 0.957676, -0.287844, -0.00573963, 0.287833, 0.957664, -0.0127231, -0.0137391, -0.00101501)
 script = ExtResource("4_3lwao")
 unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.832132, 0.0116096, 0.554456, 0.00726539, 0.999467, -0.0318316, -0.554529, 0.0305164, 0.831604, -0.000313271, 1.03258, 0.0105277)
+transform = Transform3D(0.831284, 0.00259817, 0.555841, 0.00162677, 0.999973, -0.00710711, -0.555845, 0.0068122, 0.831258, -5.95312e-05, 1.05301, 0.00236622)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 
@@ -3654,9 +3675,13 @@ shoot_point = NodePath("../Rig_001/Skeleton3D/RightHandEquipmentSocketBoneAttatc
 skeleton = NodePath("../Rig_001/Skeleton3D")
 neck_target = NodePath("../NeckTarget")
 neck_rot_speed = 8.0
-max_horizontal_angle = 70
+max_horizontal_angle = 55
 max_vertical_angle = 10
+head_look_vertical_offset = -1.51
 chest_point = NodePath("../ChestPointMarker")
+general_hit_flash_mat = ExtResource("19_wisdh")
+white_hit_flash_mat = ExtResource("4_xm57a")
+red_hit_flash_mat = ExtResource("4_c2lw4")
 
 [node name="UnitArea3D" type="Area3D" parent="."]
 collision_layer = 8
@@ -3702,6 +3727,11 @@ abilities = Array[ExtResource("23_1urwx")]([ExtResource("24_6kacr"), ExtResource
 script = ExtResource("29_f43xc")
 body_parts = Array[ExtResource("30_uvroa")]([SubResource("Resource_5aq8p"), SubResource("Resource_nsmmb"), SubResource("Resource_74ark"), SubResource("Resource_fhch0"), SubResource("Resource_7ecln"), SubResource("Resource_ulfuw"), SubResource("Resource_tnqen")])
 
+[node name="ConditionsManager" type="Node" parent="." node_paths=PackedStringArray("unit")]
+script = ExtResource("41_3dis5")
+unit = NodePath("..")
+conditions = Array[ExtResource("42_rjnvi")]([SubResource("Resource_5rdfc")])
+
 [node name="Inventory" type="Node" parent="."]
 script = ExtResource("34_0tyum")
 owner_path = NodePath("..")
@@ -3717,7 +3747,7 @@ slots_editor = Array[ExtResource("38_3xk7x")]([SubResource("Resource_nsk3p")])
 visible = false
 
 [node name="AboveMarker" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72144, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7398, 0)
 
 [node name="ChestPointMarker" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.896088, 0.197046)

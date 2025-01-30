@@ -216,13 +216,38 @@ func test_n() -> void:
 
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
-		open_character_sheet()
+		#open_character_sheet()
 		#equip_weapon()
 		#open_special_effect_buttons()
 		#print_active_special_effects()
+		#spawn_text_label()
+		flash()
+		#flash_on_equipped_weapon()
 		pass
 
+func flash_on_equipped_weapon() -> void:
+	Utilities.flash_color_on_mesh(unit.get_equipped_weapon().get_object() as MeshInstance3D, Color.CRIMSON)
 
+func flash() -> void:
+	unit.animator.flash_color(Color.YELLOW, 5.0)
+	await get_tree().create_timer(3.0).timeout
+	unit.animator.flash_color(Color.REBECCA_PURPLE)
+	await get_tree().create_timer(0.6).timeout
+	unit.animator.flash_color(Color.BLACK)
+	await get_tree().create_timer(0.6).timeout
+	unit.animator.flash_color(Color.MAGENTA)
+	
+
+#	unit.animator.flash_red()
+#	unit.animator.trigger_camera_shake_large()
+
+
+func spawn_text_label() -> void:
+	Utilities.spawn_text_line(unit, "Testing, Testing, 123", Color.FOREST_GREEN)
+	await get_tree().create_timer(1.0).timeout
+	Utilities.spawn_text_line(unit, "Testing, Testing, 123", Color.CRIMSON)
+	await get_tree().create_timer(1.0).timeout
+	Utilities.spawn_text_line(unit, "Testing, Testing, 123")
 
 func test_shift_c() -> void:
 	if Input.is_action_just_pressed("testkey_shift_c"):

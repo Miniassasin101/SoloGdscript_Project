@@ -1,15 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=9 format=3 uid="uid://cpccbvm86p68o"]
 
+[ext_resource type="Material" uid="uid://cmuw56hfjjlwd" path="res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/OutlineMaterial.tres" id="1_8w68l"]
 [ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Gobotcelshading.gdshader" id="1_ssmxs"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aqout"]
-blend_mode = 4
-cull_mode = 1
-shading_mode = 0
-albedo_color = Color(0.0605303, 0.0605303, 0.0605303, 1)
-disable_receive_shadows = true
-grow = true
-grow_amount = 0.01
 
 [sub_resource type="Gradient" id="Gradient_viw3b"]
 offsets = PackedFloat32Array(0.494382, 0.498127, 0.970037, 0.975309, 1)
@@ -33,7 +25,7 @@ gradient = SubResource("Gradient_qyqdn")
 [resource]
 resource_name = "GobotMat"
 render_priority = 0
-next_pass = SubResource("StandardMaterial3D_aqout")
+next_pass = ExtResource("1_8w68l")
 shader = ExtResource("1_ssmxs")
 shader_parameter/point_size = 1.0
 shader_parameter/roughness = 1.0

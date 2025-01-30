@@ -48,7 +48,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	event = _event
 	# Retrieve target position from the event
 	target_position = event.target_grid_position
-	unit = event.character
+	unit = event.unit
 
 	if not unit or not target_position:
 		if can_end(event):
@@ -130,7 +130,7 @@ func can_activate(_event: ActivationEvent) -> bool:
 
 
 func get_valid_ability_target_grid_position_list_dep(_event: ActivationEvent) -> Array[GridPosition]:
-	var in_unit: Unit = _event.character
+	var in_unit: Unit = _event.unit
 	var self_unit_pos: GridPosition = in_unit.get_grid_position()
 	if self_unit_pos == null:
 		return []
@@ -228,7 +228,7 @@ func get_valid_ability_target_grid_position_list_dep(_event: ActivationEvent) ->
 
 
 func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
-	var in_unit: Unit = _event.character
+	var in_unit: Unit = _event.unit
 	var self_unit_pos: GridPosition = in_unit.get_grid_position()
 	if self_unit_pos == null:
 		return []
@@ -287,7 +287,7 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 
 
 func get_max_move_from_gait(_event: ActivationEvent) -> float:
-	var in_unit: Unit = _event.character
+	var in_unit: Unit = _event.unit
 	var move_rate: float = in_unit.attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
 	var gait: int = in_unit.current_gait
 	var ret_move: float = 0.0

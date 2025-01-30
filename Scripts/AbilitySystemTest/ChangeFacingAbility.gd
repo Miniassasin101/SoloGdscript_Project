@@ -20,7 +20,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	#super.try_activate(_event)
 	event = _event
 	# Retrieve target position from the event
-	unit = event.character
+	unit = event.unit
 	if not unit:
 		if can_end(event):
 			push_error("no unit: " + event.to_string())
@@ -58,7 +58,7 @@ func check_desired_facing() -> int:
 	elif grid_position.equals(LevelGrid.grid_system.get_grid_position_from_coords(unit_position.x - 1, unit_position.z)):
 		return Utilities.FACING.WEST
 
-	push_error("Invalid grid position on ", event.character)
+	push_error("Invalid grid position on ", event.unit)
 	return -1
 
 
@@ -91,7 +91,7 @@ func can_activate(_event: ActivationEvent) -> bool:
 ##  2) Do we have enough movement left to face (especially if behind us)?
 ##  3) Exclude the direct front tile if that's desired by design.
 func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
-	var character: Unit = _event.character
+	var character: Unit = _event.unit
 	var candidate_positions: Array[GridPosition] = Utilities.get_adjacent_tiles_no_diagonal(character)
 	var final_positions: Array[GridPosition] = []
 

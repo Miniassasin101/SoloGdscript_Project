@@ -39,13 +39,25 @@ const GAIT_ALLOWED_ACTIONS = {
 }
 
 
-func get_ability_from_container():
-	pass
+enum DIFFICULTY_GRADE {
+	VERY_EASY,
+	EASY,
+	STANDARD,
+	HARD,
+	FORMIDABLE,
+	HERCULEAN,
+	HOPELESS
+}
 
-func get_ability_from_unit():
-	pass
-
-
+const DIFFICULTY_GRADE_MULTIPLIER = {
+	DIFFICULTY_GRADE.VERY_EASY: 2.0,
+	DIFFICULTY_GRADE.EASY: 1.5,
+	DIFFICULTY_GRADE.STANDARD: 1.0,
+	DIFFICULTY_GRADE.HARD: 0.77,
+	DIFFICULTY_GRADE.FORMIDABLE: 0.5,
+	DIFFICULTY_GRADE.HERCULEAN: 0.1,
+	DIFFICULTY_GRADE.HOPELESS: 0.0,
+}
 
 func get_adjacent_tiles_no_diagonal(unit: Unit) -> Array[GridPosition]:
 	var ret_tiles: Array[GridPosition] = []
@@ -531,18 +543,72 @@ func lookup_table_value(derived_from: Array[StringName], table: Dictionary, spec
 
 
 
-func spawn_damage_label(in_unit: Unit, damage_val: float) -> void:
+# Visual Utilities
+
+# Material Utilities
+func flash_color_on_meshes(meshes: Array[MeshInstance3D] ,color: Color = Color.DEEP_SKY_BLUE, flash_time: float = 1.0) -> void:
+	for mesh in meshes:
+		var mesh_mat: StandardMaterial3D = preload("res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/GeneralHitFXMaterial.tres").duplicate(true)
+		mesh_mat.set_albedo(color)
+		mesh.set_material_overlay(mesh_mat)
+	
+	await get_tree().create_timer(flash_time).timeout
+	
+	for mesh in meshes:
+		mesh.set_material_overlay(null)
+
+
+func flash_color_on_mesh(mesh: MeshInstance3D ,color: Color = Color.DEEP_SKY_BLUE, flash_time: float = 1.0) -> void:
+
+	var mesh_mat: StandardMaterial3D = preload("res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/GeneralHitFXMaterial.tres").duplicate(true)
+	mesh_mat.set_albedo(color)
+	mesh.set_material_overlay(mesh_mat)
+	
+	await get_tree().create_timer(flash_time).timeout
+	
+	mesh.set_material_overlay(null)
+
+
+
+# Text Utilities
+func spawn_text_line(in_unit: Unit, text: String, color: Color = Color.SNOW, scale: float = 1.0) -> void:
+	var above_pos: Vector3 = in_unit.get_world_position_above_marker()
+	var camera: Camera3D = MouseWorld.instance.camera
+	var screen_pos: Vector2 = camera.unproject_position(above_pos)
+
+	# Instance the label
+	var text_label_scene: PackedScene = UILayer.instance.text_controller_scene
+	var text_label = text_label_scene.instantiate() as TextController
+	
+	# Add to CharacterLogQueue instead of UILayer directly
+	UILayer.instance.get_node("CharacterLogQueue").add_message(text_label)
+
+	# Position it in screen-space
+	text_label.set_position(screen_pos)
+	text_label.world_pos = above_pos
+	text_label.set_scale(Vector2(scale, scale))
+	text_label.set_text_color(color)
+
+	# Initialize the label's text, color, etc.
+	text_label.play(text)
+
+
+
+func spawn_damage_label(in_unit: Unit, damage_val: float, color: Color = Color.CRIMSON, scale: float = 0.6) -> void:
 	var chest_pos: Vector3 = in_unit.get_world_position_chest()
 	var camera: Camera3D = MouseWorld.instance.camera
 	# Assume 'camera' is a reference to your Camera3D node
 	var screen_pos: Vector2 = camera.unproject_position(chest_pos)
 	
 	# Now instance the label
-	var damage_label_scene: PackedScene = UILayer.instance.damage_number_scene
-	var damage_label = damage_label_scene.instantiate() as DamageNumber
-	UILayer.instance.add_child(damage_label)
+	var text_label_scene: PackedScene = UILayer.instance.text_controller_scene
+	var text_label = text_label_scene.instantiate() as TextController
+	UILayer.instance.add_child(text_label)
 	# Position it in screen-space
-	damage_label.set_position(screen_pos)
+	text_label.set_position(screen_pos)
+	text_label.set_scale(Vector2(scale, scale))
+	text_label.world_pos = chest_pos
+	text_label.set_text_color(color)
 	
 	# Initialize the label's text, color, etc.
-	damage_label.play(str(damage_val))
+	text_label.play(str(damage_val), "DamageNumberAnim")

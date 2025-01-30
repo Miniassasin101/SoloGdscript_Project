@@ -6,7 +6,7 @@ extends Resource
 
 # Name of the body part, e.g. "head", "chest", "left_arm", "right_arm", "abdomen", "left_leg", "right_leg"
 @export var part_name: String = ""       
-
+@export var part_ui_name: String = ""
 # Armor points on this body part (reduces damage)
 @export var armor: float = 0.0            
 

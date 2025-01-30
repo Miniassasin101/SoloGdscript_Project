@@ -18,6 +18,7 @@ var total_spin_amount: float = 0.0
 var event: ActivationEvent = null
 var target_position: GridPosition = null
 var unit: Unit
+var target_unit: Unit = null
 var rolled_damage: int = 0
 
 
@@ -27,7 +28,8 @@ func try_activate(_event: ActivationEvent) -> void:
 	event = _event
 	# Retrieve target position from the event
 	target_position = event.target_grid_position
-	unit = event.character
+	unit = event.unit
+	target_unit = LevelGrid.get_unit_at_grid_position(target_position)
 	
 	if not unit or not target_position:
 		return
@@ -59,7 +61,7 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 	
 	#Here is where the actual attack resolution comes in
 	event = await CombatSystem.instance.attack_unit(self, event)
-	event.character.add_child(timer)
+	event.unit.add_child(timer)
 	
 	
 
@@ -70,13 +72,20 @@ func shoot_projectile() -> void:
 	# Will need to dynamically adjust shoot height later
 	var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
 	projectile_instance.setup(target_shoot_at_position, event.miss) #Add miss logic later
-	event.character.add_child(projectile_instance)
+	event.unit.add_child(projectile_instance)
 	projectile_instance.global_transform.origin = unit.shoot_point.global_transform.origin
 	projectile_instance.global_transform.basis = unit.shoot_point.global_transform.basis
 	projectile_instance.target_hit.connect(apply_effect)
-	await unit.get_tree().create_timer(3.0).timeout
+
+
+	# Reset the positionings of the user and target
+	await unit.get_tree().create_timer(2.0).timeout
 	unit.animator.rotate_unit_towards_facing()
-	SignalBus.rotate_unit_towards_facing.emit(LevelGrid.get_unit_at_grid_position(event.target_grid_position))
+	if target_unit:
+		target_unit.animator.parry_reset.emit()
+		target_unit.animator.on_stop_being_targeted()
+		await unit.get_tree().create_timer(1.0).timeout
+		target_unit.animator.rotate_unit_towards_facing()
 
 	
 
@@ -105,7 +114,14 @@ func apply_effect() -> void:
 	effect.attributes_affected.append(part_effect)
 	
 	target_unit.add_child(effect)
-	super.spawn_damage_label(target_unit, event.rolled_damage)
+
+	if !event.miss:
+		Utilities.spawn_damage_label(target_unit, rolled_damage)
+		target_unit.animator.flash_red(0.3)
+	elif event.miss:
+		target_unit.animator.flash_white(0.4)
+		Utilities.spawn_text_line(target_unit, "Miss", Color.AQUA)
+	
 	
 	if can_end(event):
 		event.successful = true
@@ -138,7 +154,7 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 			# Calculate the test grid position.
 			
 			
-			var temp_grid_position: GridPosition = _event.character.get_grid_position().add(offset_grid_position)
+			var temp_grid_position: GridPosition = _event.unit.get_grid_position().add(offset_grid_position)
 			var test_grid_object: GridObject = LevelGrid.grid_system.get_grid_object(temp_grid_position)
 			if test_grid_object == null:
 				continue
@@ -162,11 +178,11 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 
 			#Replace later with actual teams functionality
 
-			if target_unit.is_enemy == _event.character.is_enemy:
+			if target_unit.is_enemy == _event.unit.is_enemy:
 				# Both units are either player or enemy units
 				continue
 			
-			var unit_world_position: Vector3 = LevelGrid.get_world_position(_event.character.get_grid_position())
+			var unit_world_position: Vector3 = LevelGrid.get_world_position(_event.unit.get_grid_position())
 			if !MouseWorld.instance.has_line_of_sight(unit_world_position + Vector3.UP,
 			 target_unit.get_world_position() + Vector3.UP):
 				#print_debug("No line of sight to target!" + target_unit.to_string())

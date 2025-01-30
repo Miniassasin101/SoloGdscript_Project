@@ -15,7 +15,7 @@ This only can be activated by a defending unit if the attacking unit fumbles the
 # NOTE: maybe switch to event instead
 func apply(event: ActivationEvent) -> void:
 	super.apply(event)
-	var target_unit: Unit = event.character
+	var target_unit: Unit = event.unit
 	# Animation Stand In
 	
 	var hit_location: BodyPart = target_unit.get_random_hit_location()
@@ -30,9 +30,9 @@ func apply(event: ActivationEvent) -> void:
 	# Ensure damage does not go negative
 	damage_total = max(damage_total, 0)
 	print_debug("Final damage dealt: ", damage_total)
-	event.rolled_damage = damage_total
+	var effect_rolled_damage: int = damage_total
 	
-	apply_effect(event)
+	apply_effect(event, effect_rolled_damage)
 		
 	#apply damage effect
 	
@@ -57,22 +57,22 @@ func roll_damage(event: ActivationEvent) -> int:
 	
 	return damage_total
 
-func apply_effect(event: ActivationEvent) -> void:
+func apply_effect(event: ActivationEvent, effect_rolled_damage: int) -> void:
 
 	# Create a new GameplayEffect resource
 	var effect = GameplayEffect.new()
-	var target_unit: Unit = event.character
+	var target_unit: Unit = event.unit
 	# Prepare an AttributeEffect for health
 	var health_effect = AttributeEffect.new()
 	health_effect.attribute_name = "health"
-	health_effect.minimum_value = -event.rolled_damage
-	health_effect.maximum_value = -event.rolled_damage
+	health_effect.minimum_value = -effect_rolled_damage
+	health_effect.maximum_value = -effect_rolled_damage
 
 	# Optionally, if you want to apply damage to a specific body part
 	var part_effect = AttributeEffect.new()
 	part_effect.attribute_name = event.body_part
-	part_effect.minimum_value = -event.rolled_damage
-	part_effect.maximum_value = -event.rolled_damage
+	part_effect.minimum_value = -effect_rolled_damage
+	part_effect.maximum_value = -effect_rolled_damage
 
 	effect.attributes_affected.append(health_effect)
 	effect.attributes_affected.append(part_effect)
@@ -81,4 +81,5 @@ func apply_effect(event: ActivationEvent) -> void:
 
 	if target_unit:
 		target_unit.add_child(effect)
-	Utilities.spawn_damage_label(target_unit, event.rolled_damage)
+	Utilities.spawn_damage_label(target_unit, effect_rolled_damage)
+	Utilities.spawn_text_line(event.target_unit, "Accidental Injury")

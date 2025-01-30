@@ -19,6 +19,8 @@ var action_system: UnitActionSystem
 @export var equipment: Equipment
 @export var color_marker: ColorMarker
 @export var chest_marker: Marker3D
+@export var above_marker: Marker3D
+@export var conditions_manager: ConditionsManager
 
 @export_category("Sockets")
 @export var right_hand_socket: Node3D
@@ -65,6 +67,8 @@ var movement_done_in_second_cycle: bool = false
 ## Is the first ability used in the round. Determines possible movement gaits for the rest of the round
 var previous_ability: Ability = null
 
+# Combat Variables
+var fatigue_left: int
 
 
 # Methods
@@ -197,7 +201,10 @@ func get_action_system() -> UnitActionSystem:
 
 
 func get_world_position_chest() -> Vector3:
-	return chest_marker.global_position
+	return chest_marker.get_global_position()
+
+func get_world_position_above_marker() -> Vector3:
+	return above_marker.get_global_position()
 
 func get_target_position_with_offset(height_offset: float) -> Vector3:
 	var target_position = global_position
@@ -214,6 +221,14 @@ func get_max_move_left() -> float:
 
 func get_random_hit_location() -> BodyPart:
 	return body.roll_hit_location()
+
+
+func get_combat_skill() -> float:
+	return int(attribute_map.get_attribute_by_name("combat_skill").current_buffed_value)
+
+func get_equipped_weapon() -> Weapon:
+	return equipment.get_equipped_weapon()
+
 
 func set_distance_moved(val: float) -> void:
 	distance_moved_this_turn = val
@@ -264,3 +279,17 @@ func set_facing() -> void:
 
 	print_debug("Unit facing direction set to: ", facing)
 	facing_changed.emit(facing)
+
+
+func setup_fatigue_left() -> void:
+	var endurance: float = attribute_map.get_attribute_by_name("endurance").current_buffed_value
+	# FIXME: Add a check to see how many times the unit has passed the check to increase the difficulty of the roll and halve time
+	var max_rounds: int = ceili(endurance/5) #maximum rounds before combat fatigue needs to be rolled against
+	fatigue_left = ceili(endurance/5) #maximum rounds before combat fatigue needs to be rolled against
+	
+func try_reduce_fatigue_left() -> bool:
+	if fatigue_left > 0:
+		fatigue_left -= 1
+		Utilities.spawn_text_line(self, "-1 Fatigue")
+		return true
+	return false

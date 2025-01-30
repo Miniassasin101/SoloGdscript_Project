@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="Condition" load_steps=2 format=3 uid="uid://cvdfg84signwo"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/Condition.gd" id="1_btfw1"]
+
+[resource]
+script = ExtResource("1_btfw1")

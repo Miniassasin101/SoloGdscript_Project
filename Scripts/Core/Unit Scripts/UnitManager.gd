@@ -36,10 +36,18 @@ func initialize_units() -> void:
 	SignalBus.form_body.emit()
 	print(units)
 
+func setup_units_for_combat() -> void:
+	for unit in get_all_units():
+		unit.setup_fatigue_left()
+
+
 # Connects the UnitManager to global signals
 func connect_global_signals() -> void:
 	SignalBus.add_unit.connect(_on_add_unit)
 	SignalBus.remove_unit.connect(_on_remove_unit)
+
+
+
 
 
 # React to the global "add_unit" signal
@@ -49,6 +57,7 @@ func _on_add_unit(unit: Unit) -> void:
 # React to the global "remove_unit" signal
 func _on_remove_unit(unit: Unit) -> void:
 	remove_unit(unit)
+	TurnSystem.instance.on_unit_died(unit)
 
 # Adds a new unit to the manager (e.g., during runtime).
 func add_unit(unit: Unit) -> void:

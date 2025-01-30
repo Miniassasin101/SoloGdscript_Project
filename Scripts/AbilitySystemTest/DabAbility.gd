@@ -21,7 +21,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	super.try_activate(_event)
 	event = _event
 	# Retrieve target position from the event
-	unit = event.character
+	unit = event.unit
 	if not unit:
 		if can_end(event):
 			push_error("no unit: " + event.to_string())
@@ -34,7 +34,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	timer.one_shot = true
 	timer.autostart = true
 	timer.wait_time = 0.5
-	event.character.add_child(timer)
+	event.unit.add_child(timer)
 	"""
 	await perform_animation() # Always be careful to wait for the animation to complete
 
@@ -66,7 +66,7 @@ func can_activate(_event: ActivationEvent) -> bool:
 
 func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
 	var ret: Array[GridPosition] = []
-	ret.append(_event.character.get_grid_position())
+	ret.append(_event.unit.get_grid_position())
 	return ret
 
 

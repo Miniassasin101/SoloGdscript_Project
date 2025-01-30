@@ -66,7 +66,7 @@ func get_slot_at_pos(pos: Vector2) -> MouseEventDroppableSlot:
 
 
 func _on_confirm_effect_button_pressed() -> void:
-	var effects: Array[SpecialEffect] = get_active_special_effects()
-	if !effects.is_empty():
-		UIBus.effects_confirmed.emit(get_active_special_effects())
-		reset_slots()
+	#var effects: Array[SpecialEffect] = get_active_special_effects()
+	
+	UIBus.effects_confirmed.emit(get_active_special_effects())
+	reset_slots()
