@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=57 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -13,7 +13,7 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Pathfinding/ObstacleManager.gd" id="6_ni1mu"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/TurnSystem.gd" id="6_rwbm0"]
 [ext_resource type="PackedScene" uid="uid://b37juamn5pbrv" path="res://WallTestInst.tscn" id="7_snusx"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/AccidentalInjuryEffect.gd" id="8_3ubv2"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/AccidentalInjuryEffect.gd" id="8_3ubv2"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitAI/UnitAI.gd" id="8_kmwtl"]
 [ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="8_paohs"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="9_rt187"]
@@ -29,6 +29,7 @@
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
 [ext_resource type="Script" path="res://Hero_Game/Scenes/UILayer.gd" id="21_3ffgk"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
+[ext_resource type="Resource" uid="uid://bytek5m52blwh" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BleedEffectResource.tres" id="21_kkt7y"]
 [ext_resource type="Script" path="res://Hero_Game/Scenes/BookKeepingSystem.gd" id="21_ktx83"]
 [ext_resource type="PackedScene" uid="uid://bs8kc22xgwd2d" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.tscn" id="22_67ysf"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
@@ -143,6 +144,7 @@ size = Vector2(2, 2)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
+attacker_success_debug = true
 auto_equip_debug = true
 grid_dimensions = Vector2(15, 13)
 
@@ -276,7 +278,7 @@ unit_manager = NodePath("../UnitManager")
 script = ExtResource("16_f3oa4")
 unit_action_system_ui = NodePath("../UILayer/UnitActionSystemUI")
 book_keeping_system = NodePath("BookKeepingSystem")
-special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), SubResource("Resource_c77yv"), SubResource("Resource_d4d4a")])
+special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), ExtResource("21_kkt7y"), SubResource("Resource_c77yv"), SubResource("Resource_d4d4a")])
 
 [node name="BookKeepingSystem" type="Node" parent="CombatSystem" node_paths=PackedStringArray("combat_system")]
 script = ExtResource("21_ktx83")

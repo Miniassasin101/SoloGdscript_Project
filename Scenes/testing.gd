@@ -221,9 +221,14 @@ func test_c() -> void:
 		#open_special_effect_buttons()
 		#print_active_special_effects()
 		#spawn_text_label()
-		flash()
+		#flash()
 		#flash_on_equipped_weapon()
+		print_conditions()
 		pass
+
+func print_conditions() -> void:
+	for condition in unit.conditions_manager.get_all_conditions():
+		print("Condition: ", condition.ui_name)
 
 func flash_on_equipped_weapon() -> void:
 	Utilities.flash_color_on_mesh(unit.get_equipped_weapon().get_object() as MeshInstance3D, Color.CRIMSON)

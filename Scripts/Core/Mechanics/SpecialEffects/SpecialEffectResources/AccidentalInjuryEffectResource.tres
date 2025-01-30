@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="AccidentalInjuryEffect" load_steps=2 format=3 uid="uid://cjxj1gnefr71c"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/AccidentalInjuryEffect.gd" id="1_ffkfs"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/AccidentalInjuryEffect.gd" id="1_ffkfs"]
 
 [resource]
 script = ExtResource("1_ffkfs")

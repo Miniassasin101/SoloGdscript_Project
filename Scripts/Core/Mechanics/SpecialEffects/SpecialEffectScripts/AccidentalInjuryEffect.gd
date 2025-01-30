@@ -11,6 +11,14 @@ This only can be activated by a defending unit if the attacking unit fumbles the
 """
 
 
+func can_apply(event: ActivationEvent) -> bool:
+	if !super.can_apply(event):
+		return false
+	
+	
+	return true
+
+
 
 # NOTE: maybe switch to event instead
 func apply(event: ActivationEvent) -> void:

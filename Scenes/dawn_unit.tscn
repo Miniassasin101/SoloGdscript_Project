@@ -48,7 +48,7 @@
 [ext_resource type="Resource" uid="uid://boojk1je30typ" path="res://Hero_Game/Scripts/AbilitySystemTest/Ability Resources/IdleResource.tres" id="40_8r1ak"]
 [ext_resource type="Script" path="res://Hero_Game/Scenes/ConditionsManager.gd" id="41_3dis5"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/Condition.gd" id="42_rjnvi"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/FatigueCondition.gd" id="43_t17f4"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/FatigueCondition.gd" id="43_t17f4"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/FacingArrowManager.gd" id="43_ygndu"]
 [ext_resource type="ArrayMesh" uid="uid://xx66bmhi8byu" path="res://Hero_Game/Prefabs/BasicShapes/Arrow_Plane.res" id="44_r3umq"]
 
@@ -2302,6 +2302,9 @@ conditions = Array[Resource]([])
 script = ExtResource("43_t17f4")
 ui_name = "fatigue"
 condition_level = 0
+application_interval = 0
+is_situational_modifier = false
+situational_modifier = 2
 
 [sub_resource type="Resource" id="Resource_nsk3p"]
 script = ExtResource("38_3xk7x")
@@ -3540,7 +3543,7 @@ bones/172/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.629435, 0.0941986, -0.771323, -0.666498, 0.575765, -0.473577, 0.399491, 0.81217, 0.42519, 0.281883, 1.16981, 0.245949)
+transform = Transform3D(0.49946, 0.0460322, -0.865113, -0.736796, 0.547845, -0.396227, 0.455709, 0.835312, 0.307543, 0.266634, 1.14854, 0.234643)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3548,7 +3551,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.534211, 0.529792, 0.65874, 0.809605, 0.544846, 0.218363, -0.243225, 0.649972, -0.719985, -0.141068, 1.25113, 0.384519)
+transform = Transform3D(-0.484678, 0.594814, 0.641314, 0.818013, 0.567872, 0.0915224, -0.309746, 0.568962, -0.7618, -0.147061, 1.23404, 0.371799)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3562,7 +3565,7 @@ unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.831284, 0.00259817, 0.555841, 0.00162677, 0.999973, -0.00710711, -0.555845, 0.0068122, 0.831258, -5.95312e-05, 1.05301, 0.00236622)
+transform = Transform3D(0.83237, 0.0140499, 0.554043, 0.00879074, 0.999218, -0.0385459, -0.554151, 0.0369549, 0.831596, -0.000401992, 1.02545, 0.0128731)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 

@@ -25,3 +25,9 @@ func get_fatigue_details() -> Dictionary:
 	if condition_level < 0 or condition_level >= FATIGUE_LEVELS.size():
 		return {"name": "Unknown", "details": "No details available"}
 	return FATIGUE_LEVELS[condition_level]
+
+func increase_level(unit: Unit, by_amount: int = 1) -> void:
+	super.increase_level(unit, by_amount)
+
+	var new_fatigue_level_ui_name: String = get_fatigue_level_name()
+	Utilities.spawn_text_line(unit, new_fatigue_level_ui_name)

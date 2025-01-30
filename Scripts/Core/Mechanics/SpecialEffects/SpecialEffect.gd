@@ -88,3 +88,8 @@ func check_weapon_types(event: ActivationEvent) -> bool:
 			if event.weapon.category != weapon_type:
 				return false
 	return true
+
+
+
+func can_apply(event: ActivationEvent) -> bool:
+	return true

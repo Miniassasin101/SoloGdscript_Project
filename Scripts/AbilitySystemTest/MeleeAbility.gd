@@ -196,9 +196,11 @@ func melee_attack_anim() -> void:
 	# 2) Here you can trigger any hit fx on the ability by passing it to the target unit's animator:
 	if !event.miss:
 		target_unit.animator.trigger_hit_fx(hit_vfx, unit.get_global_rotation())
-		target_unit.animator.flash_red()
+		
 		if event.rolled_damage == 0:
-			target_unit.animator
+			target_unit.animator.flash_white()
+		else:
+			target_unit.animator.flash_red()
 	else:
 		target_unit.animator.flash_white()
 		Utilities.spawn_text_line(target_unit, "Miss", Color.AQUA)
@@ -221,7 +223,8 @@ func melee_attack_anim() -> void:
 
 func resolve_special_effects() -> void:
 	for effect in event.special_effects:
-		effect.apply(event)
+		if effect.can_apply(event):
+			effect.apply(event)
 
 ##
 # Applies the damage effect to the target unit at target_position.

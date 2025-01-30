@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BleedingCondition" load_steps=2 format=3 uid="uid://dhxpqgtnay5nn"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/BleedingCondition.gd" id="1_djv3r"]
+
+[resource]
+script = ExtResource("1_djv3r")
+ui_name = "bleeding"
+condition_level = 0
+application_interval = 1
+is_situational_modifier = false
+situational_modifier = 2
