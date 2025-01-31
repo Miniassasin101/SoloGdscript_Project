@@ -1,24 +1,18 @@
-[gd_resource type="Resource" script_class="MoveAbility" load_steps=2 format=3 uid="uid://cdlndqe1el380"]
+[gd_resource type="Resource" script_class="DitherAbility" load_steps=2 format=3 uid="uid://cdvdn0jqh0akb"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/MoveAbility.gd" id="1_ajbl4"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/DitherAbility.gd" id="1_prqkb"]
 
 [resource]
-script = ExtResource("1_ajbl4")
-max_move_distance = 5
+script = ExtResource("1_prqkb")
 ap_cost = 0
-rotate_speed = 4.3
-move_speed = 5.5
-stopping_distance = 0.1
-acceleration_timer = 0.5
-rotation_acceleration_timer = 0.5
-ui_name = "Move"
+ui_name = "Dither"
 movement_gait = 3
 cooldown_duration = 0.0
 cooldown_continuos = false
 grant_automatic = true
 grant_tags = Array[String]([])
 grant_tags_required = Array[String]([])
-tags_type = Array[String](["move"])
+tags_type = Array[String](["reaction"])
 tags_activation = Array[String]([])
 tags_activation_required = Array[String]([])
 tags_block = Array[String]([])

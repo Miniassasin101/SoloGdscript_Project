@@ -31,3 +31,33 @@ func increase_level(unit: Unit, by_amount: int = 1) -> void:
 
 	var new_fatigue_level_ui_name: String = get_fatigue_level_name()
 	Utilities.spawn_text_line(unit, new_fatigue_level_ui_name)
+
+
+func get_situational_modifier() -> int:
+	if condition_level < 0 or condition_level >= FATIGUE_LEVELS.size():
+		return Utilities.DIFFICULTY_GRADE.STANDARD  # Default to STANDARD if out of bounds
+	
+	var fatigue_data = FATIGUE_LEVELS[condition_level]
+	if "skill_grade" in fatigue_data:
+		var normalized_grade = fatigue_data["skill_grade"].to_upper()  # Convert to uppercase for normalization
+		match normalized_grade:
+			"VERY_EASY": return Utilities.DIFFICULTY_GRADE.VERY_EASY
+			"EASY": return Utilities.DIFFICULTY_GRADE.EASY
+			"STANDARD": return Utilities.DIFFICULTY_GRADE.STANDARD
+			"HARD": return Utilities.DIFFICULTY_GRADE.HARD
+			"FORMIDABLE": return Utilities.DIFFICULTY_GRADE.FORMIDABLE
+			"HERCULEAN": return Utilities.DIFFICULTY_GRADE.HERCULEAN
+			"HOPELESS": return Utilities.DIFFICULTY_GRADE.HOPELESS
+	return Utilities.DIFFICULTY_GRADE.STANDARD  # Default if no match
+
+
+
+
+func get_initiative_penalty() -> int:
+	if condition_level < 0 or condition_level >= FATIGUE_LEVELS.size():
+		return 0  # No penalty for invalid levels
+
+	var fatigue_data = FATIGUE_LEVELS[condition_level]
+	if "initiative_penalty" in fatigue_data:
+		return fatigue_data["initiative_penalty"]
+	return 0  # No penalty for this level

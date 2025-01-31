@@ -170,7 +170,8 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	event.target_unit = target_unit
 
-	var attacker_combat_skill = event.attribute_map.get_attribute_by_name("combat_skill").current_buffed_value
+
+	var attacker_combat_skill = attacking_unit.get_attribute_after_sit_mod("combat_skill")
 	var attacker_roll: int = Utilities.roll(100)
 	print_debug("Attacker Combat Skill: ", attacker_combat_skill)
 	print_debug("Attacker Roll: ", attacker_roll)

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="DitherAbility" load_steps=2 format=3 uid="uid://boojk1je30typ"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/DitherAbility.gd" id="1_57kau"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/DitherAbility.gd" id="1_57kau"]
 
 [resource]
 script = ExtResource("1_57kau")

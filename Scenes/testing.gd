@@ -223,8 +223,13 @@ func test_c() -> void:
 		#spawn_text_label()
 		#flash()
 		#flash_on_equipped_weapon()
-		print_conditions()
+		#print_conditions()
+		print_situational_modifier_attribute()
 		pass
+
+func print_situational_modifier_attribute() -> void:
+	print(unit.get_attribute_after_sit_mod("fortitude_skill"))
+	unit.conditions_manager.increase_fatigue()
 
 func print_conditions() -> void:
 	for condition in unit.conditions_manager.get_all_conditions():

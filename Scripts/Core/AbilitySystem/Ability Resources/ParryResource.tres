@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ParryAbility" load_steps=5 format=3 uid="uid://bh2no358biy4l"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/ParryAbility.gd" id="1_7jtcn"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/ParryAbility.gd" id="1_7jtcn"]
 [ext_resource type="Animation" uid="uid://djddt3772shp3" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Parry_Idle_001.res" id="1_y3b7e"]
 [ext_resource type="Animation" uid="uid://bd8rnxcdj1f4i" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Parry_1st_Half_001.res" id="2_d8feb"]
 [ext_resource type="Animation" uid="uid://rbgr7m5qnhke" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Parry_2nd_Half_001.res" id="3_86ccc"]

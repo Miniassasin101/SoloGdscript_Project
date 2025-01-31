@@ -19,18 +19,18 @@ func combat_fatigue_check() -> void:
 	var units: Array[Unit] = UnitManager.instance.get_all_units()
 	var current_round_number: int = TurnSystem.instance.get_current_round()
 	
-	#if current_round_number <= 1:
-	#	return
+	if current_round_number <= 1:
+		return
 
 
 	for unit in units:
 		if !unit.try_reduce_fatigue_left():
 			var roll: int = Utilities.roll(100)
 			var success_level: int = Utilities.check_success_level((
-				unit.attribute_map.get_attribute_by_name("endurance").current_buffed_value * 2.0), roll)
+				unit.get_attribute_buffed_value_by_name("fortitude_skill")), roll)
 			if success_level >= 1:
-				Utilities.spawn_text_line(unit, "Passed Endurance Roll: " + str(roll) + "/" + 
-				str(unit.attribute_map.get_attribute_by_name("endurance").current_buffed_value * 2))
+				Utilities.spawn_text_line(unit, "Passed Fortitude Roll: " + str(roll) + "/" + 
+				str(unit.get_attribute_buffed_value_by_name("fortitude")))
 				continue
 			
 			

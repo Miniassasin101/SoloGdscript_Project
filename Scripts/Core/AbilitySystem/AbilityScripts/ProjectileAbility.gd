@@ -116,17 +116,26 @@ func apply_effect() -> void:
 	target_unit.add_child(effect)
 
 	if !event.miss:
-		Utilities.spawn_damage_label(target_unit, rolled_damage)
-		target_unit.animator.flash_red(0.3)
+		if event.rolled_damage == 0:
+			target_unit.animator.flash_white()
+		else:
+			target_unit.animator.flash_red()
 	elif event.miss:
 		target_unit.animator.flash_white(0.4)
 		Utilities.spawn_text_line(target_unit, "Miss", Color.AQUA)
 	
+	resolve_special_effects()
 	
 	if can_end(event):
 		event.successful = true
 		end_ability(event)
 
+
+
+func resolve_special_effects() -> void:
+	for effect in event.special_effects:
+		if effect.can_apply(event):
+			effect.apply(event)
 
 
 

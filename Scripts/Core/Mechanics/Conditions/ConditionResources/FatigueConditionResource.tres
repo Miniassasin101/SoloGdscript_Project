@@ -6,3 +6,6 @@
 script = ExtResource("1_vxtpf")
 ui_name = "fatigue"
 condition_level = 1
+application_interval = 0
+is_situational_modifier = true
+situational_modifier = 2

@@ -19,7 +19,7 @@
 [ext_resource type="Resource" uid="uid://b1835bsxed8bt" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ExperienceModifierAttribute.tres" id="18_mw8qw"]
 [ext_resource type="Resource" uid="uid://ctx1x6455nyse" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/HealingRateAttribute.tres" id="19_4i2mv"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/HitLocationsAttribute.gd" id="20_l70h3"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/AbilitySystemTest/Attributes/AttributesTable.gd" id="21_wfx7r"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/AttributesTable.gd" id="21_wfx7r"]
 
 [sub_resource type="Resource" id="Resource_5vmii"]
 script = ExtResource("3_g5wgs")

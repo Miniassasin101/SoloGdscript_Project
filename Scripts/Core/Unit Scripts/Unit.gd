@@ -138,6 +138,18 @@ func spend_ability_points(amount: int) -> void:
 	SignalBus.emit_signal("update_stat_bars")
 
 
+func reset_ability_points() -> void:
+	var new_ap_value: float = attribute_map.get_attribute_by_name("action_points").maximum_value
+	# FIXME: Here the Ability points are subtracted by the penalty
+	# new_ap_value -= conditions_manager.get_ap_penalty()
+	attribute_map.get_attribute_by_name("action_points").current_value = new_ap_value
+
+
+
+
+
+
+
 
 
 func on_dead() -> void:
@@ -160,7 +172,8 @@ func on_reset_distance_moved() -> void:
 	set_distance_moved(0.0)
 
 func on_round_changed() -> void:
-	attribute_map.get_attribute_by_name("action_points").current_value = attribute_map.get_attribute_by_name("action_points").maximum_value
+	reset_ability_points()
+	
 	SignalBus.emit_signal("action_points_changed")
 	SignalBus.emit_signal("update_stat_bars")
 
@@ -179,6 +192,25 @@ func has_ability(ability_name: StringName) -> bool:
 		if ability.ui_name == ability_name:
 			return true
 	return false
+
+
+func get_attribute_by_name(attribute_name: String) -> AttributeSpec:
+	return attribute_map.get_attribute_by_name(attribute_name)
+
+func get_attribute_buffed_value_by_name(attribute_name: String) -> float:
+	return attribute_map.get_attribute_by_name(attribute_name).current_buffed_value
+
+
+## Gets the current buffed value of the attribute after applying the situational modifier
+func get_attribute_after_sit_mod(attribute_name: String) -> int:
+	var base_value = attribute_map.get_attribute_by_name(attribute_name).current_buffed_value
+	
+	# Get the highest situational modifier multiplier from conditions
+	var highest_modifier = conditions_manager.get_highest_situational_modifier()
+
+	# Apply the multiplier
+	return ceili(base_value * highest_modifier)
+
 
 func get_animation_tree() -> AnimationTree:
 	# Search for an AnimationTree node among the unit's children.
@@ -217,6 +249,7 @@ func get_movement_rate() -> float:
 func get_max_move_left() -> float:
 	var move_rate = attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
 	var speed_multiplier = Utilities.GAIT_SPEED_MULTIPLIER.get(current_gait)
+	# FIXME: subtract fatigue movement penalty
 	return ((move_rate * speed_multiplier)/2) - distance_moved_this_turn
 
 func get_random_hit_location() -> BodyPart:
