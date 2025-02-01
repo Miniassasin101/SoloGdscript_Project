@@ -139,7 +139,7 @@ func reaction(reacting_unit: Unit, attacking_unit: Unit) -> int:
 	# After activation, we assume reaction is a skill roll. In Mythras:
 	# For example, if parry: skill = combat_skill
 	# If evade: skill = evade skill
-	var defend_skill_value = reacting_unit.attribute_map.get_attribute_by_name("combat_skill").current_buffed_value
+	var defend_skill_value = reacting_unit.get_attribute_after_sit_mod("combat_skill")
 	var defending_roll = Utilities.roll(100)
 	print_debug("Defend Skill Value: ", defend_skill_value)
 	print_debug("Defend Roll: ", defending_roll)
@@ -160,6 +160,10 @@ func prompt_special_effect_choice(event: ActivationEvent, abs_dif: int) -> Activ
 	SignalBus.on_player_special_effect.emit(event.winning_unit, ret_effects, abs_dif)
 	var chosen_effects: Array[SpecialEffect] = await UIBus.effects_chosen
 	event.special_effects.append_array(chosen_effects)
+	for effect in chosen_effects:
+		if effect.activation_phase == effect.ActivationPhase.Initial and effect.can_apply(event):
+			@warning_ignore("redundant_await")
+			await effect.apply(event)
 	return event
 	
 
@@ -226,7 +230,8 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var hit_location: BodyPart = get_hit_location(target_unit)
 	if hit_location == null:
 		push_error("Error: null hit location on ", target_unit.name)
-	ret_event.body_part = hit_location.part_name + "_health"
+	ret_event.body_part = hit_location
+	ret_event.body_part_health_name = hit_location.part_name + "_health"
 	ret_event.body_part_ui_name = hit_location.part_ui_name
 	if ret_event.miss and parry_success == false:
 		return ret_event
@@ -272,10 +277,10 @@ func get_hit_location(target_unit: Unit) -> BodyPart:
 
 
 # FIXME: 
-func roll_damage(ability: Ability, _event: ActivationEvent, _target_unit: Unit, hit_location: BodyPart,  
+func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit, hit_location: BodyPart,  
 parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	# Roll base damage
-	var weapon: Weapon = _event.weapon
+	var weapon: Weapon = event.weapon
 	var damage_total: int = 0
 	if weapon:
 		damage_total += Utilities.roll(weapon.die_type, weapon.die_number)
@@ -298,14 +303,10 @@ parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 			print_debug("Parry unsuccessful - Weapon too small to reduce damage.")
 
 	# Apply armor reduction after parry
-	#var armor_value = target_unit.attribute_map.get_attribute_by_name("armor").current_buffed_value
-	var armor_value = hit_location.armor
-	damage_total -= int(armor_value)
-	print_debug("Damage after armor reduction: ", damage_total, "\nOn ", hit_location.part_name)
+	if !event.bypass_armor:
+		damage_total = hit_location.get_damage_after_armor(damage_total)
 
-	# Ensure damage does not go negative
-	damage_total = max(damage_total, 0)
-	print_debug("Final damage dealt: ", damage_total)
+	print_debug("Damage after armor reduction: ", damage_total, "\nOn ", hit_location.part_name)
 
 	return damage_total
 

@@ -4,3 +4,8 @@
 
 [resource]
 script = ExtResource("1_btfw1")
+ui_name = "condition"
+condition_level = 0
+application_interval = 0
+is_situational_modifier = false
+situational_modifier = 2

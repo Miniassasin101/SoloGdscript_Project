@@ -26,6 +26,7 @@ func _process(_delta: float) -> void:
 	handle_right_mouse_click()
 	test_n()
 	test_c()
+	test_v()
 
 # Testing function to visualize the path when a test key is pressed.
 func test_pathfinding() -> void:
@@ -214,9 +215,18 @@ func test_n() -> void:
 	if Input.is_action_just_pressed("testkey_n"):
 		TurnSystem.instance.start_combat()
 
+
+
+func test_v() -> void:
+	if Input.is_action_just_pressed("testkey_v"):
+		#remove_all_ap()
+		add_armor()
+
+
+
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
-		#open_character_sheet()
+		open_character_sheet()
 		#equip_weapon()
 		#open_special_effect_buttons()
 		#print_active_special_effects()
@@ -224,12 +234,21 @@ func test_c() -> void:
 		#flash()
 		#flash_on_equipped_weapon()
 		#print_conditions()
-		print_situational_modifier_attribute()
+		#print_situational_modifier_attribute()
 		pass
 
 func print_situational_modifier_attribute() -> void:
-	print(unit.get_attribute_after_sit_mod("fortitude_skill"))
-	unit.conditions_manager.increase_fatigue()
+	print(unit.get_attribute_after_sit_mod("evade_skill"))
+
+func add_armor() -> void:
+	var units: Array[Unit] = UnitManager.instance.get_all_units()
+	for u in units:
+		u.body.set_all_part_armor(100)
+
+func remove_all_ap() -> void:
+	var units: Array[Unit] = UnitManager.instance.get_all_units()
+	for u in units:
+		u.spend_all_ability_points()
 
 func print_conditions() -> void:
 	for condition in unit.conditions_manager.get_all_conditions():

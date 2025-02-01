@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bghfrh6vddvmj"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/DynamicButtonPicker.gd" id="1_pqdmf"]
+[ext_resource type="PackedScene" uid="uid://cvuecvfamgpwe" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonUI.tscn" id="2_024e4"]
+
+[node name="DynamicButtonPicker" type="Window" node_paths=PackedStringArray("button_container")]
+position = Vector2i(513, 266)
+content_scale_mode = 1
+script = ExtResource("1_pqdmf")
+dynamic_button_ui_scene = ExtResource("2_024e4")
+button_container = NodePath("VBoxContainer")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+offset_right = 124.0
+offset_bottom = 124.0
+
+[node name="DynamicButtonUI" parent="VBoxContainer" instance=ExtResource("2_024e4")]
+layout_mode = 2
+
+[node name="DynamicButtonUI2" parent="VBoxContainer" instance=ExtResource("2_024e4")]
+layout_mode = 2

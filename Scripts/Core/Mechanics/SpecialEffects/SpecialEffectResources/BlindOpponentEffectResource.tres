@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BlindOpponentEffect" load_steps=3 format=3 uid="uid://dst4i0rqw46ng"]
+
+[ext_resource type="Resource" uid="uid://b1tukqq03ce5y" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/BlindConditionResource.tres" id="1_cl647"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/BlindOpponentEffect.gd" id="1_qju5y"]
+
+[resource]
+script = ExtResource("1_qju5y")
+blind_condition = ExtResource("1_cl647")
+ui_name = &"Blind"
+activation_phase = 1
+activation_allowed = 2
+weapon_types_allowed = Array[String]([])
+stackable = false
+roll_required = 0

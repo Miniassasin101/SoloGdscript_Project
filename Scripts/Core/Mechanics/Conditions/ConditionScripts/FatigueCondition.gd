@@ -4,8 +4,8 @@ class_name FatigueCondition extends Condition
 const FATIGUE_LEVELS: Array[Dictionary] = [
 	{"name": "Fresh", "skill_grade": "No Penalties"},
 	{"name": "Winded", "skill_grade": "Hard", "recovery_period": "15 minutes"},
-	{"name": "Tired", "skill_grade": "Hard", "movement_penalty": "-1 metre", "recovery_period": "3 hours"},
-	{"name": "Wearied", "skill_grade": "Formidable", "movement_penalty": "-2 metres", "initiative_penalty": -2, "recovery_period": "6 hours"},
+	{"name": "Tired", "skill_grade": "Hard", "movement_penalty": 1, "recovery_period": "3 hours"},
+	{"name": "Wearied", "skill_grade": "Formidable", "movement_penalty": 2, "initiative_penalty": -2, "recovery_period": "6 hours"},
 	{"name": "Exhausted", "skill_grade": "Formidable", "movement_penalty": "Halved", "initiative_penalty": -4, "action_points_penalty": -1, "recovery_period": "12 hours"},
 	{"name": "Debilitated", "skill_grade": "Herculean", "movement_penalty": "Halved", "initiative_penalty": -6, "action_points_penalty": -2, "recovery_period": "18 hours"},
 	{"name": "Incapacitated", "skill_grade": "Herculean", "movement_penalty": "Immobile", "initiative_penalty": -8, "action_points_penalty": -3, "recovery_period": "24 hours"},

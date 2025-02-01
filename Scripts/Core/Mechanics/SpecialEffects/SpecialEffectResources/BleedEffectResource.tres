@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_nm5gg")
 bleed_condition = ExtResource("1_r0jow")
-ui_name = &"bleeding"
+ui_name = &"Bleed"
 activation_phase = 1
 activation_allowed = 0
 weapon_types_allowed = Array[String]([])

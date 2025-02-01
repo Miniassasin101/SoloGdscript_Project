@@ -62,6 +62,9 @@ func add_condition(condition: Condition) -> void:
 		if !has_condition_by_condition(condition):
 			conditions.append(condition)
 
+func remove_condition(condition: Condition) -> void:
+	if has_condition_by_condition(condition):
+		conditions.erase(condition)
 
 func has_condition(in_name: String) -> bool:
 	for condition in conditions:
@@ -95,4 +98,22 @@ func get_total_initiative_penalty() -> int:
 	for condition in conditions:
 		if condition is FatigueCondition:
 			total_penalty += (condition as FatigueCondition).get_initiative_penalty()
+	return total_penalty
+
+func get_total_penalty(penalty_type: String) -> float:
+	var total_penalty: float = 0.0
+	for condition in conditions:
+		if condition is FatigueCondition:  # Check if the condition is FatigueCondition
+			var fatigue_data = (condition as FatigueCondition).get_fatigue_details()
+			if penalty_type in fatigue_data:  # Check if the penalty exists in the fatigue data
+				var penalty = fatigue_data[penalty_type]
+				
+				# Handle special cases like "Halved" or "Immobile"
+				if typeof(penalty) == TYPE_FLOAT or typeof(penalty) == TYPE_INT: 
+					total_penalty += penalty  # Sum numeric penalties
+				elif penalty == "Halved":
+					return -0.5  # Use -0.5 as a halving multiplier
+				elif penalty == "Immobile":
+					return -1.0  # Completely restrict movement
+
 	return total_penalty

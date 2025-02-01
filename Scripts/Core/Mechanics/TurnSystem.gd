@@ -53,7 +53,7 @@ func setup_initiative() -> void:
 	for u in units:
 		var roll_value = Utilities.roll(10)
 		var bonus = u.attribute_map.get_attribute_by_name("initiative_bonus").current_buffed_value
-		var initiative_penalty = u.conditions_manager.get_total_initiative_penalty()  # Get penalty from conditions
+		var initiative_penalty = u.conditions_manager.get_total_penalty("initiative_penalty")
 
 
 		var total_initiative = roll_value + bonus + initiative_penalty

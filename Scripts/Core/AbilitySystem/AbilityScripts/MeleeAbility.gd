@@ -223,7 +223,7 @@ func melee_attack_anim() -> void:
 
 func resolve_special_effects() -> void:
 	for effect in event.special_effects:
-		if effect.can_apply(event):
+		if effect.can_apply(event) and (effect.activation_phase == effect.ActivationPhase.PostDamage):
 			effect.apply(event)
 
 ##
@@ -241,19 +241,14 @@ func apply_effect() -> void:
 	health_effect.attribute_name = "health"
 	health_effect.minimum_value = -event.rolled_damage
 	health_effect.maximum_value = -event.rolled_damage
-
-	# Optionally, if you want to apply damage to a specific body part
-	var part_effect = AttributeEffect.new()
-	part_effect.attribute_name = event.body_part
-	part_effect.minimum_value = -event.rolled_damage
-	part_effect.maximum_value = -event.rolled_damage
-
 	effect.attributes_affected.append(health_effect)
-	effect.attributes_affected.append(part_effect)
+	#effect.attributes_affected.append(part_effect)
 
 	# Get the target unit from the grid and attach the effect
 	if target_unit:
 		target_unit.add_child(effect)
+	
+	target_unit.body.apply_wound_from_event(event)
 	
 	if event.rolled_damage == 0:
 		Utilities.spawn_text_line(target_unit, "Parry", Color.FOREST_GREEN)

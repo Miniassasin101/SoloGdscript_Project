@@ -41,7 +41,7 @@ func populate_weapons(weapons: Array[Weapon], sheet_ui: UnitCharacterSheetUI) ->
 		
 		# Create an HBoxContainer or any container you prefer for a "row".
 		var row_container = HBoxContainer.new()
-		row_container.name = "WeaponRow_%d".format(i)
+		row_container.name = "WeaponRow_{0}".format([i])
 
 		# 1) Create a button for the weapon name
 		var name_button = Button.new()
@@ -53,7 +53,13 @@ func populate_weapons(weapons: Array[Weapon], sheet_ui: UnitCharacterSheetUI) ->
 		# 2) A label for the damage
 		var damage_label = Label.new()
 		damage_label.name = "DamageLabel"
-		damage_label.text = "%sd%s + %s" % [weapon.die_number, weapon.die_type, weapon.flat_damage]
+		damage_label.text = "{}d{} + {}".format([
+			weapon.die_number,
+			weapon.die_type,
+			weapon.flat_damage
+		])
+
+
 		
 		# 3) A label for size
 		var size_label = Label.new()

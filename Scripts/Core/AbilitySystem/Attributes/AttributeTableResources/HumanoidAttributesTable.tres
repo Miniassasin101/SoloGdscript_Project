@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AttributesTable" load_steps=22 format=3 uid="uid://bqwjl5qldj4b3"]
+[gd_resource type="Resource" script_class="AttributesTable" load_steps=23 format=3 uid="uid://bqwjl5qldj4b3"]
 
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="1_cxlmv"]
 [ext_resource type="Resource" uid="uid://b4cltjme3q4uh" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/SizeAttribute.tres" id="2_x4bw0"]
@@ -13,6 +13,7 @@
 [ext_resource type="Resource" uid="uid://bdvtscqbo08no" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/CombatSkillAttribute.tres" id="11_e6bad"]
 [ext_resource type="Resource" uid="uid://cuoutloeyr4rk" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/EvadeSkillAttribute.tres" id="12_pv6fq"]
 [ext_resource type="Resource" uid="uid://dy71yfbxd4qvx" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/FortitudeSkillAttribute.tres" id="13_oty07"]
+[ext_resource type="Resource" uid="uid://v2bmbg3bnu2u" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/FirstAidSkillAttribute.tres" id="14_7po0v"]
 [ext_resource type="Resource" uid="uid://dhycuxfmfj34a" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Derived/HealthAttribute.tres" id="14_g851l"]
 [ext_resource type="Resource" uid="uid://dxsb2kexd664a" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Derived/InitiativeBonusAttribute.tres" id="15_sa4o2"]
 [ext_resource type="Resource" uid="uid://bcsymcrsnt8dg" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/DamageModifierAttribute.tres" id="16_grgo6"]
@@ -25,5 +26,5 @@
 [resource]
 resource_local_to_scene = true
 script = ExtResource("21_epoc3")
-attributes = Array[ExtResource("1_cxlmv")]([ExtResource("2_x4bw0"), ExtResource("3_ta67j"), ExtResource("4_jk2fe"), ExtResource("5_p50en"), ExtResource("6_723ra"), ExtResource("7_0ru7s"), ExtResource("8_x0o54"), ExtResource("9_texrk"), ExtResource("10_4odm3"), ExtResource("11_e6bad"), ExtResource("12_pv6fq"), ExtResource("13_oty07"), ExtResource("14_g851l"), ExtResource("15_sa4o2"), ExtResource("16_grgo6"), ExtResource("17_n1cdp"), ExtResource("18_m5f2s"), ExtResource("19_jcmd2")])
+attributes = Array[ExtResource("1_cxlmv")]([ExtResource("2_x4bw0"), ExtResource("3_ta67j"), ExtResource("4_jk2fe"), ExtResource("5_p50en"), ExtResource("6_723ra"), ExtResource("7_0ru7s"), ExtResource("8_x0o54"), ExtResource("9_texrk"), ExtResource("10_4odm3"), ExtResource("11_e6bad"), ExtResource("12_pv6fq"), ExtResource("13_oty07"), ExtResource("14_7po0v"), ExtResource("14_g851l"), ExtResource("15_sa4o2"), ExtResource("16_grgo6"), ExtResource("17_n1cdp"), ExtResource("18_m5f2s"), ExtResource("19_jcmd2")])
 hit_locations = Array[ExtResource("20_gta6b")]([])

@@ -1,4 +1,4 @@
-[gd_scene load_steps=106 format=4 uid="uid://ckh4ee1mgwjn4"]
+[gd_scene load_steps=107 format=4 uid="uid://ckh4ee1mgwjn4"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
@@ -50,6 +50,7 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/Condition.gd" id="42_rjnvi"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/FatigueCondition.gd" id="43_t17f4"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/FacingArrowManager.gd" id="43_ygndu"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Wounds/Wound.gd" id="44_or8q6"]
 [ext_resource type="ArrayMesh" uid="uid://xx66bmhi8byu" path="res://Hero_Game/Prefabs/BasicShapes/Arrow_Plane.res" id="44_r3umq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_khrt5"]
@@ -2239,64 +2240,64 @@ tags_to_remove_on_end = Array[String]([])
 script = ExtResource("30_uvroa")
 part_name = "leg_left"
 part_ui_name = "Left Leg"
-armor = 0.0
+armor = 0
 hit_range_start = 1
 hit_range_end = 3
-conditions = Array[Resource]([])
+wounds = Array[ExtResource("44_or8q6")]([])
 
 [sub_resource type="Resource" id="Resource_nsmmb"]
 script = ExtResource("30_uvroa")
 part_name = "leg_right"
 part_ui_name = "Right Leg"
-armor = 0.0
+armor = 0
 hit_range_start = 4
 hit_range_end = 6
-conditions = Array[Resource]([])
+wounds = Array[ExtResource("44_or8q6")]([])
 
 [sub_resource type="Resource" id="Resource_74ark"]
 script = ExtResource("30_uvroa")
 part_name = "abdomen"
 part_ui_name = "Abdomen"
-armor = 0.0
+armor = 0
 hit_range_start = 7
 hit_range_end = 9
-conditions = Array[Resource]([])
+wounds = Array[ExtResource("44_or8q6")]([])
 
 [sub_resource type="Resource" id="Resource_fhch0"]
 script = ExtResource("30_uvroa")
 part_name = "chest"
 part_ui_name = "Chest"
-armor = 0.0
+armor = 0
 hit_range_start = 10
 hit_range_end = 12
-conditions = Array[Resource]([])
+wounds = Array[ExtResource("44_or8q6")]([])
 
 [sub_resource type="Resource" id="Resource_7ecln"]
 script = ExtResource("30_uvroa")
 part_name = "arm_right"
-part_ui_name = ""
-armor = 0.0
+part_ui_name = "RIght Arm"
+armor = 0
 hit_range_start = 13
 hit_range_end = 15
-conditions = Array[Resource]([])
+wounds = Array[ExtResource("44_or8q6")]([])
 
 [sub_resource type="Resource" id="Resource_ulfuw"]
 script = ExtResource("30_uvroa")
 part_name = "arm_left"
 part_ui_name = "Left Arm"
-armor = 0.0
+armor = 0
 hit_range_start = 16
 hit_range_end = 18
-conditions = Array[Resource]([])
+wounds = Array[ExtResource("44_or8q6")]([])
 
 [sub_resource type="Resource" id="Resource_tnqen"]
 script = ExtResource("30_uvroa")
 part_name = "head"
 part_ui_name = "Head"
-armor = 0.0
+armor = 0
 hit_range_start = 19
 hit_range_end = 20
-conditions = Array[Resource]([])
+wounds = Array[ExtResource("44_or8q6")]([])
 
 [sub_resource type="Resource" id="Resource_5rdfc"]
 script = ExtResource("43_t17f4")
@@ -3543,7 +3544,7 @@ bones/172/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.517227, 0.0535055, -0.854174, -0.729965, 0.548609, -0.40765, 0.446796, 0.834365, 0.322813, 0.268936, 1.14962, 0.237216)
+transform = Transform3D(0.500088, 0.0450196, -0.864803, -0.736129, 0.548075, -0.397149, 0.456098, 0.835217, 0.307226, 0.266265, 1.14916, 0.234481)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3551,7 +3552,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.490407, 0.586541, 0.644571, 0.818733, 0.563512, 0.110134, -0.298625, 0.581742, -0.756571, -0.146101, 1.23466, 0.374826)
+transform = Transform3D(-0.485162, 0.595276, 0.640519, 0.817498, 0.568755, 0.0906337, -0.310346, 0.567595, -0.762575, -0.147376, 1.23455, 0.371743)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3565,7 +3566,7 @@ unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.832312, 0.0134637, 0.554144, 0.0084248, 0.999282, -0.0369328, -0.554244, 0.0354082, 0.831601, -0.000375184, 1.02835, 0.012188)
+transform = Transform3D(0.832325, 0.0135896, 0.554122, 0.00850303, 0.999269, -0.0372788, -0.554223, 0.0357398, 0.831601, -0.000403088, 1.02585, 0.0120974)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 

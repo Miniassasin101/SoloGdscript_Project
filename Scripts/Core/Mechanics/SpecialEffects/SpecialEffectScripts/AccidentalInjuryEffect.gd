@@ -30,17 +30,13 @@ func apply(event: ActivationEvent) -> void:
 	if hit_location == null:
 		push_error("Error: null hit location on ", target_unit.name)
 	
-	var damage_total: int = roll_damage(event)
-	
-	damage_total -= int(hit_location.armor)
+	var damage_rolled: int = roll_damage(event)
+	var damage_total: int = hit_location.get_damage_after_armor(damage_rolled)
 	print_debug("Damage after armor reduction: ", damage_total, "\nOn ", hit_location.part_name)
 
-	# Ensure damage does not go negative
-	damage_total = max(damage_total, 0)
-	print_debug("Final damage dealt: ", damage_total)
 	var effect_rolled_damage: int = damage_total
 	
-	apply_effect(event, effect_rolled_damage)
+	apply_effect(event, effect_rolled_damage, hit_location)
 		
 	#apply damage effect
 	
@@ -65,7 +61,7 @@ func roll_damage(event: ActivationEvent) -> int:
 	
 	return damage_total
 
-func apply_effect(event: ActivationEvent, effect_rolled_damage: int) -> void:
+func apply_effect(event: ActivationEvent, effect_rolled_damage: int, body_part: BodyPart) -> void:
 
 	# Create a new GameplayEffect resource
 	var effect = GameplayEffect.new()
@@ -76,18 +72,14 @@ func apply_effect(event: ActivationEvent, effect_rolled_damage: int) -> void:
 	health_effect.minimum_value = -effect_rolled_damage
 	health_effect.maximum_value = -effect_rolled_damage
 
-	# Optionally, if you want to apply damage to a specific body part
-	var part_effect = AttributeEffect.new()
-	part_effect.attribute_name = event.body_part
-	part_effect.minimum_value = -effect_rolled_damage
-	part_effect.maximum_value = -effect_rolled_damage
-
 	effect.attributes_affected.append(health_effect)
-	effect.attributes_affected.append(part_effect)
+
+	# Applies damage to a specific body part
+	target_unit.body.apply_wound_manual(body_part, effect_rolled_damage)
 
 	# Get the target unit from the grid and attach the effect
 
 	if target_unit:
 		target_unit.add_child(effect)
 	Utilities.spawn_damage_label(target_unit, effect_rolled_damage)
-	Utilities.spawn_text_line(event.target_unit, "Accidental Injury")
+	Utilities.spawn_text_line(target_unit, "Accidental Injury")

@@ -42,29 +42,11 @@ func apply(event: ActivationEvent) -> void:
 		Utilities.spawn_text_line(target_unit, "Bleed Saved", Color.AQUA)
 		return
 	
+	#apply damage effect if the save fails
 	apply_effect(event)
-	#apply damage effect
 	
 	# Animation Stand-in
-	
-	# return
 
-
-func roll_damage(event: ActivationEvent) -> int:
-	# Roll base damage
-	var weapon: Weapon = event.weapon
-	var damage_total: int = 0
-	if weapon:
-		damage_total += Utilities.roll(weapon.die_type, weapon.die_number)
-		damage_total += weapon.flat_damage
-	else:
-		# replace with unarmed later
-		damage_total += Utilities.roll(4, 2)
-
-
-	print_debug("Base damage rolled: ", damage_total)
-	
-	return damage_total
 
 func apply_effect(event: ActivationEvent) -> void:
 

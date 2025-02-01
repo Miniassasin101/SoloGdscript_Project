@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AttributeResource" load_steps=2 format=3 uid="uid://v2bmbg3bnu2u"]
+
+[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="1_246vu"]
+
+[resource]
+script = ExtResource("1_246vu")
+attribute_name = "first_aid_skill"
+minimum_value = 0.0
+maximum_value = 50.0
+current_value = 50.0
+derived_from = Array[String](["mind", "dexterity"])
+calculation_type = 1
+is_skill = true
+skill_base_value = 0.0
+skill_value = 0.0
+table_mod = 0
+table_step = 5

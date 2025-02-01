@@ -9,7 +9,7 @@ var enemy_units: Array[Unit] = []
 
 static var instance: UnitManager = null
 
-const SWORD_TEST: Weapon = preload("res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/SwordTest.tres")
+@export var sword_test: Weapon = null
 func _ready() -> void:
 	if instance != null:
 		push_error("There's more than one UnitManager! - " + str(instance))
@@ -18,7 +18,7 @@ func _ready() -> void:
 	instance = self
 	initialize_units()
 	if LevelDebug.instance.auto_equip_debug:
-		test_equip_units(SWORD_TEST)
+		test_equip_units(sword_test)
 	connect_global_signals()
 
 func test_equip_units(sword: Weapon) -> void:

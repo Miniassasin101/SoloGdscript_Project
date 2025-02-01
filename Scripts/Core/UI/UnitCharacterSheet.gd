@@ -25,9 +25,9 @@ extends Control
 @export var presence_label: Label
 
 @export_category("Containers")
-# Will be cleared then populated with the data from the unit's body parts
 @export var body_parts_container: VBoxContainer
-@export var weapons_grid_container: WeaponsGridContainer 
+@export var weapons_grid_container: WeaponsGridContainer
+@export var conditions_container: VBoxContainer
 
 @export_category("Buttons")
 @export var close_button: Button
@@ -39,6 +39,7 @@ func _ready() -> void:
 	visible = false
 	SignalBus.open_character_sheet.connect(_on_open_character_sheet)
 	close_button.pressed.connect(_on_close_button_pressed)
+
 
 func _on_open_character_sheet(unit: Unit) -> void:
 	if not is_instance_valid(unit):
@@ -64,21 +65,20 @@ func _on_open_character_sheet(unit: Unit) -> void:
 	_populate_from_unit(unit)
 	populate_weapons_from_unit(unit)
 
+
 func _on_close_button_pressed():
 	hide()
 	is_open = false
 	return
 
-func _populate_from_unit(unit: Unit) -> void:
-	assert(is_instance_valid(unit.attribute_map))
 
-	# Basic Labels
+func _populate_from_unit(unit: Unit) -> void:
+	# Basic attribute labels
 	if is_instance_valid(unit):
 		unit_name_label.text = unit.name
 	else:
 		unit_name_label.text = "n/a"
 	action_points_label.text = "AP: " + _get_attribute_or_na(unit, "action_points")
-	unused_label_1.text = ""
 	combat_skill_label.text = "CB: " + _get_attribute_or_na(unit, "combat_skill")
 	evade_skill_label.text = "EVD: " + _get_attribute_or_na(unit, "evade_skill")
 	damage_modifier_label.text ="DMG: " + _get_attribute_or_na(unit, "damage_modifier")
@@ -99,7 +99,6 @@ func _populate_from_unit(unit: Unit) -> void:
 	for child in body_parts_container.get_children():
 		child.queue_free()
 
-
 	# Populate body-part panels if the unit's body is valid
 	if is_instance_valid(unit.body):
 		for part in unit.body.body_parts:
@@ -107,60 +106,115 @@ func _populate_from_unit(unit: Unit) -> void:
 			var health_val = unit.body.get_part_health(part.part_name)
 			var max_health_val = unit.body.get_part_health(part.part_name, true)
 
-			# Instantiate the panel from the preloaded scene
 			var panel = character_sheet_part_panel_scene.instantiate() as CharacterSheetPartPanel
 			if panel == null:
 				push_error("Failed to instantiate CharacterSheetPartPanel.")
 				continue
 			panel._testfunc()
-			# Set part data
 			panel.set_part_data(part.part_name, armor_val, health_val, max_health_val)
-
-			# Add the panel to the body_parts_container
 			body_parts_container.add_child(panel)
+
+	# Populate conditions list
+	_populate_conditions(unit)
+
 
 func populate_weapons_from_unit(unit: Unit) -> void:
 	if not is_instance_valid(unit) or not is_instance_valid(unit.equipment):
 		weapons_grid_container.clear_weapons_display()
 		return
 
-	# Filter out only items that are Weapons.
 	var all_equipped_items = unit.equipment.equipped_items
 	var equipped_weapons: Array[Weapon] = []
 	for item in all_equipped_items:
 		if item is Weapon:
 			equipped_weapons.append(item as Weapon)
 	
-	# Populate the WeaponsGridContainer with the found weapons.
 	weapons_grid_container.populate_weapons(equipped_weapons, self)
 
 
+func _get_attribute_or_na(unit: Unit, attribute_name: String) -> String:
+	if not is_instance_valid(unit) or not is_instance_valid(unit.attribute_map):
+		return "n/a"
+
+	var spec = unit.attribute_map.get_attribute_by_name(attribute_name)
+	if spec == null:
+		return "n/a"
+
+	return str(spec.current_value)
+
+
+# ----------------------------------------------------------------------------
+# CONDITIONS-RELATED UI
+# ----------------------------------------------------------------------------
+
 ##
-# Optional: Called when a weapon name is clicked. You can pass
-# the weapon to a custom popup or scene to show more details.
+# Called from _populate_from_unit to fill out the "conditions_container"
 ##
-func show_weapon_details_popup_depreciated(weapon: Weapon) -> void:
-	if weapon_details_popup_scene == null:
-		# As a fallback, use a simple AcceptDialog
-		var dialog = AcceptDialog.new()
-		add_child(dialog)
-		dialog.dialog_text = "Weapon: {0}\nDamage: {1}\nSize: {2}\nAP: {3}\nHP: {4}".format([
-			weapon.name, 
-			str(_compute_weapon_damage(weapon)),
-			str(weapon.size), 
-			str(weapon.armor_points),
-			str(weapon.hit_points)
-		])
-		dialog.popup_centered()
+func _populate_conditions(unit: Unit) -> void:
+	# Clear any old children in conditions_container
+	for child in conditions_container.get_children():
+		child.queue_free()
+
+	if not is_instance_valid(unit) or not is_instance_valid(unit.conditions_manager):
 		return
 
-	# Otherwise, instantiate your custom popup scene
-	var weapon_popup = weapon_details_popup_scene.instantiate()
-	add_child(weapon_popup)
-	# If your custom popup has a method like set_weapon(...)
-	if weapon_popup.has_method("set_weapon"):
-		weapon_popup.call("set_weapon", weapon)
-	weapon_popup.popup_centered()
+	var all_conditions = unit.conditions_manager.get_all_conditions()
+	
+	for condition in all_conditions:
+		var hbox = HBoxContainer.new()
+		conditions_container.add_child(hbox)
+
+		# This text is the base name of the condition
+		var text = condition.ui_name
+		
+		# EXAMPLE: If "BlindCondition" or something has a property like turns_left, you can display it:
+		if condition.has_method("get_remaining_rounds"):
+			var rounds_left = condition.call("get_remaining_rounds")
+			text += " (%d rounds left)" % int(rounds_left)
+
+		# If it's a complicated condition like fatigue, make it clickable 
+		if condition is FatigueCondition:
+			var detail_button = Button.new()
+			detail_button.text = text
+			detail_button.pressed.connect(_on_condition_details_pressed.bind(condition))
+			hbox.add_child(detail_button)
+		else:
+			# For simpler conditions, just show them in a label
+			var label = Label.new()
+			label.text = text
+			hbox.add_child(label)
+
+
+##
+# Fired when a user clicks on a "complicated" condition 
+# (e.g. Fatigue) to see more details in a popup.
+##
+func _on_condition_details_pressed(condition: Condition) -> void:
+	var popup = AcceptDialog.new()
+	popup.title = condition.ui_name
+
+	var info_str = "Condition: %s" % condition.ui_name
+	
+	if condition is FatigueCondition:
+		var fatigue_details = condition.get_fatigue_details()
+		info_str += "\nFatigue Level: %s" % fatigue_details.get("name", "Unknown")
+
+		# Example: show specific fields if they exist
+		if "movement_penalty" in fatigue_details:
+			info_str += "\nMovement Penalty: %s" % str(fatigue_details["movement_penalty"])
+		if "initiative_penalty" in fatigue_details:
+			info_str += "\nInitiative Penalty: %s" % str(fatigue_details["initiative_penalty"])
+		if "action_points_penalty" in fatigue_details:
+			info_str += "\nAP Penalty: %s" % str(fatigue_details["action_points_penalty"])
+		if "recovery_period" in fatigue_details:
+			info_str += "\nRecovery Period: %s" % str(fatigue_details["recovery_period"])
+	else:
+		info_str += "\n(No extra information available.)"
+
+	popup.dialog_text = info_str
+	UILayer.instance.add_child(popup)
+	popup.popup_centered()
+
 
 ##
 # Shows a popup containing detailed weapon information.
@@ -234,9 +288,11 @@ func show_weapon_details_popup(weapon: Weapon) -> void:
 	# Add popup to the current scene and display it
 	get_tree().root.add_child(popup)
 	popup.popup_centered()
-
-##
-# Maps the `size` integer to a readable text description.
+	
+	
+	
+	##
+# Maps the size integer to a readable text description.
 ##
 func _map_size_to_text(map_size: int) -> String:
 	match map_size:
@@ -254,7 +310,7 @@ func _map_size_to_text(map_size: int) -> String:
 			return "Unknown"
 
 ##
-# Maps the `reach` integer to a readable text description.
+# Maps the reach integer to a readable text description.
 ##
 func _map_reach_to_text(reach: int) -> String:
 	match reach:
@@ -280,13 +336,3 @@ func _compute_weapon_damage(weapon: Weapon) -> String:
 	var ret: String = "{0}d{1}+{2}"
 
 	return ret.format([weapon.die_number, weapon.die_type, weapon.flat_damage])
-
-func _get_attribute_or_na(unit: Unit, attribute_name: String) -> String:
-	if not is_instance_valid(unit) or not is_instance_valid(unit.attribute_map):
-		return "n/a"
-
-	var spec = unit.attribute_map.get_attribute_by_name(attribute_name)
-	if spec == null:
-		return "n/a"
-
-	return str(spec.current_value)

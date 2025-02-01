@@ -27,3 +27,6 @@ func increase_level(unit: Unit, by_amount: int = 1) -> void:
 
 func get_situational_modifier() -> int:
 	return situational_modifier
+
+func remove_self(unit: Unit) -> void:
+	unit.conditions_manager.remove_condition(self)

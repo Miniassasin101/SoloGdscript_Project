@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_ffkfs")
 ui_name = &"Accident"
-activation_phase = 2
+activation_phase = 1
 activation_allowed = 1
 weapon_types_allowed = Array[String]([])
 stackable = false

@@ -46,7 +46,7 @@ vertical = true
 
 [sub_resource type="Theme" id="Theme_32rw0"]
 
-[node name="UnitCharacterSheetUI" type="Control" node_paths=PackedStringArray("unit_name_label", "action_points_label", "unused_label_1", "combat_skill_label", "evade_skill_label", "damage_modifier_label", "initiative_bonus_label", "experience_rolls_label", "movement_rate_label", "unused_label_2", "size_label", "power_label", "dexterity_label", "endurance_label", "mind_label", "will_label", "presence_label", "body_parts_container", "weapons_grid_container", "close_button")]
+[node name="UnitCharacterSheetUI" type="Control" node_paths=PackedStringArray("unit_name_label", "action_points_label", "unused_label_1", "combat_skill_label", "evade_skill_label", "damage_modifier_label", "initiative_bonus_label", "experience_rolls_label", "movement_rate_label", "unused_label_2", "size_label", "power_label", "dexterity_label", "endurance_label", "mind_label", "will_label", "presence_label", "body_parts_container", "weapons_grid_container", "conditions_container", "close_button")]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 2.0
@@ -57,7 +57,7 @@ script = ExtResource("1_s4tfa")
 character_sheet_part_panel_scene = ExtResource("2_n5j6h")
 unit_name_label = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/UnitNameLabel")
 action_points_label = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer2/PanelContainer/ActionPointsLabel")
-unused_label_1 = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer3/PanelContainer/UnusedLabel1")
+unused_label_1 = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer3/PanelContainer/ConditionsContainer/ConditionLabel")
 combat_skill_label = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer2/PanelContainer/MarginContainer/GridContainer/MarginContainer/CombatSkillLabel")
 evade_skill_label = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer2/PanelContainer/MarginContainer/GridContainer/MarginContainer2/EvadeSkillLabel")
 damage_modifier_label = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer2/PanelContainer/MarginContainer/GridContainer/MarginContainer3/DamageModifierLabel")
@@ -74,6 +74,7 @@ will_label = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/Lowe
 presence_label = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer7/PanelContainer/VBoxContainer/PresenceLabel")
 body_parts_container = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/BodyMarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/BodyPartsVBoxContainer")
 weapons_grid_container = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/LowerMarginContainer/PanelContainer2/HBoxContainer/MarginContainer3/PanelContainer/MarginContainer/WeaponsGridContainer")
+conditions_container = NodePath("MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer3/PanelContainer/ConditionsContainer")
 close_button = NodePath("MarginContainer/CloseButton")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -167,11 +168,12 @@ theme_override_constants/margin_bottom = 2
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer3"]
 layout_mode = 2
 
-[node name="UnusedLabel1" type="Label" parent="MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer3/PanelContainer"]
+[node name="ConditionsContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer3/PanelContainer"]
 layout_mode = 2
-text = "Weapons?
-Conditions?
-Magic Reservoir?"
+
+[node name="ConditionLabel" type="Label" parent="MarginContainer/TabContainer/Character/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer3/PanelContainer/ConditionsContainer"]
+layout_mode = 2
+text = "Condition"
 horizontal_alignment = 1
 vertical_alignment = 1
 

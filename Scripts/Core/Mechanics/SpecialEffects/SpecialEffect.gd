@@ -2,9 +2,11 @@ class_name SpecialEffect extends Resource
 
 signal effect_finished
 
+enum ActivationPhase {Initial, PostDamage}
+
 @export var ui_name: StringName
 
-@export_enum("Initial:1", "Post-Damage") var activation_phase: int = 1
+@export var activation_phase: ActivationPhase = ActivationPhase.Initial
 @export_enum("Offensive", "Defensive", "Both") var activation_allowed: int = 2
 @export var weapon_types_allowed: Array[String] = []
 @export var stackable: bool = false

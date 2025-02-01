@@ -138,11 +138,19 @@ func spend_ability_points(amount: int) -> void:
 	SignalBus.emit_signal("update_stat_bars")
 
 
+func spend_all_ability_points() -> void:
+	spend_ability_points(attribute_map.get_attribute_by_name("action_points").current_value)
+
+
 func reset_ability_points() -> void:
 	var new_ap_value: float = attribute_map.get_attribute_by_name("action_points").maximum_value
-	# FIXME: Here the Ability points are subtracted by the penalty
-	# new_ap_value -= conditions_manager.get_ap_penalty()
+	
+	# Get the action points penalty
+	var ap_penalty = conditions_manager.get_total_penalty("action_points_penalty")
+	new_ap_value = max(0, new_ap_value + ap_penalty)  # Ensure it doesn't go below 0
+	
 	attribute_map.get_attribute_by_name("action_points").current_value = new_ap_value
+
 
 
 
@@ -246,11 +254,25 @@ func get_target_position_with_offset(height_offset: float) -> Vector3:
 func get_movement_rate() -> float:
 	return attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
 
+
 func get_max_move_left() -> float:
-	var move_rate = attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
+	var move_rate = get_movement_rate()
 	var speed_multiplier = Utilities.GAIT_SPEED_MULTIPLIER.get(current_gait)
-	# FIXME: subtract fatigue movement penalty
-	return ((move_rate * speed_multiplier)/2) - distance_moved_this_turn
+
+	# Get the movement penalty from conditions
+	var movement_penalty = conditions_manager.get_total_penalty("movement_penalty")
+
+	# Apply the movement penalty (e.g., reduce movement by penalty percentage)
+	if movement_penalty == -1.0:
+		return 0.0  # "Immobile" condition
+	elif movement_penalty == -0.5:
+		move_rate *= 0.5  # Halve the movement rate
+		return ((move_rate * speed_multiplier) / 2) - distance_moved_this_turn
+	else:
+		move_rate -= movement_penalty  # Subtract numeric penalties
+	
+	return max(((move_rate * speed_multiplier) / 2) - distance_moved_this_turn - movement_penalty, 0)
+
 
 func get_random_hit_location() -> BodyPart:
 	return body.roll_hit_location()

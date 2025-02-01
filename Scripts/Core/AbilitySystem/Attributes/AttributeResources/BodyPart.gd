@@ -8,7 +8,7 @@ extends Resource
 @export var part_name: String = ""       
 @export var part_ui_name: String = ""
 # Armor points on this body part (reduces damage)
-@export var armor: float = 0.0            
+@export var armor: int = 0           
 
 
 # For hit locations: For a d20 roll, these define the range of rolls that hit this part.
@@ -17,4 +17,15 @@ extends Resource
 @export var hit_range_end: int = 1        
 
 # Array of conditions (Resources) that represent scars, injuries, etc. 
-@export var conditions: Array[Resource] = []
+@export var wounds: Array[Wound] = []
+
+var body: Body = null
+
+func set_armor(val: int) -> void:
+	armor = maxi(val, 0)
+
+func get_armor() -> int:
+	return armor
+
+func get_damage_after_armor(in_damage: int) -> int:
+	return max(in_damage - armor, 0)

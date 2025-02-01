@@ -12,6 +12,8 @@ signal continue_turn
 @export var action_button_container: BoxContainer
 @export var reaction_button_container: BoxContainer
 @export var gait_button_container: BoxContainer
+@export var dynamic_button_picker: DynamicButtonPicker
+@export var dynamic_button_container: BoxContainer
 @export var special_effect_container: MouseEventDroppableSlotContainer
 @export var selected_special_effect_container: MouseEventDroppableSlotContainer
 @export var mouse_event_droppable_controller: MouseEventDroppableSlotController

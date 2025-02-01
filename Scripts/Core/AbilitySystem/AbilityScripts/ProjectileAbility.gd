@@ -102,18 +102,12 @@ func apply_effect() -> void:
 	health_effect.minimum_value = -event.rolled_damage
 	health_effect.maximum_value = -event.rolled_damage
 
-	var part_effect = AttributeEffect.new()
-	
-	part_effect.attribute_name = event.body_part
-	part_effect.minimum_value = -event.rolled_damage
-	part_effect.maximum_value = -event.rolled_damage
-	
-	
-	
 	effect.attributes_affected.append(health_effect)
-	effect.attributes_affected.append(part_effect)
 	
 	target_unit.add_child(effect)
+
+	target_unit.body.apply_wound_from_event(event)
+
 
 	if !event.miss:
 		if event.rolled_damage == 0:

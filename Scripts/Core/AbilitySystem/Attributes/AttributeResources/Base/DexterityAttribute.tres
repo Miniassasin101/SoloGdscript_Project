@@ -6,8 +6,8 @@
 script = ExtResource("1_ret5c")
 attribute_name = "dexterity"
 minimum_value = 0.0
-maximum_value = 1.0
-current_value = 1.0
+maximum_value = 20.0
+current_value = 20.0
 derived_from = Array[String]([])
 calculation_type = 0
 is_skill = false

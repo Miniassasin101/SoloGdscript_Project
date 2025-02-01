@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvuecvfamgpwe"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/DynamicButtonUI.gd" id="1_0lgsu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5oc4l"]
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cbngh"]
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+shadow_size = 2
+shadow_offset = Vector2(1, 1)
+
+[node name="DynamicButtonUI" type="Button" node_paths=PackedStringArray("button_text", "button")]
+custom_minimum_size = Vector2(60, 60)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+action_mode = 0
+script = ExtResource("1_0lgsu")
+button_text = NodePath("Text")
+button = NodePath(".")
+
+[node name="Text" type="Label" parent="."]
+layout_mode = 0
+offset_left = -4.0
+offset_top = 29.1381
+offset_right = 56.0
+offset_bottom = 52.1381
+rotation = -0.380482
+scale = Vector2(1.03162, 0.950021)
+text = "ACTION"
+label_settings = SubResource("LabelSettings_5oc4l")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Panel" type="Panel" parent="."]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(1.49073, 1.50475)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cbngh")
