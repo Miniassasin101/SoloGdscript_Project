@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=64 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -37,6 +37,7 @@
 [ext_resource type="Resource" uid="uid://bo28spn03mllg" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BypassArmorEffectResource.tres" id="23_xra60"]
 [ext_resource type="Resource" uid="uid://bhs3peayb8jf2" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ChooseLocationEffectResource.tres" id="24_h0tua"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
+[ext_resource type="Resource" uid="uid://cb2opgmh0nqyu" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/CircumventParryEffectResource.tres" id="26_c6h62"]
 [ext_resource type="PackedScene" uid="uid://bf575s2vrxvov" path="res://Hero_Game/Prefabs/UI_Prefabs/TextController.tscn" id="27_khu5d"]
 [ext_resource type="PackedScene" uid="uid://bc3pj0ahlf2m6" path="res://Hero_Game/Prefabs/UI_Prefabs/DroppablePanelUI.tscn" id="27_naquh"]
 [ext_resource type="PackedScene" uid="uid://8oord2o1icck" path="res://Hero_Game/Prefabs/UI_Prefabs/CharacterLogQueue.tscn" id="28_6i1gy"]
@@ -151,6 +152,7 @@ size = Vector2(2, 2)
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
 attacker_success_debug = true
+parry_fail_debug = true
 auto_equip_debug = true
 grid_dimensions = Vector2(15, 13)
 
@@ -285,7 +287,7 @@ unit_manager = NodePath("../UnitManager")
 script = ExtResource("16_f3oa4")
 unit_action_system_ui = NodePath("../UILayer/UnitActionSystemUI")
 book_keeping_system = NodePath("BookKeepingSystem")
-special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), ExtResource("21_kkt7y"), ExtResource("22_6ytw6"), ExtResource("23_xra60"), ExtResource("24_h0tua"), SubResource("Resource_c77yv"), SubResource("Resource_d4d4a")])
+special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), ExtResource("21_kkt7y"), ExtResource("22_6ytw6"), ExtResource("23_xra60"), ExtResource("24_h0tua"), ExtResource("26_c6h62"), SubResource("Resource_c77yv"), SubResource("Resource_d4d4a")])
 
 [node name="BookKeepingSystem" type="Node" parent="CombatSystem" node_paths=PackedStringArray("combat_system")]
 script = ExtResource("21_ktx83")

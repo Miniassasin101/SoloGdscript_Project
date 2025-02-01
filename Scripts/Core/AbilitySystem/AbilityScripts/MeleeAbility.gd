@@ -251,8 +251,8 @@ func apply_effect() -> void:
 	target_unit.body.apply_wound_from_event(event)
 	
 	if event.rolled_damage == 0:
-		Utilities.spawn_text_line(target_unit, "Parry", Color.FOREST_GREEN)
+		Utilities.spawn_text_line(target_unit, "Blocked", Color.BLUE)
 		Utilities.spawn_damage_label(target_unit, event.rolled_damage, Color.AQUA, 0.2)
 	else:
-		Utilities.spawn_text_line(target_unit,event.body_part_ui_name, Color.ORANGE)
+		Utilities.spawn_text_line(target_unit,event.body_part_ui_name, Color.FIREBRICK)
 		Utilities.spawn_damage_label(target_unit, event.rolled_damage) # Default color is crimson

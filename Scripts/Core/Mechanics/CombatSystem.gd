@@ -197,12 +197,11 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	# Show Attacker's marker
 	show_success(attacking_unit, attacker_success_level)
 
-	# Attacker succeeded, prompt defender for a reaction
+	# If Attacker succeeded, prompt defender for a reaction
 	var defender_success_level: int = 0
 	var defender_wants_reaction: bool = true  # Example prompt
-	var parry_success: bool = false
 	var parrying_weapon_size: int = 0
-	var attack_weapon_size = weapon.size if weapon else 0#0 #event.attribute_map.get_attribute_by_name("weapon_size").current_buffed_value
+	var attack_weapon_size = weapon.size if weapon else 0
 
 	if defender_wants_reaction:
 		defender_success_level = await reaction(target_unit, attacking_unit)
@@ -210,7 +209,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 
 		# If defender wins, determine parry effectiveness
 		if defender_success_level >= 1:
-			parry_success = true
+			ret_event.parry_successful = true
 		if !target_unit.equipment.equipped_items.is_empty():
 			parrying_weapon_size = target_unit.equipment.equipped_items.front().size
 	
@@ -220,20 +219,20 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	elif defender_success_level == -1:
 		ret_event.defender_fumble = true
 	
-	hide_all_success_level()
+	#hide_all_success_level()
 
 	if !defender_wants_reaction:
 		return ret_event
 
 	if LevelDebug.instance.parry_fail_debug:
-		parry_success = false
+		ret_event.parry_successful = true
 	var hit_location: BodyPart = get_hit_location(target_unit)
 	if hit_location == null:
 		push_error("Error: null hit location on ", target_unit.name)
 	ret_event.body_part = hit_location
 	ret_event.body_part_health_name = hit_location.part_name + "_health"
 	ret_event.body_part_ui_name = hit_location.part_ui_name
-	if ret_event.miss and parry_success == false:
+	if ret_event.miss and ret_event.parry_successful == false:
 		return ret_event
 
 
@@ -250,11 +249,11 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		for effect in ret_event.special_effects:
 			print(effect.ui_name)
 			
-		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
+		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parrying_weapon_size, attack_weapon_size)
 
 	elif differential == 0:
 		print_debug("It's a tie - no special effects.")
-		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
+		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parrying_weapon_size, attack_weapon_size)
 
 	else:
 		print_debug("Defender wins. Prompt Special Effects")
@@ -262,9 +261,9 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		ret_event.set_winning_unit(target_unit)
 		ret_event = await prompt_special_effect_choice(ret_event, abs_dif)
 		
-		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parry_success, parrying_weapon_size, attack_weapon_size)
+		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parrying_weapon_size, attack_weapon_size)
 
-	
+	hide_all_success_level()
 	return ret_event
 
 func get_parry_level() -> void:
@@ -277,8 +276,8 @@ func get_hit_location(target_unit: Unit) -> BodyPart:
 
 
 # FIXME: 
-func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit, hit_location: BodyPart,  
-parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
+func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit, 
+			hit_location: BodyPart, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	# Roll base damage
 	var weapon: Weapon = event.weapon
 	var damage_total: int = 0
@@ -292,7 +291,7 @@ parry_success: bool, parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	print_debug("Base damage rolled: ", damage_total)
 
 	# Apply parry reduction based on weapon size comparison
-	if parry_success:
+	if event.parry_successful:
 		if parrying_weapon_size >= attack_weapon_size:
 			print_debug("Parry successful - Full damage blocked by equal or larger weapon.")
 			return 0  # Fully blocked

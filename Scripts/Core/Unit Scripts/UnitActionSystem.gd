@@ -96,7 +96,8 @@ func check_ability_type_invalid(in_ability: Ability) -> bool:
 	return false
 
 
-
+## Is triggered when the ability completely resolves in order to move to the next phase.
+## Main Phases are Action and Move phases in that order.
 func on_ability_ended(ability: Ability) -> void:
 	print_debug("Ability Ended Test")
 	TurnSystem.instance.current_unit_turn.previous_ability = ability

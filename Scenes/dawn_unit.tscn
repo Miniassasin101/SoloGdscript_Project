@@ -2119,7 +2119,7 @@ animation = &"GreatSwordTest1/Greatsword_Swing_001"
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_ej8db"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_0x0ln"]
-graph_offset = Vector2(-357.818, 75)
+graph_offset = Vector2(-156, 141)
 nodes/AnimationNodeStateMachine/node = ExtResource("16_ro1bg")
 nodes/AnimationNodeStateMachine/position = Vector2(0, 100)
 nodes/OneShotAnimation/node = SubResource("AnimationNodeAnimation_10yvm")
@@ -3544,7 +3544,7 @@ bones/172/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.500088, 0.0450196, -0.864803, -0.736129, 0.548075, -0.397149, 0.456098, 0.835217, 0.307226, 0.266265, 1.14916, 0.234481)
+transform = Transform3D(0.499005, 0.0456876, -0.865394, -0.738419, 0.545087, -0.397011, 0.453577, 0.837133, 0.305738, 0.265007, 1.15104, 0.234611)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3552,7 +3552,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.485162, 0.595276, 0.640519, 0.817498, 0.568755, 0.0906337, -0.310346, 0.567595, -0.762575, -0.147376, 1.23455, 0.371743)
+transform = Transform3D(-0.4844, 0.595872, 0.640541, 0.819133, 0.56603, 0.0929007, -0.307209, 0.56969, -0.762284, -0.147856, 1.23567, 0.372315)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3566,7 +3566,7 @@ unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.832325, 0.0135896, 0.554122, 0.00850303, 0.999269, -0.0372788, -0.554223, 0.0357398, 0.831601, -0.000403088, 1.02585, 0.0120974)
+transform = Transform3D(0.832151, 0.0117991, 0.554424, 0.00738376, 0.999449, -0.0323525, -0.5545, 0.031016, 0.831605, 2.11042e-05, 1.03174, 0.0042721)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 

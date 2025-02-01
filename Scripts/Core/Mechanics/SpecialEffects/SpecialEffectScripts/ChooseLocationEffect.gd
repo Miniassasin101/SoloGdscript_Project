@@ -39,7 +39,7 @@ func apply(event: ActivationEvent) -> void:
 	# Validate choice
 	var chosen_part = target_unit.body._find_part_by_name(chosen_part_name)
 	if chosen_part:
-		Utilities.spawn_text_line(target_unit, "Chosen Location: %s" % chosen_part_name)
+		Utilities.spawn_text_line(event.unit, "Chosen Location: %s" % chosen_part_name)
 		# Store it on the event, or do some additional logic
 		event.body_part = chosen_part
 		event.body_part_health_name = event.body_part.part_name + "_health"

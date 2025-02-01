@@ -47,6 +47,7 @@ var projectile: Projectile
 
 # Slowmo Variables
 var is_slowed: bool = false
+var timescale_multiplier: float = 1.0
 
 # Neck Look Variables
 var bone_smooth_rot: float = 0.0
@@ -211,7 +212,7 @@ func play_animation_by_name(animation_name: String, _blend_time: float = 0.5) ->
 	animator_tree.set("parameters/Main/OneShotBlend/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 	print("firing: ", anim_path)
 	var anim: Animation = animator.get_animation(anim_path)
-	await get_tree().create_timer(anim.length).timeout
+	await get_tree().create_timer(anim.length / timescale_multiplier).timeout
 	print("done")
 	return
 
@@ -280,10 +281,13 @@ func toggle_slowdown(speed_scale: float = 0.0) -> void:
 
 	if !is_slowed:
 			set_timescales(speed_scale)
+			# FIXME: Multiplier might be inverted, increases rather than decreases
+			timescale_multiplier = speed_scale
 			is_slowed = true
 
 	else:
 		set_timescales(1.0)
+		timescale_multiplier = 1.0
 		is_slowed = false
 
 
