@@ -297,6 +297,7 @@ func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit,
 	var damage_total: int = 0
 	if weapon:
 		damage_total = weapon.roll_damage()
+		event.weapon_damage_before_armor = damage_total
 	else:
 		damage_total += Utilities.roll(ability.damage, ability.die_number)
 		damage_total += ability.flat_damage

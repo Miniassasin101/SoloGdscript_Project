@@ -54,6 +54,9 @@ func apply(event: ActivationEvent) -> void:
 	var weapon_size_difference: int = event.winning_unit.get_equipped_weapon().size - event.losing_unit.get_equipped_weapon().size
 	var loser_success_level: int = Utilities.check_success_level((event.winning_unit.get_attribute_after_sit_mod("combat_skill", weapon_size_difference)), loser_roll)
 	
+	if event.forced_sp_eff_fail:
+		loser_success_level = -3
+	
 	# By how much the victim wins the opposed roll
 	var success_level_difference: int = loser_success_level - winner_success_level
 	

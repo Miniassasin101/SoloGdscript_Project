@@ -136,7 +136,7 @@ func look_at_toggle(target: Node3D = null) -> void:
 	is_looking = (target != null)
 
 
-func update_look_at(delta: float) -> void:
+func update_look_at_dep2(delta: float) -> void:
 	"""
 	Updates the neck bone to look at the assigned target.
 	This ensures smooth and clamped rotation to prevent unnatural movements.
@@ -173,7 +173,7 @@ func update_look_at(delta: float) -> void:
 
 
 # Call this each frame (or in _physics_process) to update the neck bone.
-func update_look_at_dep2(delta: float) -> void:
+func update_look_at(delta: float) -> void:
 	var neck_idx = skeleton.find_bone(neck_bone_name)
 	if neck_idx == -1:
 		push_error("Neck bone '" + neck_bone_name + "' not found!")

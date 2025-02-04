@@ -38,6 +38,9 @@ func apply(event: ActivationEvent) -> void:
 	var roll: int = Utilities.roll(100)
 	var success_level: int = Utilities.check_success_level((target_unit.get_attribute_after_sit_mod("fortitude_skill")), roll)
 	
+	if event.forced_sp_eff_fail:
+		success_level = -3
+	
 	if success_level >= 1:
 		Utilities.spawn_text_line(target_unit, "Bleed Saved", Color.AQUA)
 		return

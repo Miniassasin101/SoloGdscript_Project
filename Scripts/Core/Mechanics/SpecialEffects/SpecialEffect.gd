@@ -14,6 +14,7 @@ enum ActivationPhase {Initial, PostDamage}
 @export_enum("None", "Self Criticals", "Opponent Fumbles") var roll_required: int = 0
 
 
+
 func apply(_event: ActivationEvent) -> void:
 	
 	pass
@@ -94,6 +95,7 @@ func check_weapon_types(event: ActivationEvent) -> bool:
 			if event.weapon.category != weapon_type:
 				return false
 	return true
+
 
 
 

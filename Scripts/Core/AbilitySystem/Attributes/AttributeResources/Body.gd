@@ -21,7 +21,10 @@ func _on_setup_body() -> void:
 	if attribute_map == null:
 		push_warning("AttributeMap not found for Body node.")
 		return
+	
 
+	body_parts = get_children() as Array[BodyPart]
+	
 	for part in body_parts:
 
 		var spec: AttributeSpec = attribute_map.get_attribute_by_name(part.part_name + "_health")

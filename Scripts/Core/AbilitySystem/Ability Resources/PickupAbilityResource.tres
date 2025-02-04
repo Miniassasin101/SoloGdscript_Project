@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_ddw3o")
+ap_cost = 0
 ui_name = "Pickup"
 movement_gait = 1
 cooldown_duration = 0.0
