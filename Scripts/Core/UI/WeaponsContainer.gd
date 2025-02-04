@@ -1,25 +1,33 @@
-@tool
-class_name WeaponsGridContainer
-extends GridContainer
+class_name WeaponsContainer
+extends HBoxContainer
+
+
+@export var weapon_name_container: VBoxContainer
+@export var weapon_damage_container: VBoxContainer
+@export var weapon_size_container: VBoxContainer
+@export var weapon_ap_container: VBoxContainer
+@export var weapon_hp_container: VBoxContainer
 
 ## Holds references to any dynamically created rows,
 ## so we can remove/clear them if we call populate again.
-var dynamic_rows: Array[Control] = []
+var containers: Array[VBoxContainer] = []
 
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# If you need any setup, do it here.
-	# Because this is a GridContainer, you can set "columns" = 1 or more in the Inspector.
-	# Or you can switch to a VBoxContainer if you prefer.
+
+	containers = [weapon_name_container, weapon_damage_container, weapon_size_container, weapon_ap_container, weapon_hp_container]
+	
 	pass
 
 ##
 # Removes (queue_free) all dynamically created rows from the last populate.
 ##
 func clear_weapons_display() -> void:
-	for row in dynamic_rows:
-		row.queue_free()
-	dynamic_rows.clear()
+	for container in containers:
+		for child in container.get_children():
+			child.queue_free()
+
 
 ##
 # Populates up to 7 weapons. Each weapon row:
@@ -39,25 +47,28 @@ func populate_weapons(weapons: Array[Weapon], sheet_ui: UnitCharacterSheetUI) ->
 	for i in range(max_weapons):
 		var weapon: Weapon = weapons[i]
 		
-		# Create an HBoxContainer or any container you prefer for a "row".
-		var row_container = HBoxContainer.new()
-		row_container.name = "WeaponRow_{0}".format([i])
-
+		
+		
 		# 1) Create a button for the weapon name
 		var name_button = Button.new()
 		name_button.name = "WeaponNameBtn"
 		name_button.text = weapon.name
+		name_button.add_theme_font_size_override("font_size", 15)
 		# We connect "pressed" to a helper in this script that calls sheet_ui
 		name_button.pressed.connect(_on_weapon_name_pressed.bind(weapon, sheet_ui))
+		
+
+
 		
 		# 2) A label for the damage
 		var damage_label = Label.new()
 		damage_label.name = "DamageLabel"
-		damage_label.text = "{}d{} + {}".format([
+		damage_label.text = "{0}d{1} + {2}".format([
 			weapon.die_number,
 			weapon.die_type,
 			weapon.flat_damage
 		])
+		damage_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 
 		
@@ -65,29 +76,29 @@ func populate_weapons(weapons: Array[Weapon], sheet_ui: UnitCharacterSheetUI) ->
 		var size_label = Label.new()
 		size_label.name = "SizeLabel"
 		size_label.text = str(weapon.size)  # or a function that maps int -> "Small/Medium/etc."
+		size_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 		# 4) A label for AP
 		var ap_label = Label.new()
 		ap_label.name = "APLabel"
 		ap_label.text = str(weapon.armor_points)
+		ap_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 		# 5) A label for HP
 		var hp_label = Label.new()
 		hp_label.name = "HPLabel"
-		hp_label.text = str(weapon.hit_points)
+		hp_label.text = str(weapon.hit_points) + "/" + str(weapon.max_hit_points)
+		hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 		# Add these controls to the row container
-		row_container.add_child(name_button)
-		row_container.add_child(damage_label)
-		row_container.add_child(size_label)
-		row_container.add_child(ap_label)
-		row_container.add_child(hp_label)
+		weapon_name_container.add_child(name_button)
+		weapon_damage_container.add_child(damage_label)
+		weapon_size_container.add_child(size_label)
+		weapon_ap_container.add_child(ap_label)
+		weapon_hp_container.add_child(hp_label)
 
-		# Finally, add the row container to the GridContainer (this node)
-		add_child(row_container)
-		
-		# Keep track of the row so we can remove it later
-		dynamic_rows.append(row_container)
+
+
 
 
 ##

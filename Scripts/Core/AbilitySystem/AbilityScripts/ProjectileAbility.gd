@@ -40,8 +40,28 @@ func try_activate(_event: ActivationEvent) -> void:
 		return
 	
 
-	rotate_unit_towards_target_enemy(event)
-	# creating a new [GameplayEffect] node
+	await rotate_unit_towards_target_enemy(event)
+
+	await event.unit.get_tree().create_timer(0.5).timeout
+
+	await shoot_projectile()
+	
+	await resolve_special_effects()
+	
+	await apply_effect()
+	
+	if can_end(event):
+		event.successful = true
+		end_ability(event)
+	
+	# Reset the positionings of the user and target
+	await unit.get_tree().create_timer(2.0).timeout
+	unit.animator.rotate_unit_towards_facing()
+	if target_unit:
+		target_unit.animator.parry_reset.emit()
+		target_unit.animator.on_stop_being_targeted()
+		await unit.get_tree().create_timer(1.0).timeout
+		target_unit.animator.rotate_unit_towards_facing()
 
 	
 
@@ -50,20 +70,14 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 	var animator: UnitAnimator = unit.animator
 	animator.rotate_unit_towards_target_position(event.target_grid_position)
 	await animator.rotation_completed
-	var timer = Timer.new()
-	
-	timer.one_shot = true
-	timer.autostart = true
-	timer.wait_time = 0.5
-	timer.timeout.connect(shoot_projectile)
+
 	# NOTE await doesnt do anything right now but later the coroutine will prompt user or ai decisions
 	# on things like special effects.
 	
 	#Here is where the actual attack resolution comes in
 	event = await CombatSystem.instance.attack_unit(self, event)
-	event.unit.add_child(timer)
-	
-	
+
+
 
 func shoot_projectile() -> void:
 	assert(unit.shoot_point != null)
@@ -73,19 +87,12 @@ func shoot_projectile() -> void:
 	var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
 	projectile_instance.setup(target_shoot_at_position, event.miss) #Add miss logic later
 	event.unit.add_child(projectile_instance)
-	projectile_instance.global_transform.origin = unit.shoot_point.global_transform.origin
+	projectile_instance.global_position = unit.shoot_point.global_position
 	projectile_instance.global_transform.basis = unit.shoot_point.global_transform.basis
-	projectile_instance.target_hit.connect(apply_effect)
+	projectile_instance.trigger_projectile()
+	await projectile_instance.target_hit
 
 
-	# Reset the positionings of the user and target
-	await unit.get_tree().create_timer(2.0).timeout
-	unit.animator.rotate_unit_towards_facing()
-	if target_unit:
-		target_unit.animator.parry_reset.emit()
-		target_unit.animator.on_stop_being_targeted()
-		await unit.get_tree().create_timer(1.0).timeout
-		target_unit.animator.rotate_unit_towards_facing()
 
 	
 
@@ -118,17 +125,13 @@ func apply_effect() -> void:
 		target_unit.animator.flash_white(0.4)
 		Utilities.spawn_text_line(target_unit, "Miss", Color.AQUA)
 	
-	resolve_special_effects()
 	
-	if can_end(event):
-		event.successful = true
-		end_ability(event)
 
 
 
 func resolve_special_effects() -> void:
 	for effect in event.special_effects:
-		if effect.can_apply(event):
+		if effect.can_apply(event) and (effect.activation_phase == effect.ActivationPhase.PostDamage):
 			effect.apply(event)
 
 

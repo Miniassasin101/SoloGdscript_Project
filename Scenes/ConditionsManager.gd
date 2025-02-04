@@ -37,7 +37,7 @@ func apply_situational_modifier(attribute_value: int) -> int:
 	var multiplier = Utilities.DIFFICULTY_GRADE_MULTIPLIER[Utilities.DIFFICULTY_GRADE.keys()[highest_difficulty]]
 	return ceil(attribute_value * multiplier)  # Rounds up the final value
 
-func get_highest_situational_modifier() -> float:
+func get_highest_situational_modifier(sit_mod_change: int = 0) -> float:
 	var highest_difficulty = Utilities.DIFFICULTY_GRADE.STANDARD  # Default is STANDARD
 	
 	# Iterate through all conditions to find the highest situational modifier
@@ -46,10 +46,11 @@ func get_highest_situational_modifier() -> float:
 			var condition_modifier = condition.get_situational_modifier()
 			if condition_modifier > highest_difficulty:
 				highest_difficulty = condition_modifier
-
+	
+	# FIXME: The sit mod change can bring outside the bounds of the multiplier dictionary
 	# Directly use the highest_difficulty enum as the key for the dictionary
-	var diff_mod: float = Utilities.DIFFICULTY_GRADE_MULTIPLIER[highest_difficulty]
-	return Utilities.DIFFICULTY_GRADE_MULTIPLIER[highest_difficulty]
+	var diff_mod: float = Utilities.DIFFICULTY_GRADE_MULTIPLIER[highest_difficulty + sit_mod_change]
+	return diff_mod
 
 
 

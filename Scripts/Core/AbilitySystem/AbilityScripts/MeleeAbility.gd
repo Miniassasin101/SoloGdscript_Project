@@ -76,7 +76,27 @@ func try_activate(_event: ActivationEvent) -> void:
 	
 	
 	# Rotate the Unit to face the target, then continue the action (attack).
-	rotate_unit_towards_target_enemy(event)
+	await rotate_unit_towards_target_enemy(event)
+	
+		# Perform the actual swing animation.
+	await melee_attack_anim()
+	
+	
+	resolve_special_effects()
+	# Now that the animation is presumably done or at the hit frame, apply damage.
+	apply_effect()
+	
+	# Optionally end the ability if everything is done.
+	if can_end(event):
+		event.successful = true
+		end_ability(event)
+	
+	await unit.get_tree().create_timer(2.0).timeout
+	if target_unit:
+		target_unit.animator.parry_reset.emit()
+		target_unit.animator.on_stop_being_targeted()
+		await unit.get_tree().create_timer(1.0).timeout
+		target_unit.animator.rotate_unit_towards_facing()
 
 
 ##
@@ -177,8 +197,7 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 	event = await CombatSystem.instance.attack_unit(self, event)
 
 
-	# Perform the actual swing animation.
-	melee_attack_anim()
+
 
 
 ##
@@ -205,20 +224,7 @@ func melee_attack_anim() -> void:
 		target_unit.animator.flash_white()
 		Utilities.spawn_text_line(target_unit, "Miss", Color.AQUA)
 
-	resolve_special_effects()
-	# 3) Now that the animation is presumably done or at the hit frame, apply damage.
-	apply_effect()
-	# 4) Optionally end the ability if everything is done.
-	if can_end(event):
-		event.successful = true
-		end_ability(event)
-	
-	await unit.get_tree().create_timer(2.0).timeout
-	if target_unit:
-		target_unit.animator.parry_reset.emit()
-		target_unit.animator.on_stop_being_targeted()
-		await unit.get_tree().create_timer(1.0).timeout
-		target_unit.animator.rotate_unit_towards_facing()
+
 
 
 func resolve_special_effects() -> void:
@@ -231,7 +237,7 @@ func resolve_special_effects() -> void:
 # This is the "on-hit" portion of the melee attack.
 ##
 func apply_effect() -> void:
-	if event.miss:
+	if event.miss or event.bypass_attack:
 		return
 	# Create a new GameplayEffect resource
 	var effect = GameplayEffect.new()

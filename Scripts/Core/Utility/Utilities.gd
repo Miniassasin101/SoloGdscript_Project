@@ -70,9 +70,9 @@ func get_adjacent_tiles_no_diagonal(unit: Unit) -> Array[GridPosition]:
 
 func get_adjacent_tiles_with_diagonal(unit: Unit) -> Array[GridPosition]:
 	var ret_tiles: Array[GridPosition] = []
-	ret_tiles.append(get_back_tiles(unit))
-	ret_tiles.append(get_side_tiles(unit))
-	ret_tiles.append(get_front_tiles(unit))
+	ret_tiles.append_array(get_back_tiles(unit))
+	ret_tiles.append_array(get_side_tiles(unit))
+	ret_tiles.append_array(get_front_tiles(unit))
 
 	return ret_tiles.filter(func(gridpos): return gridpos != null) # Remove null values
 

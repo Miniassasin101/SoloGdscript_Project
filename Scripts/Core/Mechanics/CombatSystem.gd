@@ -113,7 +113,7 @@ func check_declaration_reaction_queue(_action: Ability, _event: ActivationEvent)
 
 
 
-func reaction(reacting_unit: Unit, attacking_unit: Unit) -> int:
+func reaction(reacting_unit: Unit, attacking_unit: Unit, ret_event: ActivationEvent) -> int:
 	# Prompt UI or AI to choose a reaction ability (e.g., a parry, an evade).
 	SignalBus.on_player_reaction.emit(reacting_unit)
 	var ability: Ability = await SignalBus.reaction_selected
@@ -141,6 +141,7 @@ func reaction(reacting_unit: Unit, attacking_unit: Unit) -> int:
 	# If evade: skill = evade skill
 	var defend_skill_value = reacting_unit.get_attribute_after_sit_mod("combat_skill")
 	var defending_roll = Utilities.roll(100)
+	ret_event.defender_roll = defending_roll
 	print_debug("Defend Skill Value: ", defend_skill_value)
 	print_debug("Defend Roll: ", defending_roll)
 
@@ -161,6 +162,7 @@ func prompt_special_effect_choice(event: ActivationEvent, abs_dif: int) -> Activ
 	var chosen_effects: Array[SpecialEffect] = await UIBus.effects_chosen
 	event.special_effects.append_array(chosen_effects)
 	for effect in chosen_effects:
+		effect.on_activated(event)
 		if effect.activation_phase == effect.ActivationPhase.Initial and effect.can_apply(event):
 			@warning_ignore("redundant_await")
 			await effect.apply(event)
@@ -173,16 +175,17 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var attacking_unit: Unit = event.unit
 	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	event.target_unit = target_unit
+	var ret_event: ActivationEvent = event
 
 
 	var attacker_combat_skill = attacking_unit.get_attribute_after_sit_mod("combat_skill")
 	var attacker_roll: int = Utilities.roll(100)
 	print_debug("Attacker Combat Skill: ", attacker_combat_skill)
 	print_debug("Attacker Roll: ", attacker_roll)
+	ret_event.attacker_roll = attacker_roll
 
 	var attacker_success_level: int = Utilities.check_success_level(attacker_combat_skill, attacker_roll)
 	print_debug("Attacker Success Level: ", attacker_success_level)
-	var ret_event: ActivationEvent = event
 	if LevelDebug.instance.attacker_success_debug == true:
 		attacker_success_level = 1
 	# If attacker fails outright:
@@ -204,14 +207,15 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var attack_weapon_size = weapon.size if weapon else 0
 
 	if defender_wants_reaction:
-		defender_success_level = await reaction(target_unit, attacking_unit)
+		defender_success_level = await reaction(target_unit, attacking_unit, ret_event)
+		#defender_success_level = 2
 		show_success(target_unit, defender_success_level)
 
 		# If defender wins, determine parry effectiveness
 		if defender_success_level >= 1:
 			ret_event.parry_successful = true
 		if !target_unit.equipment.equipped_items.is_empty():
-			parrying_weapon_size = target_unit.equipment.equipped_items.front().size
+			parrying_weapon_size = target_unit.equipment.get_equipped_weapon().size
 	
 	ret_event.defender_success_level = defender_success_level
 	if defender_success_level == 2:
@@ -219,20 +223,19 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	elif defender_success_level == -1:
 		ret_event.defender_fumble = true
 	
-	#hide_all_success_level()
+
 
 	if !defender_wants_reaction:
 		return ret_event
 
 	if LevelDebug.instance.parry_fail_debug:
 		ret_event.parry_successful = true
-	var hit_location: BodyPart = get_hit_location(target_unit)
-	if hit_location == null:
-		push_error("Error: null hit location on ", target_unit.name)
-	ret_event.body_part = hit_location
-	ret_event.body_part_health_name = hit_location.part_name + "_health"
-	ret_event.body_part_ui_name = hit_location.part_ui_name
+	
+	
+	
+	
 	if ret_event.miss and ret_event.parry_successful == false:
+		hide_all_success_level()
 		return ret_event
 
 
@@ -243,25 +246,36 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	if differential > 0:
 		print_debug("Attacker wins. Applying damage. Also prompt special effects")
 		ret_event.set_winning_unit(attacking_unit)
-
+		ret_event.set_losing_unit(target_unit)
 		ret_event = await prompt_special_effect_choice(ret_event, abs_dif)
 		
 		for effect in ret_event.special_effects:
 			print(effect.ui_name)
+		
+		if !event.bypass_attack:
+			setup_hit_location(ret_event)
 			
-		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parrying_weapon_size, attack_weapon_size)
+			ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, parrying_weapon_size, attack_weapon_size)
 
 	elif differential == 0:
 		print_debug("It's a tie - no special effects.")
-		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parrying_weapon_size, attack_weapon_size)
+		
+		if !event.bypass_attack:
+			setup_hit_location(ret_event)
+			
+			ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, parrying_weapon_size, attack_weapon_size)
 
 	else:
 		print_debug("Defender wins. Prompt Special Effects")
 		
 		ret_event.set_winning_unit(target_unit)
+		ret_event.set_losing_unit(attacking_unit)
 		ret_event = await prompt_special_effect_choice(ret_event, abs_dif)
 		
-		ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, hit_location, parrying_weapon_size, attack_weapon_size)
+		if !event.bypass_attack:
+			setup_hit_location(ret_event)
+			
+			ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, parrying_weapon_size, attack_weapon_size)
 
 	hide_all_success_level()
 	return ret_event
@@ -277,13 +291,12 @@ func get_hit_location(target_unit: Unit) -> BodyPart:
 
 # FIXME: 
 func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit, 
-			hit_location: BodyPart, parrying_weapon_size: int, attack_weapon_size: int) -> int:
+			parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	# Roll base damage
 	var weapon: Weapon = event.weapon
 	var damage_total: int = 0
 	if weapon:
-		damage_total += Utilities.roll(weapon.die_type, weapon.die_number)
-		damage_total += weapon.flat_damage
+		damage_total = weapon.roll_damage()
 	else:
 		damage_total += Utilities.roll(ability.damage, ability.die_number)
 		damage_total += ability.flat_damage
@@ -292,22 +305,36 @@ func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit,
 
 	# Apply parry reduction based on weapon size comparison
 	if event.parry_successful:
-		if parrying_weapon_size >= attack_weapon_size:
+		if parrying_weapon_size >= attack_weapon_size or (event.enhance_parry):
 			print_debug("Parry successful - Full damage blocked by equal or larger weapon.")
 			return 0  # Fully blocked
+		
 		elif parrying_weapon_size == attack_weapon_size - 1:
-			damage_total = ceili(float(damage_total) / 2.0)  # Half damage
+			damage_total = ceili(damage_total / 2.0)  # Half damage
 			print_debug("Parry successful - Half damage taken (smaller parrying weapon).")
+		
 		else:
 			print_debug("Parry unsuccessful - Weapon too small to reduce damage.")
 
 	# Apply armor reduction after parry
 	if !event.bypass_armor:
-		damage_total = hit_location.get_damage_after_armor(damage_total)
+		damage_total = event.body_part.get_damage_after_armor(damage_total)
 
-	print_debug("Damage after armor reduction: ", damage_total, "\nOn ", hit_location.part_name)
+	print_debug("Damage after armor reduction: ", damage_total, "\nOn ", event.body_part.part_name)
 
 	return damage_total
+
+
+## Sets the hit location / body part variables on the event.
+func setup_hit_location(ret_event: ActivationEvent) -> void:
+	if ret_event.body_part:
+		return
+	var hit_location: BodyPart = get_hit_location(ret_event.target_unit)
+	if hit_location == null:
+		push_error("Error: null hit location on ", ret_event.target_unit.name)
+	ret_event.body_part = hit_location
+	ret_event.body_part_health_name = hit_location.part_name + "_health"
+	ret_event.body_part_ui_name = hit_location.part_ui_name
 
 
 # Helper Functions

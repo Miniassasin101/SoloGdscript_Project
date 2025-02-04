@@ -26,6 +26,8 @@ signal parry_reset
 @export var head_look_vertical_offset: float = -3.0
 
 
+
+
 @export_category("Body Location Variables")
 @export var chest_point: Marker3D 
 @export_category("Attack Variables")
@@ -50,6 +52,9 @@ var is_slowed: bool = false
 var timescale_multiplier: float = 1.0
 
 # Neck Look Variables
+var default_neck_transform: Transform3D
+var head_look_override_weight: float = 0.0
+
 var bone_smooth_rot: float = 0.0
 var target_rotation: Quaternion
 var is_looking: bool = false
@@ -84,6 +89,16 @@ var weapon_trail_is_active: bool = false
 func _ready() -> void:
 	#call_deferred("connect_signals")
 	SignalBus.equipment_changed.connect(equipment_anim_check)
+	
+	# Initialize the rest transform for the neck bone.
+	var neck_idx = skeleton.find_bone(neck_bone_name)
+	if neck_idx == -1:
+		push_error("Neck bone '" + neck_bone_name + "' not found!")
+		return
+	default_neck_transform = skeleton.get_bone_rest(neck_idx)
+	# Start with no override.
+	head_look_override_weight = 0.0
+
 
 
 
@@ -93,7 +108,7 @@ func _physics_process(delta: float) -> void:
 		rotate_unit_towards_target_position_process(delta)
 	if is_moving:
 		move_along_curve_process(delta)
-	if look_target and skeleton and is_looking:
+	if skeleton and look_target and is_looking:
 		update_look_at(delta)
 
 
@@ -107,11 +122,19 @@ func get_character_mesh() -> Array[MeshInstance3D]:
 
 
 ## Function to be used to trigger and disable looking at a target. Just needs to be called with no arguments to turn off.
-func look_at_toggle(target: Node3D = null) -> void:
+func look_at_toggle_dep(target: Node3D = null) -> void:
 	if target == null:
 		is_looking = false
 	look_target = target
 	is_looking = true
+
+# When you want to control head-look via this script, call this function.
+# Passing a valid target will smoothly blend in our override;
+# passing null will smoothly drop the override, allowing your animations to take over.
+func look_at_toggle(target: Node3D = null) -> void:
+	look_target = target
+	is_looking = (target != null)
+
 
 func update_look_at(delta: float) -> void:
 	"""
@@ -149,6 +172,101 @@ func update_look_at(delta: float) -> void:
 	skeleton.set_bone_pose_rotation(neck_bone, final_rotation)
 
 
+# Call this each frame (or in _physics_process) to update the neck bone.
+func update_look_at_dep2(delta: float) -> void:
+	var neck_idx = skeleton.find_bone(neck_bone_name)
+	if neck_idx == -1:
+		push_error("Neck bone '" + neck_bone_name + "' not found!")
+		return
+
+	# Determine the target override weight: if actively looking, we want full override (1.0); otherwise 0.
+	var target_weight: float = 1.0 if is_looking else 0.0
+	head_look_override_weight = lerp(head_look_override_weight, target_weight, neck_rot_speed * delta)
+	
+	# Retrieve the current pose as computed by animations.
+	var current_pose: Transform3D = skeleton.get_bone_pose(neck_idx)
+	var current_trans: Vector3 = current_pose.origin
+	# Preserve the bone’s current scale.
+	var current_scale: Vector3 = current_pose.basis.get_scale()
+	# Get the current rotation (in local space).
+	var current_rot: Quaternion = current_pose.basis.get_rotation_quaternion()
+
+	# Compute the desired override rotation.
+	var desired_rot: Quaternion
+	if is_looking and look_target:
+		# Determine a target position with a vertical offset.
+		var target_pos: Vector3 = look_target.global_transform.origin + Vector3(0.0, head_look_vertical_offset, 0.0)
+		# Use your temporary marker node to compute the needed rotation.
+		neck_target.look_at(target_pos, Vector3.UP, true)
+		var target_rot_deg: Vector3 = neck_target.rotation_degrees
+		# Clamp the computed angles.
+		target_rot_deg.x = clamp(target_rot_deg.x, -max_vertical_angle, max_vertical_angle)
+		target_rot_deg.y = clamp(target_rot_deg.y, -max_horizontal_angle, max_horizontal_angle)
+		desired_rot = Quaternion.from_euler(Vector3(deg_to_rad(target_rot_deg.x), deg_to_rad(target_rot_deg.y), 0))
+	else:
+		# If not looking, fall back to the rest rotation.
+		desired_rot = default_neck_transform.basis.get_rotation_quaternion()
+	
+	# Blend from the current rotation toward the desired override.
+	var blended_rot: Quaternion = current_rot.slerp(desired_rot, head_look_override_weight)
+	var new_basis: Basis = Basis(blended_rot)
+	# Reapply the current scale.
+	new_basis = new_basis.scaled(current_scale)
+	
+	# Construct a new pose with the animation’s translation and our blended rotation.
+	var new_pose: Transform3D = Transform3D(new_basis, current_trans)
+	skeleton.set_bone_pose(neck_idx, new_pose)
+
+
+func update_look_at_dep(delta: float) -> void:
+	var neck_idx = skeleton.find_bone(neck_bone_name)
+	if neck_idx == -1:
+		push_error("Neck bone '" + neck_bone_name + "' not found!")
+		return
+
+	# Determine the target override weight: if actively looking, we want full override (1.0); otherwise 0.
+	var target_weight: float = 1.0 if is_looking else 0.0
+	head_look_override_weight = lerp(head_look_override_weight, target_weight, neck_rot_speed * delta)
+	
+	# Retrieve the current pose as computed by animations.
+	var current_pose: Transform3D = skeleton.get_bone_pose(neck_idx)
+	var current_trans: Vector3 = current_pose.origin
+	# Preserve the bone’s current scale.
+	var current_scale: Vector3 = current_pose.basis.get_scale()
+	# Get the current rotation (in local space).
+	var current_rot: Quaternion = current_pose.basis.get_rotation_quaternion()
+
+	# Compute the desired override rotation.
+	var desired_rot: Quaternion
+	if is_looking and look_target:
+		# Determine a target position with a vertical offset.
+		var target_pos: Vector3 = look_target.global_transform.origin + Vector3(0.0, head_look_vertical_offset, 0.0)
+		# Use the temporary marker node to compute the needed rotation.
+		neck_target.look_at(target_pos, Vector3.UP, true)
+		var target_rot_deg: Vector3 = neck_target.rotation_degrees
+		# Clamp the computed angles.
+		target_rot_deg.x = clamp(target_rot_deg.x, -max_vertical_angle, max_vertical_angle)
+		target_rot_deg.y = clamp(target_rot_deg.y, -max_horizontal_angle, max_horizontal_angle)
+		desired_rot = Quaternion.from_euler(Vector3(deg_to_rad(target_rot_deg.x), deg_to_rad(target_rot_deg.y), 0))
+	else:
+		# If not looking, fall back to the rest rotation but apply a 180° correction around Y.
+		# Post-multiply the rest rotation so that the forward direction (-Z) is flipped to +Z,
+		# while keeping the original X (pitch) and Y (yaw) intact.
+		desired_rot = default_neck_transform.basis.get_rotation_quaternion() * Quaternion(Vector3.UP, PI)
+	
+	# Blend from the current rotation toward the desired override.
+	var blended_rot: Quaternion = current_rot.slerp(desired_rot, head_look_override_weight)
+	var new_basis: Basis = Basis(blended_rot)
+	# Reapply the current scale.
+	new_basis = new_basis.scaled(current_scale)
+	
+	# Construct a new pose with the animation’s translation and our blended rotation.
+	var new_pose: Transform3D = Transform3D(new_basis, current_trans)
+	skeleton.set_bone_pose(neck_idx, new_pose)
+
+
+
+
 # Animate Movement Along Curve
 # Handles setting up movement parameters and starting movement
 func animate_movement_along_curve(move_speed_in: float, movement_curve_in: Curve3D, curve_length_in: float, acceleration_timer_in: float, rotation_acceleration_timer_in: float,  stopping_distance_in: float, rotate_speed_in: float) -> void:
@@ -173,12 +291,14 @@ func equipment_anim_check(in_unit: Unit) -> void:
 	weapon_setup(false)
 
 func weapon_setup(weapon_type: bool) -> void:
+	var tween: Tween = create_tween()
 	if weapon_type:
 		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/GreatswordBlend/blend_amount", 1.0)
-		animator_tree.set("parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 1.0)
+		tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 1.0, 0.7)
+		#animator_tree.set("parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 1.0)
 		return
 	animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/GreatswordBlend/blend_amount", 0.0)
-	animator_tree.set("parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 0.0)
+	tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 0.0, 0.7)
 
 func left_cast_anim(_in_animation: Animation, in_miss: bool = false) -> void:
 	# Note: Later replace greatsword test with the animation library
@@ -222,7 +342,7 @@ func play_animation_by_name(animation_name: String, _blend_time: float = 0.5) ->
 	# NOTE: Always add call method tracks for resolving the damage
 func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 # Note: Later replace greatsword test with the animation library
-	look_at_toggle()
+	#look_at_toggle()
 
 	miss = in_miss
 	var root: AnimationNodeStateMachine = animator_tree.tree_root
@@ -247,16 +367,19 @@ func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 	return
 
 func weapon_trail_toggle() -> void:
-	var weapon: Item = unit.equipment.equipped_items.front()
-	var trail: GPUTrail3D
-	if weapon:
-		trail = weapon.get_object().get_child(0)
-	if !weapon_trail_is_active:
-		trail.set_visibility(true)
-		weapon_trail_is_active = true
+	var weapon: Weapon = unit.get_equipped_weapon()
+	if !weapon or !unit.equipment.has_equipped_weapon():
 		return
-	trail.set_visibility(false)
-	weapon_trail_is_active = false
+	var weapon_visual: ItemVisual = weapon.get_item_visual()
+	if !weapon_visual:
+		return
+	if !weapon_trail_is_active:
+		
+		if weapon_visual.set_trail_visibility(true):
+			weapon_trail_is_active = true
+		return
+	if weapon_visual.set_trail_visibility(false):
+		weapon_trail_is_active = false
 
 func attack_landed() -> void:
 	attack_completed.emit()

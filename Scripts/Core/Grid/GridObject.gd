@@ -16,7 +16,9 @@ var is_walkable: bool = true
 var is_difficult_terrain: bool = false  # New property
 
 # List of units on this grid cell.
-var unit_list: Array = []
+var unit_list: Array[Unit] = []
+
+var item_list: Array[Item] = []
 
 func _init(ingrid_system: GridSystem, ingrid_position: GridPosition) -> void:
 	grid_system = ingrid_system
@@ -32,14 +34,27 @@ func set_difficult_terrain(difficult: bool) -> void:
 func get_movement_cost() -> int:
 	return 2 if is_difficult_terrain else 1  # Double cost for difficult terrain
 
+func add_item(item: Item) -> void:
+	item_list.append(item)
+
+func remove_item(item: Item) -> void:
+	item_list.erase(item)
+
+func get_first_item() -> Item:
+	return item_list[0]
+
+func has_any_item() -> bool:
+	if item_list.size() > 0:
+		return true
+	return false
+
 # Adds a unit to this grid cell.
 func add_unit(unit: Unit) -> void:
 	self.unit_list.append(unit)
 
 # Removes a unit from this grid cell.
 func remove_unit(unit: Unit) -> void:
-	if unit in unit_list:
-		unit_list.erase(unit)
+	unit_list.erase(unit)
 
 # Returns the list of units on this grid cell.
 func get_unit_list() -> Array:
@@ -60,6 +75,6 @@ func to_str() -> String:
 	var result = grid_position.to_str()
 	if unit_list.size() > 0:
 		for unit in unit_list:
-			result += "\n" + unit.to_string()
+			result += "\n" + unit.ui_name
 		return result
 	return result

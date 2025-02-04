@@ -37,6 +37,8 @@ func _on_setup_body() -> void:
 
 
 func apply_wound_from_event(event: ActivationEvent) -> void:
+	if event.rolled_damage <= 0:
+		return
 	
 	
 	

@@ -26,7 +26,7 @@ extends Control
 
 @export_category("Containers")
 @export var body_parts_container: VBoxContainer
-@export var weapons_grid_container: WeaponsGridContainer
+@export var weapons_container: WeaponsContainer
 @export var conditions_container: VBoxContainer
 
 @export_category("Buttons")
@@ -52,6 +52,7 @@ func _on_open_character_sheet(unit: Unit) -> void:
 		is_open = true
 		last_unit = unit
 		_populate_from_unit(unit)
+		populate_weapons_from_unit(unit)
 		return
 
 	if is_open:
@@ -75,7 +76,7 @@ func _on_close_button_pressed():
 func _populate_from_unit(unit: Unit) -> void:
 	# Basic attribute labels
 	if is_instance_valid(unit):
-		unit_name_label.text = unit.name
+		unit_name_label.text = unit.ui_name
 	else:
 		unit_name_label.text = "n/a"
 	action_points_label.text = "AP: " + _get_attribute_or_na(unit, "action_points")
@@ -120,7 +121,7 @@ func _populate_from_unit(unit: Unit) -> void:
 
 func populate_weapons_from_unit(unit: Unit) -> void:
 	if not is_instance_valid(unit) or not is_instance_valid(unit.equipment):
-		weapons_grid_container.clear_weapons_display()
+		weapons_container.clear_weapons_display()
 		return
 
 	var all_equipped_items = unit.equipment.equipped_items
@@ -129,7 +130,7 @@ func populate_weapons_from_unit(unit: Unit) -> void:
 		if item is Weapon:
 			equipped_weapons.append(item as Weapon)
 	
-	weapons_grid_container.populate_weapons(equipped_weapons, self)
+	weapons_container.populate_weapons(equipped_weapons, self)
 
 
 func _get_attribute_or_na(unit: Unit, attribute_name: String) -> String:

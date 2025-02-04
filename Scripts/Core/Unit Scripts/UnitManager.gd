@@ -16,12 +16,15 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
+
 	initialize_units()
 	if LevelDebug.instance.auto_equip_debug:
-		test_equip_units(sword_test)
+		get_tree().process_frame.connect(test_equip_units, CONNECT_ONE_SHOT)
+
+
 	connect_global_signals()
 
-func test_equip_units(sword: Weapon) -> void:
+func test_equip_units(sword: Weapon = sword_test) -> void:
 	for unit: Unit in units:
 		var new_sword = sword.duplicate()
 		unit.equipment.equip(new_sword)

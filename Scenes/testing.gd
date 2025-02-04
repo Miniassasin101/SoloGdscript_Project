@@ -220,13 +220,16 @@ func test_n() -> void:
 func test_v() -> void:
 	if Input.is_action_just_pressed("testkey_v"):
 		#remove_all_ap()
-		add_armor()
+		#add_armor()
+		#play_weapon_spin_anim()
+		drop_equipped_weapon()
+		pass
 
 
 
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
-		open_character_sheet()
+		#open_character_sheet()
 		#equip_weapon()
 		#open_special_effect_buttons()
 		#print_active_special_effects()
@@ -235,7 +238,29 @@ func test_c() -> void:
 		#flash_on_equipped_weapon()
 		#print_conditions()
 		#print_situational_modifier_attribute()
+		equip_weapon_on_ground()
 		pass
+
+func drop_equipped_weapon() -> void:
+	ObjectManager.instance.drop_equipped_item(unit)
+
+func equip_weapon_on_ground() -> void:
+	var gridobj: GridObject = LevelGrid.grid_system.get_grid_object(unit.get_grid_position())
+
+	for item in gridobj.item_list:
+		if item is Weapon:
+			ObjectManager.instance.equip_item(unit, item)
+			return
+
+
+
+
+func play_weapon_spin_anim() -> void:
+	var weapon: Weapon = unit.equipment.get_equipped_weapon()
+	var weapon_visual: ItemVisual = weapon.get_item_visual()
+	weapon_visual.play_animation("ItemSpin", 3.0)
+
+
 
 func print_situational_modifier_attribute() -> void:
 	print(unit.get_attribute_after_sit_mod("evade_skill"))

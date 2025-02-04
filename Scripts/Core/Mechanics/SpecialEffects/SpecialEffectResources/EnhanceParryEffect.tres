@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnhanceParryEffect" load_steps=2 format=3 uid="uid://dlukj3jgipdjr"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/EnhanceParryEffect.gd" id="1_06cn0"]
+
+[resource]
+script = ExtResource("1_06cn0")
+ui_name = &"Enhance Parry"
+activation_phase = 0
+activation_allowed = 1
+weapon_types_allowed = Array[String]([])
+stackable = false
+roll_required = 0

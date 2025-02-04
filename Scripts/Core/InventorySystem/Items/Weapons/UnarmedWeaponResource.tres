@@ -1,28 +1,28 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://cxk0rx8ecss31"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://bx8s3j6x7s868"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/Weapon.gd" id="1_pes5o"]
-[ext_resource type="PackedScene" uid="uid://ws4usfvbsn2l" path="res://Hero_Game/Prefabs/Items/Weapons/Greatsword.tscn" id="1_snv06"]
+[ext_resource type="PackedScene" uid="uid://ws4usfvbsn2l" path="res://Hero_Game/Prefabs/Items/Weapons/Greatsword.tscn" id="1_rk4c8"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/Weapon.gd" id="2_2g61o"]
 
 [resource]
-script = ExtResource("1_pes5o")
-category = &"sword"
-die_type = 6
-die_number = 2
-flat_damage = 2
-size = 2
-reach = 2
+script = ExtResource("2_2g61o")
+category = &"unarmed"
+die_type = 4
+die_number = 1
+flat_damage = 1
+size = 0
+reach = 0
 combat_effects = Array[StringName]([])
-encumberance = 2
-armor_points = 1
+encumberance = 1
+armor_points = 0
 hit_points = 8
 max_hit_points = 8
 traits = Array[StringName]([])
-hands = 2
+hands = 1
 is_broken = false
-name = &"Greatsword"
+name = &"Fists"
 can_stack = false
 decrease_stack_on_use = false
-scene = ExtResource("1_snv06")
+scene = ExtResource("1_rk4c8")
 tags = Array[String]([])
 quantity_current = 1
 quantity_max = 1

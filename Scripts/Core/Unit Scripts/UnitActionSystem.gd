@@ -81,8 +81,8 @@ func handle_selected_ability() -> void:
 				# Attempt to spend AP
 				if selected_unit.try_spend_ability_points_to_use_ability(selected_ability):
 					# Activate ability
-					selected_unit.ability_container.activate_one(selected_ability, grid_position)
 					set_busy()
+					selected_unit.ability_container.activate_one(selected_ability, grid_position)
 					SignalBus.emit_signal("ability_started")
 					
 					# Mark that we have taken a proactive action this cycle if the ability is of type "action"

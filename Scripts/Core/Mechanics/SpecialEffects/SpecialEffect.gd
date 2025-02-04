@@ -33,6 +33,10 @@ func can_activate(event: ActivationEvent) -> bool:
 	return true
 
 
+func on_activated(event: ActivationEvent) -> void:
+	pass
+
+
 func check_specific_roll(event: ActivationEvent) -> bool:
 	# If we don't require a specific roll (roll_required == 0 => "None"), just return true.
 	if roll_required == 0:

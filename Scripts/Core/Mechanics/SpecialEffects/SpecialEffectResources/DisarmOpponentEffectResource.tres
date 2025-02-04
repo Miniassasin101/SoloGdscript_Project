@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DisarmOpponentEffect" load_steps=2 format=3 uid="uid://b34sriadfy7xr"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/DisarmOpponentEffect.gd" id="1_j1wiv"]
+
+[resource]
+script = ExtResource("1_j1wiv")
+ui_name = &"Disarm"
+activation_phase = 1
+activation_allowed = 2
+weapon_types_allowed = Array[String]([])
+stackable = false
+roll_required = 0

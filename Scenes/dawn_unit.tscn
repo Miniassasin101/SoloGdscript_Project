@@ -1,4 +1,4 @@
-[gd_scene load_steps=107 format=4 uid="uid://ckh4ee1mgwjn4"]
+[gd_scene load_steps=108 format=4 uid="uid://ckh4ee1mgwjn4"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
@@ -39,6 +39,7 @@
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/equipment.gd" id="34_6brpe"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/DabAbility.gd" id="34_nsbb5"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/item.gd" id="35_icsct"]
+[ext_resource type="Resource" uid="uid://d24lxlvd0ufdn" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/PickupAbilityResource.tres" id="37_wv3v5"]
 [ext_resource type="Resource" uid="uid://bh2no358biy4l" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/ParryResource.tres" id="38_1p8t2"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/equipment_slot.gd" id="38_3xk7x"]
 [ext_resource type="PackedScene" uid="uid://6tcoop2kh2oa" path="res://Hero_Game/Prefabs/Units/ColorMarker.tscn" id="38_7osw2"]
@@ -2119,7 +2120,7 @@ animation = &"GreatSwordTest1/Greatsword_Swing_001"
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_ej8db"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_0x0ln"]
-graph_offset = Vector2(-156, 141)
+graph_offset = Vector2(-370.01, 34.1708)
 nodes/AnimationNodeStateMachine/node = ExtResource("16_ro1bg")
 nodes/AnimationNodeStateMachine/position = Vector2(0, 100)
 nodes/OneShotAnimation/node = SubResource("AnimationNodeAnimation_10yvm")
@@ -3544,7 +3545,7 @@ bones/172/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.499005, 0.0456876, -0.865394, -0.738419, 0.545087, -0.397011, 0.453577, 0.837133, 0.305738, 0.265007, 1.15104, 0.234611)
+transform = Transform3D(0.502495, 0.0475739, -0.86327, -0.736354, 0.546801, -0.398486, 0.45308, 0.83591, 0.309796, 0.267221, 1.14771, 0.235581)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3552,21 +3553,21 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.4844, 0.595872, 0.640541, 0.819133, 0.56603, 0.0929007, -0.307209, 0.56969, -0.762284, -0.147856, 1.23567, 0.372315)
+transform = Transform3D(-0.485281, 0.59339, 0.642177, 0.818565, 0.566483, 0.0951261, -0.307335, 0.571826, -0.760632, -0.146837, 1.2332, 0.372973)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
 [node name="RightHandSocket" type="Node3D" parent="Rig_001/Skeleton3D/LeftHandEquipmentSocketBone"]
-transform = Transform3D(0.0911744, 0.125808, -0.987859, -0.973272, -0.198726, -0.115136, -0.210797, 0.97195, 0.104326, 0.00527489, 0.0422065, 0.0300578)
+transform = Transform3D(0.0928292, 0.120241, -0.988398, -0.973072, -0.199405, -0.115647, -0.210996, 0.972516, 0.0984913, 0.00414675, 0.0419652, 0.0311842)
 
 [node name="EquippedItem3D" type="Node3D" parent="Rig_001/Skeleton3D/LeftHandEquipmentSocketBone/RightHandSocket" node_paths=PackedStringArray("unit")]
-transform = Transform3D(0.999983, 0.00294973, 0.00510682, -0.00135497, 0.957676, -0.287844, -0.00573963, 0.287833, 0.957664, -0.0127231, -0.0137391, -0.00101501)
+transform = Transform3D(0.999983, 0.00294973, 0.00510682, -0.00135497, 0.957676, -0.287844, -0.00573963, 0.287833, 0.957664, 0, 0, 0)
 script = ExtResource("4_3lwao")
 unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.832151, 0.0117991, 0.554424, 0.00738376, 0.999449, -0.0323525, -0.5545, 0.031016, 0.831605, 2.11042e-05, 1.03174, 0.0042721)
+transform = Transform3D(0.832388, 0.0142307, 0.554011, 0.00890371, 0.999198, -0.0390436, -0.554123, 0.0374322, 0.831593, -0.000401565, 1.02529, 0.0131778)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 
@@ -3659,7 +3660,7 @@ parameters/Main/AnimationNodeStateMachine/conditions/IsAttacking = false
 parameters/Main/AnimationNodeStateMachine/conditions/IsWalking = false
 parameters/Main/AnimationNodeStateMachine/Attack/TimeScale/scale = 1.0
 parameters/Main/AnimationNodeStateMachine/IWR/blend_position = Vector2(0, 0)
-parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount = 0
+parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount = 0.0
 parameters/Main/AnimationNodeStateMachine/IdleBlend/LeftArmBlend/active = false
 parameters/Main/AnimationNodeStateMachine/IdleBlend/LeftArmBlend/internal_active = false
 parameters/Main/AnimationNodeStateMachine/IdleBlend/LeftArmBlend/request = 0
@@ -3679,7 +3680,7 @@ shoot_point = NodePath("../Rig_001/Skeleton3D/RightHandEquipmentSocketBoneAttatc
 skeleton = NodePath("../Rig_001/Skeleton3D")
 neck_target = NodePath("../NeckTarget")
 neck_rot_speed = 8.0
-max_horizontal_angle = 55
+max_horizontal_angle = 70
 max_vertical_angle = 10
 head_look_vertical_offset = -1.51
 chest_point = NodePath("../ChestPointMarker")
@@ -3725,7 +3726,7 @@ attributes_table = ExtResource("20_xrhce")
 [node name="AbilityContainer" type="Node" parent="."]
 script = ExtResource("22_250xw")
 gameplay_attribute_map_path = NodePath("../GameplayAttributeMap")
-abilities = Array[ExtResource("23_1urwx")]([ExtResource("24_6kacr"), ExtResource("25_33lcd"), ExtResource("27_lclct"), SubResource("Resource_sefws"), ExtResource("38_1p8t2"), ExtResource("39_1xl8t"), ExtResource("40_8r1ak"), ExtResource("32_qle3s"), SubResource("Resource_cyj61"), SubResource("Resource_yhnmf"), ExtResource("38_xnfjd")])
+abilities = Array[ExtResource("23_1urwx")]([ExtResource("24_6kacr"), ExtResource("25_33lcd"), ExtResource("27_lclct"), SubResource("Resource_sefws"), ExtResource("38_1p8t2"), ExtResource("39_1xl8t"), ExtResource("40_8r1ak"), ExtResource("37_wv3v5"), ExtResource("38_xnfjd"), ExtResource("32_qle3s"), SubResource("Resource_cyj61"), SubResource("Resource_yhnmf")])
 
 [node name="Body" type="Node" parent="."]
 script = ExtResource("29_f43xc")
