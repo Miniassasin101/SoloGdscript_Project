@@ -50,8 +50,7 @@ func roll_damage(event: ActivationEvent) -> int:
 	var weapon: Weapon = event.weapon
 	var damage_total: int = 0
 	if weapon:
-		damage_total += Utilities.roll(weapon.die_type, weapon.die_number)
-		damage_total += weapon.flat_damage
+		damage_total = weapon.roll_damage()
 	else:
 		# replace with unarmed later
 		damage_total += Utilities.roll(4, 2)

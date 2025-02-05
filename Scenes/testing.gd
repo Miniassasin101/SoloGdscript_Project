@@ -238,11 +238,23 @@ func test_c() -> void:
 		#flash_on_equipped_weapon()
 		#print_conditions()
 		#print_situational_modifier_attribute()
-		equip_weapon_on_ground()
+		#equip_weapon_on_ground()
+		#spawn_text_at_bodypart()
+		apply_condition()
 		pass
 
+
+func apply_condition() -> void:
+	unit.conditions_manager.apply_condition_by_name("impaled")
+
+
+func spawn_text_at_bodypart() -> void:
+	var body_part: BodyPart = unit.body._find_part_by_name("leg_left")
+	var body_part_pos: Vector3 = body_part.get_body_part_marker_position()
+	Utilities.spawn_text_line(unit, body_part.part_ui_name, Color.ALICE_BLUE, 1.0, body_part_pos)
+
 func drop_equipped_weapon() -> void:
-	ObjectManager.instance.drop_equipped_item(unit)
+	ObjectManager.instance.drop_item_in_world(unit)
 
 func equip_weapon_on_ground() -> void:
 	var gridobj: GridObject = LevelGrid.grid_system.get_grid_object(unit.get_grid_position())

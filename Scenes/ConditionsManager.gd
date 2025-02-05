@@ -22,6 +22,13 @@ func apply_conditions_round_interval() -> void:
 			if condition.can_apply():
 				condition.apply(unit)
 
+func apply_condition_by_name(condition_name: String) -> void:
+	for condition in conditions:
+		if condition.ui_name == condition_name:
+			if condition.can_apply():
+				condition.apply(unit)
+				return
+
 
 func apply_situational_modifier(attribute_value: int) -> int:
 	var highest_difficulty = Utilities.DIFFICULTY_GRADE.STANDARD  # Default grade
@@ -29,7 +36,7 @@ func apply_situational_modifier(attribute_value: int) -> int:
 	# Find the highest situational modifier from conditions
 	for condition in conditions:
 		if condition.is_situational_modifier:
-			var condition_modifier = condition.get_situational_modifier()
+			var condition_modifier = condition.get_situational_modifier() as Utilities.DIFFICULTY_GRADE
 			if condition_modifier > highest_difficulty:
 				highest_difficulty = condition_modifier
 	
@@ -43,7 +50,7 @@ func get_highest_situational_modifier(sit_mod_change: int = 0) -> float:
 	# Iterate through all conditions to find the highest situational modifier
 	for condition in conditions:
 		if condition.is_situational_modifier:
-			var condition_modifier = condition.get_situational_modifier()
+			var condition_modifier = condition.get_situational_modifier() as Utilities.DIFFICULTY_GRADE
 			if condition_modifier > highest_difficulty:
 				highest_difficulty = condition_modifier
 	

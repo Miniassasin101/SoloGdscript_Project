@@ -289,14 +289,14 @@ func get_hit_location(target_unit: Unit) -> BodyPart:
 
 
 
-# FIXME: 
+
 func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit, 
 			parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	# Roll base damage
 	var weapon: Weapon = event.weapon
 	var damage_total: int = 0
 	if weapon:
-		damage_total = weapon.roll_damage()
+		damage_total = weapon.roll_damage(event.maximize_count)
 		event.weapon_damage_before_armor = damage_total
 	else:
 		damage_total += Utilities.roll(ability.damage, ability.die_number)

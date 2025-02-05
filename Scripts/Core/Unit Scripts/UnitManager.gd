@@ -25,8 +25,11 @@ func _ready() -> void:
 	connect_global_signals()
 
 func test_equip_units(sword: Weapon = sword_test) -> void:
+	var iteration_num: int = 1
 	for unit: Unit in units:
 		var new_sword = sword.duplicate()
+		new_sword.name = new_sword.name + " " + str(iteration_num)
+		iteration_num += 1
 		unit.equipment.equip(new_sword)
 # Initializes the units by storing references to all child units.
 func initialize_units() -> void:

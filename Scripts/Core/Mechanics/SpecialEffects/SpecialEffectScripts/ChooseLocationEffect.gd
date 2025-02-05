@@ -3,9 +3,7 @@ extends SpecialEffect
 
 @export var location_prompt: String = "Choose a body location"
 
-func can_apply(event: ActivationEvent) -> bool:
-	# E.g. some logic to check if the effect is valid
-	return true
+
 
 func apply(event: ActivationEvent) -> void:
 	super.apply(event)

@@ -19,10 +19,10 @@ func can_apply() -> bool:
 	
 	return true
 
-func apply(unit: Unit) -> void:
+func apply(_unit: Unit) -> void:
 	pass
 
-func increase_level(unit: Unit, by_amount: int = 1) -> void:
+func increase_level(_unit: Unit, by_amount: int = 1) -> void:
 	condition_level += by_amount
 
 func get_situational_modifier() -> int:

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ImpaledCondition" load_steps=2 format=3 uid="uid://b0fgn1blcxqsp"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/ImpaledCondition.gd" id="1_p3v5q"]
+
+[resource]
+script = ExtResource("1_p3v5q")
+ui_name = "impaled"
+condition_level = 0
+application_interval = 0
+is_situational_modifier = true
+situational_modifier = 4

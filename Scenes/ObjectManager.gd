@@ -34,9 +34,9 @@ func _ready() -> void:
 	instance = self
 
 
-func drop_equipped_item(unit: Unit, in_item: Item = null) -> void:
-	if !unit.equipment.has_equipped_weapon():
-		return
+func drop_item_in_world(unit: Unit, in_item: Item = null) -> void:
+	#if !unit.equipment.has_equipped_weapon():
+	#	return
 	# Choose the item to drop
 	var item = in_item if in_item else unit.get_equipped_weapon()
 	items.append(item)
@@ -135,7 +135,7 @@ func equip_item(unit: Unit, in_item: Item) -> void:
 	var item = in_item if in_item else unit.get_equipped_weapon()
 	items.erase(item)
 
-	var item_visual: ItemVisual = item.get_item_visual()
+
 	unit.equipment.equip(item)
 	remove_item_from_grid_object(item)
 

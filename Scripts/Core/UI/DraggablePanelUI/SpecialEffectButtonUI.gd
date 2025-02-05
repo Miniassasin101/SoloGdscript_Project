@@ -46,8 +46,8 @@ func _on_right_mouse_button_down() -> void:
 			move_to_slot(to_slot)
 	elif panel_source == MouseEventDroppableSlot.MouseEventsCardSlotType.Active:
 		if stackable:
-			var owner: MouseEventDroppableSlot = get_parent() as MouseEventDroppableSlot
-			owner.dragged_away(self)
+			var owning_slot: MouseEventDroppableSlot = get_parent() as MouseEventDroppableSlot
+			owning_slot.dragged_away(self)
 			#queue_free()
 			return
 		var to_slot: MouseEventDroppableSlot = MouseEventDroppableSlotController.instance.get_free_hand_slot()
@@ -106,7 +106,7 @@ func _on_gui_input(event: InputEvent) -> void:
 				_on_right_mouse_button_down()
 
 	elif is_being_dragged and event is InputEventMouseMotion:
-		var mouse_event: InputEventMouseMotion = event as InputEventMouseMotion
+		#var mouse_event: InputEventMouseMotion = event as InputEventMouseMotion
 		global_position = get_global_mouse_position() - mouse_offset
 
 

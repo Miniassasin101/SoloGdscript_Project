@@ -46,8 +46,10 @@ func try_activate(_event: ActivationEvent) -> void:
 
 	await shoot_projectile()
 	
+	@warning_ignore("redundant_await")
 	await resolve_special_effects()
 	
+	@warning_ignore("redundant_await")
 	await apply_effect()
 	
 	if can_end(event):
@@ -99,7 +101,7 @@ func shoot_projectile() -> void:
 	
 
 func apply_effect() -> void:
-	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
+	var tar_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	# creating a new [GameplayEffect] resource
 	var effect: GameplayEffect = GameplayEffect.new()
 	# creating a new [AttributeEffect] resource
@@ -111,19 +113,19 @@ func apply_effect() -> void:
 
 	effect.attributes_affected.append(health_effect)
 	
-	target_unit.add_child(effect)
+	tar_unit.add_child(effect)
 
-	target_unit.body.apply_wound_from_event(event)
+	tar_unit.body.apply_wound_from_event(event)
 
 
 	if !event.miss:
 		if event.rolled_damage == 0:
-			target_unit.animator.flash_white()
+			tar_unit.animator.flash_white()
 		else:
-			target_unit.animator.flash_red()
+			tar_unit.animator.flash_red()
 	elif event.miss:
-		target_unit.animator.flash_white(0.4)
-		Utilities.spawn_text_line(target_unit, "Miss", Color.AQUA)
+		tar_unit.animator.flash_white(0.4)
+		Utilities.spawn_text_line(tar_unit, "Miss", Color.AQUA)
 	
 	
 
@@ -180,18 +182,18 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 			if !LevelGrid.has_any_unit_on_grid_position(test_grid_position):
 				continue
 
-			var target_unit = LevelGrid.get_unit_at_grid_position(test_grid_position)
+			var tar_unit = LevelGrid.get_unit_at_grid_position(test_grid_position)
 
 			#Replace later with actual teams functionality
 
-			if target_unit.is_enemy == _event.unit.is_enemy:
+			if tar_unit.is_enemy == _event.unit.is_enemy:
 				# Both units are either player or enemy units
 				continue
 			
 			var unit_world_position: Vector3 = LevelGrid.get_world_position(_event.unit.get_grid_position())
 			if !MouseWorld.instance.has_line_of_sight(unit_world_position + Vector3.UP,
-			 target_unit.get_world_position() + Vector3.UP):
-				#print_debug("No line of sight to target!" + target_unit.to_string())
+			 tar_unit.get_world_position() + Vector3.UP):
+				#print_debug("No line of sight to target!" + tar_unit.to_string())
 				continue
 
 			# Add the valid grid position to the list.

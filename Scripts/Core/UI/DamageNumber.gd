@@ -15,7 +15,7 @@ func _ready() -> void:
 	camera = MouseWorld.instance.camera  # Assume MouseWorld is the autoload managing the camera
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if camera:
 		var screen_pos: Vector2 = camera.unproject_position(world_pos)
 		screen_pos -= Vector2(0.0, offset)

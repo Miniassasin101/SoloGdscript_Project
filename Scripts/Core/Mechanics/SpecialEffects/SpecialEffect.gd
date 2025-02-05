@@ -34,7 +34,7 @@ func can_activate(event: ActivationEvent) -> bool:
 	return true
 
 
-func on_activated(event: ActivationEvent) -> void:
+func on_activated(_event: ActivationEvent) -> void:
 	pass
 
 
@@ -99,5 +99,5 @@ func check_weapon_types(event: ActivationEvent) -> bool:
 
 
 
-func can_apply(event: ActivationEvent) -> bool:
+func can_apply(_event: ActivationEvent) -> bool:
 	return true

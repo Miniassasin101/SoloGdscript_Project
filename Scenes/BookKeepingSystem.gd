@@ -27,7 +27,7 @@ func combat_fatigue_check() -> void:
 		if !unit.try_reduce_fatigue_left():
 			var roll: int = Utilities.roll(100)
 			var success_level: int = Utilities.check_success_level((
-				unit.get_attribute_buffed_value_by_name("fortitude_skill")), roll)
+				roundi(unit.get_attribute_buffed_value_by_name("fortitude_skill"))), roll)
 			if success_level >= 1:
 				Utilities.spawn_text_line(unit, "Passed Fortitude Roll: " + str(roll) + "/" + 
 				str(unit.get_attribute_buffed_value_by_name("fortitude")))

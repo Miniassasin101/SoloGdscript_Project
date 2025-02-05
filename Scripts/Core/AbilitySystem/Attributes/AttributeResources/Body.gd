@@ -22,8 +22,10 @@ func _on_setup_body() -> void:
 		push_warning("AttributeMap not found for Body node.")
 		return
 	
-
-	body_parts = get_children() as Array[BodyPart]
+	
+	for child in get_children():
+		if child is BodyPart:
+			body_parts.append(child)
 	
 	for part in body_parts:
 
@@ -110,6 +112,16 @@ func get_part_health(part_name: String, get_max: bool = false) -> float:
 		return spec.current_value
 	return 0.0
 
+func get_part_location(part_name: String) -> Vector3:
+	var part = _find_part_by_name(part_name)
+	if not part:
+		push_warning("Body part '%s' not found." % part_name)
+		return Vector3.ZERO
+		
+	var part_marker_pos: Vector3 = part.get_body_part_marker_position()
+
+	return part_marker_pos
+
 func set_part_health(part_name: String, value: float) -> void:
 	var part: BodyPart = _find_part_by_name(part_name)
 	if not part:
@@ -175,6 +187,6 @@ func roll_hit_location() -> BodyPart:
 
 func _find_part_by_name(part_name: String) -> BodyPart:
 	for part in body_parts:
-		if part.part_name == part_name:
+		if part.part_name == part_name or part.part_ui_name == part_name:
 			return part
 	return null

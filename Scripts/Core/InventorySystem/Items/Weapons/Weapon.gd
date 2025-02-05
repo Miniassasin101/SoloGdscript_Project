@@ -40,15 +40,34 @@ class_name Weapon extends Item
 func subtract_hitpoints(hitpoints_subtracted: int) -> void:
 	hit_points -= hitpoints_subtracted
 	hit_points = maxi(hit_points, 0)
+	if hit_points <= 0:
+		is_broken = true
 
 func get_damage_after_armor(in_damage: int) -> int:
 	return maxi(in_damage - armor_points, 0)
 
 
-func roll_damage() -> int:
+func roll_damage_dep() -> int:
 	var damage_total: int = 0
 	damage_total += Utilities.roll(die_type, die_number)
 	damage_total += flat_damage
 	if is_broken:
 		damage_total = ceili(damage_total/2.0)
+	return damage_total
+
+
+func roll_damage(maximize_count: int = 0) -> int:
+	# Ensure that the number of dice to maximize does not exceed the weapon's dice.
+	var dice_to_maximize: int = clampi(maximize_count, 0, die_number)
+	var normal_dice: int = die_number - dice_to_maximize
+	var damage_total: int = 0
+	# Roll normally for the remaining dice.
+	if normal_dice > 0:
+		damage_total += Utilities.roll(die_type, normal_dice)
+	# For each maximized die, add its maximum possible value.
+	damage_total += dice_to_maximize * die_type
+	# Add the flat damage bonus (which is not affected by maximisation).
+	damage_total += flat_damage
+	if is_broken:
+		damage_total = ceili(damage_total / 2.0)
 	return damage_total

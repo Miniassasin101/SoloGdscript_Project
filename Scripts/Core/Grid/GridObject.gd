@@ -41,6 +41,8 @@ func remove_item(item: Item) -> void:
 	item_list.erase(item)
 
 func get_first_item() -> Item:
+	if item_list.is_empty():
+		return null
 	return item_list[0]
 
 func has_any_item() -> bool:

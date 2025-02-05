@@ -22,9 +22,6 @@ func _ready() -> void:
 	UIBus.panel_dropped.connect(on_panel_dropped)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 
 func setup_special_effect_slot_containers(special_effects: Array[SpecialEffect], abs_dif: int = 1) -> void:

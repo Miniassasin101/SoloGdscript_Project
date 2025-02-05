@@ -571,10 +571,11 @@ func flash_color_on_mesh(mesh: MeshInstance3D ,color: Color = Color.DEEP_SKY_BLU
 
 
 # Text Utilities
-func spawn_text_line(in_unit: Unit, text: String, color: Color = Color.SNOW, scale: float = 1.0) -> void:
-	var above_pos: Vector3 = in_unit.get_world_position_above_marker()
+func spawn_text_line(in_unit: Unit, text: String, color: Color = Color.SNOW, scale: float = 1.0, at_pos: Vector3 = Vector3.ZERO) -> void:
+	if at_pos == Vector3.ZERO:
+		at_pos = in_unit.get_world_position_above_marker()
 	var camera: Camera3D = MouseWorld.instance.camera
-	var screen_pos: Vector2 = camera.unproject_position(above_pos)
+	var screen_pos: Vector2 = camera.unproject_position(at_pos)
 
 	# Instance the label
 	var text_label_scene: PackedScene = UILayer.instance.text_controller_scene
@@ -585,7 +586,7 @@ func spawn_text_line(in_unit: Unit, text: String, color: Color = Color.SNOW, sca
 
 	# Position it in screen-space
 	text_label.set_position(screen_pos)
-	text_label.world_pos = above_pos
+	text_label.world_pos = at_pos
 	text_label.set_scale(Vector2(scale, scale))
 	text_label.set_text_color(color)
 

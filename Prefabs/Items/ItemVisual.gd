@@ -29,11 +29,10 @@ func pause_animation() -> void:
 
 
 
-func set_trail_visibility(is_visible: bool) -> bool:
-	var trail: GPUTrail3D = null
+func set_trail_visibility(is_vis: bool) -> bool:
 	for child in object.get_children():
 		if child is GPUTrail3D:
-			child.set_visibility(is_visible)
+			child.set_visibility(is_vis)
 			return true
 	return false
 

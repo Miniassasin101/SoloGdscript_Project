@@ -15,10 +15,6 @@ func get_remaining_rounds() -> int:
 	return remaining_rounds
 
 func apply(unit: Unit) -> void:
-
-	
-	var conditions_manager: ConditionsManager = unit.conditions_manager
-
 	if remaining_rounds >= 1:
 		remaining_rounds -= 1
 		Utilities.spawn_text_line(unit, "Blinded", Color.GOLD)

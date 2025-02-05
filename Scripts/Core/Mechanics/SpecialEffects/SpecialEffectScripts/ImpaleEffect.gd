@@ -30,15 +30,28 @@ use his impaling weapon for parrying.
 @export var impaled_condition: Condition
 
 
+func can_activate(event: ActivationEvent) -> bool:
+
+	if !super.can_activate(event):
+		return false
+	
+	if !event.winning_unit.equipment.has_equipped_weapon():
+		return false
+	
+	return true
+
+
 func can_apply(event: ActivationEvent) -> bool:
 	if !super.can_apply(event):
 		return false
 	
 	# Rerolls damage and chooses the greater one
 	# NOTE: Maybe add ability to choose which damage roll later, but idk why someone would.
-	var new_rolled_damage = event.weapon.roll_damage()
+	var new_rolled_damage = event.weapon.roll_damage(event.maximize_count)
 	if new_rolled_damage > event.weapon_damage_before_armor:
 		event.rolled_damage = event.body_part.get_damage_after_armor(new_rolled_damage)
+		print_debug("Old Damage: ", event.weapon_damage_before_armor)
+		print_debug("New Impale Damage: ", new_rolled_damage)
 	
 	if event.rolled_damage <= 0:
 		Utilities.spawn_text_line(event.unit, "Impale Failed: No Injury")
@@ -53,20 +66,22 @@ func can_apply(event: ActivationEvent) -> bool:
 func apply(event: ActivationEvent) -> void:
 	super.apply(event)
 	
-	var target_unit: Unit = event.target_unit
 	var impaling_weapon: Weapon = event.weapon
 	
-	var roll: int = Utilities.roll(100)
-	var success_level: int = Utilities.check_success_level((target_unit.get_attribute_after_sit_mod("fortitude_skill")), roll)
+	var target_marker: Marker3D = event.body_part.get_body_part_marker()
 	
-	if event.forced_sp_eff_fail:
-		success_level = -3
+	var weapon_visual: ItemVisual = impaling_weapon.get_item_visual()
 	
-	if success_level >= 1:
-		Utilities.spawn_text_line(target_unit, "Bleed Saved", Color.AQUA)
-		return
+	weapon_visual.reparent(target_marker, false)
+	var root_pos: Vector3 = weapon_visual.root.get_position()
+	root_pos += Vector3(0, 0, 0.45)
+	weapon_visual.root.set_position(root_pos)
+	event.winning_unit.equipment.unequip(impaling_weapon)
+	weapon_visual.set_trail_visibility(false)
+	event.body_part.is_impaled = true
 	
-	#apply damage effect if the save fails
+	
+	#apply impaled condition if the save fails
 	apply_effect(event)
 	
 	# Animation Stand-in
@@ -77,8 +92,15 @@ func apply_effect(event: ActivationEvent) -> void:
 	var target_unit: Unit = event.target_unit
 	
 
-	if target_unit:
+	if target_unit and impaled_condition:
 		# Make sure to duplicate the resources always to avoid effects applying on every instance
-		target_unit.conditions_manager.add_condition(impaled_condition.duplicate()) 
+		var new_impaled_condition: ImpaledCondition = impaled_condition.duplicate()
+		new_impaled_condition.impaled_weapon = event.weapon
+		new_impaled_condition.body_part = event.body_part
+		target_unit.conditions_manager.add_condition(new_impaled_condition) 
 
-	Utilities.spawn_text_line(target_unit, "Impaled", Color.FIREBRICK)
+		Utilities.spawn_text_line(target_unit, "Impaled", Color.FIREBRICK)
+	
+	else: 
+		push_error("No target unit or impaled condition")
+		Utilities.spawn_text_line(event.unit, "ERROR ON " + ui_name, Color.FIREBRICK)

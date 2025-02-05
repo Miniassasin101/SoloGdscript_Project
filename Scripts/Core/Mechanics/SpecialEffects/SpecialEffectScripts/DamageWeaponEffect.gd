@@ -30,7 +30,7 @@ func on_activated(event: ActivationEvent) -> void:
 
 func apply(event: ActivationEvent) -> void:
 	super.apply(event)
-	var winner_weapon: Weapon = event.winning_unit.equipment.get_equipped_weapon()
+
 	var opponent_weapon: Weapon = _get_opponents_weapon(event)
 	if opponent_weapon == null:
 		# No valid weapon found (they might have parried unarmed, or are disarmed).

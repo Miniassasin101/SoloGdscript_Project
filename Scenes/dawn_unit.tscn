@@ -2328,7 +2328,7 @@ bones/8/name = "DEF_jaw.001"
 bones/8/parent = 7
 bones/8/rest = Transform3D(1, 4.42316e-06, 3.52319e-07, 3.82931e-06, -0.820171, -0.572118, -2.24161e-06, 0.572118, -0.820171, -9.27262e-09, 0.0277801, 0.0388922)
 bones/8/enabled = true
-bones/8/position = Vector3(-9.27262e-09, 0.0277801, 0.0388922)
+bones/8/position = Vector3(-4.25179e-10, 0.0277801, 0.0388921)
 bones/8/rotation = Quaternion(0.953984, 2.16263e-06, -4.95104e-07, 0.299857)
 bones/8/scale = Vector3(1, 1, 1)
 bones/9/name = "DEF_jaw.L.002"
@@ -2482,7 +2482,7 @@ bones/30/name = "CTRL_jaw.001"
 bones/30/parent = 7
 bones/30/rest = Transform3D(1, 4.42316e-06, 3.52319e-07, 3.82931e-06, -0.820171, -0.572118, -2.24161e-06, 0.572118, -0.820171, -9.27262e-09, 0.0277801, 0.0388922)
 bones/30/enabled = true
-bones/30/position = Vector3(-9.27262e-09, 0.0277801, 0.0388922)
+bones/30/position = Vector3(-4.25179e-10, 0.0277801, 0.0388921)
 bones/30/rotation = Quaternion(0.953984, 2.16263e-06, -4.95104e-07, 0.299857)
 bones/30/scale = Vector3(1, 1, 1)
 bones/31/name = "DEF_pupilBone.L.001"
@@ -3481,7 +3481,7 @@ bones/172/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.0341841, 0.67825, -0.734035, -0.208955, -0.713382, -0.668897, -0.977327, 0.176246, 0.117338, 0.531731, 0.824339, -0.0157986)
+transform = Transform3D(0.0341838, 0.678251, -0.734035, -0.208955, -0.713382, -0.668898, -0.977328, 0.176246, 0.117338, 0.531731, 0.824339, -0.0157987)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3489,7 +3489,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.034183, -0.67825, 0.734035, 0.208953, -0.713382, -0.668898, 0.977328, 0.176244, 0.117337, -0.531731, 0.824339, -0.0157999)
+transform = Transform3D(0.0341831, -0.67825, 0.734035, 0.208953, -0.713382, -0.668898, 0.977328, 0.176244, 0.117337, -0.531731, 0.824339, -0.0157997)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3516,42 +3516,45 @@ bone_name = "DEF_head.001"
 bone_idx = 7
 
 [node name="HeadBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/BoneAttachment3D2"]
-transform = Transform3D(1, -8.47033e-22, 0, 8.47033e-22, 1, -3.55271e-15, 0, 3.55271e-15, 1, -2.26062e-14, 1.59077, 9.48171e-08)
 
 [node name="BoneAttachment3D3" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.950293, 0)
+transform = Transform3D(1, 0, 0, 0, 0.999996, 0, 0, 0, 1, 0, 0.950293, 0)
 bone_name = "DEF_spine.002"
 bone_idx = 165
 
 [node name="AbdomenBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/BoneAttachment3D3"]
 
 [node name="BoneAttachment3D4" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.806763, -0.574244, 0.139202, 0.587217, -0.805376, 0.0809041, 0.065651, 0.147012, 0.986953, -0.353502, 1.07431, -0.0614282)
+transform = Transform3D(-0.806763, -0.574244, 0.139202, 0.587216, -0.805376, 0.0809045, 0.065651, 0.147012, 0.986953, -0.353502, 1.07431, -0.0614282)
 bone_name = "DEF_forearm.R.001"
 bone_idx = 65
 
 [node name="RightArmBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/BoneAttachment3D4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 
 [node name="BoneAttachment3D5" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.806762, 0.574244, -0.139203, -0.587217, -0.805376, 0.0809059, -0.0656511, 0.147014, 0.986953, 0.353502, 1.07431, -0.0614277)
+transform = Transform3D(-0.806763, 0.574244, -0.139203, -0.587217, -0.805376, 0.0809056, -0.0656511, 0.147014, 0.986953, 0.353502, 1.07431, -0.0614277)
 bone_name = "DEF_forearm.L.001"
 bone_idx = 40
 
 [node name="LeftArmBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/BoneAttachment3D5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 
 [node name="BoneAttachment3D6" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.997709, -0.051234, -0.0441831, -0.0495136, -0.998005, 0.0391893, -0.0461027, -0.0369119, -0.998255, -0.150853, 0.517519, 0.0140269)
+transform = Transform3D(0.997709, -0.051234, -0.0441831, -0.0495137, -0.998004, 0.0391893, -0.0461027, -0.0369119, -0.998255, -0.150853, 0.517519, 0.0140269)
 bone_name = "DEF.shin.R.001"
 bone_idx = 121
 
 [node name="RightLegBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/BoneAttachment3D6"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.2, 0)
 
 [node name="BoneAttachment3D7" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.997709, 0.0512338, 0.0441846, 0.0495135, -0.998005, 0.039191, 0.0461042, -0.0369135, -0.998255, 0.150853, 0.517519, 0.0140263)
+transform = Transform3D(0.997709, 0.0512335, 0.0441846, 0.0495133, -0.998004, 0.0391874, 0.0461041, -0.0369099, -0.998255, 0.150853, 0.517519, 0.0140263)
 bone_name = "DEF.shin.L.001"
 bone_idx = 111
 
 [node name="LeftLegBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/BoneAttachment3D7"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.2, 0)
 
 [node name="Body_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
 mesh = SubResource("ArrayMesh_e5heh")
@@ -3559,7 +3562,6 @@ skin = SubResource("Skin_uciyu")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Collar_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
-visible = false
 mesh = SubResource("ArrayMesh_xhcuw")
 skin = SubResource("Skin_uciyu")
 surface_material_override/0 = ExtResource("3_bhmb0")
@@ -3617,13 +3619,11 @@ skin = SubResource("Skin_uciyu")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="SHirt_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
-visible = false
 mesh = SubResource("ArrayMesh_lrq6u")
 skin = SubResource("Skin_uciyu")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Waistcloth_belt_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
-visible = false
 mesh = SubResource("ArrayMesh_25ysh")
 skin = SubResource("Skin_uciyu")
 surface_material_override/0 = ExtResource("3_bhmb0")

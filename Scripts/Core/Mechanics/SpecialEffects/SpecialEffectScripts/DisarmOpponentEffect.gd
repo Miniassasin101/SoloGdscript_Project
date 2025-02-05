@@ -37,9 +37,7 @@ func can_activate(event: ActivationEvent) -> bool:
 
 
 
-func on_activated(event: ActivationEvent) -> void:
-	#event.bypass_attack = true
-	pass
+
 
 
 
@@ -69,7 +67,7 @@ func apply(event: ActivationEvent) -> void:
 		Utilities.spawn_text_line(event.losing_unit, "Disarm Saved", Color.AQUA)
 		return
 		
-	ObjectManager.instance.drop_equipped_item(event.losing_unit)
+	ObjectManager.instance.drop_item_in_world(event.losing_unit)
 
 	
 	Utilities.spawn_text_line(event.losing_unit, 
