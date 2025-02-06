@@ -87,6 +87,9 @@ func get_height() -> int:
 	return grid_system.height
 
 
+func get_grid_object(gridpos: GridPosition) -> GridObject:
+	return grid_system.get_grid_object(gridpos)
+
 # Checks if a grid position is valid within the grid system
 func is_valid_grid_position(grid_position: GridPosition) -> bool:
 	return grid_system.is_valid_grid_position(grid_position)

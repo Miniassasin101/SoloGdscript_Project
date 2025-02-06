@@ -9,6 +9,8 @@ signal selected_unit_changed(unit: Unit)
 
 signal selected_ability_changed(ability: Ability)
 
+signal new_grid_pos_hovered
+
 signal update_grid_visual
 
 signal ability_complete(ability: Ability)

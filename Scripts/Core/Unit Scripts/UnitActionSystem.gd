@@ -40,6 +40,7 @@ func _ready() -> void:
 	SignalBus.selected_ability_changed.connect(set_selected_ability)
 	SignalBus.ability_complete.connect(clear_busy)
 	SignalBus.ability_complete_next.connect(on_ability_ended)
+	SignalBus.new_grid_pos_hovered.connect(on_new_grid_pos_hovered)
 
 
 
@@ -128,6 +129,50 @@ func try_handle_unit_selection() -> bool:
 			return false
 	else:
 		return false
+
+
+func on_new_grid_pos_hovered() -> void:
+	update_move_path()
+
+
+
+
+func update_move_path() -> void:
+	# Only proceed if a move ability is selected.
+	if selected_ability and selected_ability is MoveAbility:
+		# Get the current hovered grid cell from MouseWorld.
+		var hovered_grid: GridPosition = mouse_world.current_hovered_grid
+		if hovered_grid:
+			# Return if the grid cell isnt currently visible.
+			if !GridSystemVisual.instance.cell_at_pos_is_visible(hovered_grid):
+				GridSystemVisual.instance.clear_highlights()
+				return
+			var start_grid: GridPosition = selected_unit.get_grid_position()
+			if start_grid:
+				# Compute the path from start to hovered grid cell.
+				var path: Array[GridPosition] = Pathfinding.instance.find_path(start_grid, hovered_grid)
+				if path.size() > 0:
+					# Highlight the path cells: they will rise and be light blue.
+					GridSystemVisual.instance.highlight_path(path)
+				else:
+					pass
+					#GridSystemVisual.instance.hide_all_grid_positions()
+			else:
+				pass
+				#GridSystemVisual.instance.hide_all_grid_positions()
+		else:
+			pass
+			# No cell is hovered; clear any previous highlights.
+			#GridSystemVisual.instance.hide_all_grid_positions()
+	else:
+		# Not a move ability; update grid visuals normally.
+		GridSystemVisual.instance.clear_highlights()
+		GridSystemVisual.instance.update_grid_visual()
+
+
+
+
+
 
 func reset_unit_cycle_actions(unit: Unit) -> void:
 	if unit == selected_unit:

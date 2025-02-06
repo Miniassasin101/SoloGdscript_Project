@@ -7,10 +7,16 @@ extends Node3D
 # 2D array to hold the visual instances of grid cells.
 var grid_visuals: Array = []  # Array of Arrays of Node3D instances.
 
+var highlighted_path: Array[GridSystemVisualSingle]
 
 var selected_ability: Ability
 # Singleton instance of GridSystemVisual.
 static var instance: GridSystemVisual = null
+
+
+# This variable will hold the currently hovered grid position (if any).
+var currently_hovered: GridPosition = null
+
 
 func _ready() -> void:
 	# Ensure only one instance exists (singleton pattern).
@@ -65,6 +71,67 @@ func initialize_grid_visuals() -> void:
 
 func _process(_delta: float) -> void:
 	pass
+
+
+
+func set_hovered_cell(grid_position: GridPosition) -> void:
+	if grid_position.equals(currently_hovered):
+		return
+	# Retrieve the cell instance from the grid_visuals 2D array.
+	var cell: GridSystemVisualSingle = grid_visuals[grid_position.x][grid_position.z]
+	if cell.is_hovered:
+		return
+	if cell:
+		var grid_object: GridObject = LevelGrid.get_grid_object(grid_position)
+		var unit: Unit = grid_object.get_unit()
+		if unit:
+			if unit.is_enemy != TurnSystem.instance.current_unit_turn.is_enemy:
+				cell._on_mouse_enter(Color.FIREBRICK)
+		else:
+			# Optionally, call the cell's on-mouse-enter behavior.
+			cell._on_mouse_enter()
+	# Also update the internal tracking variable if desired.
+	currently_hovered = grid_position
+
+func clear_hovered_cell(grid_position: GridPosition) -> void:
+
+	var cell: GridSystemVisualSingle = grid_visuals[grid_position.x][grid_position.z]
+	if cell:
+		# Optionally, call the cell's on-mouse-exit behavior.
+		cell._on_mouse_exit()
+	currently_hovered = null
+
+
+func cell_at_pos_is_visible(grid_position: GridPosition) -> bool:
+	var vis_cell: GridSystemVisualSingle = get_cell_visual_from_gridpos(grid_position)
+	return vis_cell.visible
+
+
+func get_cell_visual_from_gridpos(grid_position: GridPosition) -> GridSystemVisualSingle:
+	var x: int = grid_position.x
+	var z: int = grid_position.z
+	var grid_vis: GridSystemVisualSingle = grid_visuals[x][z]
+	return grid_vis
+
+func highlight_path(grid_positions: Array[GridPosition]) -> void:
+	# First, clear any previous highlight.
+	clear_highlights()
+	for grid_position in grid_positions:
+		var x: int = grid_position.x
+		var z: int = grid_position.z
+		# Check bounds.
+		if x >= 0 and x < LevelGrid.get_width() and z >= 0 and z < LevelGrid.get_height():
+			var cell: GridSystemVisualSingle = grid_visuals[x][z]
+			if cell:
+				# Set the cell color to light blue.
+				cell.highlight()
+				highlighted_path.append(cell)
+
+func clear_highlights() -> void:
+	for visual in highlighted_path:
+		if visual.is_highlighted:
+			visual.remove_highlight()
+
 
 
 func on_selected_unit_changed(_unit: Unit) -> void:

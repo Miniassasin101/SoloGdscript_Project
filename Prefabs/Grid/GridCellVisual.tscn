@@ -16,8 +16,12 @@ material = ExtResource("3_jobp8")
 
 [node name="GridSystemVisual" type="Node3D" node_paths=PackedStringArray("grid_system_visual", "grid_system_visual_red")]
 script = ExtResource("1_rmkf3")
+color_mat_resource = SubResource("StandardMaterial3D_sgdvw")
 grid_system_visual = NodePath("GridSystemVisual")
 grid_system_visual_red = NodePath("GridSystemVisualRed")
+rise_height = 0.2
+rise_duration = 0.3
+fall_duration = 0.3
 
 [node name="GridSystemVisual" type="MeshInstance3D" parent="."]
 transform = Transform3D(2.01085, 0, 0, 0, -8.78969e-08, 2.01085, 0, -2.01085, -8.78969e-08, 0, 0.03, 0)
@@ -25,7 +29,7 @@ cast_shadow = 0
 mesh = SubResource("QuadMesh_u230j")
 
 [node name="GridSystemVisualRed" type="MeshInstance3D" parent="."]
-transform = Transform3D(2.01085, 0, 0, 0, -8.78969e-08, 2.01085, 0, -2.01085, -8.78969e-08, 0, 0.03, 0)
+transform = Transform3D(2.01085, 0, 0, 0, -8.78969e-08, 2.01085, 0, -2.01085, -8.78969e-08, 0, 0.02, 0)
 visible = false
 cast_shadow = 0
 mesh = SubResource("QuadMesh_380yj")

@@ -22,6 +22,9 @@ var camera: Camera3D
 # Mouse position in screen coordinates
 var mouse_position: Vector2
 
+# The currently hovered grid position if any
+var current_hovered_grid: GridPosition = null
+
 static var instance: MouseWorld = null
 
 
@@ -47,10 +50,40 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	# Update mouse position
 	adjust_mouse_position()
+	
+	adjust_hovered_grid_position()
 	# Perform the raycast and move the node if a hit is detected
 	if mouse_debug_sphere:
 		_adjust_mouse_debug_position()
+
+func adjust_hovered_grid_position() -> void:
+	# Get the world position where the mouse raycast hits the grid.
+	var hit_position = get_mouse_raycast_result("position")
 	
+	# If no hit was detected, clear any previously hovered grid cell.
+	if not hit_position is Vector3:
+		if current_hovered_grid != null:
+			# Call a helper function in GridSystemVisual to clear the hovered state.
+			GridSystemVisual.instance.clear_hovered_cell(current_hovered_grid)
+			current_hovered_grid = null
+		return
+
+	# Convert the hit position to a grid position.
+	var new_hover: GridPosition = LevelGrid.get_grid_position(hit_position)
+	if new_hover == null:
+		return
+
+	# Check if the hovered grid position has changed.
+	if current_hovered_grid == null or not current_hovered_grid.equals(new_hover):
+		# If a cell was previously hovered, clear its hover state.
+		if current_hovered_grid != null:
+			GridSystemVisual.instance.clear_hovered_cell(current_hovered_grid)
+		# Update our cached hovered cell.
+		current_hovered_grid = new_hover
+		# Set the new hovered cell.
+		GridSystemVisual.instance.set_hovered_cell(new_hover)
+		SignalBus.new_grid_pos_hovered.emit()
+
 
 func has_line_of_sight(start_position: Vector3, end_position: Vector3) -> bool:
 	# Access the space state for physics queries
