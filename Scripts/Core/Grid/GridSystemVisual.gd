@@ -79,7 +79,7 @@ func set_hovered_cell(grid_position: GridPosition) -> void:
 		return
 	# Retrieve the cell instance from the grid_visuals 2D array.
 	var cell: GridSystemVisualSingle = grid_visuals[grid_position.x][grid_position.z]
-	if cell.is_hovered:
+	if cell.is_hovered or !cell.visible:
 		return
 	if cell:
 		var grid_object: GridObject = LevelGrid.get_grid_object(grid_position)
@@ -87,6 +87,10 @@ func set_hovered_cell(grid_position: GridPosition) -> void:
 		if unit:
 			if unit.is_enemy != TurnSystem.instance.current_unit_turn.is_enemy:
 				cell._on_mouse_enter(Color.FIREBRICK)
+			elif unit == TurnSystem.instance.current_unit_turn:
+				cell._on_mouse_enter(Color.FOREST_GREEN)
+			else:
+				cell._on_mouse_enter(Color.AQUA)
 		else:
 			# Optionally, call the cell's on-mouse-enter behavior.
 			cell._on_mouse_enter()
