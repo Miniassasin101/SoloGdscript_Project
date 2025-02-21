@@ -1,0 +1,77 @@
+[gd_scene load_steps=11 format=3 uid="uid://bhyju5fqgh24h"]
+
+[ext_resource type="Script" path="res://OverworldManager.gd" id="1_5evqf"]
+[ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="1_mjhr2"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Overworld/OverworldDebug.gd" id="1_s6fyh"]
+[ext_resource type="PackedScene" uid="uid://be5s57q16s5rx" path="res://OverworldNode.tscn" id="4_mnobb"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="5_mi23r"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Overworld/OverworldNodePath.gd" id="5_plp45"]
+[ext_resource type="Script" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="6_nf2ae"]
+[ext_resource type="Environment" uid="uid://c7cx2thxig2w6" path="res://Hero_Game/Scenes/TestEnvironment1.tres" id="7_3xw0a"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_57kun"]
+size = Vector2(30, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vs4qv"]
+
+[node name="Overworld" type="Node3D"]
+
+[node name="Debug" type="Node" parent="." node_paths=PackedStringArray("overworld_manager")]
+script = ExtResource("1_s6fyh")
+overworld_manager = NodePath("../OverworldManager")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_57kun")
+surface_material_override/0 = ExtResource("1_mjhr2")
+
+[node name="OverworldManager" type="Node" parent="." node_paths=PackedStringArray("overworld_nodes", "overworld_node_paths")]
+script = ExtResource("1_5evqf")
+overworld_nodes = [null, NodePath("OverworldNode"), NodePath("OverworldNode2"), null]
+overworld_node_paths = [NodePath("OverworldNodePath1")]
+
+[node name="OverworldNode" parent="OverworldManager" instance=ExtResource("4_mnobb")]
+node_visual_color = Color(0.8, 0.8, 0.8, 1)
+
+[node name="OverworldNode2" parent="OverworldManager" instance=ExtResource("4_mnobb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -5)
+node_ui_name = "Orkus"
+node_visual_color = Color(0.77, 0, 0.282333, 1)
+
+[node name="OverworldNodePath1" type="Node" parent="OverworldManager" node_paths=PackedStringArray("overworld_node_1", "overworld_node_2")]
+script = ExtResource("5_plp45")
+overworld_node_1 = NodePath("../OverworldNode")
+overworld_node_2 = NodePath("../OverworldNode2")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+script = ExtResource("5_mi23r")
+Location_Speed = 0.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("BoxShape3D_vs4qv")
+
+[node name="CamOrigin" type="Node3D" parent="Player"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Player/CamOrigin"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+collision_mask = 2
+spring_length = 20.0
+
+[node name="fCamera" type="Camera3D" parent="Player/CamOrigin/SpringArm3D"]
+
+[node name="CameraShake" type="Node" parent="Player"]
+script = ExtResource("6_nf2ae")
+camera_path = NodePath("../CamOrigin/SpringArm3D/fCamera")
+
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting"]
+environment = ExtResource("7_3xw0a")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(0.624316, -0.517834, 0.584874, -0.358336, 0.475453, 0.803455, -0.694136, -0.711191, 0.111274, 0, 2.9, 0)
+light_energy = 0.634
+shadow_enabled = true
+shadow_bias = 0.4
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.505
+directional_shadow_max_distance = 27.1

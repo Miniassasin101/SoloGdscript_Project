@@ -122,6 +122,14 @@ func get_part_location(part_name: String) -> Vector3:
 
 	return part_marker_pos
 
+func get_part_marker(part_name: String) -> Marker3D:
+	var part: BodyPart = _find_part_by_name(part_name)
+	if not part:
+		push_warning("Body part '%s' not found." % part_name)
+		return null
+	
+	return part.get_body_part_marker()
+
 func set_part_health(part_name: String, value: float) -> void:
 	var part: BodyPart = _find_part_by_name(part_name)
 	if not part:

@@ -4,7 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://cvuecvfamgpwe" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonUI.tscn" id="2_024e4"]
 
 [node name="DynamicButtonPicker" type="Window" node_paths=PackedStringArray("button_container")]
+scaling_3d_mode = 0
 position = Vector2i(513, 266)
+max_size = Vector2i(16384, 100)
 content_scale_mode = 1
 script = ExtResource("1_pqdmf")
 dynamic_button_ui_scene = ExtResource("2_024e4")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=72 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -15,7 +15,6 @@
 [ext_resource type="PackedScene" uid="uid://b37juamn5pbrv" path="res://WallTestInst.tscn" id="7_snusx"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/AccidentalInjuryEffect.gd" id="8_3ubv2"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitAI/UnitAI.gd" id="8_kmwtl"]
-[ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="8_paohs"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="9_rt187"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitManager.gd" id="10_iw061"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
@@ -50,7 +49,9 @@
 [ext_resource type="Resource" uid="uid://b7wui72oveng1" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ForceFailureEffectResource.tres" id="31_4yuhs"]
 [ext_resource type="Resource" uid="uid://cqqeph0m4h0ka" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ImpaleEffectResource.tres" id="32_npgv8"]
 [ext_resource type="Resource" uid="uid://bspw2bpavewje" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MaximizeDamageEffectResource.tres" id="33_mywpm"]
+[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="35_n58oi"]
 [ext_resource type="PackedScene" uid="uid://cvuecvfamgpwe" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonUI.tscn" id="36_53e25"]
+[ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_Grid_08.png" id="36_vdge6"]
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="39_yrlso"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
 [ext_resource type="Shader" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
@@ -76,8 +77,21 @@ weapon_types_allowed = Array[String]([])
 stackable = true
 roll_required = 0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pcwnq"]
+render_priority = 0
+shader = ExtResource("35_n58oi")
+shader_parameter/base_color = Color(0.45, 0.45, 0.45, 1)
+shader_parameter/grid_scale = 2.0
+shader_parameter/grid_opacity = 1.0
+shader_parameter/metallic = 0.0
+shader_parameter/specular = 0.2
+shader_parameter/roughness = 0.8
+shader_parameter/emissive_strength = 0.0
+shader_parameter/world_offset = Vector2(1, 1)
+shader_parameter/grid_texture = ExtResource("36_vdge6")
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_fnkdd"]
-material = ExtResource("8_paohs")
+material = SubResource("ShaderMaterial_pcwnq")
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_vv6bh"]
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
@@ -521,6 +535,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_cbngh")
 
 [node name="DynamicButtonPicker" parent="UILayer/UnitActionSystemUI" instance=ExtResource("39_yrlso")]
+visible = false
 
 [node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system", "combat_system", "end_turn_container", "end_turn_button", "end_phase_container", "end_phase_button", "turn_phase_label", "round_counter_label", "cycle_counter_label", "movement_gait_label", "enemy_turn_container")]
 layout_mode = 3

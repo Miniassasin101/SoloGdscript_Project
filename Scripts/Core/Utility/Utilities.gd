@@ -546,6 +546,12 @@ func lookup_table_value(derived_from: Array[StringName], table: Dictionary, spec
 # Visual Utilities
 
 # Material Utilities
+
+func set_color_on_mesh(mesh: MeshInstance3D ,color: Color = Color.DEEP_SKY_BLUE) -> void:
+	var mesh_mat: StandardMaterial3D = preload("res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/GeneralHitFXMaterial.tres").duplicate(true)
+	mesh_mat.set_albedo(color)
+	mesh.set_material_overlay(mesh_mat)
+
 func flash_color_on_meshes(meshes: Array[MeshInstance3D] ,color: Color = Color.DEEP_SKY_BLUE, flash_time: float = 1.0) -> void:
 	for mesh in meshes:
 		var mesh_mat: StandardMaterial3D = preload("res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/GeneralHitFXMaterial.tres").duplicate(true)

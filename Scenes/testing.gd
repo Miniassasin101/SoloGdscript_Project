@@ -229,7 +229,7 @@ func test_v() -> void:
 
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
-		#open_character_sheet()
+		open_character_sheet()
 		#equip_weapon()
 		#open_special_effect_buttons()
 		#print_active_special_effects()
@@ -240,7 +240,7 @@ func test_c() -> void:
 		#print_situational_modifier_attribute()
 		#equip_weapon_on_ground()
 		#spawn_text_at_bodypart()
-		apply_condition()
+		#apply_condition()
 		pass
 
 

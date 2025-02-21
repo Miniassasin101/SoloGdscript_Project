@@ -28,6 +28,8 @@ func generate_grid_system(x: int, z: int, grid_scale: float):
 	
 # Called every frame
 func _process(_delta: float) -> void:
+	if !grid_system:
+		return
 	# Rotate labels 45 degrees clockwise
 	if Input.is_action_just_pressed("rotate_right"):
 		grid_system.rotate_labels(1)  # Pass 1 for clockwise rotation

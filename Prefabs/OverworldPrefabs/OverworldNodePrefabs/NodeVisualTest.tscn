@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://nfxda7h5r7np"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8ueyc"]
+top_radius = 1.0
+bottom_radius = 1.1
+height = 0.35
+radial_segments = 14
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ihkdp"]
+albedo_color = Color(0.96, 0.96, 0.96, 1)
+billboard_keep_scale = true
+
+[node name="NodeVisualTest" type="MeshInstance3D"]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0.173164, 0)
+mesh = SubResource("CylinderMesh_8ueyc")
+surface_material_override/0 = SubResource("StandardMaterial3D_ihkdp")

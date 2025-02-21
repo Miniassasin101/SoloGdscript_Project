@@ -124,109 +124,8 @@ func can_activate(_event: ActivationEvent) -> bool:
 
 
 
-
-
-
-
-
-func get_valid_ability_target_grid_position_list_dep(_event: ActivationEvent) -> Array[GridPosition]:
-	var in_unit: Unit = _event.unit
-	var self_unit_pos: GridPosition = in_unit.get_grid_position()
-	if self_unit_pos == null:
-		return []
-	
-	var valid_positions: Array[GridPosition] = []
-	var max_range: float = float(max_move_distance) if use_max_move_distance else in_unit.get_max_move_left()
-	var gait: int = in_unit.current_gait
-
-	if gait in [Utilities.MovementGait.RUN, Utilities.MovementGait.SPRINT]:
-		# 1) Get the normal forward cone of possible squares.
-		var front_cone: Array[GridPosition] = []
-		var facing: int = in_unit.facing
-		for distance in range(1, max_range + 1):
-			for offset in range(-distance, distance + 1):
-				var temp_pos: GridPosition = null
-				match facing:
-					Utilities.FACING.NORTH:
-						temp_pos = LevelGrid.grid_system.get_grid_position_from_coords(
-							self_unit_pos.x + offset,
-							self_unit_pos.z - distance
-						)
-					Utilities.FACING.EAST:
-						temp_pos = LevelGrid.grid_system.get_grid_position_from_coords(
-							self_unit_pos.x + distance,
-							self_unit_pos.z + offset
-						)
-					Utilities.FACING.SOUTH:
-						temp_pos = LevelGrid.grid_system.get_grid_position_from_coords(
-							self_unit_pos.x + offset,
-							self_unit_pos.z + distance
-						)
-					Utilities.FACING.WEST:
-						temp_pos = LevelGrid.grid_system.get_grid_position_from_coords(
-							self_unit_pos.x - distance,
-							self_unit_pos.z + offset
-						)
-				
-				if temp_pos != null and LevelGrid.is_valid_grid_position(temp_pos):
-					front_cone.append(temp_pos)
-
-		# Filter out blocked or out-of-range squares from front cone.
-		var final_front_cone: Array[GridPosition] = []
-		for fc in front_cone:
-			if Pathfinding.instance.is_walkable(fc):
-				# We'll do a path cost check later; for now just keep it
-				final_front_cone.append(fc)
-
-		# 2) Make a large shell from behind, remove intersection with the front.
-		var shell_positions: Array[GridPosition] = Utilities.get_shell_cone_from_behind(in_unit, max_range)
-
-		for fpos in final_front_cone:
-			shell_positions.erase(fpos)  # remove any that appear in front cone
-
-		# 3) Temporarily disable the shell squares that are currently enabled.
-		var actually_disabled: Array[GridPosition] = Pathfinding.instance.temporarily_disable(shell_positions)
-
-		# 4) Now check which squares in front_cone are truly reachable 
-		#    (meaning there's a path that doesn't rely on going behind).
-		for candidate: GridPosition in final_front_cone:
-			# If we can path from our current tile to candidate with cost <= max_range, keep it.
-			# (You can also use is_path_available or your path cost logic.)
-			var path_cost: float = Pathfinding.instance.get_path_cost(self_unit_pos, candidate)
-			var path_available: bool = Pathfinding.instance.is_path_available(self_unit_pos, candidate)
-			if path_available:
-				var path: Array[GridPosition] = Pathfinding.instance.find_path(self_unit_pos, candidate)
-				if !Utilities.is_cone_path_available(in_unit, path):
-					continue
-			
-			if (path_cost <= max_range and path_cost < INF) and (path_available) and not LevelGrid.has_any_unit_on_grid_position(candidate):
-				valid_positions.append(candidate)
-
-
-
-		Pathfinding.instance.reenable_positions(actually_disabled)
-
-	else:
-		# Normal behavior for other gaits
-		for x in range(-max_range, max_range + 1):
-			for z in range(-max_range, max_range + 1):
-				var temp_grid_position: GridPosition = LevelGrid.grid_system.get_grid_position_from_grid_position(self_unit_pos.add(
-					GridPosition.new(x, z))  # Or see if you have a get_grid_position_from_coords
-				)
-				if not LevelGrid.is_valid_grid_position(temp_grid_position):
-					continue
-				
-				if not Pathfinding.instance.is_path_available(self_unit_pos, temp_grid_position):
-					continue
-				
-				if not self_unit_pos.equals(temp_grid_position) \
-						and not LevelGrid.has_any_unit_on_grid_position(temp_grid_position):
-					valid_positions.append(temp_grid_position)
-
-	return valid_positions
-
-
-
+## Gets the tiles the character can move to, filtering out the ones that couldn't be reached in
+## the cone of a running or sprinting gait, and making sure that it doesnt wrap around corners.
 func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
 	var in_unit: Unit = _event.unit
 	var self_unit_pos: GridPosition = in_unit.get_grid_position()
@@ -309,6 +208,7 @@ func get_max_move_from_gait(_event: ActivationEvent) -> float:
 			ret_move += 0.0
 	
 	return maxf((ret_move - in_unit.distance_moved_this_turn), 0.0)
+
 
 # Gets the best AI action for a specified grid position.
 func get_enemy_ai_ability(_event: ActivationEvent) -> EnemyAIAction:

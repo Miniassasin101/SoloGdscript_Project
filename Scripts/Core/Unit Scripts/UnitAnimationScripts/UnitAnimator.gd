@@ -13,6 +13,7 @@ signal parry_reset
 @export var animator_tree: AnimationTree
 @export var fireball_projectile_prefab: PackedScene
 @export var shoot_point: Node3D
+@export var head_look_modifier: HeadLookModifier3D
 @export var height_offset: float = 1.5  # Height offset to aim towards upper body
 
 
@@ -108,8 +109,6 @@ func _physics_process(delta: float) -> void:
 		rotate_unit_towards_target_position_process(delta)
 	if is_moving:
 		move_along_curve_process(delta)
-	if skeleton and look_target and is_looking:
-		update_look_at(delta)
 
 
 func get_character_mesh() -> Array[MeshInstance3D]:
@@ -121,12 +120,6 @@ func get_character_mesh() -> Array[MeshInstance3D]:
 	return ret_array
 
 
-## Function to be used to trigger and disable looking at a target. Just needs to be called with no arguments to turn off.
-func look_at_toggle_dep(target: Node3D = null) -> void:
-	if target == null:
-		is_looking = false
-	look_target = target
-	is_looking = true
 
 # When you want to control head-look via this script, call this function.
 # Passing a valid target will smoothly blend in our override;
@@ -134,135 +127,10 @@ func look_at_toggle_dep(target: Node3D = null) -> void:
 func look_at_toggle(target: Node3D = null) -> void:
 	look_target = target
 	is_looking = (target != null)
-
-
-func update_look_at(delta: float) -> void:
-	"""
-	Updates the neck bone to look at the assigned target.
-	This ensures smooth and clamped rotation to prevent unnatural movements.
-	"""
-	var neck_bone = skeleton.find_bone(neck_bone_name)
-	if neck_bone == -1:
-		push_error("Neck Bone Not Found at ", self)
-		return  # Bail out if the neck bone is not found
-
-	# Get the parent bone's rotation
-	var parent_bone = skeleton.get_bone_parent(neck_bone)
-	var parent_global_pose: Transform3D = skeleton.get_bone_global_pose(parent_bone)
-	var parent_rotation: Quaternion = parent_global_pose.basis.get_rotation_quaternion()
-	var target_pos: Vector3 = look_target.get_global_position() + Vector3(0.0, head_look_vertical_offset, 0.0)
-	
-	# Calculate the neck's target rotation (look at target position)
-	var _neck_target_pos: Vector3 = neck_target.get_global_position()
-	neck_target.look_at(target_pos, Vector3.UP, true)
-	var target_rotation_degrees: Vector3 = neck_target.rotation_degrees
-
-	# Clamp the rotation to the desired range
-	target_rotation_degrees.x = clamp(target_rotation_degrees.x, -max_vertical_angle, max_vertical_angle)
-	target_rotation_degrees.y = clamp(target_rotation_degrees.y, -max_horizontal_angle, max_horizontal_angle)
-
-	# Convert to radians and apply smoothing
-	bone_smooth_rot = lerp_angle(bone_smooth_rot, deg_to_rad(target_rotation_degrees.y), neck_rot_speed * delta)
-	var final_rotation: Quaternion = Quaternion.from_euler(Vector3(deg_to_rad(target_rotation_degrees.x), bone_smooth_rot, 0))
-
-	# Remove the parent's rotation influence
-	final_rotation = parent_rotation.inverse() * final_rotation
-
-	# Apply the final rotation to the neck bone
-	skeleton.set_bone_pose_rotation(neck_bone, final_rotation)
-
-
-# Call this each frame (or in _physics_process) to update the neck bone.
-func update_look_at_dep3(delta: float) -> void:
-	var neck_idx = skeleton.find_bone(neck_bone_name)
-	if neck_idx == -1:
-		push_error("Neck bone '" + neck_bone_name + "' not found!")
-		return
-
-	# Determine the target override weight: if actively looking, we want full override (1.0); otherwise 0.
-	var target_weight: float = 1.0 if is_looking else 0.0
-	head_look_override_weight = lerp(head_look_override_weight, target_weight, neck_rot_speed * delta)
-	
-	# Retrieve the current pose as computed by animations.
-	var current_pose: Transform3D = skeleton.get_bone_pose(neck_idx)
-	var current_trans: Vector3 = current_pose.origin
-	# Preserve the bone’s current scale.
-	var current_scale: Vector3 = current_pose.basis.get_scale()
-	# Get the current rotation (in local space).
-	var current_rot: Quaternion = current_pose.basis.get_rotation_quaternion()
-
-	# Compute the desired override rotation.
-	var desired_rot: Quaternion
-	if is_looking and look_target:
-		# Determine a target position with a vertical offset.
-		var target_pos: Vector3 = look_target.global_transform.origin + Vector3(0.0, head_look_vertical_offset, 0.0)
-		# Use your temporary marker node to compute the needed rotation.
-		neck_target.look_at(target_pos, Vector3.UP, true)
-		var target_rot_deg: Vector3 = neck_target.rotation_degrees
-		# Clamp the computed angles.
-		target_rot_deg.x = clamp(target_rot_deg.x, -max_vertical_angle, max_vertical_angle)
-		target_rot_deg.y = clamp(target_rot_deg.y, -max_horizontal_angle, max_horizontal_angle)
-		desired_rot = Quaternion.from_euler(Vector3(deg_to_rad(target_rot_deg.x), deg_to_rad(target_rot_deg.y), 0))
+	if is_looking:
+		head_look_modifier.set_modifier_active_and_target(true, target)
 	else:
-		# If not looking, fall back to the rest rotation.
-		desired_rot = default_neck_transform.basis.get_rotation_quaternion()
-	
-	# Blend from the current rotation toward the desired override.
-	var blended_rot: Quaternion = current_rot.slerp(desired_rot, head_look_override_weight)
-	var new_basis: Basis = Basis(blended_rot)
-	# Reapply the current scale.
-	new_basis = new_basis.scaled(current_scale)
-	
-	# Construct a new pose with the animation’s translation and our blended rotation.
-	var new_pose: Transform3D = Transform3D(new_basis, current_trans)
-	skeleton.set_bone_pose(neck_idx, new_pose)
-
-
-func update_look_at_dep(delta: float) -> void:
-	var neck_idx = skeleton.find_bone(neck_bone_name)
-	if neck_idx == -1:
-		push_error("Neck bone '" + neck_bone_name + "' not found!")
-		return
-
-	# Determine the target override weight: if actively looking, we want full override (1.0); otherwise 0.
-	var target_weight: float = 1.0 if is_looking else 0.0
-	head_look_override_weight = lerp(head_look_override_weight, target_weight, neck_rot_speed * delta)
-	
-	# Retrieve the current pose as computed by animations.
-	var current_pose: Transform3D = skeleton.get_bone_pose(neck_idx)
-	var current_trans: Vector3 = current_pose.origin
-	# Preserve the bone’s current scale.
-	var current_scale: Vector3 = current_pose.basis.get_scale()
-	# Get the current rotation (in local space).
-	var current_rot: Quaternion = current_pose.basis.get_rotation_quaternion()
-
-	# Compute the desired override rotation.
-	var desired_rot: Quaternion
-	if is_looking and look_target:
-		# Determine a target position with a vertical offset.
-		var target_pos: Vector3 = look_target.global_transform.origin + Vector3(0.0, head_look_vertical_offset, 0.0)
-		# Use the temporary marker node to compute the needed rotation.
-		neck_target.look_at(target_pos, Vector3.UP, true)
-		var target_rot_deg: Vector3 = neck_target.rotation_degrees
-		# Clamp the computed angles.
-		target_rot_deg.x = clamp(target_rot_deg.x, -max_vertical_angle, max_vertical_angle)
-		target_rot_deg.y = clamp(target_rot_deg.y, -max_horizontal_angle, max_horizontal_angle)
-		desired_rot = Quaternion.from_euler(Vector3(deg_to_rad(target_rot_deg.x), deg_to_rad(target_rot_deg.y), 0))
-	else:
-		# If not looking, fall back to the rest rotation but apply a 180° correction around Y.
-		# Post-multiply the rest rotation so that the forward direction (-Z) is flipped to +Z,
-		# while keeping the original X (pitch) and Y (yaw) intact.
-		desired_rot = default_neck_transform.basis.get_rotation_quaternion() * Quaternion(Vector3.UP, PI)
-	
-	# Blend from the current rotation toward the desired override.
-	var blended_rot: Quaternion = current_rot.slerp(desired_rot, head_look_override_weight)
-	var new_basis: Basis = Basis(blended_rot)
-	# Reapply the current scale.
-	new_basis = new_basis.scaled(current_scale)
-	
-	# Construct a new pose with the animation’s translation and our blended rotation.
-	var new_pose: Transform3D = Transform3D(new_basis, current_trans)
-	skeleton.set_bone_pose(neck_idx, new_pose)
+		head_look_modifier.set_modifier_active_and_target(false)
 
 
 
@@ -612,7 +480,7 @@ func flash_red(flash_time: float = hit_flash_time) -> void:
 # Targeting handlers
 func on_is_being_targeted(by_unit: Unit) -> void:
 	is_being_targeted = true
-	look_at_toggle(by_unit.above_marker)
+	look_at_toggle(by_unit.body.get_part_marker("head"))
 
 
 # function to cancel the head_look and smoothly return to normal
