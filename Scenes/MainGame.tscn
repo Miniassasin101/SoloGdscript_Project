@@ -189,9 +189,10 @@ directional_shadow_max_distance = 27.1
 script = ExtResource("1_fqt43")
 GRID_CELL_VISUAL = ExtResource("4_85pbp")
 
-[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit")]
+[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit", "unit_2")]
 script = ExtResource("3_vw71g")
 unit = NodePath("../UnitManager/DawnUnit")
+unit_2 = NodePath("../UnitManager/DawnUnit2")
 animlib = Array[Animation]([ExtResource("5_o3n5o")])
 special_effects = Array[ExtResource("18_hnk25")]([SubResource("Resource_vhtwd")])
 

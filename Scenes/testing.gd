@@ -2,7 +2,7 @@ class_name Testing
 extends Node3D
 
 @export var unit: Unit
-
+@export var unit_2: Unit
 @export var camerashake: CameraShake
 @onready var unit_action_system: UnitActionSystem = $"../UnitActionSystem"
 @onready var unit_ai: UnitAI = $"../UnitAI"
@@ -222,7 +222,8 @@ func test_v() -> void:
 		#remove_all_ap()
 		#add_armor()
 		#play_weapon_spin_anim()
-		drop_equipped_weapon()
+		#drop_equipped_weapon()
+		create_engagement()
 		pass
 
 
@@ -243,6 +244,10 @@ func test_c() -> void:
 		#apply_condition()
 		pass
 
+func create_engagement() -> void:
+	if unit and unit_2:
+		var engagement: Engagement = Engagement.new(unit, unit_2)
+		engagement.initialize_line(self)
 
 func apply_condition() -> void:
 	unit.conditions_manager.apply_condition_by_name("impaled")

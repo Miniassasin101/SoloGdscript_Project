@@ -3486,7 +3486,7 @@ bones/172/rotation = Quaternion(0, 1.19209e-07, 2.16073e-35, 1)
 bones/172/scale = Vector3(1, 1, 1)
 
 [node name="BoneAttachment3D8" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.917191, 0.0281169, 0.397455, 0.000606961, 0.997407, -0.0719595, -0.398448, 0.0662419, 0.914796, 0.000658618, 1.30276, 0.00452811)
+transform = Transform3D(0.91522, 0.0373785, 0.401216, 0.00189879, 0.995277, -0.0970544, -0.402949, 0.0895881, 0.910827, 0.00184748, 1.29065, 0.012862)
 bone_name = "DEF_neck.001"
 bone_idx = 6
 
@@ -3506,7 +3506,7 @@ update_rotation = false
 update_scale = false
 
 [node name="BoneAttachment3D9" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.831311, 0.00289188, 0.5558, 0.00181069, 0.999967, -0.00791116, -0.555804, 0.00758307, 0.831279, -6.54892e-05, 1.05238, 0.00262937)
+transform = Transform3D(0.831807, 0.00820765, 0.555004, 0.00513736, 0.999734, -0.0224841, -0.555041, 0.0215538, 0.831544, -0.000207655, 1.04032, 0.0074651)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 
@@ -3540,7 +3540,7 @@ max_horizontal_angle = 70.0
 tween_time = 0.6
 
 [node name="RightHandEquipmentSocketBoneAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.626716, 0.0931878, -0.773656, -0.66823, 0.575009, -0.472052, 0.40087, 0.812822, 0.422638, 0.281548, 1.16928, 0.245732)
+transform = Transform3D(0.572979, 0.0738115, -0.816239, -0.700336, 0.56141, -0.44085, 0.425705, 0.82424, 0.373369, 0.275202, 1.1594, 0.241428)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -3548,7 +3548,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.532986, 0.531274, 0.658539, 0.809975, 0.545424, 0.215531, -0.244677, 0.648275, -0.721022, -0.14122, 1.2507, 0.384281)
+transform = Transform3D(-0.511434, 0.559216, 0.652467, 0.815286, 0.55571, 0.162771, -0.271558, 0.615194, -0.74013, -0.143673, 1.24264, 0.379522)
 bone_name = "DEF_hand.R.001"
 bone_idx = 67
 
@@ -3562,7 +3562,7 @@ unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.831311, 0.00289188, 0.5558, 0.00181069, 0.999967, -0.00791116, -0.555804, 0.00758307, 0.831279, -6.54892e-05, 1.05238, 0.00262937)
+transform = Transform3D(0.831807, 0.00820765, 0.555004, 0.00513736, 0.999734, -0.0224841, -0.555041, 0.0215538, 0.831544, -0.000207655, 1.04032, 0.0074651)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 
@@ -3570,21 +3570,21 @@ bone_idx = 5
 transform = Transform3D(1, -8.47033e-22, 0, 8.47033e-22, 1, -3.55271e-15, 0, 3.55271e-15, 1, -2.62553e-15, 0.184755, 1.10123e-08)
 
 [node name="BoneAttachment3D2" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.997628, 0.0330718, 0.060368, -0.0276215, 0.99565, -0.0889864, -0.0630485, 0.087108, 0.994202, 0.00655729, 1.51201, 0.0184251)
+transform = Transform3D(0.996697, 0.0424183, 0.0692549, -0.034399, 0.992984, -0.113138, -0.0735681, 0.110382, 0.991163, 0.00968915, 1.49945, 0.0316568)
 bone_name = "DEF_head.001"
 bone_idx = 7
 
 [node name="HeadBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/BoneAttachment3D2"]
 
 [node name="BoneAttachment3D3" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.961114, 0.000797235, 0.301764, 0.00280456, 0.985345, -0.011653, -0.301752, 0.0116973, 0.961044, -1.72037e-05, 0.928029, -4.51214e-05)
+transform = Transform3D(0.964902, 0.00220597, 0.334366, 0.00910358, 0.958397, -0.0334413, -0.33425, 0.0324709, 0.964325, -4.93811e-05, 0.919521, -0.000129632)
 bone_name = "DEF_spine.002"
 bone_idx = 165
 
 [node name="AbdomenBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/BoneAttachment3D3"]
 
 [node name="BoneAttachment3D4" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.661721, 0.675936, 0.324401, 0.726894, 0.472368, 0.498492, 0.183713, 0.565668, -0.803909, -0.351011, 1.10409, 0.208714)
+transform = Transform3D(-0.646171, 0.691092, 0.323813, 0.743625, 0.474663, 0.470868, 0.171711, 0.545057, -0.820627, -0.358169, 1.09531, 0.210351)
 bone_name = "DEF_forearm.R.001"
 bone_idx = 65
 
@@ -3592,7 +3592,7 @@ bone_idx = 65
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 
 [node name="BoneAttachment3D5" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.763443, -0.0984483, -0.638329, -0.63941, 0.254696, 0.725455, 0.0911602, 0.961997, -0.257395, 0.312104, 1.09023, -0.0528449)
+transform = Transform3D(-0.748281, -0.138519, -0.648759, -0.659754, 0.257531, 0.705977, 0.0692841, 0.95629, -0.284094, 0.318194, 1.07947, -0.0553772)
 bone_name = "DEF_forearm.L.001"
 bone_idx = 40
 
@@ -3600,7 +3600,7 @@ bone_idx = 40
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 
 [node name="BoneAttachment3D6" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.99698, -0.0717077, -0.0298058, -0.0754324, -0.985447, -0.152333, -0.0184484, 0.154121, -0.98788, -0.152235, 0.512765, 0.154188)
+transform = Transform3D(0.996878, -0.0761972, -0.0206734, -0.0771981, -0.995609, -0.0529464, -0.0165483, 0.0543771, -0.998383, -0.150536, 0.5166, 0.191783)
 bone_name = "DEF.shin.R.001"
 bone_idx = 121
 
@@ -3608,7 +3608,7 @@ bone_idx = 121
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.2, 0)
 
 [node name="BoneAttachment3D7" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.68649, 0.00257371, -0.727135, 0.184955, -0.967722, 0.171191, -0.703224, -0.252008, -0.664807, 0.220094, 0.506099, -0.0476695)
+transform = Transform3D(0.686962, -0.0372469, -0.725738, 0.18443, -0.957051, 0.223695, -0.7029, -0.287518, -0.650589, 0.235109, 0.502074, -0.034264)
 bone_name = "DEF.shin.L.001"
 bone_idx = 111
 
@@ -3850,7 +3850,7 @@ inventory_path = NodePath("../Inventory")
 slots_editor = Array[ExtResource("38_3xk7x")]([SubResource("Resource_nsk3p")])
 
 [node name="NeckTarget" type="Marker3D" parent="."]
-transform = Transform3D(1.00136, -0.00154758, 0.0268527, 0, 0.998177, 0.0575282, -0.0269464, -0.0575035, 0.997882, 0.00451755, 1.19622, 0.0130532)
+transform = Transform3D(1.00136, -0.00155101, 0.0268527, 0, 0.998177, 0.0575282, -0.0269464, -0.0575035, 0.997882, 0.0067926, 1.18611, 0.0231097)
 gizmo_extents = 0.96
 
 [node name="AboveMarker" type="Marker3D" parent="."]

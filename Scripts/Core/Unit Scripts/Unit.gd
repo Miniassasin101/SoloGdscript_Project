@@ -49,6 +49,11 @@ var target_unit: Unit
 @export var holding_weapon: bool = true
 @export var death_vfx_scene: PackedScene
 @export var shoulder_height: float = 1.7
+
+
+var engagements: Array[Engagement]
+
+
 var facing: int = 2:
 	set(val):
 		facing = val
@@ -107,6 +112,7 @@ func _process(_delta: float) -> void:
 	if new_grid_position != grid_position:
 		# Notify the level grid that the unit has moved.
 		LevelGrid.unit_moved_grid_position(self, grid_position, new_grid_position)
+		
 		grid_position = new_grid_position
 
 
