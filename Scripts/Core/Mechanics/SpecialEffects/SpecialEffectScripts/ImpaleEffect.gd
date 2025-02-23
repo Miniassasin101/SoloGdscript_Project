@@ -37,7 +37,8 @@ func can_activate(event: ActivationEvent) -> bool:
 	
 	if !event.winning_unit.equipment.has_equipped_weapon():
 		return false
-	
+	if !event.weapon:
+		return false
 	return true
 
 

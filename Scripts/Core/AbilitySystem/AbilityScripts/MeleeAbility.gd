@@ -92,7 +92,7 @@ func try_activate(_event: ActivationEvent) -> void:
 		end_ability(event)
 	
 	await unit.get_tree().create_timer(2.0).timeout
-	if target_unit:
+	if target_unit != null:
 		target_unit.animator.parry_reset.emit()
 		target_unit.animator.on_stop_being_targeted()
 		await unit.get_tree().create_timer(1.0).timeout

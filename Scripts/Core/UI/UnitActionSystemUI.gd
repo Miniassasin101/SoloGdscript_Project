@@ -70,6 +70,8 @@ func create_unit_action_buttons() -> void:
 			continue # FIXME: Replace with actual Tag logic later
 		if !verify_gait_allowed(selected_unit.current_gait, ability):
 			continue
+		if !selected_unit.conditions_manager.can_use_ability_given_conditions(ability):
+			continue
 		var ability_button_ui = action_button_prefab.instantiate()
 		ability_button_ui.set_base_ability(ability)
 		action_button_container.add_child(ability_button_ui)

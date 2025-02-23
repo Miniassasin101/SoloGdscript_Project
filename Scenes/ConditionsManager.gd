@@ -22,6 +22,12 @@ func apply_conditions_round_interval() -> void:
 			if condition.can_apply():
 				condition.apply(unit)
 
+func apply_conditions_turn_interval() -> void:
+	for condition in conditions:
+		if condition.application_interval == Condition.ApplicationInterval.PerTurn:
+			if condition.can_apply():
+				condition.apply(unit)
+
 func apply_condition_by_name(condition_name: String) -> void:
 	for condition in conditions:
 		if condition.ui_name == condition_name:
@@ -65,6 +71,18 @@ func book_keeping_check() -> void:
 	
 	pass
 
+
+func can_use_ability_given_conditions(ability: Ability) -> bool:
+	var blocked_ability_types: Array[StringName] = []
+	for condition in conditions:
+		blocked_ability_types.append_array(condition.blocking_tags)
+	for block in blocked_ability_types:
+		if ability.tags_type.has(block):
+			return false
+	return true
+
+
+
 func add_condition(condition: Condition) -> void:
 	if condition != null:
 		if !has_condition_by_condition(condition):
@@ -86,6 +104,7 @@ func has_condition_by_condition(condition: Condition) -> bool:
 			return true
 	return false
 
+
 func get_all_conditions() -> Array[Condition]:
 	return conditions
 
@@ -100,6 +119,11 @@ func increase_fatigue(by_amount: int = 1) -> void:
 	var fatigue: FatigueCondition = get_condition_by_name("fatigue") as FatigueCondition
 	fatigue.increase_level(unit, by_amount)
 
+func increase_condition_level_by_condition(condition: Condition, by_amount: int = 1) -> void:
+	for cond in conditions:
+		if condition.ui_name == cond.ui_name:
+			cond.increase_level(unit, by_amount)
+			return
 
 func get_total_initiative_penalty() -> int:
 	var total_penalty = 0

@@ -59,13 +59,14 @@ func try_activate(_event: ActivationEvent) -> void:
 	# Reset the positionings of the user and target
 	await unit.get_tree().create_timer(2.0).timeout
 	unit.animator.rotate_unit_towards_facing()
-	if target_unit:
+	call_deferred("target_unit_reset")
+
+func target_unit_reset() -> void:
+	if target_unit != null:
 		target_unit.animator.parry_reset.emit()
 		target_unit.animator.on_stop_being_targeted()
 		await unit.get_tree().create_timer(1.0).timeout
 		target_unit.animator.rotate_unit_towards_facing()
-
-	
 
 
 func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:

@@ -45,7 +45,9 @@ func book_keeping() -> void:
 func start_turn(unit: Unit) -> void:
 	print_debug("CombatSystem Turn Started: ", unit)
 	current_phase = TurnPhase.ACTION_PHASE  # Start with the Action Phase
-	#unit_action_system_ui.create_unit_action_buttons()
+	
+	unit.conditions_manager.apply_conditions_turn_interval()
+	
 	SignalBus.on_ui_update.emit()
 	handle_phase(unit)
 
