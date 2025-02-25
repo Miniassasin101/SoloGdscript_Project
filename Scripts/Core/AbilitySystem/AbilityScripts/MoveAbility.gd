@@ -40,10 +40,83 @@ var target_position: GridPosition = null
 var unit: Unit = null
 
 
-
-
-
 func try_activate(_event: ActivationEvent) -> void:
+	super.try_activate(_event)
+	event = _event
+	# Retrieve target position from the event
+	target_position = event.target_grid_position
+	unit = event.unit
+
+	if not unit or not target_position:
+		if can_end(event):
+			push_error("either no target position or no unit: " + event.to_string())
+			end_ability(event)
+			return
+
+	# Getting the grid positions from the pathfinding
+	position_list = []
+	var path_package: PathPackage = Pathfinding.instance.get_path_package(target_position, unit, true, true)
+	var grid_position_list: Array[GridPosition] = path_package.get_path()
+	
+	
+	if grid_position_list.is_empty():
+		push_error("No valid path found to target position: " + target_position.to_str())
+		if can_end(event):
+			end_ability(event)
+			return
+
+	# Trim the path: stop the path as soon as a tile adjacent to an enemy is encountered.
+	var trimmed_grid_path: Array[GridPosition] = []
+	for grid_pos in grid_position_list:
+		trimmed_grid_path.append(grid_pos)
+		if is_adjacent_to_enemy(grid_pos, unit):
+			# Recalcs path cost based off of trimmed path
+			path_package.path_cost = Pathfinding.instance.get_path_cost(unit.get_grid_position(), grid_pos)
+			break
+	
+	# Build the world position list from the trimmed grid path.
+	position_list = LevelGrid.get_world_positions(trimmed_grid_path)
+	
+	movement_curve = Curve3D.new()
+	movement_curve.bake_interval = 0.2  # Adjust for smoothness
+	
+	# Add points to the curve
+	for i in range(position_list.size()):
+		var point = position_list[i]
+		var control_offset = Vector3(0, 0, 0)
+		if i > 0 and i < position_list.size() - 1:
+			# Smooth control points for intermediate nodes
+			control_offset = (position_list[i + 1] - position_list[i - 1]).normalized() * 0.5
+		movement_curve.add_point(point, -control_offset, control_offset)
+	
+	# Store curve length and reset offset
+	curve_length = movement_curve.get_baked_length()
+	curve_travel_offset = 0.0
+	acceleration_timer = 0.2
+	rotation_acceleration_timer = 0.3
+	current_speed = 0.1
+	start_timer = 0.1
+	
+	is_moving = true
+
+	unit.animator.animate_movement_along_curve(move_speed, movement_curve, curve_length, 
+		acceleration_timer, rotation_acceleration_timer, stopping_distance, rotate_speed)
+	await unit.animator.movement_completed  # add another signal for interruption
+	
+	unit.add_distance_moved(path_package.get_cost())
+	
+	GridSystemVisual.instance.clear_highlights()
+	
+	if unit.current_gait >= Utilities.MovementGait.RUN:
+		unit.animator.rotate_unit_towards_facing(unit.facing)
+	
+	is_moving = false
+	if can_end(event):
+		event.successful = true
+		end_ability(event)
+
+
+func try_activate_dep(_event: ActivationEvent) -> void:
 	super.try_activate(_event)
 	event = _event
 	# Retrieve target position from the event
@@ -106,6 +179,20 @@ func try_activate(_event: ActivationEvent) -> void:
 		event.successful = true
 		end_ability(event)
 
+
+# Helper function to check if a grid position is adjacent (including diagonally) to an enemy unit.
+func is_adjacent_to_enemy(grid_pos: GridPosition, moving_unit: Unit) -> bool:
+	var enemy_units: Array[Unit] = []
+	if moving_unit.is_enemy:
+		enemy_units = UnitManager.instance.get_player_units()
+	else:
+		enemy_units = UnitManager.instance.get_enemy_units()
+	
+	for enemy in enemy_units:
+		var enemy_pos: GridPosition = enemy.get_grid_position()
+		if abs(enemy_pos.x - grid_pos.x) <= 1 and abs(enemy_pos.z - grid_pos.z) <= 1:
+			return true
+	return false
 
 
 
@@ -196,7 +283,7 @@ func get_max_move_from_gait(_event: ActivationEvent) -> float:
 			return 0.0
 
 		Utilities.MovementGait.WALK:
-			ret_move += (move_rate/2.0)
+			ret_move += (move_rate/2.0) # Move rates are halved because the unit can only move half each cycle
 		
 		Utilities.MovementGait.RUN:
 			ret_move += ((move_rate * 3.0) / 2.0)

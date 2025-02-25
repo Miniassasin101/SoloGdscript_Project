@@ -84,6 +84,7 @@ func start_combat() -> void:
 		return
 	unit_manager.setup_units_for_combat()
 	combat_started = true
+	CombatSystem.instance.generate_engagements()
 	start_round()
 
 

@@ -73,8 +73,8 @@ func update_line():
 
 	immediate_mesh.surface_end()
 
-func attach_to(parent: Node3D):
-	parent.add_child(mesh_instance)
+func attach_to():
+	add_child(mesh_instance)
 
 func remove():
 	if mesh_instance:

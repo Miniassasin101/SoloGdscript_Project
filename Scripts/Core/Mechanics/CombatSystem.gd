@@ -18,6 +18,7 @@ var initiative_order: Array[Unit] = []
 @export_category("Special Effects")
 @export var special_effects: Array[SpecialEffect]
 
+var engagements: Array[Engagement]
 
 # NOTE: Maybe add a idle phase for before battle
 var current_phase: TurnPhase:
@@ -38,6 +39,8 @@ func _ready() -> void:
 func book_keeping() -> void:
 	# Apply poison, bleed, persistent effects, etc.
 	book_keeping_system.run_book_keeping_check()
+	
+
 	SignalBus.on_book_keeping_ended.emit()
 
 
@@ -85,6 +88,96 @@ func end_turn(unit: Unit) -> void:
 	#transition_phase(TurnPhase.ACTION_PHASE, TurnSystem.instance.current_unit_turn)
 	# Proceed to the next unit in the initiative order or other logic
 	#SignalBus.on_turn_ended.emit()
+
+func generate_engagements() -> void:
+	# Clear any previous engagements
+	engagements.clear()
+
+	# Retrieve all units from the UnitManager
+	var all_units = UnitManager.instance.get_all_units()
+
+	# Iterate through each unique pair of units
+	for i in range(all_units.size()):
+		for j in range(i + 1, all_units.size()):
+			var unit_a = all_units[i]
+			var unit_b = all_units[j]
+
+			# Only engage if units are on opposing sides (enemy vs friendly)
+			if unit_a.is_enemy == unit_b.is_enemy:
+				continue
+
+			# Check if unit_b is adjacent to unit_a using diagonal adjacency
+			# (Assuming get_adjacent_tiles_with_diagonal(unit) returns an array of adjacent grid positions)
+			var adjacent_tiles = Utilities.get_adjacent_tiles_with_diagonal(unit_a)
+			if adjacent_tiles.has(unit_b.grid_position):
+				# Create and initialize a new engagement between the two units
+				# Only create a new engagement if one doesn't already exist.
+				if not engagement_exists(unit_a, unit_b):
+					var new_engagement = Engagement.new(unit_a, unit_b)
+					new_engagement.initialize_line(self)
+					engagements.append(new_engagement)
+
+# Checks whether an engagement already exists between two units.
+func engagement_exists(unit_a: Unit, unit_b: Unit) -> bool:
+	for engagement in engagements:
+		# Order does not matter; both units must be present.
+		if engagement.units.has(unit_a) and engagement.units.has(unit_b):
+			return true
+	return false
+
+func get_engagement(unit_a: Unit, unit_b: Unit) -> Engagement:
+	for engagement in engagements:
+		# Order does not matter; both units must be present.
+		if engagement.units.has(unit_a) and engagement.units.has(unit_b):
+			return engagement
+	return null
+
+func add_engagement(unit_a: Unit, unit_b: Unit) -> void:
+	if not engagement_exists(unit_a, unit_b):
+		var new_engagement = Engagement.new(unit_a, unit_b)
+		new_engagement.initialize_line(self)
+		engagements.append(new_engagement)
+	
+		Utilities.spawn_text_line(unit_a, "Engaged")
+		Utilities.spawn_text_line(unit_b, "Engaged")
+		SignalBus.on_ui_update.emit()
+
+func remove_engagement(unit_a: Unit, unit_b: Unit) -> void:
+	var engagement: Engagement = get_engagement(unit_a, unit_b)
+	if engagement:
+		engagement.remove_engagement()
+		engagements.erase(engagement)
+		SignalBus.on_ui_update.emit()
+
+func is_unit_engaged(unit: Unit) -> bool:
+	for engagement in engagements:
+		# Order does not matter; both units must be present.
+		if engagement.units.has(unit):
+			return true
+	return false
+
+# Only updates engagements for the unit that has changed grid position.
+func update_engagements_for_unit(changed_unit: Unit) -> void:
+	# Determine opposing units.
+	var opposing_units: Array[Unit] = []
+	if changed_unit.is_enemy:
+		opposing_units = UnitManager.instance.get_player_units()
+	else:
+		opposing_units = UnitManager.instance.get_enemy_units()
+	
+	# Get all adjacent tiles (including diagonals) for the changed unit.
+	var adjacent_tiles = Utilities.get_adjacent_tiles_with_diagonal(changed_unit)
+	
+	# For each opposing unit, check if they are adjacent.
+	for other_unit in opposing_units:
+		if adjacent_tiles.has(other_unit.grid_position):
+			# Only create a new engagement if one doesn't already exist.
+			add_engagement(changed_unit, other_unit)
+		else:
+			# Only removes an engagement if one already exists
+			remove_engagement(changed_unit, other_unit)
+
+
 
 
 

@@ -60,6 +60,7 @@ func remove_unit_at_grid_position(grid_position: GridPosition, unit: Unit) -> vo
 
 # Handles moving a unit from one grid position to another
 func unit_moved_grid_position(unit: Unit, from_grid_position: GridPosition, to_grid_position: GridPosition) -> void:
+	
 	remove_unit_at_grid_position(from_grid_position, unit)
 	set_unit_at_grid_position(to_grid_position, unit)
 

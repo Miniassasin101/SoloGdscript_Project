@@ -51,7 +51,7 @@ var target_unit: Unit
 @export var shoulder_height: float = 1.7
 
 
-var engagements: Array[Engagement]
+
 
 
 var facing: int = 2:
@@ -107,14 +107,18 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	update_grid_position()
+
+
+func update_grid_position() -> void:
 	# Update the unit's grid position if it has moved to a new grid cell.
 	var new_grid_position: GridPosition = LevelGrid.get_grid_position(global_transform.origin)
 	if new_grid_position != grid_position:
 		# Notify the level grid that the unit has moved.
 		LevelGrid.unit_moved_grid_position(self, grid_position, new_grid_position)
-		
 		grid_position = new_grid_position
-
+		CombatSystem.instance.update_engagements_for_unit(self)
+		
 
 func update_weapon_anims() -> void:
 	animator.weapon_setup(holding_weapon)
@@ -290,7 +294,6 @@ func get_combat_skill() -> float:
 
 func get_equipped_weapon() -> Weapon:
 	return equipment.get_equipped_weapon()
-
 
 func set_distance_moved(val: float) -> void:
 	distance_moved_this_turn = val

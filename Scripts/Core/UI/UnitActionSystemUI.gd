@@ -99,6 +99,8 @@ func create_unit_action_buttons_move_phase() -> void:
 			continue
 		if TurnSystem.instance.current_cycle >= 3 and ability.tags_type.has("move"):
 			continue
+		if CombatSystem.instance.is_unit_engaged(selected_unit) and ability.tags_type.has("move"):
+			continue
 		var ability_button_ui: ActionButtonUI = action_button_prefab.instantiate()
 		ability_button_ui.set_base_ability(ability) # Always call a setup function on the button when adding.
 		action_button_container.add_child(ability_button_ui)

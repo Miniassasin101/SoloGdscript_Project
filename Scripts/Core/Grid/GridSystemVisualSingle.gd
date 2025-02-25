@@ -64,9 +64,9 @@ func set_color(color: Color) -> void:
 	grid_system_visual.set_surface_override_material(0, color_mat)
 
 
-func highlight() -> void:
+func highlight(color: Color = Color(0.68, 0.85, 0.9, 1)) -> void:
 	if !is_hovered:
-		set_color(Color(0.68, 0.85, 0.9, 1))
+		set_color(color)
 		rise()
 		is_highlighted = true
 

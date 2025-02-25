@@ -7,6 +7,8 @@ var units: Array[Unit] = []
 var friendly_units: Array[Unit] = []
 var enemy_units: Array[Unit] = []
 
+
+
 static var instance: UnitManager = null
 
 @export var sword_test: Weapon = null
@@ -111,6 +113,22 @@ func get_unit_by_name(unitname: String) -> Unit:
 		if unit.name == unitname:
 			return unit
 	return null
+
+## returns an array of every grid position adjacent to an enemy.
+## Used for engagement mostly.
+func get_enemy_adjacent_positions(in_unit: Unit) -> Array[GridPosition]:
+	var u: Array[Unit] = enemy_units if in_unit.is_enemy == false else friendly_units
+	var ret_array: Array[GridPosition] = []
+	for unit in u:
+		ret_array.append_array(Utilities.get_adjacent_tiles_with_diagonal(unit))
+	return ret_array
+
+func get_enemy_positions(in_unit: Unit) -> Array[GridPosition]:
+	var u: Array[Unit] = enemy_units if in_unit.is_enemy == false else friendly_units
+	var ret_array: Array[GridPosition] = []
+	for unit in u:
+		ret_array.append(unit.get_grid_position())
+	return ret_array
 
 # Sets the action system reference for all units.
 func set_action_system_for_units(action_system: UnitActionSystem) -> void:

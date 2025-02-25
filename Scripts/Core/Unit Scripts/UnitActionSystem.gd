@@ -1,6 +1,8 @@
 class_name UnitActionSystem
 extends Node
 
+signal grid_position_selected(gridpos: GridPosition)
+
 # Reference to the currently selected unit
 @export var selected_unit: Unit
 
@@ -22,8 +24,11 @@ extends Node
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
 
 var is_busy: bool = false
+# This is true to allow selection of a grid square during a sub ability choice
+var sub_ability_choice: bool = false
 var proactive_action_taken: bool = false
 
+var gridpos_allowed: Array[GridPosition] = []
 
 static var instance: UnitActionSystem = null
 
@@ -45,18 +50,27 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if is_busy:
-		return
 
 	# Check if the mouse is over a specific UI element
 	var hovered_control = get_viewport().gui_get_hovered_control()
 	if hovered_control != null:
 		return
+	
+	
+	if is_busy and !sub_ability_choice:
+		return
 
 	if Input.is_action_just_pressed("left_mouse"):
+		
+		
 		if !TurnSystem.instance.is_player_turn or !TurnSystem.instance.combat_started:
 			#return
 			print_debug("Temporary Fix: is_action_just_pressed(left_mouse)")
+		
+		if sub_ability_choice:
+			handle_sub_grid_selected()
+			return
+		
 		handle_selected_ability()
 		# Attempt to select a unit
 		#if try_handle_unit_selection():
@@ -102,12 +116,39 @@ func check_ability_type_invalid(in_ability: Ability) -> bool:
 func on_ability_ended(ability: Ability) -> void:
 	print_debug("Ability Ended Test")
 	TurnSystem.instance.current_unit_turn.previous_ability = ability
+	GridSystemVisual.instance.hide_all_grid_positions()
 	SignalBus.next_phase.emit()
 	#CombatSystem.instance.handle_phase()
 
+## Function for handling managing sub choices in abilities, like choosing multiple targets in
+## a successful ricochet ability or a secondary choice like in the turning part of Outmaneuver
+func handle_ability_sub_gridpos_choice(in_gridpos_allowed: Array[GridPosition]) -> GridPosition:
+	sub_ability_choice = true
+	var gridvis_ref: GridSystemVisual = GridSystemVisual.instance
+	# First show the allowed grid positions on the grid
+	gridvis_ref.hide_all_grid_positions()
+	gridpos_allowed = in_gridpos_allowed
+	gridvis_ref.show_grid_positions(gridpos_allowed)
+	# Then wait for the position to be selected
+	var ret_pos: GridPosition = await grid_position_selected
+	# Then return the GridPosition and hide all the grid positions again
+	gridvis_ref.hide_all_grid_positions()
+	sub_ability_choice = false
+	gridpos_allowed = []
+	return ret_pos
+	
 
+func handle_sub_grid_selected() -> void:
+	
+	var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
+	if mouse_grid_position:
+		var grid_position: GridPosition = LevelGrid.get_grid_position(mouse_grid_position)
+		for gridpos in gridpos_allowed:
+			if gridpos.equals(grid_position):
+				grid_position_selected.emit(grid_position)
 
 # Handles unit selection via mouse click
+# Depreciated in current system
 func try_handle_unit_selection() -> bool:
 	# Perform raycast to detect units
 	var collider = mouse_world.get_mouse_raycast_result("collider")
@@ -132,6 +173,7 @@ func try_handle_unit_selection() -> bool:
 
 
 func on_new_grid_pos_hovered() -> void:
+	
 	update_move_path()
 
 
@@ -167,7 +209,7 @@ func update_move_path() -> void:
 	else:
 		# Not a move ability; update grid visuals normally.
 		GridSystemVisual.instance.clear_highlights()
-		GridSystemVisual.instance.update_grid_visual()
+	#	GridSystemVisual.instance.update_grid_visual()
 
 
 

@@ -15,10 +15,9 @@ func _init(unit1: Unit, unit2: Unit) -> void:
 func initialize_line(engagement_manager: Node) -> void:
 	line_fx = EngagementLineFX.new(units[0].chest_marker, units[1].chest_marker)
 	engagement_manager.add_child(line_fx)
-	line_fx.attach_to(engagement_manager)
+	line_fx.attach_to()
 	line_fx.is_active = true
 
 func remove_engagement() -> void:
 	line_fx.is_active = false
 	line_fx.remove()
-	self.free()

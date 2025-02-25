@@ -120,16 +120,31 @@ func get_cell_visual_from_gridpos(grid_position: GridPosition) -> GridSystemVisu
 func highlight_path(grid_positions: Array[GridPosition]) -> void:
 	# First, clear any previous highlight.
 	clear_highlights()
+	
+	var enemy_engagement_positions: Array[GridPosition] = (
+		UnitManager.instance.get_enemy_adjacent_positions
+		(TurnSystem.instance.current_unit_turn))
+	
+	var encounters_engagement: bool = false
 	for grid_position in grid_positions:
+		if !encounters_engagement:
+			if enemy_engagement_positions.has(grid_position):
+				encounters_engagement = true
 		var x: int = grid_position.x
 		var z: int = grid_position.z
 		# Check bounds.
 		if x >= 0 and x < LevelGrid.get_width() and z >= 0 and z < LevelGrid.get_height():
 			var cell: GridSystemVisualSingle = grid_visuals[x][z]
 			if cell:
+				# If the movement would encounter an engagement make it red
+				if encounters_engagement:
+					cell.highlight(Color.RED)
+					highlighted_path.append(cell)
+					break
 				# Set the cell color to light blue.
-				cell.highlight()
-				highlighted_path.append(cell)
+				else:
+					cell.highlight()
+					highlighted_path.append(cell)
 
 func clear_highlights() -> void:
 	for visual in highlighted_path:
@@ -191,6 +206,8 @@ func hide_grid_positions(grid_positions: Array) -> void:
 			grid_visuals[x][z].visible = false
 
 
+
+
 func update_grid_visual_pathfinding(grid_list: Array[GridPosition]):
 	if !grid_list.is_empty():
 		hide_all_grid_positions()
@@ -208,4 +225,3 @@ func update_grid_visual() -> void:
 			show_grid_positions(UnitActionSystem.instance
 			.selected_unit.ability_container.get_valid_ability_target_grid_position_list(selected_ability)
 			)
-		
