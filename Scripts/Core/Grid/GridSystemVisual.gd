@@ -84,8 +84,9 @@ func set_hovered_cell(grid_position: GridPosition) -> void:
 	if cell:
 		var grid_object: GridObject = LevelGrid.get_grid_object(grid_position)
 		var unit: Unit = grid_object.get_unit()
-		if unit:
-			if unit.is_enemy != TurnSystem.instance.current_unit_turn.is_enemy:
+		var current_unit_turn: Unit = TurnSystem.instance.current_unit_turn
+		if unit and current_unit_turn:
+			if unit.is_enemy != current_unit_turn.is_enemy:
 				cell._on_mouse_enter(Color.FIREBRICK)
 			elif unit == TurnSystem.instance.current_unit_turn:
 				cell._on_mouse_enter(Color.FOREST_GREEN)

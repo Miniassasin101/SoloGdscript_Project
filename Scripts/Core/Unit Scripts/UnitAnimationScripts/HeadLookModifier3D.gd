@@ -45,9 +45,13 @@ var look_target: Node3D = null
 
 var _current_tween: Tween = null
 
+func _ready() -> void:
+	set_modifier_active_and_target(false)
 
 func set_modifier_active_and_target(value: bool, target: Node3D = null) -> void:
 	set_look_target(target)
+	if target != null and look_target != null and look_target != target and value == true:
+		await set_modifier_active(false)
 	set_modifier_active(value)
 
 func set_look_target(target: Node3D = null) -> void:
@@ -72,15 +76,15 @@ func set_modifier_active(value: bool) -> void:
 		_current_tween = create_tween()
 		_current_tween.tween_property(self, "influence", 0.0, tween_time)
 		# ...then, when the tween finishes, mark the modifier as inactive.
-		_current_tween.connect("finished", Callable(self, "_on_inactive_tween_finished"))
+		_current_tween.finished.connect(_on_inactive_tween_finished)
+		await _current_tween.finished
+
 
 func _on_inactive_tween_finished() -> void:
 	active = false
 	_current_tween = null
 
-func _ready() -> void:
-	# Initialize influence to match the starting active state.
-	influence = 1.0 if active else 0.0
+
 
 
 func _process_modification() -> void:

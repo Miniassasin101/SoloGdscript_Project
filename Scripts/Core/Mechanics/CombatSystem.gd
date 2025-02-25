@@ -112,10 +112,7 @@ func generate_engagements() -> void:
 			if adjacent_tiles.has(unit_b.grid_position):
 				# Create and initialize a new engagement between the two units
 				# Only create a new engagement if one doesn't already exist.
-				if not engagement_exists(unit_a, unit_b):
-					var new_engagement = Engagement.new(unit_a, unit_b)
-					new_engagement.initialize_line(self)
-					engagements.append(new_engagement)
+				add_engagement(unit_a, unit_b)
 
 # Checks whether an engagement already exists between two units.
 func engagement_exists(unit_a: Unit, unit_b: Unit) -> bool:
@@ -141,6 +138,9 @@ func add_engagement(unit_a: Unit, unit_b: Unit) -> void:
 		Utilities.spawn_text_line(unit_a, "Engaged")
 		Utilities.spawn_text_line(unit_b, "Engaged")
 		SignalBus.on_ui_update.emit()
+		
+		unit_a.animator.look_at_toggle(unit_b.body.get_part_marker("head"))
+		unit_b.animator.look_at_toggle(unit_a.body.get_part_marker("head"))
 
 func remove_engagement(unit_a: Unit, unit_b: Unit) -> void:
 	var engagement: Engagement = get_engagement(unit_a, unit_b)
@@ -148,6 +148,8 @@ func remove_engagement(unit_a: Unit, unit_b: Unit) -> void:
 		engagement.remove_engagement()
 		engagements.erase(engagement)
 		SignalBus.on_ui_update.emit()
+		unit_a.animator.look_at_toggle()
+		unit_b.animator.look_at_toggle()
 
 func is_unit_engaged(unit: Unit) -> bool:
 	for engagement in engagements:

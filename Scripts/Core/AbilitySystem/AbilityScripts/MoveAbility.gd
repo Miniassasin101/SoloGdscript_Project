@@ -64,7 +64,9 @@ func try_activate(_event: ActivationEvent) -> void:
 		if can_end(event):
 			end_ability(event)
 			return
-
+	
+	var became_engaged: bool = false
+	
 	# Trim the path: stop the path as soon as a tile adjacent to an enemy is encountered.
 	var trimmed_grid_path: Array[GridPosition] = []
 	for grid_pos in grid_position_list:
@@ -72,6 +74,7 @@ func try_activate(_event: ActivationEvent) -> void:
 		if is_adjacent_to_enemy(grid_pos, unit):
 			# Recalcs path cost based off of trimmed path
 			path_package.path_cost = Pathfinding.instance.get_path_cost(unit.get_grid_position(), grid_pos)
+			became_engaged = true
 			break
 	
 	# Build the world position list from the trimmed grid path.
@@ -107,7 +110,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	
 	GridSystemVisual.instance.clear_highlights()
 	
-	if unit.current_gait >= Utilities.MovementGait.RUN:
+	if unit.current_gait >= Utilities.MovementGait.RUN or became_engaged:
 		unit.animator.rotate_unit_towards_facing(unit.facing)
 	
 	is_moving = false
@@ -218,7 +221,10 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 	var self_unit_pos: GridPosition = in_unit.get_grid_position()
 	if self_unit_pos == null:
 		return []
-
+	
+	if CombatSystem.instance.is_unit_engaged(in_unit):
+		return []
+	
 	var valid_positions: Array[GridPosition] = []
 	var max_range: float = float(max_move_distance) if use_max_move_distance else in_unit.get_max_move_left()
 	var gait: int = in_unit.current_gait

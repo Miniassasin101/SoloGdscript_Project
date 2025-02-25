@@ -168,6 +168,8 @@ func can_activate(_event: ActivationEvent) -> bool:
 
 func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
 	var in_unit: Unit = _event.unit
+	if !CombatSystem.instance.is_unit_engaged(in_unit):
+		return []
 	var self_unit_pos: GridPosition = in_unit.get_grid_position()
 	if self_unit_pos == null:
 		return []
