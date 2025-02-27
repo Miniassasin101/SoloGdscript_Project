@@ -129,6 +129,15 @@ func get_engagement(unit_a: Unit, unit_b: Unit) -> Engagement:
 			return engagement
 	return null
 
+func get_engaged_opponents(unit: Unit) -> Array[Unit]:
+	var ret_array: Array[Unit] = []
+	for engagement in CombatSystem.instance.engagements:
+		if engagement.units.has(unit):
+			for other_unit in engagement.units:
+				if other_unit != unit and not ret_array.has(other_unit):
+					ret_array.append(other_unit)
+	return ret_array
+
 func add_engagement(unit_a: Unit, unit_b: Unit) -> void:
 	if not engagement_exists(unit_a, unit_b):
 		var new_engagement = Engagement.new(unit_a, unit_b)
@@ -259,7 +268,8 @@ func prompt_special_effect_choice(event: ActivationEvent, abs_dif: int) -> Activ
 	var chosen_effects: Array[SpecialEffect] = await UIBus.effects_chosen
 	event.special_effects.append_array(chosen_effects)
 	for effect in chosen_effects:
-		effect.on_activated(event)
+		@warning_ignore("redundant_await")
+		await effect.on_activated(event)
 		if effect.activation_phase == effect.ActivationPhase.Initial and effect.can_apply(event):
 			@warning_ignore("redundant_await")
 			await effect.apply(event)
@@ -283,8 +293,10 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 
 	var attacker_success_level: int = Utilities.check_success_level(attacker_combat_skill, attacker_roll)
 	print_debug("Attacker Success Level: ", attacker_success_level)
-	if LevelDebug.instance.attacker_success_debug == true:
+	if LevelDebug.instance.attacker_success_debug:
 		attacker_success_level = 1
+	if LevelDebug.instance.attacker_fail_debug:
+		attacker_success_level = 0
 	# If attacker fails outright:
 	if attacker_success_level <= 0:
 		print_debug("Attacker missed.")
@@ -306,6 +318,14 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	if defender_wants_reaction:
 		defender_success_level = await reaction(target_unit, attacking_unit, ret_event)
 		#defender_success_level = 2
+		
+		if LevelDebug.instance.parry_fail_debug:
+			defender_success_level = 0
+	
+		if LevelDebug.instance.parry_success_debug:
+			defender_success_level = 1
+		
+		
 		show_success(target_unit, defender_success_level)
 
 		# If defender wins, determine parry effectiveness
@@ -326,8 +346,10 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		return ret_event
 
 	if LevelDebug.instance.parry_fail_debug:
-		ret_event.parry_successful = true
+		ret_event.parry_successful = false
 	
+	if LevelDebug.instance.parry_success_debug:
+		ret_event.parry_successful = true
 	
 	
 	

@@ -19,22 +19,28 @@ func duplicate_conditions() -> void:
 func apply_conditions_round_interval() -> void:
 	for condition in conditions:
 		if condition.application_interval == Condition.ApplicationInterval.PerRound:
-			if condition.can_apply():
+			if condition.can_apply(unit):
 				condition.apply(unit)
 
 func apply_conditions_turn_interval() -> void:
 	for condition in conditions:
 		if condition.application_interval == Condition.ApplicationInterval.PerTurn:
-			if condition.can_apply():
+			if condition.can_apply(unit):
 				condition.apply(unit)
 
 func apply_condition_by_name(condition_name: String) -> void:
 	for condition in conditions:
 		if condition.ui_name == condition_name:
-			if condition.can_apply():
+			if condition.can_apply(unit):
 				condition.apply(unit)
 				return
 
+func apply_condition_by_condition(condition: Condition) -> void:
+	for cond in conditions:
+		if condition == cond:
+			if cond.can_apply(unit):
+				condition.apply(unit)
+				return
 
 func apply_situational_modifier(attribute_value: int) -> int:
 	var highest_difficulty = Utilities.DIFFICULTY_GRADE.STANDARD  # Default grade
@@ -81,12 +87,32 @@ func can_use_ability_given_conditions(ability: Ability) -> bool:
 			return false
 	return true
 
+func can_add_condition_given_conditions(condition: Condition) -> bool:
+	var blocked_condition_types: Array[StringName] = []
+	for cond in conditions:
+		blocked_condition_types.append_array(condition.blocking_tags)
+	for block in blocked_condition_types:
+		if condition.tags_type.has(block):
+			return false
+	return true
 
+func modify_condition_given_conditions(condition: Condition) -> void:
+	for existing_condition in conditions:
+		if existing_condition.can_modify(condition):
+			existing_condition.modify(condition)
+			if existing_condition.application_interval == Condition.ApplicationInterval.PerModify:
+				if existing_condition.can_apply(unit):
+					existing_condition.apply(unit)
 
-func add_condition(condition: Condition) -> void:
+func add_condition(condition: Condition) -> bool:
 	if condition != null:
 		if !has_condition_by_condition(condition):
+			# Allow existing conditions to modify the new condition
+			modify_condition_given_conditions(condition)
 			conditions.append(condition)
+			return true
+	return false
+
 
 func remove_condition(condition: Condition) -> void:
 	if has_condition_by_condition(condition):

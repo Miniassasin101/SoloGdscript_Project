@@ -85,7 +85,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	var rotation_acceleration_timer = 0.3
 	var current_speed = 0.1
 	var start_timer = 0.1
-	
+
 
 	unit.animator.animate_movement_along_curve(move_speed, movement_curve, curve_length, 
 		acceleration_timer, rotation_acceleration_timer, stopping_distance, rotate_speed)
@@ -106,11 +106,11 @@ func try_activate(_event: ActivationEvent) -> void:
 	else:
 		event.successful = false
 	
-	UILayer.instance.unit_action_system_ui.action_button_container.set_visible(false)
+
 	
 	await handle_turning()
 	
-	UILayer.instance.unit_action_system_ui.action_button_container.set_visible(true)
+
 	
 	if can_end(event):
 		end_ability(event)

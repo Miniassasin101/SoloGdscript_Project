@@ -7,6 +7,8 @@ static var instance: LevelDebug = null
 @export var end_turn_debug: bool = true
 @export var control_enemy_debug: bool = false
 @export var attacker_success_debug: bool = false
+@export var attacker_fail_debug: bool = false
+@export var parry_success_debug: bool = false
 @export var parry_fail_debug: bool = false
 @export var auto_equip_debug: bool = false
 @export_category("Grid Debug")

@@ -1,23 +1,24 @@
-[gd_scene load_steps=12 format=3 uid="uid://bhyju5fqgh24h"]
+[gd_scene load_steps=13 format=3 uid="uid://bhyju5fqgh24h"]
 
 [ext_resource type="Script" path="res://OverworldManager.gd" id="1_5evqf"]
 [ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="1_mjhr2"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Overworld/OverworldDebug.gd" id="1_s6fyh"]
-[ext_resource type="PackedScene" uid="uid://be5s57q16s5rx" path="res://OverworldNode.tscn" id="4_mnobb"]
+[ext_resource type="Script" path="res://OverworldNode.gd" id="2_c068s"]
+[ext_resource type="PackedScene" uid="uid://nfxda7h5r7np" path="res://Hero_Game/Prefabs/OverworldPrefabs/OverworldNodePrefabs/NodeVisualTest.tscn" id="3_mwin2"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="5_mi23r"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Overworld/OverworldNodePath.gd" id="5_plp45"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="6_nf2ae"]
 [ext_resource type="Environment" uid="uid://c7cx2thxig2w6" path="res://Hero_Game/Scenes/TestEnvironment1.tres" id="7_3xw0a"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_57kun"]
 size = Vector2(30, 30)
 
-[sub_resource type="Curve3D" id="Curve3D_6mlte"]
-_data = {
-"points": PackedVector3Array(0, 0, 0, 0.781415, 0, -0.23307, 0, 0, 0, -0.626068, 0, 0.522465, 0.689098, 0, -0.575064, 3.12566, 0, -0.932279, -0.689098, 0, 0.575064, 0.626068, 0, -0.522465, 4.87434, 0, -4.06772, 0.781415, 0, -0.23307, 0, 0, 0, 8, 0, -5),
-"tilts": PackedFloat32Array(0, 0, 0, 0)
-}
-point_count = 4
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m8uvc"]
+albedo_color = Color(0.912, 0.96, 0, 1)
+billboard_keep_scale = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roeb1"]
+albedo_color = Color(0.96, 0.0192, 0.0192, 1)
+billboard_keep_scale = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vs4qv"]
 
@@ -31,24 +32,42 @@ overworld_manager = NodePath("../OverworldManager")
 mesh = SubResource("PlaneMesh_57kun")
 surface_material_override/0 = ExtResource("1_mjhr2")
 
-[node name="OverworldManager" type="Node" parent="." node_paths=PackedStringArray("overworld_nodes", "overworld_node_paths")]
+[node name="OverworldManager" type="Node" parent="." node_paths=PackedStringArray("overworld_nodes")]
 script = ExtResource("1_5evqf")
-overworld_nodes = [null, NodePath("OverworldNode"), NodePath("OverworldNode2"), null]
-overworld_node_paths = [NodePath("OverworldNodePath1")]
+overworld_nodes = [NodePath("OverworldNode")]
 
-[node name="OverworldNode" parent="OverworldManager" instance=ExtResource("4_mnobb")]
-node_visual_color = Color(0.8, 0.8, 0.8, 1)
+[node name="OverworldNode" type="Node3D" parent="OverworldManager" node_paths=PackedStringArray("node_visual")]
+script = ExtResource("2_c068s")
+node_ui_name = "Alterna"
+node_visual = NodePath("MeshInstance3D")
 
-[node name="OverworldNode2" parent="OverworldManager" instance=ExtResource("4_mnobb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -5)
-node_ui_name = "Orkus"
-node_visual_color = Color(0.77, 0, 0.282333, 1)
+[node name="MeshInstance3D" parent="OverworldManager/OverworldNode" instance=ExtResource("3_mwin2")]
+transform = Transform3D(0.9, 0, 0, 0, 1.95, 0, 0, 0, 0.9, 0, 0.173164, 0)
 
-[node name="OverworldNodePath1" type="Node" parent="OverworldManager" node_paths=PackedStringArray("overworld_node_1", "overworld_node_2")]
-script = ExtResource("5_plp45")
-overworld_node_1 = NodePath("../OverworldNode")
-overworld_node_2 = NodePath("../OverworldNode2")
-path_curve = SubResource("Curve3D_6mlte")
+[node name="Label3D" type="Label3D" parent="OverworldManager/OverworldNode"]
+transform = Transform3D(2.60263, 0, 0, 0, 2.60263, 0, 0, 0, 2.60263, 0, 1.14324, 0)
+pixel_size = 0.003
+billboard = 1
+double_sided = false
+text = "Node Name"
+
+[node name="OverworldNode3" type="Node3D" parent="OverworldManager" node_paths=PackedStringArray("node_visual")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
+script = ExtResource("2_c068s")
+node_ui_name = "Alterna"
+node_visual = NodePath("MeshInstance3D")
+
+[node name="MeshInstance3D" parent="OverworldManager/OverworldNode3" instance=ExtResource("3_mwin2")]
+surface_material_override/0 = SubResource("StandardMaterial3D_m8uvc")
+
+[node name="OverworldNode2" type="Node3D" parent="OverworldManager" node_paths=PackedStringArray("node_visual")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -4)
+script = ExtResource("2_c068s")
+node_ui_name = "Ruins"
+node_visual = NodePath("MeshInstance3D")
+
+[node name="MeshInstance3D" parent="OverworldManager/OverworldNode2" instance=ExtResource("3_mwin2")]
+surface_material_override/0 = SubResource("StandardMaterial3D_roeb1")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 script = ExtResource("5_mi23r")

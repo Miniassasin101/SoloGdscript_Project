@@ -223,7 +223,9 @@ func test_v() -> void:
 		#add_armor()
 		#play_weapon_spin_anim()
 		#drop_equipped_weapon()
-		create_engagement()
+		#create_engagement()
+		apply_knockback()
+		
 		pass
 
 
@@ -243,6 +245,12 @@ func test_c() -> void:
 		#spawn_text_at_bodypart()
 		#apply_condition()
 		pass
+
+func apply_knockback() -> void:
+	var knock_cond: KnockbackCondition = preload("res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/KnockbackConditionResource.tres")
+	unit.conditions_manager.add_condition(knock_cond) 
+		
+	knock_cond.apply(unit)
 
 func create_engagement() -> void:
 	if unit and unit_2:

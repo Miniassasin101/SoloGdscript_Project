@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=72 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -49,14 +49,9 @@
 [ext_resource type="Resource" uid="uid://b7wui72oveng1" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ForceFailureEffectResource.tres" id="31_4yuhs"]
 [ext_resource type="Resource" uid="uid://cqqeph0m4h0ka" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ImpaleEffectResource.tres" id="32_npgv8"]
 [ext_resource type="Resource" uid="uid://bspw2bpavewje" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MaximizeDamageEffectResource.tres" id="33_mywpm"]
-[ext_resource type="Resource" uid="uid://je1rhqiebrcx" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/OverextendOpponentEffectResource.tres" id="34_lu63c"]
 [ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="35_n58oi"]
-[ext_resource type="Resource" uid="uid://cirmysa48hhcs" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/PressAdvantageEffectResource.tres" id="35_t123n"]
 [ext_resource type="PackedScene" uid="uid://cvuecvfamgpwe" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonUI.tscn" id="36_53e25"]
-[ext_resource type="Resource" uid="uid://tiwgsot8o62f" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BashEffectResource.tres" id="36_puq5n"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_Grid_08.png" id="36_vdge6"]
-[ext_resource type="Resource" uid="uid://cqieibalk7a7b" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/WithdrawEffectResource.tres" id="37_c0lde"]
-[ext_resource type="Resource" uid="uid://bdjdjaquppxcv" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/StandFastEffectResource.tres" id="38_qso2c"]
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="39_yrlso"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
 [ext_resource type="Shader" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
@@ -168,8 +163,6 @@ size = Vector2(2, 2)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
-attacker_success_debug = true
-parry_fail_debug = true
 auto_equip_debug = true
 grid_dimensions = Vector2(15, 13)
 
@@ -193,10 +186,9 @@ directional_shadow_max_distance = 27.1
 script = ExtResource("1_fqt43")
 GRID_CELL_VISUAL = ExtResource("4_85pbp")
 
-[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit", "unit_2")]
+[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit")]
 script = ExtResource("3_vw71g")
 unit = NodePath("../UnitManager/DawnUnit")
-unit_2 = NodePath("../UnitManager/DawnUnit2")
 animlib = Array[Animation]([ExtResource("5_o3n5o")])
 special_effects = Array[ExtResource("18_hnk25")]([SubResource("Resource_vhtwd")])
 
@@ -288,7 +280,7 @@ unit_action_system = NodePath("../UnitActionSystem")
 sword_test = ExtResource("17_gypti")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 8, 0, 10)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 8, 0, 8)
 ui_name = "Blue"
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
@@ -308,7 +300,7 @@ unit_manager = NodePath("../UnitManager")
 script = ExtResource("16_f3oa4")
 unit_action_system_ui = NodePath("../UILayer/UnitActionSystemUI")
 book_keeping_system = NodePath("BookKeepingSystem")
-special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), ExtResource("21_kkt7y"), ExtResource("22_6ytw6"), ExtResource("23_xra60"), ExtResource("24_h0tua"), ExtResource("26_c6h62"), ExtResource("27_ivlyn"), ExtResource("29_itb1b"), ExtResource("30_hdg1r"), ExtResource("31_4yuhs"), ExtResource("32_npgv8"), ExtResource("33_mywpm"), ExtResource("34_lu63c"), ExtResource("35_t123n"), ExtResource("36_puq5n"), ExtResource("37_c0lde"), ExtResource("38_qso2c"), SubResource("Resource_c77yv")])
+special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), ExtResource("21_kkt7y"), ExtResource("22_6ytw6"), ExtResource("23_xra60"), ExtResource("24_h0tua"), ExtResource("26_c6h62"), ExtResource("27_ivlyn"), ExtResource("29_itb1b"), ExtResource("30_hdg1r"), ExtResource("31_4yuhs"), ExtResource("32_npgv8"), ExtResource("33_mywpm"), SubResource("Resource_c77yv")])
 
 [node name="BookKeepingSystem" type="Node" parent="CombatSystem" node_paths=PackedStringArray("combat_system")]
 script = ExtResource("21_ktx83")

@@ -150,6 +150,14 @@ func animate_movement_along_curve(move_speed_in: float, movement_curve_in: Curve
 	is_moving = true
 	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsWalking", true)
 
+
+func move_and_slide(target_pos: GridPosition, slide_duration: float = 0.8) -> void:
+	var target_global_pos: Vector3 = LevelGrid.get_world_position(target_pos)
+	var tween: Tween = get_tree().create_tween()
+	tween.tween_property(unit, "global_position", target_global_pos, slide_duration)
+	await tween.finished
+
+
 func equipment_anim_check(in_unit: Unit) -> void:
 	if in_unit != unit:
 		return

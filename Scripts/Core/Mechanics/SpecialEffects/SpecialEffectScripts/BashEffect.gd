@@ -53,12 +53,12 @@ func apply_effect(event: ActivationEvent) -> void:
 	var target_unit: Unit = event.target_unit
 
 	if target_unit:
-		var knock_cond: Condition = knockback_condition.duplicate()
+		var knock_cond: KnockbackCondition = knockback_condition.duplicate()
+		knock_cond.knockback_direction = event.unit.facing
 		# get grid position of direction based off of origin.
 		# The condition will handle moving the unit with tweens and stopping them
 		# if they are going to move into an impassable square.
 		# Knockback condition will use a dummy function for now to represent falling prone upon hitting a wall
 		target_unit.conditions_manager.add_condition(knock_cond) 
+		
 		knock_cond.apply(target_unit)
-
-	Utilities.spawn_text_line(target_unit, "Knocked Back", Color.FIREBRICK)

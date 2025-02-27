@@ -10,6 +10,7 @@ var astar: CustomAStar3D
 
 static var instance: Pathfinding = null
 
+var disabled_points: Array[int] = []
 
 
 func _ready() -> void:
@@ -66,6 +67,44 @@ func find_path(start_grid_position: GridPosition, end_grid_position: GridPositio
 				grid_path.append(grid_position)
 
 	return grid_path
+
+
+
+
+func find_path_ignoring_obstacles(start_grid_position: GridPosition, end_grid_position: GridPosition) -> Array[GridPosition]:
+	# Get the point IDs in AStar3D for the start and end positions.
+	var start_id = get_grid_point_id(start_grid_position)     #astar.get_closest_point(pathfinding_grid_system.get_world_position(start_grid_position.x, start_grid_position.z))
+	var end_id = get_grid_point_id(end_grid_position)    #astar.get_closest_point(pathfinding_grid_system.get_world_position(end_grid_position.x, end_grid_position.z))
+	
+	var currently_disabled: Array[int] = disabled_points
+	for point_id in currently_disabled:
+		astar.set_point_disabled(point_id, false)
+	
+	
+	
+	
+	
+	# Initialize an empty array for the path.
+	var grid_path: Array[GridPosition] = []
+
+	if start_id != -1 and end_id != -1:
+		# Get the path of point IDs from AStar3D.
+		var id_path = astar.get_id_path(start_id, end_id, false)
+
+		# Convert the point IDs to GridPosition instances and add them to the path array.
+		for point_id in id_path:
+			var point_position = astar.get_point_position(point_id)
+			var grid_position = pathfinding_grid_system.get_grid_position(point_position)
+			if grid_position != null:
+				grid_path.append(grid_position)
+	for point_id in currently_disabled:
+		astar.set_point_disabled(point_id, true)
+	return grid_path
+
+
+
+
+
 
 # Function to set up the AStar3D grid.
 func setup_astar() -> void:
@@ -139,7 +178,7 @@ func is_point_in_range(start_grid_position: GridPosition, end_grid_position: Gri
 	var end_id = get_grid_point_id(end_grid_position)
 	return astar.get_point_path_length(start_id, end_id) <= max_distance
 
-#Note: Should also add a way later to just update a single point by passing in a single position or gridobject
+
 func update_astar_walkable() -> void:
 	# Iterate through all grid positions in the grid system
 	for x in range(pathfinding_grid_system.get_width()):
@@ -156,25 +195,34 @@ func update_astar_walkable() -> void:
 						# Enable the point if it's walkable
 						if astar.has_point(point_id):
 							astar.set_point_disabled(point_id, false)
+							disabled_points.erase(point_id)
 					else:
 						# Disable the point if it's not walkable
 						if astar.has_point(point_id):
 							astar.set_point_disabled(point_id, true)
+							disabled_points.append(point_id)
+
 
 func is_walkable(grid_position: GridPosition) -> bool:
 	return pathfinding_grid_system.get_grid_object(grid_position).is_walkable
+
+func is_grid_position_disabled(grid_position: GridPosition) -> bool:
+	var point_id = get_grid_point_id(grid_position)
+	return astar.is_point_disabled(point_id)
 
 # Disables a point in AStar3D to make it non-traversable.
 func disable_point(grid_position: GridPosition) -> void:
 	var point_id = get_grid_point_id(grid_position)
 	if astar.has_point(point_id):
 		astar.set_point_disabled(point_id, true)
+		disabled_points.append(point_id)
 
 # Enables a point in AStar3D to make it traversable again.
 func enable_point(grid_position: GridPosition) -> void:
 	var point_id = get_grid_point_id(grid_position)
 	if astar.has_point(point_id):
 		astar.set_point_disabled(point_id, false)
+		disabled_points.erase(point_id)
 
 
 func disable_grid_positions(pos_list: Array[GridPosition]) -> void:
@@ -182,12 +230,14 @@ func disable_grid_positions(pos_list: Array[GridPosition]) -> void:
 		var point_id = get_grid_point_id(gp)
 		if astar.has_point(point_id):
 			astar.set_point_disabled(point_id, true)
+			disabled_points.append(point_id)
 
 func enable_grid_positions(pos_list: Array[GridPosition]) -> void:
 	for gp in pos_list:
 		var point_id = get_grid_point_id(gp)
 		if astar.has_point(point_id):
 			astar.set_point_disabled(point_id, false)
+			disabled_points.erase(point_id)
 
 
 
@@ -199,6 +249,8 @@ func temporarily_disable(pos_list: Array[GridPosition]) -> Array[GridPosition]:
 		if astar.has_point(point_id) and not astar.is_point_disabled(point_id):
 			astar.set_point_disabled(point_id, true)
 			actually_disabled.append(gp)
+			disabled_points.append(point_id)
+
 	return actually_disabled
 
 func reenable_positions(pos_list: Array[GridPosition]) -> void:
@@ -206,6 +258,7 @@ func reenable_positions(pos_list: Array[GridPosition]) -> void:
 		var point_id = get_grid_point_id(gp)
 		if astar.has_point(point_id):
 			astar.set_point_disabled(point_id, false)
+			disabled_points.erase(point_id)
 
 
 
@@ -268,3 +321,4 @@ class CustomAStar3D extends AStar3D:
 		if abs(diff.x) > 0 and abs(diff.z) > 0:
 			return 1.41 * terrain_cost  # Diagonal movement cost
 		return 1.0 * terrain_cost  # Horizontal or vertical movement cost
+	

@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="BraceAbility" load_steps=4 format=3 uid="uid://bk2recos4pjqk"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/BracingCondition.gd" id="1_gkiat"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/BraceAbility.gd" id="1_nkqmt"]
+
+[sub_resource type="Resource" id="Resource_wu4uj"]
+script = ExtResource("1_gkiat")
+knockback_multiplier = 0.5
+remove_on_modify = false
+ui_name = "bracing"
+condition_level = 0
+application_interval = 0
+tags_type = Array[StringName]([])
+blocking_tags = Array[StringName]([])
+is_situational_modifier = false
+situational_modifier = 2
+
+[resource]
+script = ExtResource("1_nkqmt")
+ap_cost = 1
+bracing_condition = SubResource("Resource_wu4uj")
+ui_name = "Brace"
+movement_gait = 0
+cooldown_duration = 0.0
+cooldown_continuos = false
+grant_automatic = true
+grant_tags = Array[String]([])
+grant_tags_required = Array[String]([])
+tags_type = Array[String](["action"])
+tags_activation = Array[String]([])
+tags_activation_required = Array[String]([])
+tags_block = Array[String]([])
+tags_cancellation_required = Array[String]([])
+tags_cooldown_start = Array[String]([])
+tags_cooldown_end = Array[String]([])
+tags_end_blocking = Array[String]([])
+tags_to_remove_on_activation = Array[String]([])
+tags_to_remove_on_block = Array[String]([])
+tags_to_remove_on_cancellation = Array[String]([])
+tags_to_remove_on_cooldown_start = Array[String]([])
+tags_to_remove_on_cooldown_end = Array[String]([])
+tags_to_remove_on_end = Array[String]([])

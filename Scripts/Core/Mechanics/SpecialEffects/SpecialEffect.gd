@@ -2,7 +2,8 @@ class_name SpecialEffect extends Resource
 
 signal effect_finished
 
-enum ActivationPhase {Initial, PostDamage}
+# Postresolution occurs right before the end of the 
+enum ActivationPhase {Initial, PostDamage, Postresolution}
 
 @export var ui_name: StringName
 

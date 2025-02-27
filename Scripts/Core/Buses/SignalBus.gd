@@ -71,3 +71,5 @@ signal remove_unit(unit: Unit)
 signal add_unit(unit: Unit)
 
 signal obstacles_changed
+
+signal unit_moved_position(unit: Unit)

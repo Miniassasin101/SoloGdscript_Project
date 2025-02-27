@@ -123,6 +123,12 @@ func on_ability_ended(ability: Ability) -> void:
 ## Function for handling managing sub choices in abilities, like choosing multiple targets in
 ## a successful ricochet ability or a secondary choice like in the turning part of Outmaneuver
 func handle_ability_sub_gridpos_choice(in_gridpos_allowed: Array[GridPosition]) -> GridPosition:
+	var action_container: Container = UILayer.instance.unit_action_system_ui.action_button_container
+	var was_action_visible: bool = action_container.is_visible()
+	action_container.set_visible(false)
+	var gait_container: Container = UILayer.instance.unit_action_system_ui.gait_button_container
+	var was_gait_visible: bool = gait_container.is_visible()
+	UILayer.instance.unit_action_system_ui.gait_button_container.set_visible(false)
 	sub_ability_choice = true
 	var gridvis_ref: GridSystemVisual = GridSystemVisual.instance
 	# First show the allowed grid positions on the grid
@@ -135,6 +141,10 @@ func handle_ability_sub_gridpos_choice(in_gridpos_allowed: Array[GridPosition]) 
 	gridvis_ref.hide_all_grid_positions()
 	sub_ability_choice = false
 	gridpos_allowed = []
+	if was_action_visible:
+		action_container.set_visible(true)
+	if was_gait_visible:
+		gait_container.set_visible(true)
 	return ret_pos
 	
 

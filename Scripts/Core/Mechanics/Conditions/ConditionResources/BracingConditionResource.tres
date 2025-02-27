@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BracingCondition" load_steps=2 format=3 uid="uid://d38vfxdvsm1ts"]
+
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/BracingCondition.gd" id="1_trcol"]
+
+[resource]
+script = ExtResource("1_trcol")
+knockback_multiplier = 0.5
+remove_on_modify = false
+ui_name = "bracing"
+condition_level = 0
+application_interval = 0
+tags_type = Array[StringName]([])
+blocking_tags = Array[StringName]([])
+is_situational_modifier = false
+situational_modifier = 2

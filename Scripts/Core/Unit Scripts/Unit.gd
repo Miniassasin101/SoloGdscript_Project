@@ -117,6 +117,7 @@ func update_grid_position() -> void:
 		# Notify the level grid that the unit has moved.
 		LevelGrid.unit_moved_grid_position(self, grid_position, new_grid_position)
 		grid_position = new_grid_position
+		SignalBus.unit_moved_position.emit()
 		CombatSystem.instance.update_engagements_for_unit(self)
 		
 
