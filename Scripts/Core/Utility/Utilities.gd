@@ -59,6 +59,32 @@ const DIFFICULTY_GRADE_MULTIPLIER = {
 	DIFFICULTY_GRADE.HOPELESS: 0.0,
 }
 
+
+# An enum to describe the relative positions.
+enum RelativePosition { FRONT, RIGHT_SIDE, LEFT_SIDE, BACK, UNKNOWN }
+
+
+# This helper returns the relative position of focus from relative.
+# Whoever is calling this is the focus.
+func get_unit_relative_position(focus_unit: Unit, relative_unit: Unit) -> RelativePosition:
+	var relative_pos: GridPosition = relative_unit.get_grid_position()
+	
+	var front_focus: Array[GridPosition] = get_front_tiles(focus_unit)
+	var back_focus: Array[GridPosition] = get_back_tiles(focus_unit)
+	var right_focus: GridPosition = get_right_side_tile(focus_unit)
+	var left_focus: GridPosition = get_left_side_tile(focus_unit)
+	if front_focus.has(relative_pos):
+		return RelativePosition.FRONT
+	elif back_focus.has(relative_pos):
+		return RelativePosition.BACK
+	elif right_focus.equals(relative_pos):
+		return RelativePosition.RIGHT_SIDE
+	elif left_focus.equals(relative_pos):
+		return RelativePosition.LEFT_SIDE
+	return RelativePosition.UNKNOWN
+
+
+
 func get_adjacent_tiles_no_diagonal(unit: Unit) -> Array[GridPosition]:
 	var ret_tiles: Array[GridPosition] = []
 	ret_tiles.append(get_back_tile(unit))

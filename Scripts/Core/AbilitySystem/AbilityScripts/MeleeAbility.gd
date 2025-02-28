@@ -89,6 +89,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	# Optionally end the ability if everything is done.
 	if can_end(event):
 		event.successful = true
+		CombatSystem.instance.on_attack_ended(event)
 		end_ability(event)
 	
 	await unit.get_tree().create_timer(2.0).timeout

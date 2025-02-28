@@ -28,6 +28,12 @@ func apply_conditions_turn_interval() -> void:
 			if condition.can_apply(unit):
 				condition.apply(unit)
 
+func apply_conditions_attack_end_interval() -> void:
+	for condition in conditions:
+		if condition.application_interval == Condition.ApplicationInterval.PerAttackEnd:
+			if condition.can_apply(unit):
+				condition.apply(unit)
+
 func apply_condition_by_name(condition_name: String) -> void:
 	for condition in conditions:
 		if condition.ui_name == condition_name:

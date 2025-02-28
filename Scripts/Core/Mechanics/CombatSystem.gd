@@ -17,6 +17,9 @@ var initiative_order: Array[Unit] = []
 @export var book_keeping_system: BookKeepingSystem
 @export_category("Special Effects")
 @export var special_effects: Array[SpecialEffect]
+@export_category("Conditions")
+@export var facing_penalty_condition: FacingPenaltyCondition
+
 
 var engagements: Array[Engagement]
 
@@ -88,6 +91,13 @@ func end_turn(unit: Unit) -> void:
 	#transition_phase(TurnPhase.ACTION_PHASE, TurnSystem.instance.current_unit_turn)
 	# Proceed to the next unit in the initiative order or other logic
 	#SignalBus.on_turn_ended.emit()
+
+
+func on_attack_ended(event: ActivationEvent) -> void:
+	var units: Array[Unit] = [event.unit, event.target_unit]
+	for unit in units:
+		unit.conditions_manager.apply_conditions_attack_end_interval()
+
 
 func generate_engagements() -> void:
 	# Clear any previous engagements
@@ -245,6 +255,7 @@ func reaction(reacting_unit: Unit, attacking_unit: Unit, ret_event: ActivationEv
 	# After activation, we assume reaction is a skill roll. In Mythras:
 	# For example, if parry: skill = combat_skill
 	# If evade: skill = evade skill
+	determine_defender_facing_penalty(ret_event)
 	var defend_skill_value = reacting_unit.get_attribute_after_sit_mod("combat_skill")
 	var defending_roll = Utilities.roll(100)
 	ret_event.defender_roll = defending_roll
@@ -277,6 +288,82 @@ func prompt_special_effect_choice(event: ActivationEvent, abs_dif: int) -> Activ
 	
 
 
+func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
+	if !event.weapon:
+		return
+	var penalty_cond: FacingPenaltyCondition = facing_penalty_condition.duplicate()
+	if event.weapon.hands == 2: # Logic for all two handed weapons
+		var relative: int = Utilities.get_unit_relative_position(event.unit, event.target_unit)
+		if relative == Utilities.RelativePosition.FRONT:
+			return
+		elif (relative == Utilities.RelativePosition.RIGHT_SIDE) or\
+		(relative == Utilities.RelativePosition.LEFT_SIDE):
+			penalty_cond.situational_modifier = 3 # Hard
+			event.unit.conditions_manager.add_condition(penalty_cond) 
+			return
+		elif relative == Utilities.RelativePosition.BACK:
+			# FIXME: Make it change based off if attacker or defender
+			penalty_cond.situational_modifier = 4 # Hard
+			event.unit.conditions_manager.add_condition(penalty_cond) 
+			return
+	
+	# FIXME: Make it so that it checks to see which hand the weapon is equipped in
+	elif event.weapon.hands == 1: # Logic for all one handed weapons
+		push_error("One handed weapons not set up yet")
+		var relative: int = Utilities.get_unit_relative_position(event.unit, event.target_unit)
+		if relative == Utilities.RelativePosition.FRONT or\
+		(relative == Utilities.RelativePosition.LEFT_SIDE):
+			return
+		elif (relative == Utilities.RelativePosition.RIGHT_SIDE) :
+			penalty_cond.situational_modifier = 3 # Hard
+			event.unit.conditions_manager.add_condition(penalty_cond) 
+			return
+		elif relative == Utilities.RelativePosition.BACK:
+			# FIXME: Make it change based off if attacker or defender
+			penalty_cond.situational_modifier = 4 # Hard
+			event.unit.conditions_manager.add_condition(penalty_cond) 
+			return
+
+
+func determine_defender_facing_penalty(event: ActivationEvent) -> void:
+	if !event.weapon:
+		return
+	var penalty_cond: FacingPenaltyCondition = facing_penalty_condition.duplicate()
+	if event.weapon.hands == 2: # Logic for all two handed weapons
+		var relative: int = Utilities.get_unit_relative_position(event.target_unit, event.unit)
+		if relative == Utilities.RelativePosition.FRONT:
+			return
+		elif (relative == Utilities.RelativePosition.RIGHT_SIDE) or\
+		(relative == Utilities.RelativePosition.LEFT_SIDE):
+			penalty_cond.situational_modifier = 3 # Hard
+			event.target_unit.conditions_manager.add_condition(penalty_cond) 
+			return
+		elif relative == Utilities.RelativePosition.BACK:
+			# FIXME: Make it change based off if attacker or defender
+			penalty_cond.situational_modifier = 5 # Herculean
+			event.target_unit.conditions_manager.add_condition(penalty_cond) 
+			return
+	
+	# FIXME: Make it so that it checks to see which hand the weapon is equipped in
+	elif event.weapon.hands == 1: # Logic for all one handed weapons
+		push_error("One handed weapons not set up yet")
+		var relative: int = Utilities.get_unit_relative_position(event.unit, event.target_unit)
+		if relative == Utilities.RelativePosition.FRONT or\
+		(relative == Utilities.RelativePosition.LEFT_SIDE):
+			return
+		elif (relative == Utilities.RelativePosition.RIGHT_SIDE) :
+			penalty_cond.situational_modifier = 3 # Hard
+			event.target_unit.conditions_manager.add_condition(penalty_cond) 
+			return
+		elif relative == Utilities.RelativePosition.BACK:
+			# FIXME: Make it change based off if attacker or defender
+			penalty_cond.situational_modifier = 4 # Formidable
+			event.target_unit.conditions_manager.add_condition(penalty_cond) 
+			return
+
+
+
+
 func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var weapon: Weapon = event.weapon
 	var attacking_unit: Unit = event.unit
@@ -285,6 +372,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var ret_event: ActivationEvent = event
 
 
+	determine_attacker_facing_penalty(event)
 	var attacker_combat_skill = attacking_unit.get_attribute_after_sit_mod("combat_skill")
 	var attacker_roll: int = Utilities.roll(100)
 	print_debug("Attacker Combat Skill: ", attacker_combat_skill)

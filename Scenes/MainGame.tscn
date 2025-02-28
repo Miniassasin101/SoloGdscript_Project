@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=78 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -57,6 +57,7 @@
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_Grid_08.png" id="36_vdge6"]
 [ext_resource type="Resource" uid="uid://cqieibalk7a7b" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/WithdrawEffectResource.tres" id="37_c0lde"]
 [ext_resource type="Resource" uid="uid://bdjdjaquppxcv" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/StandFastEffectResource.tres" id="38_qso2c"]
+[ext_resource type="Resource" uid="uid://q3sk2uy7wd4u" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/FacingPenaltyConditionResource.tres" id="39_me7ee"]
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="39_yrlso"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
 [ext_resource type="Shader" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
@@ -309,6 +310,7 @@ script = ExtResource("16_f3oa4")
 unit_action_system_ui = NodePath("../UILayer/UnitActionSystemUI")
 book_keeping_system = NodePath("BookKeepingSystem")
 special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), ExtResource("21_kkt7y"), ExtResource("22_6ytw6"), ExtResource("23_xra60"), ExtResource("24_h0tua"), ExtResource("26_c6h62"), ExtResource("27_ivlyn"), ExtResource("29_itb1b"), ExtResource("30_hdg1r"), ExtResource("31_4yuhs"), ExtResource("32_npgv8"), ExtResource("33_mywpm"), ExtResource("34_lu63c"), ExtResource("35_t123n"), ExtResource("36_puq5n"), ExtResource("37_c0lde"), ExtResource("38_qso2c"), SubResource("Resource_c77yv")])
+facing_penalty_condition = ExtResource("39_me7ee")
 
 [node name="BookKeepingSystem" type="Node" parent="CombatSystem" node_paths=PackedStringArray("combat_system")]
 script = ExtResource("21_ktx83")

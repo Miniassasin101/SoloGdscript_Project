@@ -54,6 +54,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	
 	if can_end(event):
 		event.successful = true
+		CombatSystem.instance.on_attack_ended(event)
 		end_ability(event)
 	
 	# Reset the positionings of the user and target
