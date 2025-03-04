@@ -43,6 +43,12 @@ func try_activate(_event: ActivationEvent) -> void:
 	#await unit.animator.movement_completed
 	await rotate_unit_towards_target_enemy(event)
 	animator.toggle_slowdown(1.3)
+	var weapon: Weapon = unit.equipment.get_equipped_weapon()
+	if weapon != null:
+		parry_animation_part_1 = weapon.parry_animation_part_1
+		parry_animation_reset = weapon.parry_animation_part_2
+		parry_animation_idle = weapon.parry_animation_idle
+		
 	await animator.play_animation_by_name(parry_animation_part_1.resource_name) # Always be careful to wait for the animation to complete
 	animator.toggle_slowdown()
 	animator.play_animation_by_name(parry_animation_idle.resource_name)

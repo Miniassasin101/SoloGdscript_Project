@@ -22,10 +22,10 @@
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
 [ext_resource type="Script" path="res://Hero_Game/Scenes/ObjectManager.gd" id="12_qi25r"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/CombatSystem.gd" id="16_f3oa4"]
-[ext_resource type="Resource" uid="uid://cxk0rx8ecss31" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/SwordTest.tres" id="17_gypti"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffect.gd" id="18_hnk25"]
+[ext_resource type="Resource" uid="uid://b6eu0ekmy47qr" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/BowTest.tres" id="18_tirn3"]
 [ext_resource type="Resource" uid="uid://cjxj1gnefr71c" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/AccidentalInjuryEffectResource.tres" id="19_xdtf5"]
 [ext_resource type="Script" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
 [ext_resource type="Script" path="res://Hero_Game/Scenes/UILayer.gd" id="21_3ffgk"]
@@ -54,7 +54,7 @@
 [ext_resource type="Resource" uid="uid://cirmysa48hhcs" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/PressAdvantageEffectResource.tres" id="35_t123n"]
 [ext_resource type="PackedScene" uid="uid://cvuecvfamgpwe" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonUI.tscn" id="36_53e25"]
 [ext_resource type="Resource" uid="uid://tiwgsot8o62f" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BashEffectResource.tres" id="36_puq5n"]
-[ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_Grid_08.png" id="36_vdge6"]
+[ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_Grid_08.png" id="36_vdge6"]
 [ext_resource type="Resource" uid="uid://cqieibalk7a7b" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/WithdrawEffectResource.tres" id="37_c0lde"]
 [ext_resource type="Resource" uid="uid://bdjdjaquppxcv" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/StandFastEffectResource.tres" id="38_qso2c"]
 [ext_resource type="Resource" uid="uid://q3sk2uy7wd4u" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/FacingPenaltyConditionResource.tres" id="39_me7ee"]
@@ -286,7 +286,7 @@ script = ExtResource("8_kmwtl")
 [node name="UnitManager" type="Node" parent="." node_paths=PackedStringArray("unit_action_system")]
 script = ExtResource("10_iw061")
 unit_action_system = NodePath("../UnitActionSystem")
-sword_test = ExtResource("17_gypti")
+sword_test = ExtResource("18_tirn3")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 8, 0, 10)

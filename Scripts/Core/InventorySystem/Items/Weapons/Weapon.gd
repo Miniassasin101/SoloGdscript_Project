@@ -8,6 +8,11 @@ class_name Weapon extends Item
 @export var die_type: int = 6
 @export var die_number: int = 1
 @export var flat_damage: int = 0
+@export_subgroup("Animations")
+@export var idle_animation: Animation = null
+@export var parry_animation_part_1: Animation = null
+@export var parry_animation_part_2: Animation = null
+@export var parry_animation_idle: Animation = null
 @export_subgroup("")
 @export_enum("Small", "Medium", "Large", "Huge", "Enormous") var size: int = 1
 @export_enum("Touch", "Short", "Medium", "Long", "Very Long") var reach: int = 0

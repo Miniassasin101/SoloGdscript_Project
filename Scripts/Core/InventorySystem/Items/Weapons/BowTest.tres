@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=7 format=3 uid="uid://b6eu0ekmy47qr"]
+
+[ext_resource type="PackedScene" uid="uid://cnqkk453j17mw" path="res://Hero_Game/Prefabs/Items/Weapons/TestBow.tscn" id="1_6ameu"]
+[ext_resource type="Animation" uid="uid://dpukk54akum8q" path="res://Hero_Game/Animations/AnimationImports_1/BowIdle_Loaded_001.res" id="1_a8lfj"]
+[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/Weapon.gd" id="2_fru5q"]
+[ext_resource type="Animation" uid="uid://dhf4hwjirrcde" path="res://Hero_Game/Animations/AnimsBowTest/Bow_Parry_Idle_001.res" id="2_jkkmf"]
+[ext_resource type="Animation" uid="uid://dqluc6y8i02p0" path="res://Hero_Game/Animations/AnimsBowTest/Bow_Parry_First_Half_001.res" id="3_u3qn2"]
+[ext_resource type="Animation" uid="uid://dg2e1f3os5s84" path="res://Hero_Game/Animations/AnimationImports_1/Bow_Parry_Second_Half_001.res" id="4_a3ci1"]
+
+[resource]
+script = ExtResource("2_fru5q")
+category = &"bow"
+die_type = 6
+die_number = 2
+flat_damage = 2
+idle_animation = ExtResource("1_a8lfj")
+parry_animation_part_1 = ExtResource("3_u3qn2")
+parry_animation_part_2 = ExtResource("4_a3ci1")
+parry_animation_idle = ExtResource("2_jkkmf")
+size = 1
+reach = 1
+combat_effects = Array[StringName]([])
+encumberance = 1
+armor_points = 1
+hit_points = 8
+max_hit_points = 8
+traits = Array[StringName]([])
+hands = 2
+is_broken = false
+name = &"Bow"
+can_stack = false
+decrease_stack_on_use = false
+scene = ExtResource("1_6ameu")
+tags = Array[String](["left_hand"])
+quantity_current = 1
+quantity_max = 1
+tags_added_on_activation = Array[String]([])
+tags_added_on_add = Array[String]([])
+tags_added_on_equip = Array[String]([])
+tags_added_on_remove = Array[String]([])
+tags_added_on_unequip = Array[String]([])
+tags_required_to_activate = Array[String]([])
+tags_required_to_add = Array[String]([])
+tags_required_to_equip = Array[String]([])
+tags_required_to_remove = Array[String]([])
+tags_required_to_unequip = Array[String]([])
+tags_removed_on_activation = Array[String]([])
+tags_removed_on_add = Array[String]([])
+tags_removed_on_equip = Array[String]([])
+tags_removed_on_remove = Array[String]([])
+tags_removed_on_unequip = Array[String]([])

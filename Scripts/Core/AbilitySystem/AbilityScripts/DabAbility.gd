@@ -1,7 +1,8 @@
 @tool
 class_name DabAbility extends Ability
 
-## A test ability free action that can play any animation it's passed so long as it is in the greatsword library
+## A test ability free action that can play any animation it's passed so long as it
+## is in the proper library (Currently: "HumanoidAnimLib01")
 
 
 ## Example tooltip comment, put directly above the line(s) they reference

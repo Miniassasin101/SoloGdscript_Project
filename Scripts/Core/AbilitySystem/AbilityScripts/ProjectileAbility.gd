@@ -42,12 +42,16 @@ func try_activate(_event: ActivationEvent) -> void:
 
 	await rotate_unit_towards_target_enemy(event)
 
+	#Here is where the actual attack resolution comes in
+	event = await CombatSystem.instance.attack_unit(self, event)
+
 	await event.unit.get_tree().create_timer(0.5).timeout
 
 	await shoot_projectile()
 	
 	@warning_ignore("redundant_await")
 	await resolve_special_effects()
+	
 	
 	@warning_ignore("redundant_await")
 	await apply_effect()
@@ -78,12 +82,11 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 	# NOTE await doesnt do anything right now but later the coroutine will prompt user or ai decisions
 	# on things like special effects.
 	
-	#Here is where the actual attack resolution comes in
-	event = await CombatSystem.instance.attack_unit(self, event)
 
 
 
-func shoot_projectile() -> void:
+
+func shoot_projectile_dep() -> void:
 	assert(unit.shoot_point != null)
 	await unit.animator.left_cast_anim(null, event.miss)
 	var projectile_instance: Projectile = projectile.instantiate()
@@ -97,12 +100,53 @@ func shoot_projectile() -> void:
 	await projectile_instance.target_hit
 
 
-
+func shoot_projectile() -> void:
+	assert(unit.shoot_point != null)
+	await unit.animator.attack_anim(animation, event.miss)#unit.animator.left_cast_anim(null, event.miss)
+	var projectile_instance: Projectile = projectile.instantiate()
+	# Will need to dynamically adjust shoot height later
+	var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
+	projectile_instance.setup(target_shoot_at_position, event.miss) #Add miss logic later
+	event.unit.add_child(projectile_instance)
+	projectile_instance.global_position = unit.shoot_point.global_position
+	projectile_instance.global_transform.basis = unit.shoot_point.global_transform.basis
+	projectile_instance.trigger_projectile()
+	await projectile_instance.target_hit
 	
+
 
 	
 
 func apply_effect() -> void:
+	if event.miss or event.bypass_attack:
+		return
+	# Create a new GameplayEffect resource
+	var effect = GameplayEffect.new()
+
+	# Prepare an AttributeEffect for health
+	var health_effect = AttributeEffect.new()
+	health_effect.attribute_name = "health"
+	health_effect.minimum_value = -event.rolled_damage
+	health_effect.maximum_value = -event.rolled_damage
+	effect.attributes_affected.append(health_effect)
+	#effect.attributes_affected.append(part_effect)
+
+	# Get the target unit from the grid and attach the effect
+	if target_unit:
+		target_unit.add_child(effect)
+	
+	target_unit.body.apply_wound_from_event(event)
+	
+	if event.rolled_damage == 0:
+		Utilities.spawn_text_line(target_unit, "Blocked", Color.BLUE)
+		Utilities.spawn_damage_label(target_unit, event.rolled_damage, Color.AQUA, 0.2)
+	else:
+		Utilities.spawn_text_line(target_unit,event.body_part_ui_name, Color.FIREBRICK)
+		Utilities.spawn_damage_label(target_unit, event.rolled_damage) # Default color is crimson
+
+
+
+func apply_effect_dep() -> void:
 	var tar_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	# creating a new [GameplayEffect] resource
 	var effect: GameplayEffect = GameplayEffect.new()

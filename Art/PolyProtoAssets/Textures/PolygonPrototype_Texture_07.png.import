@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://brqkjf5dr2vys"
-path="res://.godot/imported/PolygonPrototype_Texture_07.png-a1317aad224f0d4851ecd1d8f1cb72fb.ctex"
+path="res://.godot/imported/PolygonPrototype_Texture_07.png-64e7cef144ff13cc2efa2618fea96886.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_07.png"
-dest_files=["res://.godot/imported/PolygonPrototype_Texture_07.png-a1317aad224f0d4851ecd1d8f1cb72fb.ctex"]
+source_file="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_07.png"
+dest_files=["res://.godot/imported/PolygonPrototype_Texture_07.png-64e7cef144ff13cc2efa2618fea96886.ctex"]
 
 [params]
 

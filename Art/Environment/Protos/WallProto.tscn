@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=4 uid="uid://cjfn5scxmrv7j"]
 
-[ext_resource type="Texture2D" uid="uid://ci1u2xqp780ca" path="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_01.png" id="1_7vegl"]
+[ext_resource type="Texture2D" uid="uid://ci1u2xqp780ca" path="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_01.png" id="1_7vegl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hga8i"]
 resource_name = "Texture_01"

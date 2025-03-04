@@ -211,7 +211,7 @@ func melee_attack_anim() -> void:
 
 	# 1) If your animator signals when the attack hits or finishes,
 	#    you can "await" that signal here. For example:
-	await unit.animator.melee_attack_anim(animation, event.miss)
+	await unit.animator.attack_anim(animation, event.miss)
 
 	# 2) Here you can trigger any hit fx on the ability by passing it to the target unit's animator:
 	if !event.miss:

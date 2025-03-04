@@ -3,12 +3,12 @@
 [ext_resource type="Curve" uid="uid://ds3cwr48a54i0" path="res://Hero_Game/Animations/Curves/AnimationBLendCurve.tres" id="1_5ep7p"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lpni8"]
-animation = &"GreatSwordTest1/Greatsword_Swing_001"
+animation = &"HumanoidAnimLib01/Greatsword_Swing_001"
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_7wboq"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_dm84i"]
-graph_offset = Vector2(-344.869, 61.883)
+graph_offset = Vector2(-201.917, 146.008)
 nodes/AttackAnimation/node = SubResource("AnimationNodeAnimation_lpni8")
 nodes/AttackAnimation/position = Vector2(100, 240)
 nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_7wboq")
@@ -41,7 +41,7 @@ blend_point_3/pos = Vector2(-1, 0)
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_857p3"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gbte4"]
-animation = &"DawnLib/IdleAnim"
+animation = &"HumanoidAnimLib01/IdleAnim"
 
 [sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_o2e4w"]
 filter_enabled = true
@@ -50,16 +50,16 @@ fadein_time = 0.1
 fadeout_time = 0.1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_a8f2c"]
-animation = &"GreatSwordTest1/Left_Hand_Cast_001"
+animation = &"HumanoidAnimLib01/Left_Hand_Cast_001"
 play_mode = 1
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_8umkx"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hd3hl"]
-animation = &"GreatSwordTest1/Idle_Greatsword_shoulder_001"
+animation = &"HumanoidAnimLib01/Idle_Greatsword_shoulder_001"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_7p1gf"]
-graph_offset = Vector2(-16.3843, -3.9753)
+graph_offset = Vector2(-24.2098, 12.8325)
 nodes/GreatswordIdleBlend/node = SubResource("AnimationNodeBlend2_857p3")
 nodes/GreatswordIdleBlend/position = Vector2(640, 100)
 nodes/IdleBase/node = SubResource("AnimationNodeAnimation_gbte4")
@@ -76,7 +76,7 @@ nodes/output/position = Vector2(1420, 120)
 node_connections = [&"GreatswordIdleBlend", 0, &"IdleBase", &"GreatswordIdleBlend", 1, &"WeaponIdle", &"LeftArmBlend", 0, &"GreatswordIdleBlend", &"LeftArmBlend", 1, &"LeftHandCast", &"TimeScale", 0, &"LeftArmBlend", &"output", 0, &"TimeScale"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qbpsd"]
-animation = &"DawnLib/RunCycle"
+animation = &"HumanoidAnimLib01/RunCycle"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tk8fg"]
 animation = &"GreatSwordTest1/Idle_Greatsword_shoulder"
@@ -86,7 +86,7 @@ filter_enabled = true
 filters = ["Rig_001/Skeleton3D:CTRL_index.R.001", "Rig_001/Skeleton3D:CTRL_index.R.002", "Rig_001/Skeleton3D:CTRL_index.R.003", "Rig_001/Skeleton3D:CTRL_thumb.R.001", "Rig_001/Skeleton3D:CTRL_thumb.R.002", "Rig_001/Skeleton3D:CTRL_thumb.R.003", "Rig_001/Skeleton3D:CTRL_thumb_base.R.001", "Rig_001/Skeleton3D:DEF_bicep.R.001", "Rig_001/Skeleton3D:DEF_bicep.R.002", "Rig_001/Skeleton3D:DEF_forearm.R.001", "Rig_001/Skeleton3D:DEF_forearm.R.002", "Rig_001/Skeleton3D:DEF_hand.R.001", "Rig_001/Skeleton3D:DEF_index.R.001", "Rig_001/Skeleton3D:DEF_index.R.002", "Rig_001/Skeleton3D:DEF_index.R.003", "Rig_001/Skeleton3D:DEF_thumb.R.001", "Rig_001/Skeleton3D:DEF_thumb.R.002", "Rig_001/Skeleton3D:DEF_thumb.R.003", "Rig_001/Skeleton3D:DEF_thumb_base.R.001"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3mqw0"]
-graph_offset = Vector2(-633.031, -12.1636)
+graph_offset = Vector2(-480.1, 71.3111)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_tk8fg")
 nodes/Animation/position = Vector2(-180, 260)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_qbpsd")
@@ -135,4 +135,4 @@ states/RunCycleBlend/node = SubResource("AnimationNodeBlendTree_3mqw0")
 states/RunCycleBlend/position = Vector2(286, 469)
 states/Start/position = Vector2(-29, 307)
 transitions = ["Start", "IdleBlend", SubResource("AnimationNodeStateMachineTransition_c24eu"), "IdleBlend", "RunCycleBlend", SubResource("AnimationNodeStateMachineTransition_t3jc8"), "RunCycleBlend", "IdleBlend", SubResource("AnimationNodeStateMachineTransition_e5md4"), "IdleBlend", "Attack", SubResource("AnimationNodeStateMachineTransition_r4mtb"), "Attack", "IdleBlend", SubResource("AnimationNodeStateMachineTransition_jen6d")]
-graph_offset = Vector2(-248, 226)
+graph_offset = Vector2(-269, 273)

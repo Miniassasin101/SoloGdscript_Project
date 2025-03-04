@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dm3fkdfg7fna3"
-path.s3tc="res://.godot/imported/PolygonPrototype_Texture_01_Emission.png-558626e5ca146f8478f3422190ba629c.s3tc.ctex"
+path.s3tc="res://.godot/imported/PolygonPrototype_Texture_01_Emission.png-d788ab27f1b202b725841c755de99766.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Hero_Game/Art/PolyProtoAssets/Textures/PolygonPrototype_Texture_01_Emission.png"
-dest_files=["res://.godot/imported/PolygonPrototype_Texture_01_Emission.png-558626e5ca146f8478f3422190ba629c.s3tc.ctex"]
+source_file="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_01_Emission.png"
+dest_files=["res://.godot/imported/PolygonPrototype_Texture_01_Emission.png-d788ab27f1b202b725841c755de99766.s3tc.ctex"]
 
 [params]
 

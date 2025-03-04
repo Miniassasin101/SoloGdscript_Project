@@ -28,7 +28,6 @@ material = SubResource("ShaderMaterial_yknik")
 [node name="Greatsword" type="MeshInstance3D"]
 transform = Transform3D(1.38456, 2.79835e-15, -5.56739e-08, 0, 1.38456, 6.95924e-08, 5.56739e-08, -6.95924e-08, 1.38456, 0, 0, 0)
 mesh = ExtResource("1_w1yhh")
-skeleton = NodePath("../..")
 surface_material_override/0 = ExtResource("2_g8fl0")
 
 [node name="GPUTrail3D2" type="GPUParticles3D" parent="."]

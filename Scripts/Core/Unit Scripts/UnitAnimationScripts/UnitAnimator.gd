@@ -162,13 +162,33 @@ func equipment_anim_check(in_unit: Unit) -> void:
 	if in_unit != unit:
 		return
 	if !unit.equipment.equipped_items.is_empty():
-		weapon_setup(true)
+		var active_weapon: Weapon = unit.equipment.get_equipped_weapon()
+		weapon_setup(true, active_weapon)
 		return
 	weapon_setup(false)
 
-func weapon_setup(weapon_type: bool) -> void:
+func weapon_setup(weapon_type: bool, weapon: Weapon = null) -> void:
 	var tween: Tween = create_tween()
-	if weapon_type:
+	if weapon_type and weapon:
+		
+		var root: AnimationNodeStateMachine = animator_tree.tree_root as AnimationNodeStateMachine
+		if root == null:
+			push_error("AnimationTree does not have a valid StateMachine root.")
+			return
+	
+		var main: AnimationNodeBlendTree = root.get_node("Main")
+		
+		var state_machine: AnimationNodeStateMachine = main.get_node("AnimationNodeStateMachine")
+		
+		var idleblend: AnimationNodeBlendTree = state_machine.get_node("IdleBlend")
+		
+		var weapon_idle: AnimationNodeAnimation = idleblend.get_node("WeaponIdle")
+		
+		var anim_path: String = ("HumanoidAnimLib01/" + weapon.idle_animation.resource_name)
+		
+		weapon_idle.set_animation(anim_path)
+		
+		
 		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/GreatswordBlend/blend_amount", 1.0)
 		tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 1.0, 0.7)
 		#animator_tree.set("parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 1.0)
@@ -199,7 +219,7 @@ func play_animation_by_name(animation_name: String, _blend_time: float = 0.5) ->
 	
 	var one_shot: AnimationNodeAnimation = main.get_node("OneShotAnimation")
 	
-	var anim_path: String = ("GreatSwordTest1/" + animation_name)
+	var anim_path: String = ("HumanoidAnimLib01/" + animation_name)
 	
 	one_shot.set_animation(anim_path)
 	
@@ -216,7 +236,7 @@ func play_animation_by_name(animation_name: String, _blend_time: float = 0.5) ->
 
 
 	# NOTE: Always add call method tracks for resolving the damage
-func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
+func attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 # Note: Later replace greatsword test with the animation library
 	#look_at_toggle()
 
@@ -228,9 +248,9 @@ func melee_attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 	var attack_anim: AnimationNodeAnimation = attack.get_node("AttackAnimation")
 	var animation: StringName = attack_anim.get_animation()
 	print_debug("Old Animation: ", animation)
-	var anim_path: String = ("GreatSwordTest1/" + in_animation.resource_name)
+	var anim_path: String = ("HumanoidAnimLib01/" + in_animation.resource_name)
 	attack_anim.set_animation(anim_path)
-	#GreatSwordTest1/Greatsword_Swing_001
+	#HumanoidAnimLib01/Greatsword_Swing_001
 
 	#var is_attacking: bool = animator_tree.get("parameters/conditions/IsAttacking")
 	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsAttacking", true)
@@ -274,6 +294,10 @@ func attack_landed() -> void:
 	toggle_slowdown()
 	await get_tree().create_timer(0.4).timeout
 	toggle_slowdown()
+
+
+func emit_attack_completed() -> void:
+	attack_completed.emit()
 
 
 func toggle_slowdown(speed_scale: float = 0.0) -> void:

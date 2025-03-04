@@ -92,7 +92,7 @@ func _process_modification() -> void:
 	var neck_idx = skeleton.find_bone(neck_bone)
 	if !look_target:
 		look_target = get_node_or_null(look_target_path)
-	neck_guide.look_at(look_target.global_position, Vector3.UP, true)
+	neck_guide.look_at(look_target.global_position + Vector3(0.0, 0.0, 0.0), Vector3.UP, true)
 	
 
 	var parent_idx: int = skeleton.get_bone_parent(neck_idx)
@@ -103,7 +103,10 @@ func _process_modification() -> void:
 	#marker_rotation_degrees = marker_rotation_degrees - parent_euler
 	marker_rotation_degrees.x = clamp(marker_rotation_degrees.x, -max_vertical_angle, max_vertical_angle)
 	marker_rotation_degrees.y = clamp(marker_rotation_degrees.y, -max_horizontal_angle, max_horizontal_angle)
-	var new_rotation: Quaternion = Quaternion.from_euler(Vector3(deg_to_rad(marker_rotation_degrees.x + head_look_vertical_offset), deg_to_rad(marker_rotation_degrees.y + head_look_horizantal_offset), 0.0))
+	var new_rotation: Quaternion = \
+	Quaternion.from_euler(Vector3(deg_to_rad(marker_rotation_degrees.x + 
+	head_look_vertical_offset), deg_to_rad(marker_rotation_degrees.y + 
+	head_look_horizantal_offset), 0.0))
 	
 	
 	

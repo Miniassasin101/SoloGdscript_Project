@@ -142,9 +142,9 @@ func trigger_attack_anim() -> void:
 	var attack_anim: AnimationNodeAnimation = attack.get_node("AttackAnimation")
 	var animation: StringName = attack_anim.get_animation()
 	print("Old Animation: ", animation)
-	attack_anim.set_animation("GreatSwordTest1/Greatsword_Swing_001")
-	#GreatSwordTest1/Greatsword_Swing_001
-	UnitActionSystem.instance.selected_unit.animator.attack_anim()
+	attack_anim.set_animation("HumanoidAnimLib01/Greatsword_Swing_001")
+	#HumanoidAnimLib01/Greatsword_Swing_001
+	#UnitActionSystem.instance.selected_unit.danimator.attack_anim()
 	animation = attack_anim.get_animation()
 	print("New Animation: ", animation)
 
