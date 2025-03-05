@@ -49,7 +49,7 @@ func try_activate(_event: ActivationEvent) -> void:
 		parry_animation_reset = weapon.parry_animation_part_2
 		parry_animation_idle = weapon.parry_animation_idle
 		
-	await animator.play_animation_by_name(parry_animation_part_1.resource_name) # Always be careful to wait for the animation to complete
+	await animator.play_animation_by_name(parry_animation_part_1.resource_name, 0.0) # Always be careful to wait for the animation to complete
 	animator.toggle_slowdown()
 	animator.play_animation_by_name(parry_animation_idle.resource_name)
 	

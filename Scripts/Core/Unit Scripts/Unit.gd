@@ -23,6 +23,7 @@ var action_system: UnitActionSystem
 @export var conditions_manager: ConditionsManager
 
 @export_category("Sockets")
+@export var left_hand_socket: Node3D
 @export var right_hand_socket: Node3D
 @export var shoot_point: Node3D
 

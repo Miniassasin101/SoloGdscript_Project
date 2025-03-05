@@ -7,6 +7,7 @@ signal rotation_completed
 signal movement_completed
 signal attack_completed
 signal parry_reset
+signal event_occured
 # Exported Variables
 @export_category("References")
 @export var animator: AnimationPlayer
@@ -170,7 +171,6 @@ func equipment_anim_check(in_unit: Unit) -> void:
 func weapon_setup(weapon_type: bool, weapon: Weapon = null) -> void:
 	var tween: Tween = create_tween()
 	if weapon_type and weapon:
-		
 		var root: AnimationNodeStateMachine = animator_tree.tree_root as AnimationNodeStateMachine
 		if root == null:
 			push_error("AnimationTree does not have a valid StateMachine root.")
@@ -182,19 +182,51 @@ func weapon_setup(weapon_type: bool, weapon: Weapon = null) -> void:
 		
 		var idleblend: AnimationNodeBlendTree = state_machine.get_node("IdleBlend")
 		
+		var runblend: AnimationNodeBlendTree = state_machine.get_node("RunCycleBlend")
+		
 		var weapon_idle: AnimationNodeAnimation = idleblend.get_node("WeaponIdle")
+		
+		var left_arm_anim: AnimationNodeAnimation = runblend.get_node("LeftArmAnimation")
+		
+		var right_arm_anim: AnimationNodeAnimation = runblend.get_node("RightArmAnimation")
 		
 		var anim_path: String = ("HumanoidAnimLib01/" + weapon.idle_animation.resource_name)
 		
 		weapon_idle.set_animation(anim_path)
 		
+		left_arm_anim.set_animation(anim_path)
+		right_arm_anim.set_animation(anim_path)
 		
-		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/GreatswordBlend/blend_amount", 1.0)
-		tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 1.0, 0.7)
-		#animator_tree.set("parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 1.0)
+		if weapon.hands == 1:
+			if weapon.tags.has("right_hand"):
+				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmAnimation/animation", anim_path)
+				#animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmAnimation/animation", anim_path)
+		
+				tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount", 1.0, 0.7)
+				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmBlend/blend_amount", 1.0)
+				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmBlend/blend_amount", 0.0)
+				return
+			elif weapon.tags.has("left_hand"):
+				#animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmAnimation/animation", anim_path)
+				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmAnimation/animation", anim_path)
+		
+				tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount", 1.0, 0.7)
+				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmBlend/blend_amount", 0.0)
+				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmBlend/blend_amount", 1.0)
+				return
+		
+		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmAnimation/animation", anim_path)
+		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmAnimation/animation", anim_path)
+		
+		tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount", 1.0, 0.7)
+		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmBlend/blend_amount", 1.0)
+		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmBlend/blend_amount", 1.0)
 		return
-	animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/GreatswordBlend/blend_amount", 0.0)
-	tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/GreatswordIdleBlend/blend_amount", 0.0, 0.7)
+	
+	
+	animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmBlend/blend_amount", 0.0)
+	animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmBlend/blend_amount", 0.0)
+	tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount", 0.0, 0.7)
 
 func left_cast_anim(_in_animation: Animation, in_miss: bool = false) -> void:
 	# Note: Later replace greatsword test with the animation library
@@ -208,7 +240,7 @@ func left_cast_anim(_in_animation: Animation, in_miss: bool = false) -> void:
 	return
 	# Always add call method tracks for resolving the damage
 	
-func play_animation_by_name(animation_name: String, _blend_time: float = 0.5) -> void:
+func play_animation_by_name(animation_name: String, blend_time: float = 0.2) -> void:
 	# Get the AnimationTree's state machine root
 	var root: AnimationNodeStateMachine = animator_tree.tree_root as AnimationNodeStateMachine
 	if root == null:
@@ -219,7 +251,12 @@ func play_animation_by_name(animation_name: String, _blend_time: float = 0.5) ->
 	
 	var one_shot: AnimationNodeAnimation = main.get_node("OneShotAnimation")
 	
+	var one_shot_blend: AnimationNodeOneShot = main.get_node("OneShotBlend")
+	
 	var anim_path: String = ("HumanoidAnimLib01/" + animation_name)
+	
+	one_shot_blend.set_fadein_time(blend_time)
+	one_shot_blend.set_fadeout_time(blend_time)
 	
 	one_shot.set_animation(anim_path)
 	
@@ -245,11 +282,11 @@ func attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 	var main: AnimationNodeBlendTree = root.get_node("Main")
 	var state_mach: AnimationNodeStateMachine = main.get_node("AnimationNodeStateMachine")
 	var attack: AnimationNodeBlendTree = state_mach.get_node("Attack")
-	var attack_anim: AnimationNodeAnimation = attack.get_node("AttackAnimation")
-	var animation: StringName = attack_anim.get_animation()
+	var att_anim: AnimationNodeAnimation = attack.get_node("AttackAnimation")
+	var animation: StringName = att_anim.get_animation()
 	print_debug("Old Animation: ", animation)
 	var anim_path: String = ("HumanoidAnimLib01/" + in_animation.resource_name)
-	attack_anim.set_animation(anim_path)
+	att_anim.set_animation(anim_path)
 	#HumanoidAnimLib01/Greatsword_Swing_001
 
 	#var is_attacking: bool = animator_tree.get("parameters/conditions/IsAttacking")
@@ -258,7 +295,7 @@ func attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 
 	await attack_completed#timer.timeout
 	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsAttacking", false)
-	look_at_toggle(look_target)
+	#look_at_toggle(look_target)
 
 	return
 
@@ -298,6 +335,10 @@ func attack_landed() -> void:
 
 func emit_attack_completed() -> void:
 	attack_completed.emit()
+
+
+func emit_event_occurred() -> void:
+	event_occured.emit()
 
 
 func toggle_slowdown(speed_scale: float = 0.0) -> void:
@@ -457,8 +498,8 @@ func rotate_unit_towards_facing(in_facing: int = -1) -> void:
 
 func rotate_unit_towards_target_position_process(delta: float):
 	var tar_rot = Basis.looking_at(facing_direction, Vector3.UP, true)
-	unit.global_transform.basis = unit.global_transform.basis.slerp(tar_rot, delta * rotate_speed)
-	unit.global_transform.basis = unit.global_transform.basis.orthonormalized()
+	var unit_slerp_basis: Basis = unit.global_transform.basis.slerp(tar_rot, delta * rotate_speed)
+	unit.global_transform.basis = unit_slerp_basis.orthonormalized()
 
 	# Check if the rotation is close enough to stop rotating
 	var current_direction = unit.global_transform.basis.z.normalized()

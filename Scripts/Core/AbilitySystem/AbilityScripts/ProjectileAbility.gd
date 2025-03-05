@@ -39,6 +39,8 @@ func try_activate(_event: ActivationEvent) -> void:
 		print_debug("Action has been thwarted")
 		return
 	
+	add_weapon_to_event()
+	
 
 	await rotate_unit_towards_target_enemy(event)
 
@@ -92,7 +94,7 @@ func shoot_projectile_dep() -> void:
 	var projectile_instance: Projectile = projectile.instantiate()
 	# Will need to dynamically adjust shoot height later
 	var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
-	projectile_instance.setup(target_shoot_at_position, event.miss) #Add miss logic later
+	#projectile_instance.setup(target_shoot_at_position, event.miss, ) #Add miss logic later
 	event.unit.add_child(projectile_instance)
 	projectile_instance.global_position = unit.shoot_point.global_position
 	projectile_instance.global_transform.basis = unit.shoot_point.global_transform.basis
@@ -102,20 +104,24 @@ func shoot_projectile_dep() -> void:
 
 func shoot_projectile() -> void:
 	assert(unit.shoot_point != null)
+	event.weapon.item_visual.play_animation_on_weapon("WeaponAnimations/BowFire_001")
+	event.weapon.item_visual.play_animation_on_projectile("WeaponAnimationLibrary/ArrowDrawback")
+	var weapon_projectile: Node3D = event.weapon.item_visual.projectile
 	await unit.animator.attack_anim(animation, event.miss)#unit.animator.left_cast_anim(null, event.miss)
 	var projectile_instance: Projectile = projectile.instantiate()
 	# Will need to dynamically adjust shoot height later
-	var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
-	projectile_instance.setup(target_shoot_at_position, event.miss) #Add miss logic later
+	#var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
+	var target_shoot_at_position: Vector3 = event.body_part.get_body_part_marker_position()
 	event.unit.add_child(projectile_instance)
-	projectile_instance.global_position = unit.shoot_point.global_position
-	projectile_instance.global_transform.basis = unit.shoot_point.global_transform.basis
+	projectile_instance.global_position = weapon_projectile.global_position#unit.shoot_point.global_position
+	projectile_instance.global_transform.basis = weapon_projectile.global_transform.basis
+	projectile_instance.setup(target_shoot_at_position, event.miss, weapon_projectile) #Add miss logic later
 	projectile_instance.trigger_projectile()
 	await projectile_instance.target_hit
-	
+	event.weapon.is_loaded = false
 
 
-	
+
 
 func apply_effect() -> void:
 	if event.miss or event.bypass_attack:
@@ -188,7 +194,11 @@ func resolve_special_effects() -> void:
 func can_activate(_event: ActivationEvent) -> bool:
 	if !super.can_activate(_event):
 		return false
-
+	
+	var unit_weapon: Weapon = _event.unit.get_equipped_weapon()
+	if unit_weapon.projectile == null or !unit_weapon.is_loaded:
+		return false
+	
 	var valid_grid_position_list = get_valid_ability_target_grid_position_list(_event)
 	for x in valid_grid_position_list:
 		if x._equals(_event.target_grid_position):
@@ -252,3 +262,10 @@ func get_enemy_ai_ability(_event: ActivationEvent) -> EnemyAIAction:
 	enemy_ai_ability.action_value = 1000
 	enemy_ai_ability.grid_position = _event.target_grid_position
 	return enemy_ai_ability
+
+
+
+# FIXME: Add a prompt if there is more than one weapon equipped
+func add_weapon_to_event() -> void:
+	
+	event.weapon = unit.get_equipped_weapon()

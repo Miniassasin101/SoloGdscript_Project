@@ -1,4 +1,4 @@
-[gd_resource type="AnimationNodeStateMachine" load_steps=26 format=3 uid="uid://bwus84v6qro73"]
+[gd_resource type="AnimationNodeStateMachine" load_steps=28 format=3 uid="uid://bwus84v6qro73"]
 
 [ext_resource type="Curve" uid="uid://ds3cwr48a54i0" path="res://Hero_Game/Animations/Curves/AnimationBLendCurve.tres" id="1_5ep7p"]
 
@@ -38,8 +38,6 @@ blend_point_2/pos = Vector2(1, 0)
 blend_point_3/node = SubResource("AnimationNodeAnimation_87gep")
 blend_point_3/pos = Vector2(-1, 0)
 
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_857p3"]
-
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gbte4"]
 animation = &"HumanoidAnimLib01/IdleAnim"
 
@@ -58,10 +56,10 @@ play_mode = 1
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hd3hl"]
 animation = &"HumanoidAnimLib01/Idle_Greatsword_shoulder_001"
 
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_857p3"]
+
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_7p1gf"]
-graph_offset = Vector2(-24.2098, 12.8325)
-nodes/GreatswordIdleBlend/node = SubResource("AnimationNodeBlend2_857p3")
-nodes/GreatswordIdleBlend/position = Vector2(640, 100)
+graph_offset = Vector2(32.7072, 31.7157)
 nodes/IdleBase/node = SubResource("AnimationNodeAnimation_gbte4")
 nodes/IdleBase/position = Vector2(280, 40)
 nodes/LeftArmBlend/node = SubResource("AnimationNodeOneShot_o2e4w")
@@ -72,29 +70,43 @@ nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_8umkx")
 nodes/TimeScale/position = Vector2(1230.43, 108.986)
 nodes/WeaponIdle/node = SubResource("AnimationNodeAnimation_hd3hl")
 nodes/WeaponIdle/position = Vector2(140, 200)
+nodes/WeaponIdleBlend/node = SubResource("AnimationNodeBlend2_857p3")
+nodes/WeaponIdleBlend/position = Vector2(640, 100)
 nodes/output/position = Vector2(1420, 120)
-node_connections = [&"GreatswordIdleBlend", 0, &"IdleBase", &"GreatswordIdleBlend", 1, &"WeaponIdle", &"LeftArmBlend", 0, &"GreatswordIdleBlend", &"LeftArmBlend", 1, &"LeftHandCast", &"TimeScale", 0, &"LeftArmBlend", &"output", 0, &"TimeScale"]
+node_connections = [&"LeftArmBlend", 0, &"WeaponIdleBlend", &"LeftArmBlend", 1, &"LeftHandCast", &"TimeScale", 0, &"LeftArmBlend", &"WeaponIdleBlend", 0, &"IdleBase", &"WeaponIdleBlend", 1, &"WeaponIdle", &"output", 0, &"TimeScale"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qbpsd"]
 animation = &"HumanoidAnimLib01/RunCycle"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v8q68"]
+animation = &"HumanoidAnimLib01/BowIdle_Loaded_001"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_hcdox"]
+filter_enabled = true
+filters = ["Rig_001/Skeleton3D:CTRL_index.L.001", "Rig_001/Skeleton3D:CTRL_index.L.002", "Rig_001/Skeleton3D:CTRL_index.L.003", "Rig_001/Skeleton3D:CTRL_thumb.L.001", "Rig_001/Skeleton3D:CTRL_thumb.L.002", "Rig_001/Skeleton3D:CTRL_thumb.L.003", "Rig_001/Skeleton3D:CTRL_thumb_base.L.001", "Rig_001/Skeleton3D:DEF_bicep.L.001", "Rig_001/Skeleton3D:DEF_bicep.L.002", "Rig_001/Skeleton3D:DEF_forearm.L.001", "Rig_001/Skeleton3D:DEF_forearm.L.002", "Rig_001/Skeleton3D:DEF_hand.L.001", "Rig_001/Skeleton3D:DEF_index.L.001", "Rig_001/Skeleton3D:DEF_index.L.002", "Rig_001/Skeleton3D:DEF_index.L.003", "Rig_001/Skeleton3D:DEF_shoulder.L.001", "Rig_001/Skeleton3D:DEF_thumb.L.001", "Rig_001/Skeleton3D:DEF_thumb.L.002", "Rig_001/Skeleton3D:DEF_thumb.L.003", "Rig_001/Skeleton3D:DEF_thumb_base.L.001"]
+sync = true
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tk8fg"]
-animation = &"GreatSwordTest1/Idle_Greatsword_shoulder"
+animation = &"HumanoidAnimLib01/Idle_Greatsword_shoulder"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_a3c5v"]
 filter_enabled = true
-filters = ["Rig_001/Skeleton3D:CTRL_index.R.001", "Rig_001/Skeleton3D:CTRL_index.R.002", "Rig_001/Skeleton3D:CTRL_index.R.003", "Rig_001/Skeleton3D:CTRL_thumb.R.001", "Rig_001/Skeleton3D:CTRL_thumb.R.002", "Rig_001/Skeleton3D:CTRL_thumb.R.003", "Rig_001/Skeleton3D:CTRL_thumb_base.R.001", "Rig_001/Skeleton3D:DEF_bicep.R.001", "Rig_001/Skeleton3D:DEF_bicep.R.002", "Rig_001/Skeleton3D:DEF_forearm.R.001", "Rig_001/Skeleton3D:DEF_forearm.R.002", "Rig_001/Skeleton3D:DEF_hand.R.001", "Rig_001/Skeleton3D:DEF_index.R.001", "Rig_001/Skeleton3D:DEF_index.R.002", "Rig_001/Skeleton3D:DEF_index.R.003", "Rig_001/Skeleton3D:DEF_thumb.R.001", "Rig_001/Skeleton3D:DEF_thumb.R.002", "Rig_001/Skeleton3D:DEF_thumb.R.003", "Rig_001/Skeleton3D:DEF_thumb_base.R.001"]
+filters = ["Rig_001/Skeleton3D:CTRL_index.R.001", "Rig_001/Skeleton3D:CTRL_index.R.002", "Rig_001/Skeleton3D:CTRL_index.R.003", "Rig_001/Skeleton3D:CTRL_thumb.R.001", "Rig_001/Skeleton3D:CTRL_thumb.R.002", "Rig_001/Skeleton3D:CTRL_thumb.R.003", "Rig_001/Skeleton3D:CTRL_thumb_base.R.001", "Rig_001/Skeleton3D:DEF_bicep.R.001", "Rig_001/Skeleton3D:DEF_bicep.R.002", "Rig_001/Skeleton3D:DEF_forearm.R.001", "Rig_001/Skeleton3D:DEF_forearm.R.002", "Rig_001/Skeleton3D:DEF_hand.R.001", "Rig_001/Skeleton3D:DEF_index.R.001", "Rig_001/Skeleton3D:DEF_index.R.002", "Rig_001/Skeleton3D:DEF_index.R.003", "Rig_001/Skeleton3D:DEF_shoulder.R.001", "Rig_001/Skeleton3D:DEF_thumb.R.001", "Rig_001/Skeleton3D:DEF_thumb.R.002", "Rig_001/Skeleton3D:DEF_thumb.R.003", "Rig_001/Skeleton3D:DEF_thumb_base.R.001"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3mqw0"]
-graph_offset = Vector2(-480.1, 71.3111)
-nodes/Animation/node = SubResource("AnimationNodeAnimation_tk8fg")
-nodes/Animation/position = Vector2(-180, 260)
+graph_offset = Vector2(-561.776, 167.386)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_qbpsd")
-"nodes/Animation 2/position" = Vector2(0, 40)
-nodes/GreatswordBlend/node = SubResource("AnimationNodeBlend2_a3c5v")
-nodes/GreatswordBlend/position = Vector2(280, 220)
-nodes/output/position = Vector2(700, 200)
-node_connections = [&"GreatswordBlend", 0, &"Animation 2", &"GreatswordBlend", 1, &"Animation", &"output", 0, &"GreatswordBlend"]
+"nodes/Animation 2/position" = Vector2(-80, 60)
+nodes/LeftArmAnimation/node = SubResource("AnimationNodeAnimation_v8q68")
+nodes/LeftArmAnimation/position = Vector2(-180, 440)
+nodes/LeftArmBlend/node = SubResource("AnimationNodeBlend2_hcdox")
+nodes/LeftArmBlend/position = Vector2(340, 360)
+nodes/RightArmAnimation/node = SubResource("AnimationNodeAnimation_tk8fg")
+nodes/RightArmAnimation/position = Vector2(-180, 260)
+nodes/RightArmBlend/node = SubResource("AnimationNodeBlend2_a3c5v")
+nodes/RightArmBlend/position = Vector2(320, 120)
+nodes/output/position = Vector2(680, 380)
+node_connections = [&"LeftArmBlend", 0, &"RightArmBlend", &"LeftArmBlend", 1, &"LeftArmAnimation", &"RightArmBlend", 0, &"Animation 2", &"RightArmBlend", 1, &"RightArmAnimation", &"output", 0, &"LeftArmBlend"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c24eu"]
 advance_mode = 2

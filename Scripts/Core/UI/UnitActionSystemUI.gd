@@ -179,7 +179,7 @@ func on_player_special_effect(unit: Unit, in_special_effects: Array[SpecialEffec
 	print_debug("Selected Unit Ui Is: ", unit._to_string())
 	create_unit_special_effect_buttons(abs_dif)
 	toggle_containers_visibility_off_except([mouse_event_droppable_controller])
-	var ret_effects: Array[SpecialEffect] = await UIBus.effects_confirmed
+	var ret_effects: Array[SpecialEffect] = await UIBus.effects_confirmed as Array[SpecialEffect]
 	toggle_containers_visibility_off_except()
 	UIBus.effects_chosen.emit(ret_effects)
 	print_debug("finished")

@@ -6,6 +6,9 @@ class_name ImpaledCondition extends Condition
 
 
 var impaled_weapon: Weapon = null
+
+var impaled_projectile_visual: Node3D = null
+
 var body_part: BodyPart = null
 
 @export_category("Camera Shake")
@@ -21,9 +24,10 @@ func apply(unit: Unit) -> void:
 	Utilities.spawn_text_line(unit, "-Impaled", Color.AQUA)
 	
 	#apply_effect(unit)
-	
-	
-	ObjectManager.instance.drop_item_in_world(unit, impaled_weapon)
+	if impaled_projectile_visual:
+		impaled_projectile_visual.queue_free()
+	else:
+		ObjectManager.instance.drop_item_in_world(unit, impaled_weapon)
 
 	
 	super.remove_self(unit)
@@ -33,7 +37,12 @@ func rip_free(ripping_free_unit: Unit, target_unit: Unit) -> void:
 	Utilities.spawn_text_line(target_unit, "-Impaled", Color.AQUA)
 	Utilities.spawn_text_line(target_unit, impaled_weapon.name + " Ripped Free", Color.FIREBRICK)
 	
-	ripping_free_unit.equipment.equip(impaled_weapon)
+	
+	
+	if impaled_projectile_visual:
+		impaled_projectile_visual.queue_free()
+	else:
+		ripping_free_unit.equipment.equip(impaled_weapon)
 	
 	apply_effect(target_unit)
 	super.remove_self(target_unit)

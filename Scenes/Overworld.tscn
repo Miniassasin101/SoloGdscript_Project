@@ -12,7 +12,7 @@
 [sub_resource type="PlaneMesh" id="PlaneMesh_57kun"]
 size = Vector2(30, 30)
 
-[sub_resource type="Curve3D" id="Curve3D_hbcf3"]
+[sub_resource type="Curve3D" id="Curve3D_ul702"]
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0.781415, 0, -0.23307, 0, 0, 0, -0.626068, 0, 0.522465, 0.689098, 0, -0.575064, 3.12566, 0, -0.932279, -0.689098, 0, 0.575064, 0.626068, 0, -0.522465, 4.87434, 0, -4.06772, 0.781415, 0, -0.23307, 0, 0, 0, 8, 0, -5),
 "tilts": PackedFloat32Array(0, 0, 0, 0)
@@ -48,7 +48,7 @@ node_visual_color = Color(0.77, 0, 0.282333, 1)
 script = ExtResource("5_plp45")
 overworld_node_1 = NodePath("../OverworldNode")
 overworld_node_2 = NodePath("../OverworldNode2")
-path_curve = SubResource("Curve3D_hbcf3")
+path_curve = SubResource("Curve3D_ul702")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 script = ExtResource("5_mi23r")

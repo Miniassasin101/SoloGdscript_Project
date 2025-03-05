@@ -1,7 +1,10 @@
-[gd_resource type="Resource" script_class="Weapon" load_steps=3 format=3 uid="uid://bx8s3j6x7s868"]
+[gd_resource type="Resource" script_class="Weapon" load_steps=6 format=3 uid="uid://bx8s3j6x7s868"]
 
+[ext_resource type="Animation" uid="uid://c5khxrqqcf7uh" path="res://Hero_Game/Animations/AnimationImports_1/Greatsword_Parry_Idle_001.res" id="1_kd6jj"]
 [ext_resource type="PackedScene" uid="uid://ws4usfvbsn2l" path="res://Hero_Game/Prefabs/Items/Weapons/Greatsword.tscn" id="1_rk4c8"]
 [ext_resource type="Script" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/Weapon.gd" id="2_2g61o"]
+[ext_resource type="Animation" uid="uid://b43ekgcb6wwjo" path="res://Hero_Game/Animations/AnimationImports_1/Greatsword_Parry_1st_Half_001.res" id="2_44euf"]
+[ext_resource type="Animation" uid="uid://gs0doxv33o75" path="res://Hero_Game/Animations/AnimationImports_1/Greatsword_Parry_2nd_Half_001.res" id="3_w1acs"]
 
 [resource]
 script = ExtResource("2_2g61o")
@@ -9,6 +12,9 @@ category = &"unarmed"
 die_type = 4
 die_number = 1
 flat_damage = 1
+parry_animation_part_1 = ExtResource("2_44euf")
+parry_animation_part_2 = ExtResource("3_w1acs")
+parry_animation_idle = ExtResource("1_kd6jj")
 size = 0
 reach = 0
 combat_effects = Array[StringName]([])
@@ -19,6 +25,7 @@ max_hit_points = 8
 traits = Array[StringName]([])
 hands = 1
 is_broken = false
+is_loaded = false
 name = &"Fists"
 can_stack = false
 decrease_stack_on_use = false

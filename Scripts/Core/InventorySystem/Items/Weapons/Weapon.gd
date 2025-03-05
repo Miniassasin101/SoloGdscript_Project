@@ -13,6 +13,8 @@ class_name Weapon extends Item
 @export var parry_animation_part_1: Animation = null
 @export var parry_animation_part_2: Animation = null
 @export var parry_animation_idle: Animation = null
+@export_subgroup("SubParts")
+@export var projectile: PackedScene = null
 @export_subgroup("")
 @export_enum("Small", "Medium", "Large", "Huge", "Enormous") var size: int = 1
 @export_enum("Touch", "Short", "Medium", "Long", "Very Long") var reach: int = 0
@@ -41,12 +43,27 @@ class_name Weapon extends Item
 
 @export var is_broken: bool = false
 
+@export var is_loaded: bool = false
+
+
+func setup_weapon() -> void:
+	if is_loaded:
+		load_projectile()
 
 func subtract_hitpoints(hitpoints_subtracted: int) -> void:
 	hit_points -= hitpoints_subtracted
 	hit_points = maxi(hit_points, 0)
 	if hit_points <= 0:
 		is_broken = true
+
+func load_projectile() -> void:
+	if projectile == null or item_visual == null:
+		return
+	
+	item_visual.add_projectile(projectile.instantiate() as Node3D)
+	is_loaded = true
+
+
 
 func get_damage_after_armor(in_damage: int) -> int:
 	return maxi(in_damage - armor_points, 0)

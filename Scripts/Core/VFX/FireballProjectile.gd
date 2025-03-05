@@ -1,4 +1,4 @@
-class_name Projectile
+class_name FireballProjectile
 extends Node3D
 
 signal target_hit

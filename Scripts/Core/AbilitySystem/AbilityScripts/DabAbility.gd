@@ -46,7 +46,7 @@ func try_activate(_event: ActivationEvent) -> void:
 
 
 func perform_animation() -> void:
-	await unit.animator.play_animation_by_name(animation.resource_name)#"GreatSwordTest1/" + 
+	await unit.animator.play_animation_by_name(animation.resource_name)
 	return
 
 

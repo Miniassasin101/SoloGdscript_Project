@@ -73,6 +73,21 @@ func apply(event: ActivationEvent) -> void:
 	
 	var weapon_visual: ItemVisual = impaling_weapon.get_item_visual()
 	
+
+	
+	if weapon_visual.projectile != null:
+		var impaling_visual: Node3D = weapon_visual.projectile
+		impaling_visual.reparent(target_marker, true)
+		#var root_pos: Vector3 = impaling_visual.root.get_position()
+		#root_pos += Vector3(0, 0, 0.45)
+		#weapon_visual.root.set_position(root_pos)
+		impaling_visual.set_global_position(target_marker.global_position)
+		#impaling_visual.global_rotate(Vector3.UP, 180.0)
+		event.body_part.is_impaled = true
+		apply_effect(event)
+		return
+		
+	
 	weapon_visual.reparent(target_marker, false)
 	var root_pos: Vector3 = weapon_visual.root.get_position()
 	root_pos += Vector3(0, 0, 0.45)
@@ -97,6 +112,7 @@ func apply_effect(event: ActivationEvent) -> void:
 		# Make sure to duplicate the resources always to avoid effects applying on every instance
 		var new_impaled_condition: ImpaledCondition = impaled_condition.duplicate()
 		new_impaled_condition.impaled_weapon = event.weapon
+		new_impaled_condition.impaled_projectile_visual = event.weapon.get_item_visual().projectile
 		new_impaled_condition.body_part = event.body_part
 		target_unit.conditions_manager.add_condition(new_impaled_condition) 
 

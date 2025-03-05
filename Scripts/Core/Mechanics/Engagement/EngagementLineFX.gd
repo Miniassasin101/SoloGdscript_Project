@@ -34,7 +34,8 @@ func _physics_process(delta: float) -> void:
 		update_line()
 
 func update_line():
-	if not (start_point and end_point):
+	if start_point == null or end_point == null:
+		remove()
 		return
 	
 	immediate_mesh.clear_surfaces()
@@ -77,5 +78,5 @@ func attach_to():
 	add_child(mesh_instance)
 
 func remove():
-	if mesh_instance:
+	if mesh_instance != null:
 		mesh_instance.queue_free()

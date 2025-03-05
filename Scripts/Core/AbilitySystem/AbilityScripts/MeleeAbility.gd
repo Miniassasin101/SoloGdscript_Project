@@ -78,6 +78,9 @@ func try_activate(_event: ActivationEvent) -> void:
 	# Rotate the Unit to face the target, then continue the action (attack).
 	await rotate_unit_towards_target_enemy(event)
 	
+	
+	event = await CombatSystem.instance.attack_unit(self, event)
+	
 		# Perform the actual swing animation.
 	await melee_attack_anim()
 	
@@ -176,10 +179,12 @@ func get_enemy_ai_ability(_event: ActivationEvent) -> EnemyAIAction:
 # FIXME: Add a prompt if there is more than one weapon equipped
 func add_weapon_to_event() -> void:
 	
+	event.weapon = unit.get_equipped_weapon()
+	""" Depreciated add weapon loop
 	for item: Item in unit.equipment.equipped_items:
 		event.weapon = item
 		return
-	
+	"""
 
 
 ##
@@ -195,7 +200,7 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 	await animator.rotation_completed
 	
 	
-	event = await CombatSystem.instance.attack_unit(self, event)
+
 
 
 

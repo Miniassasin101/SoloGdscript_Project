@@ -158,8 +158,8 @@ func add_engagement(unit_a: Unit, unit_b: Unit) -> void:
 		Utilities.spawn_text_line(unit_b, "Engaged")
 		SignalBus.on_ui_update.emit()
 		
-		unit_a.animator.look_at_toggle(unit_b.body.get_part_marker("head"))
-		unit_b.animator.look_at_toggle(unit_a.body.get_part_marker("head"))
+		#unit_a.animator.look_at_toggle(unit_b.body.get_part_marker("head"))
+		#unit_b.animator.look_at_toggle(unit_a.body.get_part_marker("head"))
 
 func remove_engagement(unit_a: Unit, unit_b: Unit) -> void:
 	var engagement: Engagement = get_engagement(unit_a, unit_b)
@@ -167,8 +167,8 @@ func remove_engagement(unit_a: Unit, unit_b: Unit) -> void:
 		engagement.remove_engagement()
 		engagements.erase(engagement)
 		SignalBus.on_ui_update.emit()
-		unit_a.animator.look_at_toggle()
-		unit_b.animator.look_at_toggle()
+		#unit_a.animator.look_at_toggle()
+		#unit_b.animator.look_at_toggle()
 
 func is_unit_engaged(unit: Unit) -> bool:
 	for engagement in engagements:
@@ -213,7 +213,8 @@ func declare_action(action: Ability, event: ActivationEvent) -> void:
 	# Possibly prompt others if they can react to the declaration itself.
 	await check_declaration_reaction_queue(action, event)
 	if event.target_unit:
-		event.target_unit.animator.on_is_being_targeted(event.unit)
+		pass
+		#event.target_unit.animator.on_is_being_targeted(event.unit)
 	print_debug("Action Declared: ", action.ui_name)
 
 
@@ -307,17 +308,28 @@ func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
 			event.unit.conditions_manager.add_condition(penalty_cond) 
 			return
 	
-	# FIXME: Make it so that it checks to see which hand the weapon is equipped in
+
 	elif event.weapon.hands == 1: # Logic for all one handed weapons
-		push_error("One handed weapons not set up yet")
+
 		var relative: int = Utilities.get_unit_relative_position(event.unit, event.target_unit)
-		if relative == Utilities.RelativePosition.FRONT or\
-		(relative == Utilities.RelativePosition.LEFT_SIDE):
+		if relative == Utilities.RelativePosition.FRONT:
 			return
-		elif (relative == Utilities.RelativePosition.RIGHT_SIDE) :
-			penalty_cond.situational_modifier = 3 # Hard
-			event.unit.conditions_manager.add_condition(penalty_cond) 
+		elif (relative == Utilities.RelativePosition.RIGHT_SIDE):
+			if event.weapon.tags.has("left_hand"):
+				
+				penalty_cond.situational_modifier = 3 # Hard
+				event.unit.conditions_manager.add_condition(penalty_cond) 
+				return
 			return
+		
+		elif (relative == Utilities.RelativePosition.LEFT_SIDE):
+			if event.weapon.tags.has("right_hand"):
+				
+				penalty_cond.situational_modifier = 3 # Hard
+				event.unit.conditions_manager.add_condition(penalty_cond) 
+				return
+			return
+		
 		elif relative == Utilities.RelativePosition.BACK:
 			# FIXME: Make it change based off if attacker or defender
 			penalty_cond.situational_modifier = 4 # Hard
@@ -346,20 +358,33 @@ func determine_defender_facing_penalty(event: ActivationEvent) -> void:
 	
 	# FIXME: Make it so that it checks to see which hand the weapon is equipped in
 	elif event.weapon.hands == 1: # Logic for all one handed weapons
-		push_error("One handed weapons not set up yet")
-		var relative: int = Utilities.get_unit_relative_position(event.unit, event.target_unit)
-		if relative == Utilities.RelativePosition.FRONT or\
-		(relative == Utilities.RelativePosition.LEFT_SIDE):
+		var relative: int = Utilities.get_unit_relative_position(event.target_unit, event.unit)
+		if relative == Utilities.RelativePosition.FRONT:
 			return
-		elif (relative == Utilities.RelativePosition.RIGHT_SIDE) :
-			penalty_cond.situational_modifier = 3 # Hard
-			event.target_unit.conditions_manager.add_condition(penalty_cond) 
+		elif relative == Utilities.RelativePosition.RIGHT_SIDE:
+			if event.weapon.tags.has("left_hand"):
+				
+				penalty_cond.situational_modifier = 3 # Hard
+				event.unit.conditions_manager.add_condition(penalty_cond) 
+				return
 			return
+		
+		elif (relative == Utilities.RelativePosition.LEFT_SIDE):
+			if event.weapon.tags.has("right_hand"):
+				
+				penalty_cond.situational_modifier = 3 # Hard
+				event.unit.conditions_manager.add_condition(penalty_cond) 
+				return
+			return
+			
 		elif relative == Utilities.RelativePosition.BACK:
 			# FIXME: Make it change based off if attacker or defender
 			penalty_cond.situational_modifier = 4 # Formidable
 			event.target_unit.conditions_manager.add_condition(penalty_cond) 
 			return
+		
+		else:
+			push_warning("No relative position on ", relative)
 
 
 

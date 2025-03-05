@@ -66,6 +66,7 @@ enum RelativePosition { FRONT, RIGHT_SIDE, LEFT_SIDE, BACK, UNKNOWN }
 
 # This helper returns the relative position of focus from relative.
 # Whoever is calling this is the focus.
+# FIXME: Wont work on map edges
 func get_unit_relative_position(focus_unit: Unit, relative_unit: Unit) -> RelativePosition:
 	var relative_pos: GridPosition = relative_unit.get_grid_position()
 	
