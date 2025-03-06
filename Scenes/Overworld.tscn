@@ -1,18 +1,18 @@
 [gd_scene load_steps=12 format=3 uid="uid://bhyju5fqgh24h"]
 
-[ext_resource type="Script" path="res://OverworldManager.gd" id="1_5evqf"]
+[ext_resource type="Script" uid="uid://b8g4b74xdtu7m" path="res://OverworldManager.gd" id="1_5evqf"]
 [ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="1_mjhr2"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Overworld/OverworldDebug.gd" id="1_s6fyh"]
+[ext_resource type="Script" uid="uid://dhcgj2fdu1s50" path="res://Hero_Game/Scripts/Core/Overworld/OverworldDebug.gd" id="1_s6fyh"]
 [ext_resource type="PackedScene" uid="uid://be5s57q16s5rx" path="res://OverworldNode.tscn" id="4_mnobb"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="5_mi23r"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Overworld/OverworldNodePath.gd" id="5_plp45"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="6_nf2ae"]
+[ext_resource type="Script" uid="uid://d272os1ql1suo" path="res://Hero_Game/Scripts/Core/player.gd" id="5_mi23r"]
+[ext_resource type="Script" uid="uid://bmuk4wu5pr2a5" path="res://Hero_Game/Scripts/Core/Overworld/OverworldNodePath.gd" id="5_plp45"]
+[ext_resource type="Script" uid="uid://baxluukdrdjhd" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="6_nf2ae"]
 [ext_resource type="Environment" uid="uid://c7cx2thxig2w6" path="res://Hero_Game/Scenes/TestEnvironment1.tres" id="7_3xw0a"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_57kun"]
 size = Vector2(30, 30)
 
-[sub_resource type="Curve3D" id="Curve3D_ul702"]
+[sub_resource type="Curve3D" id="Curve3D_hcqog"]
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0.781415, 0, -0.23307, 0, 0, 0, -0.626068, 0, 0.522465, 0.689098, 0, -0.575064, 3.12566, 0, -0.932279, -0.689098, 0, 0.575064, 0.626068, 0, -0.522465, 4.87434, 0, -4.06772, 0.781415, 0, -0.23307, 0, 0, 0, 8, 0, -5),
 "tilts": PackedFloat32Array(0, 0, 0, 0)
@@ -48,7 +48,7 @@ node_visual_color = Color(0.77, 0, 0.282333, 1)
 script = ExtResource("5_plp45")
 overworld_node_1 = NodePath("../OverworldNode")
 overworld_node_2 = NodePath("../OverworldNode2")
-path_curve = SubResource("Curve3D_ul702")
+path_curve = SubResource("Curve3D_hcqog")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 script = ExtResource("5_mi23r")

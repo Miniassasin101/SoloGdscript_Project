@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="PickupAbility" load_steps=2 format=3 uid="uid://d24lxlvd0ufdn"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/PickupAbility.gd" id="1_ddw3o"]
+[ext_resource type="Script" uid="uid://j0xxq5pncmjq" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/PickupAbility.gd" id="1_ddw3o"]
 
 [resource]
 script = ExtResource("1_ddw3o")

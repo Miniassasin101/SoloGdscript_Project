@@ -408,12 +408,12 @@ tracks/38/keys = PackedFloat32Array(0, 1, -0.235747, -0.937068, -0.198055, 0.164
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rxuh3"]
 _data = {
-"RESET": SubResource("Animation_12ort")
+&"RESET": SubResource("Animation_12ort")
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_w60dq"]
 _data = {
-"BowFire_001": ExtResource("3_o6m33")
+&"BowFire_001": ExtResource("3_o6m33")
 }
 
 [node name="BowRoot" type="Node3D"]
@@ -547,7 +547,7 @@ bones/17/parent = 16
 bones/17/rest = Transform3D(-2.38419e-07, -0.36292, 0.93182, 1.49012e-08, 0.931821, 0.36292, -1, 1.04308e-07, -2.38419e-07, 8.75636e-11, 0.17299, 1.11022e-16)
 bones/17/enabled = true
 bones/17/position = Vector3(8.75636e-11, 0.17299, 1.11022e-16)
-bones/17/rotation = Quaternion(-0.129456, 0.695974, 0.126632, 0.694856)
+bones/17/rotation = Quaternion(-0.129456, 0.695975, 0.126632, 0.694856)
 bones/17/scale = Vector3(1, 1, 1)
 bones/18/name = "Bone.016"
 bones/18/parent = 17
@@ -631,7 +631,7 @@ bones/29/parent = 27
 bones/29/rest = Transform3D(1, 1.61504e-07, 5.07995e-08, -1.61504e-07, 0.819942, 0.572446, 5.07998e-08, -0.572446, 0.819942, 7.10543e-15, 0.05456, -1.49011e-08)
 bones/29/enabled = true
 bones/29/position = Vector3(7.10543e-15, 0.05456, -1.49011e-08)
-bones/29/rotation = Quaternion(-0.299604, -7.52109e-05, -0.00023913, 0.954064)
+bones/29/rotation = Quaternion(-0.299604, -7.52108e-05, -0.00023913, 0.954064)
 bones/29/scale = Vector3(1, 1, 1)
 bones/30/name = "BOTTOM_Limit.001"
 bones/30/parent = 0
@@ -672,6 +672,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0362496, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_rxuh3"),
-"WeaponAnimations": SubResource("AnimationLibrary_w60dq")
+&"": SubResource("AnimationLibrary_rxuh3"),
+&"WeaponAnimations": SubResource("AnimationLibrary_w60dq")
 }

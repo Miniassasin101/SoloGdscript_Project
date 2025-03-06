@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="StandFastEffect" load_steps=3 format=3 uid="uid://bdjdjaquppxcv"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/StandFastEffect.gd" id="1_a3bfo"]
+[ext_resource type="Script" uid="uid://bowgl7ougm0wu" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/StandFastEffect.gd" id="1_a3bfo"]
 [ext_resource type="Resource" uid="uid://d38vfxdvsm1ts" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/BracingConditionResource.tres" id="1_p8eqy"]
 
 [resource]

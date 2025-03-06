@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://4uwpx7r25fdg"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlotContainer.gd" id="1_nas4y"]
+[ext_resource type="Script" uid="uid://ba8grnilb6pg3" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlotContainer.gd" id="1_nas4y"]
 [ext_resource type="PackedScene" uid="uid://bc3pj0ahlf2m6" path="res://Hero_Game/Prefabs/UI_Prefabs/DroppablePanelUI.tscn" id="2_n1fnh"]
 [ext_resource type="PackedScene" uid="uid://4oeb7dptn08v" path="res://Hero_Game/Prefabs/UI_Prefabs/MouseEventDroppableSlot.tscn" id="3_c1mim"]
 

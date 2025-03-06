@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="PressAdvantageEffect" load_steps=3 format=3 uid="uid://cirmysa48hhcs"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/PressAdvantageEffect.gd" id="1_3ykcg"]
+[ext_resource type="Script" uid="uid://cfl64mor2juy3" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/PressAdvantageEffect.gd" id="1_3ykcg"]
 [ext_resource type="Resource" uid="uid://fdbsg2f1hdos" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/UnderPressureConditionResource.tres" id="2_vgesm"]
 
 [resource]

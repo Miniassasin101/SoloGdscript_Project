@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BashEffect" load_steps=3 format=3 uid="uid://tiwgsot8o62f"]
 
 [ext_resource type="Resource" uid="uid://b8e3xr8ip2oea" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/KnockbackConditionResource.tres" id="1_7ydxf"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/BashEffect.gd" id="1_clju4"]
+[ext_resource type="Script" uid="uid://dhqiebvbnioi7" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/BashEffect.gd" id="1_clju4"]
 
 [resource]
 script = ExtResource("1_clju4")

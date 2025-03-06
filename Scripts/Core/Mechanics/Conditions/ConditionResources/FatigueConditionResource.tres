@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="FatigueCondition" load_steps=2 format=3 uid="uid://bd8wku4qq8gx3"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/FatigueCondition.gd" id="1_vxtpf"]
+[ext_resource type="Script" uid="uid://cfdnjvwd5531s" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/FatigueCondition.gd" id="1_vxtpf"]
 
 [resource]
 script = ExtResource("1_vxtpf")
 ui_name = "fatigue"
 condition_level = 1
 application_interval = 0
+tags_type = Array[StringName]([])
+blocking_tags = Array[StringName]([])
 is_situational_modifier = true
 situational_modifier = 2

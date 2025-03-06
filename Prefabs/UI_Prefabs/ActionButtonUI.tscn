@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://psdfsrnutgxe"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/ActionButtonUI.gd" id="1_wdnnx"]
+[ext_resource type="Script" uid="uid://cg5popr38x0cp" path="res://Hero_Game/Scripts/Core/UI/ActionButtonUI.gd" id="1_wdnnx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cbngh"]
 border_width_left = 1

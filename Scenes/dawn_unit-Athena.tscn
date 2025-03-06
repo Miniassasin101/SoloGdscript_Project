@@ -1,10 +1,10 @@
 [gd_scene load_steps=102 format=4 uid="uid://ckh4ee1mgwjn4"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
+[ext_resource type="Script" uid="uid://cc6qiw2g3uffy" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitAnimationScripts/HeadLookModifier3D.gd" id="3_02olo"]
+[ext_resource type="Script" uid="uid://ge3rn14a185x" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitAnimationScripts/HeadLookModifier3D.gd" id="3_02olo"]
 [ext_resource type="Material" uid="uid://cpccbvm86p68o" path="res://Hero_Game/Art/Materials/CelShadedMat.tres" id="3_bhmb0"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/equipped_item_3d.gd" id="4_3lwao"]
+[ext_resource type="Script" uid="uid://b18yiohvhxaca" path="res://addons/godot_gameplay_systems/inventory_system/nodes/equipped_item_3d.gd" id="4_3lwao"]
 [ext_resource type="Animation" uid="uid://c1vw5vdfih7mb" path="res://Hero_Game/Animations/DawnAnims/A-Pose.res" id="4_88hlo"]
 [ext_resource type="Material" uid="uid://qb6lu6eg0e62" path="res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/RedHitFXMaterial.tres" id="4_c2lw4"]
 [ext_resource type="Material" uid="uid://c6p4abkil1jp" path="res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/WhiteHitFXMaterial.tres" id="4_xm57a"]
@@ -18,41 +18,41 @@
 [ext_resource type="Animation" uid="uid://cwyml0jir450h" path="res://Hero_Game/Animations/DawnAnims/Test_Idle_Stance.res" id="11_y80ok"]
 [ext_resource type="Animation" uid="uid://cyuq3syq8f58p" path="res://Hero_Game/Animations/DawnAnims/WarmupRollTest.res" id="12_fxhv2"]
 [ext_resource type="Animation" uid="uid://d0yutt0ytk8p4" path="res://Hero_Game/Animations/DawnAnims/WarmupRollTest_001.res" id="13_1tbmr"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitAnimationScripts/UnitAnimator.gd" id="15_50hb7"]
+[ext_resource type="Script" uid="uid://b85bntgj402lh" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitAnimationScripts/UnitAnimator.gd" id="15_50hb7"]
 [ext_resource type="AnimationLibrary" uid="uid://dcgmvmqj2i3hi" path="res://Hero_Game/Animations/AnimationLibraries/GreatSwordTest1_lib.res" id="15_skiok"]
 [ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/VFX/fireball_mesh.tscn" id="16_3df4h"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://bwus84v6qro73" path="res://Hero_Game/Animations/AnimationNodes/AnimationNodeTest1.tres" id="16_ro1bg"]
 [ext_resource type="Material" uid="uid://beyldvm0u84n0" path="res://Hero_Game/Art/Materials/UnitSelectedVisual.tres" id="17_l3n52"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitSelectedVisual.gd" id="18_id2ra"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/gameplay_attribute_map.gd" id="19_4283r"]
+[ext_resource type="Script" uid="uid://wboqt7okox1o" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitSelectedVisual.gd" id="18_id2ra"]
+[ext_resource type="Script" uid="uid://rkkf2nwnxoht" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/gameplay_attribute_map.gd" id="19_4283r"]
 [ext_resource type="Material" uid="uid://dbk8ugh0clsjv" path="res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/GeneralHitFXMaterial.tres" id="19_wisdh"]
 [ext_resource type="Resource" uid="uid://bqwjl5qldj4b3" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeTableResources/HumanoidAttributesTable.tres" id="20_xrhce"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/ability_container.gd" id="22_250xw"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/ability.gd" id="23_1urwx"]
+[ext_resource type="Script" uid="uid://dedscfunxc2k2" path="res://addons/godot_gameplay_systems/attributes_and_abilities/nodes/ability_container.gd" id="22_250xw"]
+[ext_resource type="Script" uid="uid://pdneo8m1v3c8" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/ability.gd" id="23_1urwx"]
 [ext_resource type="Resource" uid="uid://knnn4c4diq6f" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/AttackAbilities/FireballResource.tres" id="24_6kacr"]
 [ext_resource type="Resource" uid="uid://crgywdemy0bgk" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/AttackAbilities/StrongFireballResource.tres" id="25_33lcd"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/MoveAbility.gd" id="26_a5eeq"]
+[ext_resource type="Script" uid="uid://7oplld6xxpg4" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/MoveAbility.gd" id="26_a5eeq"]
 [ext_resource type="Resource" uid="uid://d1s052aojsqxf" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/AttackAbilities/MeleeTestResource.tres" id="27_lclct"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Body.gd" id="29_f43xc"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/BodyPart.gd" id="30_uvroa"]
+[ext_resource type="Script" uid="uid://3jxoqkiu6ao0" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Body.gd" id="29_f43xc"]
+[ext_resource type="Script" uid="uid://d3x57era3vp0q" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/BodyPart.gd" id="30_uvroa"]
 [ext_resource type="Resource" uid="uid://qgaber1n5dae" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/DabAbilityResource.tres" id="32_qle3s"]
 [ext_resource type="Animation" uid="uid://b03wersgtloek" path="res://Hero_Game/Animations/AnimsSwordTest/Test_Dab_Action.res" id="33_p2d5c"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/inventory.gd" id="34_0tyum"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/nodes/equipment.gd" id="34_6brpe"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/DabAbility.gd" id="34_nsbb5"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/item.gd" id="35_icsct"]
+[ext_resource type="Script" uid="uid://byvwmsbu0s02d" path="res://addons/godot_gameplay_systems/inventory_system/nodes/inventory.gd" id="34_0tyum"]
+[ext_resource type="Script" uid="uid://d3fu7scr3vvmg" path="res://addons/godot_gameplay_systems/inventory_system/nodes/equipment.gd" id="34_6brpe"]
+[ext_resource type="Script" uid="uid://cj78elh2d8n2h" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/DabAbility.gd" id="34_nsbb5"]
+[ext_resource type="Script" uid="uid://dlexln1egnvp7" path="res://addons/godot_gameplay_systems/inventory_system/resources/item.gd" id="35_icsct"]
 [ext_resource type="Resource" uid="uid://d24lxlvd0ufdn" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/PickupAbilityResource.tres" id="37_wv3v5"]
 [ext_resource type="Resource" uid="uid://bh2no358biy4l" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/ParryResource.tres" id="38_1p8t2"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/equipment_slot.gd" id="38_3xk7x"]
+[ext_resource type="Script" uid="uid://c5icjmv66r78i" path="res://addons/godot_gameplay_systems/inventory_system/resources/equipment_slot.gd" id="38_3xk7x"]
 [ext_resource type="PackedScene" uid="uid://6tcoop2kh2oa" path="res://Hero_Game/Prefabs/Units/ColorMarker.tscn" id="38_7osw2"]
 [ext_resource type="Resource" uid="uid://bfbjtl7piwa6a" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/ChangeFacingAbilityResource.tres" id="38_xnfjd"]
 [ext_resource type="Resource" uid="uid://cdvdn0jqh0akb" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/DitherResource.tres" id="39_1xl8t"]
 [ext_resource type="Animation" uid="uid://bd8rnxcdj1f4i" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Parry_1st_Half_001.res" id="39_uakyw"]
 [ext_resource type="Resource" uid="uid://boojk1je30typ" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/IdleResource.tres" id="40_8r1ak"]
-[ext_resource type="Script" path="res://Hero_Game/Scenes/ConditionsManager.gd" id="41_3dis5"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/Condition.gd" id="42_rjnvi"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/FatigueCondition.gd" id="43_t17f4"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/FacingArrowManager.gd" id="43_ygndu"]
+[ext_resource type="Script" uid="uid://dlirul6pv2kf8" path="res://Hero_Game/Scenes/ConditionsManager.gd" id="41_3dis5"]
+[ext_resource type="Script" uid="uid://coce1bv130fy4" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/Condition.gd" id="42_rjnvi"]
+[ext_resource type="Script" uid="uid://cfdnjvwd5531s" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/FatigueCondition.gd" id="43_t17f4"]
+[ext_resource type="Script" uid="uid://thfmimenms1" path="res://Hero_Game/Scripts/Core/Unit Scripts/FacingArrowManager.gd" id="43_ygndu"]
 [ext_resource type="ArrayMesh" uid="uid://xx66bmhi8byu" path="res://Hero_Game/Prefabs/BasicShapes/Arrow_Plane.res" id="44_r3umq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_khrt5"]
@@ -2096,21 +2096,21 @@ tracks/173/keys = PackedFloat32Array(0, 1, 1, 1, 1)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fwbio"]
 _data = {
-"RESET": SubResource("Animation_kin6h")
+&"RESET": SubResource("Animation_kin6h")
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1se2t"]
 _data = {
-"A-Pose": ExtResource("4_88hlo"),
-"A-Pose_001": ExtResource("5_x25op"),
-"IdleAnim": ExtResource("6_0ivi7"),
-"RunCycle": ExtResource("7_8smc0"),
-"T-Pose": ExtResource("8_hbrah"),
-"T-Pose_A-Pose": ExtResource("9_b40pc"),
-"Test_Dab_Action": ExtResource("10_baqgo"),
-"Test_Idle_Stance": ExtResource("11_y80ok"),
-"WarmupRollTest": ExtResource("12_fxhv2"),
-"WarmupRollTest_001": ExtResource("13_1tbmr")
+&"A-Pose": ExtResource("4_88hlo"),
+&"A-Pose_001": ExtResource("5_x25op"),
+&"IdleAnim": ExtResource("6_0ivi7"),
+&"RunCycle": ExtResource("7_8smc0"),
+&"T-Pose": ExtResource("8_hbrah"),
+&"T-Pose_A-Pose": ExtResource("9_b40pc"),
+&"Test_Dab_Action": ExtResource("10_baqgo"),
+&"Test_Idle_Stance": ExtResource("11_y80ok"),
+&"WarmupRollTest": ExtResource("12_fxhv2"),
+&"WarmupRollTest_001": ExtResource("13_1tbmr")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_10yvm"]
@@ -2243,6 +2243,8 @@ script = ExtResource("43_t17f4")
 ui_name = "fatigue"
 condition_level = 0
 application_interval = 0
+tags_type = Array[StringName]([])
+blocking_tags = Array[StringName]([])
 is_situational_modifier = true
 situational_modifier = 2
 

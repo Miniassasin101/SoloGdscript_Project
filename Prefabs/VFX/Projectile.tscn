@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://u2ba3fa5qdlo"]
 
-[ext_resource type="Script" path="res://Projectile.gd" id="1_2hv8c"]
+[ext_resource type="Script" uid="uid://clyt57h67j6gl" path="res://Projectile.gd" id="1_2hv8c"]
 [ext_resource type="PackedScene" uid="uid://uejihqtfr66u" path="res://Hero_Game/Prefabs/VFX/WeaponHitVFX.tscn" id="2_7gbon"]
 
 [node name="Projectile" type="Node3D"]

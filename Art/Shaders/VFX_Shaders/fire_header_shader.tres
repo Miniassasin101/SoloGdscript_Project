@@ -19,7 +19,7 @@ code = "shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx, unshaded, shadows_disabled, ambient_light_disabled, fog_disabled;
 
 uniform vec4 Ball_Color : source_color;
-uniform float Fresnel_Power : hint_range(1, 10) = 4;
+uniform float Fresnel_Power : hint_range(1.0, 10.0) = 4.0;
 
 
 

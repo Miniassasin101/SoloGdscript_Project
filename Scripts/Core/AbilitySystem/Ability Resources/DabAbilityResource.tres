@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="DabAbility" load_steps=3 format=3 uid="uid://qgaber1n5dae"]
 
 [ext_resource type="Animation" uid="uid://djddt3772shp3" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Parry_Idle_001.res" id="1_mkbb6"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/DabAbility.gd" id="1_o24lm"]
+[ext_resource type="Script" uid="uid://cj78elh2d8n2h" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/DabAbility.gd" id="1_o24lm"]
 
 [resource]
 script = ExtResource("1_o24lm")

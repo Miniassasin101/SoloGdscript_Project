@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CircumventParryEffect" load_steps=2 format=3 uid="uid://cb2opgmh0nqyu"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/CircumventParryEffect.gd" id="1_q7evd"]
+[ext_resource type="Script" uid="uid://ltipieua8mja" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/CircumventParryEffect.gd" id="1_q7evd"]
 
 [resource]
 script = ExtResource("1_q7evd")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cwyw2n2didifn"]
 
-[ext_resource type="PackedScene" uid="uid://crhyh3ewhng00" path="res://Hero_Game/Art/SelfAssets/Base Mesh Textures Almost Done.glb" id="1_3gmeo"]
+[ext_resource type="PackedScene" uid="uid://bvqddjc10hmqs" path="res://Hero_Game/Art/SelfAssets/Base Mesh Textures Almost Done.glb" id="1_3gmeo"]
 [ext_resource type="Material" uid="uid://cpccbvm86p68o" path="res://Hero_Game/Art/Materials/CelShadedMat.tres" id="2_7s3xp"]
 
 [node name="Base Mesh Textures Almost Done" instance=ExtResource("1_3gmeo")]

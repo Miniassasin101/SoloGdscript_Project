@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://p6evu7hnt4o3"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/CharacterSheetPartPanel.gd" id="1_lo83w"]
+[ext_resource type="Script" uid="uid://80tqxfwbsb1q" path="res://Hero_Game/Scripts/Core/UI/CharacterSheetPartPanel.gd" id="1_lo83w"]
 
 [node name="PanelContainer" type="PanelContainer"]
 script = ExtResource("1_lo83w")

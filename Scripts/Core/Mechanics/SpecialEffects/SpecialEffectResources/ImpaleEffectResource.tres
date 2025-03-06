@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ImpaleEffect" load_steps=3 format=3 uid="uid://cqqeph0m4h0ka"]
 
 [ext_resource type="Resource" uid="uid://b0fgn1blcxqsp" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/ImpaledConditionResource.tres" id="1_m4ilf"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/ImpaleEffect.gd" id="1_rxkr8"]
+[ext_resource type="Script" uid="uid://b61y2efr1euu4" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/ImpaleEffect.gd" id="1_rxkr8"]
 
 [resource]
 script = ExtResource("1_rxkr8")

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BypassArmorEffect" load_steps=2 format=3 uid="uid://bo28spn03mllg"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/BypassArmorEffect.gd" id="1_d7dfb"]
+[ext_resource type="Script" uid="uid://bkuwiko3agxir" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/BypassArmorEffect.gd" id="1_d7dfb"]
 
 [resource]
 script = ExtResource("1_d7dfb")

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="AttributesTable" load_steps=23 format=3 uid="uid://bqwjl5qldj4b3"]
 
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="1_cxlmv"]
+[ext_resource type="Script" uid="uid://bvoxi6hq3h2y7" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="1_cxlmv"]
 [ext_resource type="Resource" uid="uid://b4cltjme3q4uh" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/SizeAttribute.tres" id="2_x4bw0"]
 [ext_resource type="Resource" uid="uid://ctkldarvpfe18" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/EnduranceAttribute.tres" id="3_ta67j"]
 [ext_resource type="Resource" uid="uid://d3uqoh4pmuljd" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/PowerAttribute.tres" id="4_jk2fe"]
@@ -20,8 +20,8 @@
 [ext_resource type="Resource" uid="uid://b1835bsxed8bt" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ExperienceModifierAttribute.tres" id="17_n1cdp"]
 [ext_resource type="Resource" uid="uid://c564jeljvouh4" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ExperienceRollsAttribute.tres" id="18_m5f2s"]
 [ext_resource type="Resource" uid="uid://ctx1x6455nyse" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/HealingRateAttribute.tres" id="19_jcmd2"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/HitLocationsAttribute.gd" id="20_gta6b"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/AttributesTable.gd" id="21_epoc3"]
+[ext_resource type="Script" uid="uid://c4kj6f1xxvutq" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/HitLocationsAttribute.gd" id="20_gta6b"]
+[ext_resource type="Script" uid="uid://dfv2ddkwom1fb" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/AttributesTable.gd" id="21_epoc3"]
 
 [resource]
 resource_local_to_scene = true

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bs8kc22xgwd2d"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/DamageNumber.gd" id="1_b8o46"]
+[ext_resource type="Script" uid="uid://sb3c6yen3kpb" path="res://Hero_Game/Scripts/Core/UI/DamageNumber.gd" id="1_b8o46"]
 
 [sub_resource type="Animation" id="Animation_2hhp2"]
 resource_name = "DamageNumberAnim"
@@ -121,8 +121,8 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0w07m"]
 _data = {
-"DamageNumberAnim": SubResource("Animation_2hhp2"),
-"RESET": SubResource("Animation_eswh3")
+&"DamageNumberAnim": SubResource("Animation_2hhp2"),
+&"RESET": SubResource("Animation_eswh3")
 }
 
 [node name="Damage_Number_Root" type="Control" node_paths=PackedStringArray("animator", "text_label")]
@@ -135,7 +135,7 @@ default_animation = "TextAnimationLibrary/CharacterTextLogFadeAnim"
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_0w07m")
+&"": SubResource("AnimationLibrary_0w07m")
 }
 
 [node name="Node2D" type="Node2D" parent="."]

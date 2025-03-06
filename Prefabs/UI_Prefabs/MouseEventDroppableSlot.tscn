@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://4oeb7dptn08v"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlot.gd" id="1_xp865"]
+[ext_resource type="Script" uid="uid://70hnn7a5abnw" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlot.gd" id="1_xp865"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjluk"]
 bg_color = Color(0.683077, 0.683077, 0.683077, 1)

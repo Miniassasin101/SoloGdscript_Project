@@ -1,10 +1,11 @@
 [gd_resource type="Resource" script_class="MoveAbility" load_steps=2 format=3 uid="uid://cdlndqe1el380"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/MoveAbility.gd" id="1_ajbl4"]
+[ext_resource type="Script" uid="uid://7oplld6xxpg4" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/MoveAbility.gd" id="1_ajbl4"]
 
 [resource]
 script = ExtResource("1_ajbl4")
 max_move_distance = 5
+use_max_move_distance = false
 ap_cost = 0
 rotate_speed = 4.3
 move_speed = 5.5

@@ -1,12 +1,12 @@
 [gd_scene load_steps=13 format=3 uid="uid://bhyju5fqgh24h"]
 
-[ext_resource type="Script" path="res://OverworldManager.gd" id="1_5evqf"]
+[ext_resource type="Script" uid="uid://b8g4b74xdtu7m" path="res://OverworldManager.gd" id="1_5evqf"]
 [ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="1_mjhr2"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Overworld/OverworldDebug.gd" id="1_s6fyh"]
-[ext_resource type="Script" path="res://OverworldNode.gd" id="2_c068s"]
+[ext_resource type="Script" uid="uid://dhcgj2fdu1s50" path="res://Hero_Game/Scripts/Core/Overworld/OverworldDebug.gd" id="1_s6fyh"]
+[ext_resource type="Script" uid="uid://c62gk8f1hd6qw" path="res://OverworldNode.gd" id="2_c068s"]
 [ext_resource type="PackedScene" uid="uid://nfxda7h5r7np" path="res://Hero_Game/Prefabs/OverworldPrefabs/OverworldNodePrefabs/NodeVisualTest.tscn" id="3_mwin2"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="5_mi23r"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="6_nf2ae"]
+[ext_resource type="Script" uid="uid://d272os1ql1suo" path="res://Hero_Game/Scripts/Core/player.gd" id="5_mi23r"]
+[ext_resource type="Script" uid="uid://baxluukdrdjhd" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="6_nf2ae"]
 [ext_resource type="Environment" uid="uid://c7cx2thxig2w6" path="res://Hero_Game/Scenes/TestEnvironment1.tres" id="7_3xw0a"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_57kun"]

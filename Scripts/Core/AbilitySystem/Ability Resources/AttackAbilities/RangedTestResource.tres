@@ -2,7 +2,7 @@
 
 [ext_resource type="Animation" uid="uid://b8mmomjn0iwks" path="res://Hero_Game/Animations/AnimationImports_1/BowFire_001.res" id="1_gcw0e"]
 [ext_resource type="PackedScene" uid="uid://u2ba3fa5qdlo" path="res://Hero_Game/Prefabs/VFX/Projectile.tscn" id="2_w5adv"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/ProjectileAbility.gd" id="3_hoa3k"]
+[ext_resource type="Script" uid="uid://5x35ebrpt63q" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/ProjectileAbility.gd" id="3_hoa3k"]
 
 [resource]
 script = ExtResource("3_hoa3k")

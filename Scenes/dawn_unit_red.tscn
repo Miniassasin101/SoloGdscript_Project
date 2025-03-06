@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="1_sg4je"]
 [ext_resource type="Material" uid="uid://7s23ohsljb1e" path="res://Hero_Game/Art/Materials/CelShadedRedMat.tres" id="2_ahxat"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="3_g5wgs"]
+[ext_resource type="Script" uid="uid://bvoxi6hq3h2y7" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="3_g5wgs"]
 [ext_resource type="Resource" uid="uid://ctkldarvpfe18" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/EnduranceAttribute.tres" id="5_4pqhq"]
 [ext_resource type="Resource" uid="uid://d3uqoh4pmuljd" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/PowerAttribute.tres" id="6_inmxm"]
 [ext_resource type="Resource" uid="uid://cmi2ppcs6qo5j" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/DexterityAttribute.tres" id="7_nm4d6"]
@@ -18,8 +18,8 @@
 [ext_resource type="Resource" uid="uid://bcsymcrsnt8dg" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/DamageModifierAttribute.tres" id="17_h8cso"]
 [ext_resource type="Resource" uid="uid://b1835bsxed8bt" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ExperienceModifierAttribute.tres" id="18_mw8qw"]
 [ext_resource type="Resource" uid="uid://ctx1x6455nyse" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/HealingRateAttribute.tres" id="19_4i2mv"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/HitLocationsAttribute.gd" id="20_l70h3"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/AttributesTable.gd" id="21_wfx7r"]
+[ext_resource type="Script" uid="uid://c4kj6f1xxvutq" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/HitLocationsAttribute.gd" id="20_l70h3"]
+[ext_resource type="Script" uid="uid://dfv2ddkwom1fb" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/AttributesTable.gd" id="21_wfx7r"]
 
 [sub_resource type="Resource" id="Resource_5vmii"]
 script = ExtResource("3_g5wgs")

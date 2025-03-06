@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="WithdrawEffect" load_steps=2 format=3 uid="uid://cqieibalk7a7b"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/WithdrawEffect.gd" id="1_sc57l"]
+[ext_resource type="Script" uid="uid://c5xso6s5gcgm8" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/WithdrawEffect.gd" id="1_sc57l"]
 
 [resource]
 script = ExtResource("1_sc57l")

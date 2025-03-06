@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ForceFailureEffect" load_steps=2 format=3 uid="uid://b7wui72oveng1"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/ForceFailureEffect.gd" id="1_qct0u"]
+[ext_resource type="Script" uid="uid://6u6rsih1bkwi" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/ForceFailureEffect.gd" id="1_qct0u"]
 
 [resource]
 script = ExtResource("1_qct0u")

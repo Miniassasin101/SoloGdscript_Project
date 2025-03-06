@@ -1,13 +1,13 @@
 [gd_scene load_steps=18 format=3 uid="uid://d12kdgl0o7r1"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/VFX/FireballProjectile.gd" id="1_8ww2s"]
+[ext_resource type="Script" uid="uid://d3i6lhkh8pvkk" path="res://Hero_Game/Scripts/Core/VFX/FireballProjectile.gd" id="1_8ww2s"]
 [ext_resource type="Shader" uid="uid://cidqowq247x00" path="res://Hero_Game/Art/Shaders/VFX_Shaders/fireball_shader.tres" id="1_hyrle"]
 [ext_resource type="ArrayMesh" uid="uid://begmwqvsxayqv" path="res://Hero_Game/Art/SelfAssets/fireball_mesh.obj" id="2_lxed6"]
 [ext_resource type="PackedScene" uid="uid://c7j0fpkwpb36g" path="res://Hero_Game/Prefabs/VFX/FireballHitVFX.tscn" id="2_wycy4"]
 [ext_resource type="Shader" uid="uid://djjlg1lyedt3a" path="res://Hero_Game/Art/Shaders/VFX_Shaders/fire_header_shader.tres" id="4_wxpx6"]
 [ext_resource type="Texture2D" uid="uid://f8d7m0fhky1j" path="res://Hero_Game/Art/Textures/Noise Textures/T_VFX_basic1.PNG" id="5_sjlxo"]
 [ext_resource type="Material" uid="uid://bw3rah0kk43f5" path="res://Hero_Game/Art/Materials/VFX_Materials/fireball_trail_material.tres" id="6_qtac6"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/VFX/Trail3D.gd" id="7_d3lxd"]
+[ext_resource type="Script" uid="uid://dnqsr385g6xei" path="res://Hero_Game/Scripts/Core/VFX/Trail3D.gd" id="7_d3lxd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_msr3w"]
 render_priority = 1

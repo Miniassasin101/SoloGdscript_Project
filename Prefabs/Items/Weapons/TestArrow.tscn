@@ -22,7 +22,7 @@ tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, -0.5)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dhamo"]
 _data = {
-"RESET": SubResource("Animation_2sftn")
+&"RESET": SubResource("Animation_2sftn")
 }
 
 [sub_resource type="Animation" id="Animation_16x84"]
@@ -48,7 +48,7 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_a83ar"]
 _data = {
-"ArrowDrawback": SubResource("Animation_16x84")
+&"ArrowDrawback": SubResource("Animation_16x84")
 }
 
 [node name="ArrowRoot" type="Node3D"]
@@ -72,6 +72,6 @@ surface_material_override/0 = ExtResource("2_1ye8n")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_dhamo"),
-"WeaponAnimationLibrary": SubResource("AnimationLibrary_a83ar")
+&"": SubResource("AnimationLibrary_dhamo"),
+&"WeaponAnimationLibrary": SubResource("AnimationLibrary_a83ar")
 }

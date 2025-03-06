@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c10hr44pdautg"]
 
-[ext_resource type="Script" path="res://Hero_Game/Prefabs/Items/ItemVisual.gd" id="1_li025"]
+[ext_resource type="Script" uid="uid://dbkjteoldhx6y" path="res://Hero_Game/Prefabs/Items/ItemVisual.gd" id="1_li025"]
 
 [sub_resource type="Animation" id="Animation_6lwni"]
 resource_name = "ItemAnimator"
@@ -48,8 +48,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_o54w8"]
 _data = {
-"ItemSpin": SubResource("Animation_6lwni"),
-"RESET": SubResource("Animation_ee3x7")
+&"ItemSpin": SubResource("Animation_6lwni"),
+&"RESET": SubResource("Animation_ee3x7")
 }
 
 [node name="ItemVisual" type="Node3D" node_paths=PackedStringArray("animator", "root")]
@@ -61,7 +61,7 @@ root = NodePath("Root")
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_o54w8")
+&"": SubResource("AnimationLibrary_o54w8")
 }
 
 [node name="Root" type="Node3D" parent="."]

@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="Condition" load_steps=2 format=3 uid="uid://cvdfg84signwo"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/Condition.gd" id="1_btfw1"]
+[ext_resource type="Script" uid="uid://coce1bv130fy4" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/Condition.gd" id="1_btfw1"]
 
 [resource]
 script = ExtResource("1_btfw1")
 ui_name = "condition"
 condition_level = 0
 application_interval = 0
+tags_type = Array[StringName]([])
+blocking_tags = Array[StringName]([])
 is_situational_modifier = false
 situational_modifier = 2

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ReloadAbility" load_steps=3 format=3 uid="uid://blki6inmlodrb"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/ReloadAbility.gd" id="1_1ay14"]
+[ext_resource type="Script" uid="uid://bb8j7pfgecbvv" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/ReloadAbility.gd" id="1_1ay14"]
 [ext_resource type="Animation" uid="uid://dvv8ewe2tgybq" path="res://Hero_Game/Animations/AnimationImports_1/BowReload_001.res" id="1_nccav"]
 
 [resource]

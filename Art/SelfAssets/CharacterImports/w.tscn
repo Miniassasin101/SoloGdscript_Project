@@ -16,16 +16,16 @@
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1se2t"]
 _data = {
-"A-Pose": ExtResource("1_k4xsp"),
-"A-Pose_001": ExtResource("2_25l7j"),
-"IdleAnim": ExtResource("3_au5qb"),
-"RunCycle": ExtResource("4_t4sqm"),
-"T-Pose": ExtResource("5_31t2c"),
-"T-Pose_A-Pose": ExtResource("6_2dm2d"),
-"Test_Dab_Action": ExtResource("7_5sho8"),
-"Test_Idle_Stance": ExtResource("8_38x4s"),
-"WarmupRollTest": ExtResource("9_phum4"),
-"WarmupRollTest_001": ExtResource("10_i4wo7")
+&"A-Pose": ExtResource("1_k4xsp"),
+&"A-Pose_001": ExtResource("2_25l7j"),
+&"IdleAnim": ExtResource("3_au5qb"),
+&"RunCycle": ExtResource("4_t4sqm"),
+&"T-Pose": ExtResource("5_31t2c"),
+&"T-Pose_A-Pose": ExtResource("6_2dm2d"),
+&"Test_Dab_Action": ExtResource("7_5sho8"),
+&"Test_Idle_Stance": ExtResource("8_38x4s"),
+&"WarmupRollTest": ExtResource("9_phum4"),
+&"WarmupRollTest_001": ExtResource("10_i4wo7")
 }
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_khrt5"]

@@ -1,14 +1,13 @@
 [gd_scene load_steps=21 format=3 uid="uid://cecmda6fwxic6"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="1_edbn8"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="2_ep4kl"]
+[ext_resource type="Script" uid="uid://rlds7mw67ihj" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="1_edbn8"]
+[ext_resource type="Script" uid="uid://b8mwdab0futt7" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="2_ep4kl"]
 [ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="3_fp3qo"]
 [ext_resource type="PackedScene" uid="uid://cqnr4v4j11wr1" path="res://Hero_Game/Prefabs/Units/Unit.tscn" id="4_g5t0o"]
-[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="5_x33pd"]
+[ext_resource type="Shader" uid="uid://bsom40l4vw4gh" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="5_x33pd"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_Grid_08.png" id="6_q25by"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="7_v8ytv"]
-[ext_resource type="Script" path="res://Hero_Game/Scenes/testing.gd" id="8_wmnn1"]
-
+[ext_resource type="Script" uid="uid://d272os1ql1suo" path="res://Hero_Game/Scripts/Core/player.gd" id="7_v8ytv"]
+[ext_resource type="Script" uid="uid://gfxepypxk6c5" path="res://Hero_Game/Scenes/testing.gd" id="8_wmnn1"]
 
 [sub_resource type="GDScript" id="GDScript_teh1w"]
 script/source = "extends Node3D
@@ -64,6 +63,7 @@ material = ExtResource("3_fp3qo")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vphwt"]
 render_priority = 0
 shader = ExtResource("5_x33pd")
+shader_parameter/grid_texture = ExtResource("6_q25by")
 shader_parameter/base_color = Color(0.303233, 0.303233, 0.303233, 1)
 shader_parameter/grid_scale = 2.0
 shader_parameter/grid_opacity = 1.0
@@ -72,7 +72,6 @@ shader_parameter/specular = 0.2
 shader_parameter/roughness = 0.8
 shader_parameter/emissive_strength = 0.0
 shader_parameter/world_offset = Vector2(1, 1)
-shader_parameter/grid_texture = ExtResource("6_q25by")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_fnkdd"]
 material = SubResource("ShaderMaterial_vphwt")

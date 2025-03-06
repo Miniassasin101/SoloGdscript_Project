@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Weapon" load_steps=7 format=3 uid="uid://cxk0rx8ecss31"]
 
 [ext_resource type="Animation" uid="uid://b3dl4a03vrlw1" path="res://Hero_Game/Animations/AnimationImports_1/Idle_Greatsword_shoulder.res" id="1_iteem"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/Weapon.gd" id="1_pes5o"]
+[ext_resource type="Script" uid="uid://bkx8m1e0lkceq" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/Weapon.gd" id="1_pes5o"]
 [ext_resource type="PackedScene" uid="uid://ws4usfvbsn2l" path="res://Hero_Game/Prefabs/Items/Weapons/Greatsword.tscn" id="1_snv06"]
 [ext_resource type="Animation" uid="uid://c5khxrqqcf7uh" path="res://Hero_Game/Animations/AnimationImports_1/Greatsword_Parry_Idle_001.res" id="2_f76sg"]
 [ext_resource type="Animation" uid="uid://b43ekgcb6wwjo" path="res://Hero_Game/Animations/AnimationImports_1/Greatsword_Parry_1st_Half_001.res" id="3_wb6wo"]

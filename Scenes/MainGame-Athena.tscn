@@ -1,37 +1,37 @@
 [gd_scene load_steps=72 format=3 uid="uid://dl3he0bj1hlla"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
+[ext_resource type="Script" uid="uid://dswgp2a8up16v" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
+[ext_resource type="Script" uid="uid://b268e884ur2c8" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
 [ext_resource type="Environment" uid="uid://c7cx2thxig2w6" path="res://Hero_Game/Scenes/TestEnvironment1.tres" id="2_ocl1f"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="2_td6d6"]
-[ext_resource type="Script" path="res://Hero_Game/Scenes/testing.gd" id="3_vw71g"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="4_8yks7"]
+[ext_resource type="Script" uid="uid://rlds7mw67ihj" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitActionSystem.gd" id="2_td6d6"]
+[ext_resource type="Script" uid="uid://gfxepypxk6c5" path="res://Hero_Game/Scenes/testing.gd" id="3_vw71g"]
+[ext_resource type="Script" uid="uid://b8mwdab0futt7" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="4_8yks7"]
 [ext_resource type="PackedScene" uid="uid://bputpfvj74kol" path="res://Hero_Game/Prefabs/Grid/GridCellVisual.tscn" id="4_85pbp"]
 [ext_resource type="Animation" uid="uid://dswwaq5xbcffc" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Swing_001.res" id="5_o3n5o"]
 [ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="5_y067e"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Pathfinding/Pathfinding.gd" id="6_3wgmn"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Pathfinding/ObstacleManager.gd" id="6_ni1mu"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/TurnSystem.gd" id="6_rwbm0"]
+[ext_resource type="Script" uid="uid://deivi00ihmnlo" path="res://Hero_Game/Scripts/Core/Pathfinding/Pathfinding.gd" id="6_3wgmn"]
+[ext_resource type="Script" uid="uid://cuxrm0y0462px" path="res://Hero_Game/Scripts/Core/Pathfinding/ObstacleManager.gd" id="6_ni1mu"]
+[ext_resource type="Script" uid="uid://cvm7nhxktaye1" path="res://Hero_Game/Scripts/Core/Mechanics/TurnSystem.gd" id="6_rwbm0"]
 [ext_resource type="PackedScene" uid="uid://b37juamn5pbrv" path="res://WallTestInst.tscn" id="7_snusx"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/AccidentalInjuryEffect.gd" id="8_3ubv2"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitAI/UnitAI.gd" id="8_kmwtl"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/player.gd" id="9_rt187"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitManager.gd" id="10_iw061"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
+[ext_resource type="Script" uid="uid://bijriqmby0ojr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/AccidentalInjuryEffect.gd" id="8_3ubv2"]
+[ext_resource type="Script" uid="uid://c7n55vjiaihq6" path="res://Hero_Game/Scripts/Core/UnitAI/UnitAI.gd" id="8_kmwtl"]
+[ext_resource type="Script" uid="uid://d272os1ql1suo" path="res://Hero_Game/Scripts/Core/player.gd" id="9_rt187"]
+[ext_resource type="Script" uid="uid://b86pgqibregag" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitManager.gd" id="10_iw061"]
+[ext_resource type="Script" uid="uid://cre4if3nuycdg" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
 [ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/UI_Prefabs/ActionButtonUI.tscn" id="11_jk6uv"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
-[ext_resource type="Script" path="res://Hero_Game/Scenes/ObjectManager.gd" id="12_qi25r"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/CombatSystem.gd" id="16_f3oa4"]
+[ext_resource type="Script" uid="uid://olntd167cww4" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
+[ext_resource type="Script" uid="uid://dc48clv42hytu" path="res://Hero_Game/Scenes/ObjectManager.gd" id="12_qi25r"]
+[ext_resource type="Script" uid="uid://dsaiu1sup3y2i" path="res://Hero_Game/Scripts/Core/Mechanics/CombatSystem.gd" id="16_f3oa4"]
 [ext_resource type="Resource" uid="uid://cxk0rx8ecss31" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/SwordTest.tres" id="17_gypti"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
+[ext_resource type="Script" uid="uid://dsp5f0drsktx2" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffect.gd" id="18_hnk25"]
+[ext_resource type="Script" uid="uid://cwsem2fnkteke" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffect.gd" id="18_hnk25"]
 [ext_resource type="Resource" uid="uid://cjxj1gnefr71c" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/AccidentalInjuryEffectResource.tres" id="19_xdtf5"]
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
-[ext_resource type="Script" path="res://Hero_Game/Scenes/UILayer.gd" id="21_3ffgk"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
+[ext_resource type="Script" uid="uid://baxluukdrdjhd" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
+[ext_resource type="Script" uid="uid://dqx7stk06etai" path="res://Hero_Game/Scenes/UILayer.gd" id="21_3ffgk"]
+[ext_resource type="Script" uid="uid://bd0s3lywx8lk3" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
 [ext_resource type="Resource" uid="uid://bytek5m52blwh" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BleedEffectResource.tres" id="21_kkt7y"]
-[ext_resource type="Script" path="res://Hero_Game/Scenes/BookKeepingSystem.gd" id="21_ktx83"]
+[ext_resource type="Script" uid="uid://dhballfce82fs" path="res://Hero_Game/Scenes/BookKeepingSystem.gd" id="21_ktx83"]
 [ext_resource type="Resource" uid="uid://dst4i0rqw46ng" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BlindOpponentEffectResource.tres" id="22_6ytw6"]
 [ext_resource type="PackedScene" uid="uid://bs8kc22xgwd2d" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.tscn" id="22_67ysf"]
 [ext_resource type="Resource" uid="uid://bo28spn03mllg" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BypassArmorEffectResource.tres" id="23_xra60"]
@@ -43,18 +43,18 @@
 [ext_resource type="PackedScene" uid="uid://bc3pj0ahlf2m6" path="res://Hero_Game/Prefabs/UI_Prefabs/DroppablePanelUI.tscn" id="27_naquh"]
 [ext_resource type="PackedScene" uid="uid://8oord2o1icck" path="res://Hero_Game/Prefabs/UI_Prefabs/CharacterLogQueue.tscn" id="28_6i1gy"]
 [ext_resource type="PackedScene" uid="uid://4uwpx7r25fdg" path="res://Hero_Game/Prefabs/UI_Prefabs/SpecialEffectsDragContainer.tscn" id="29_725ge"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlotController.gd" id="29_cc03n"]
+[ext_resource type="Script" uid="uid://d35gfk2fl3xde" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlotController.gd" id="29_cc03n"]
 [ext_resource type="Resource" uid="uid://b34sriadfy7xr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/DisarmOpponentEffectResource.tres" id="29_itb1b"]
 [ext_resource type="Resource" uid="uid://dlukj3jgipdjr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/EnhanceParryEffect.tres" id="30_hdg1r"]
 [ext_resource type="Resource" uid="uid://b7wui72oveng1" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ForceFailureEffectResource.tres" id="31_4yuhs"]
 [ext_resource type="Resource" uid="uid://cqqeph0m4h0ka" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ImpaleEffectResource.tres" id="32_npgv8"]
 [ext_resource type="Resource" uid="uid://bspw2bpavewje" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MaximizeDamageEffectResource.tres" id="33_mywpm"]
-[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="35_n58oi"]
+[ext_resource type="Shader" uid="uid://bsom40l4vw4gh" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="35_n58oi"]
 [ext_resource type="PackedScene" uid="uid://cvuecvfamgpwe" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonUI.tscn" id="36_53e25"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_Grid_08.png" id="36_vdge6"]
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="39_yrlso"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
-[ext_resource type="Shader" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
+[ext_resource type="Shader" uid="uid://0l0gx3l42rjg" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
 
 [sub_resource type="Resource" id="Resource_vhtwd"]
 script = ExtResource("8_3ubv2")
@@ -80,6 +80,7 @@ roll_required = 0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pcwnq"]
 render_priority = 0
 shader = ExtResource("35_n58oi")
+shader_parameter/grid_texture = ExtResource("36_vdge6")
 shader_parameter/base_color = Color(0.45, 0.45, 0.45, 1)
 shader_parameter/grid_scale = 2.0
 shader_parameter/grid_opacity = 1.0
@@ -88,7 +89,6 @@ shader_parameter/specular = 0.2
 shader_parameter/roughness = 0.8
 shader_parameter/emissive_strength = 0.0
 shader_parameter/world_offset = Vector2(1, 1)
-shader_parameter/grid_texture = ExtResource("36_vdge6")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_fnkdd"]
 material = SubResource("ShaderMaterial_pcwnq")

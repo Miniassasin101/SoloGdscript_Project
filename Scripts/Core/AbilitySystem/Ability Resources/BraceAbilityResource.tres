@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BraceAbility" load_steps=4 format=3 uid="uid://bk2recos4pjqk"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/BracingCondition.gd" id="1_gkiat"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/BraceAbility.gd" id="1_nkqmt"]
+[ext_resource type="Script" uid="uid://b0tw5dpu75lud" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/BracingCondition.gd" id="1_gkiat"]
+[ext_resource type="Script" uid="uid://ec33roh4najq" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/BraceAbility.gd" id="1_nkqmt"]
 
 [sub_resource type="Resource" id="Resource_wu4uj"]
 script = ExtResource("1_gkiat")

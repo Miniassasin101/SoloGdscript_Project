@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bf575s2vrxvov"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/UI/DamageNumber.gd" id="1_220tb"]
+[ext_resource type="Script" uid="uid://sb3c6yen3kpb" path="res://Hero_Game/Scripts/Core/UI/DamageNumber.gd" id="1_220tb"]
 
 [sub_resource type="Animation" id="Animation_2hhp2"]
 resource_name = "DamageNumberAnim"
@@ -121,8 +121,8 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0w07m"]
 _data = {
-"DamageNumberAnim": SubResource("Animation_2hhp2"),
-"RESET": SubResource("Animation_eswh3")
+&"DamageNumberAnim": SubResource("Animation_2hhp2"),
+&"RESET": SubResource("Animation_eswh3")
 }
 
 [sub_resource type="Animation" id="Animation_u7mrk"]
@@ -178,7 +178,7 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ycklu"]
 _data = {
-"CharacterTextLogFadeAnim": SubResource("Animation_u7mrk")
+&"CharacterTextLogFadeAnim": SubResource("Animation_u7mrk")
 }
 
 [node name="TextController" type="Control" node_paths=PackedStringArray("animator", "text_label")]
@@ -191,8 +191,8 @@ default_animation = "TextAnimationLibrary/CharacterTextLogFadeAnim"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_0w07m"),
-"TextAnimationLibrary": SubResource("AnimationLibrary_ycklu")
+&"": SubResource("AnimationLibrary_0w07m"),
+&"TextAnimationLibrary": SubResource("AnimationLibrary_ycklu")
 }
 
 [node name="Node2D" type="Node2D" parent="."]

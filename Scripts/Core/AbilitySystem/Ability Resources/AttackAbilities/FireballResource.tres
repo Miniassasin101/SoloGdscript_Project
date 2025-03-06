@@ -2,7 +2,7 @@
 
 [ext_resource type="Animation" uid="uid://7welfvxasjgq" path="res://Hero_Game/Animations/AnimsSwordTest/Left_Hand_Cast_001.res" id="1_6yk42"]
 [ext_resource type="PackedScene" uid="uid://d12kdgl0o7r1" path="res://Hero_Game/Prefabs/VFX/fireball_mesh.tscn" id="2_8m2li"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/ProjectileAbility.gd" id="3_nbwlu"]
+[ext_resource type="Script" uid="uid://5x35ebrpt63q" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/ProjectileAbility.gd" id="3_nbwlu"]
 
 [resource]
 script = ExtResource("3_nbwlu")

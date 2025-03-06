@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="OutmaneuverAbility" load_steps=2 format=3 uid="uid://c1jfwpoqjm3de"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/OutmaneuverAbility.gd" id="1_t8d7m"]
+[ext_resource type="Script" uid="uid://dvin6j2wg8fan" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/OutmaneuverAbility.gd" id="1_t8d7m"]
 
 [resource]
 script = ExtResource("1_t8d7m")

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BracingCondition" load_steps=2 format=3 uid="uid://d38vfxdvsm1ts"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/BracingCondition.gd" id="1_trcol"]
+[ext_resource type="Script" uid="uid://b0tw5dpu75lud" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/BracingCondition.gd" id="1_trcol"]
 
 [resource]
 script = ExtResource("1_trcol")

@@ -1,12 +1,13 @@
 [gd_resource type="Resource" script_class="OverextendedCondition" load_steps=2 format=3 uid="uid://d0r7f73ld28cu"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/OverextendedCondition.gd" id="1_c7h1o"]
+[ext_resource type="Script" uid="uid://bvmjckkwef46r" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/OverextendedCondition.gd" id="1_c7h1o"]
 
 [resource]
 script = ExtResource("1_c7h1o")
 ui_name = "Overextended"
 condition_level = 1
 application_interval = 2
+tags_type = Array[StringName]([])
 blocking_tags = Array[StringName]([&"attack"])
 is_situational_modifier = false
 situational_modifier = 2

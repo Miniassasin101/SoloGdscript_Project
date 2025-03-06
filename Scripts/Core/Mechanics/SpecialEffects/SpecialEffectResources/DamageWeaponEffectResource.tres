@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="DamageWeaponEffect" load_steps=2 format=3 uid="uid://cjw50deqfhini"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/DamageWeaponEffect.gd" id="1_udb4j"]
+[ext_resource type="Script" uid="uid://epmqff1pof48" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/DamageWeaponEffect.gd" id="1_udb4j"]
 
 [resource]
 script = ExtResource("1_udb4j")

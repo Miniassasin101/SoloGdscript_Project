@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cnqkk453j17mw" path="res://Hero_Game/Prefabs/Items/Weapons/TestBow.tscn" id="1_6ameu"]
 [ext_resource type="Animation" uid="uid://dpukk54akum8q" path="res://Hero_Game/Animations/AnimationImports_1/BowIdle_Loaded_001.res" id="1_a8lfj"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/Weapon.gd" id="2_fru5q"]
+[ext_resource type="Script" uid="uid://bkx8m1e0lkceq" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/Weapon.gd" id="2_fru5q"]
 [ext_resource type="Animation" uid="uid://dhf4hwjirrcde" path="res://Hero_Game/Animations/AnimsBowTest/Bow_Parry_Idle_001.res" id="2_jkkmf"]
 [ext_resource type="Animation" uid="uid://dqluc6y8i02p0" path="res://Hero_Game/Animations/AnimsBowTest/Bow_Parry_First_Half_001.res" id="3_u3qn2"]
 [ext_resource type="Animation" uid="uid://dg2e1f3os5s84" path="res://Hero_Game/Animations/AnimationImports_1/Bow_Parry_Second_Half_001.res" id="4_a3ci1"]

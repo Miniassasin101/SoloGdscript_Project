@@ -1,7 +1,7 @@
 [gd_scene load_steps=56 format=3 uid="uid://cy36aygvs66pn"]
 
 [ext_resource type="PackedScene" uid="uid://kod0awm1ha4o" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot/model/gobot.glb" id="1_qg1mb"]
-[ext_resource type="Script" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot/gobot_skin.gd" id="1_rwke8"]
+[ext_resource type="Script" uid="uid://bi5odfx2lcmh" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot/gobot_skin.gd" id="1_rwke8"]
 [ext_resource type="Texture2D" uid="uid://cfdf62ci74tew" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot/textures/closed_eyes.png" id="3_atmtp"]
 [ext_resource type="Texture2D" uid="uid://dq675fmt1rg8c" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot/textures/open_eye.png" id="3_aysq5"]
 [ext_resource type="Material" uid="uid://div0enqs04w5j" path="res://Hero_Game/Art/Shaders/Gobot Stuff/eye_mat.tres" id="4_p2r8e"]
@@ -1940,16 +1940,16 @@ tracks/28/keys = PackedFloat32Array(0, 1, 0.0298192, -0.0194152, -0.000472976, 0
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_03he3"]
 _data = {
-"EdgeGrab": SubResource("Animation_o2ond"),
-"Fall": SubResource("Animation_ra5uo"),
-"Flip": SubResource("Animation_m4elg"),
-"Idle": SubResource("Animation_80s3p"),
-"Jump": SubResource("Animation_hoyaw"),
-"RESET": SubResource("Animation_c7pi5"),
-"Run": SubResource("Animation_5nggx"),
-"VictorySign": SubResource("Animation_vrhq2"),
-"Walk": SubResource("Animation_eg26g"),
-"WallSlide": SubResource("Animation_pii0g")
+&"EdgeGrab": SubResource("Animation_o2ond"),
+&"Fall": SubResource("Animation_ra5uo"),
+&"Flip": SubResource("Animation_m4elg"),
+&"Idle": SubResource("Animation_80s3p"),
+&"Jump": SubResource("Animation_hoyaw"),
+&"RESET": SubResource("Animation_c7pi5"),
+&"Run": SubResource("Animation_5nggx"),
+&"VictorySign": SubResource("Animation_vrhq2"),
+&"Walk": SubResource("Animation_eg26g"),
+&"WallSlide": SubResource("Animation_pii0g")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g4wg5"]
@@ -1994,7 +1994,7 @@ nodes/Animation/position = Vector2(120, 100)
 nodes/Step/node = SubResource("AnimationNodeAnimation_l1uic")
 nodes/Step/position = Vector2(100, 220)
 nodes/output/position = Vector2(560, 80)
-node_connections = [&"output", 0, &"Add2", &"Add2", 0, &"Animation", &"Add2", 1, &"Step"]
+node_connections = [&"Add2", 0, &"Animation", &"Add2", 1, &"Step", &"output", 0, &"Add2"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_f1d5g"]
 animation = &"VictorySign"
@@ -2091,7 +2091,7 @@ nodes/HurtShot/position = Vector2(420, 80)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_fdt88")
 nodes/StateMachine/position = Vector2(0, 80)
 nodes/output/position = Vector2(580, 80)
-node_connections = [&"output", 0, &"HurtShot", &"FlipShot", 0, &"StateMachine", &"FlipShot", 1, &"Flip", &"HurtShot", 0, &"FlipShot", &"HurtShot", 1, &"Animation"]
+node_connections = [&"FlipShot", 0, &"StateMachine", &"FlipShot", 1, &"Flip", &"HurtShot", 0, &"FlipShot", &"HurtShot", 1, &"Animation", &"output", 0, &"HurtShot"]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_chj4k"]
 

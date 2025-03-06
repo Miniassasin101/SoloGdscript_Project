@@ -1,10 +1,10 @@
 [gd_scene load_steps=26 format=4 uid="uid://bmqywhjoohjdw"]
 
 [ext_resource type="Texture2D" uid="uid://rekrip810dun" path="res://Hero_Game/Art/Shaders/Gobot Stuff/grass.png" id="1_ewmk5"]
-[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Gobot Stuff/sphere.gdshader" id="2_elon6"]
+[ext_resource type="Shader" uid="uid://hxcs30cluvoo" path="res://Hero_Game/Art/Shaders/Gobot Stuff/sphere.gdshader" id="2_elon6"]
 [ext_resource type="Texture2D" uid="uid://djrjrd0mb2wkb" path="res://Hero_Game/Art/Shaders/Gobot Stuff/color_gradient.tres" id="5_jlpjo"]
 [ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot/gobot_skin.tscn" id="5_jtmlw"]
-[ext_resource type="Shader" path="res://Hero_Game/Art/Shaders/Gobotcelshading.gdshader" id="6_7dhka"]
+[ext_resource type="Shader" uid="uid://bo6gdfcll35hj" path="res://Hero_Game/Art/Shaders/Gobotcelshading.gdshader" id="6_7dhka"]
 [ext_resource type="Texture2D" uid="uid://bt5o0sr6peltq" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot/model/gobot_gobot_diffuse.png" id="6_tco1p"]
 [ext_resource type="Texture2D" uid="uid://dq675fmt1rg8c" path="res://Hero_Game/Art/Shaders/Gobot Stuff/gobot/textures/open_eye.png" id="7_ifu1s"]
 
@@ -30,10 +30,10 @@ height = 0.8
 resource_name = "GobotMat"
 render_priority = 0
 shader = ExtResource("6_7dhka")
-shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("6_tco1p")
 shader_parameter/point_size = 1.0
 shader_parameter/roughness = 1.0
-shader_parameter/metallic_texture_channel = null
+shader_parameter/metallic_texture_channel = Vector4(0, 0, 0, 0)
 shader_parameter/specular = 0.5
 shader_parameter/metallic = 0.0
 shader_parameter/normal_scale = 1.0
@@ -41,7 +41,6 @@ shader_parameter/uv1_scale = Vector3(1, 1, 1)
 shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(1, 1, 1)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
-shader_parameter/texture_albedo = ExtResource("6_tco1p")
 shader_parameter/color_gradient = ExtResource("5_jlpjo")
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_l8v6i"]
@@ -1972,15 +1971,15 @@ tracks/28/keys = PackedFloat32Array(0, 1, 0.0452861, -0.446931, 0.0231192, 0.893
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gkvru"]
 _data = {
-"EdgeGrab": SubResource("Animation_0jpcx"),
-"Fall": SubResource("Animation_4h71p"),
-"Flip": SubResource("Animation_w4xko"),
-"Idle": SubResource("Animation_ey8hx"),
-"Jump": SubResource("Animation_8xhwf"),
-"Run": SubResource("Animation_8kuud"),
-"VictorySign": SubResource("Animation_41raw"),
-"Walk": SubResource("Animation_nb2f7"),
-"WallSlide": SubResource("Animation_kqr4t")
+&"EdgeGrab": SubResource("Animation_0jpcx"),
+&"Fall": SubResource("Animation_4h71p"),
+&"Flip": SubResource("Animation_w4xko"),
+&"Idle": SubResource("Animation_ey8hx"),
+&"Jump": SubResource("Animation_8xhwf"),
+&"Run": SubResource("Animation_8kuud"),
+&"VictorySign": SubResource("Animation_41raw"),
+&"Walk": SubResource("Animation_nb2f7"),
+&"WallSlide": SubResource("Animation_kqr4t")
 }
 
 [node name="Node3D" type="Node3D"]

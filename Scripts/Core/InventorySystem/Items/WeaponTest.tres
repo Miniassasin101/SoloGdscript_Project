@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://cphuh7sjr0ov8"]
 
-[ext_resource type="Script" path="res://addons/godot_gameplay_systems/inventory_system/resources/item.gd" id="1_42pch"]
+[ext_resource type="Script" uid="uid://dlexln1egnvp7" path="res://addons/godot_gameplay_systems/inventory_system/resources/item.gd" id="1_42pch"]
 [ext_resource type="PackedScene" uid="uid://ws4usfvbsn2l" path="res://Hero_Game/Prefabs/Items/Weapons/Greatsword.tscn" id="1_lf4ro"]
 
 [resource]

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ChangeFacingAbility" load_steps=2 format=3 uid="uid://bfbjtl7piwa6a"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/ChangeFacingAbility.gd" id="1_6n4ux"]
+[ext_resource type="Script" uid="uid://dssvrya5guo1w" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/ChangeFacingAbility.gd" id="1_6n4ux"]
 
 [resource]
 script = ExtResource("1_6n4ux")

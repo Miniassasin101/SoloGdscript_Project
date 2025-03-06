@@ -1,6 +1,6 @@
 [gd_scene load_steps=34 format=4 uid="uid://cdxsugasmneuu"]
 
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_5sumf"]
+[ext_resource type="Script" uid="uid://cc6qiw2g3uffy" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_5sumf"]
 [ext_resource type="Material" uid="uid://cktqjbr7lsq4l" path="res://Hero_Game/Art/Materials/TestUnitRed.tres" id="2_3rqel"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_mwnot"]
 [ext_resource type="PackedScene" uid="uid://8xs4bw4fw0vi" path="res://Hero_Game/Art/PolyProtoAssets/FBX/SM_Prop_Rifle_01.fbx" id="3_28mhu"]
@@ -10,11 +10,11 @@
 [ext_resource type="Animation" uid="uid://qfrbvx2onktr" path="res://Hero_Game/Animations/Editable/firing run.res" id="7_hhi3p"]
 [ext_resource type="Curve" uid="uid://ds3cwr48a54i0" path="res://Hero_Game/Animations/Curves/AnimationBLendCurve.tres" id="8_lnf7x"]
 [ext_resource type="Material" uid="uid://beyldvm0u84n0" path="res://Hero_Game/Art/Materials/UnitSelectedVisual.tres" id="9_y0gsl"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitSelectedVisual.gd" id="10_rmexp"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Actions/MoveAction.gd" id="11_56s82"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Actions/SpinAction.gd" id="12_g3uad"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Mechanics/HealthSystem.gd" id="13_jdijq"]
-[ext_resource type="Script" path="res://Hero_Game/Scripts/Core/Actions/ShootAction.gd" id="15_kskog"]
+[ext_resource type="Script" uid="uid://wboqt7okox1o" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitSelectedVisual.gd" id="10_rmexp"]
+[ext_resource type="Script" uid="uid://bfgkuqiucy33k" path="res://Hero_Game/Scripts/Core/Actions/MoveAction.gd" id="11_56s82"]
+[ext_resource type="Script" uid="uid://c812rbaadwjq0" path="res://Hero_Game/Scripts/Core/Actions/SpinAction.gd" id="12_g3uad"]
+[ext_resource type="Script" uid="uid://bnurgbcioxew1" path="res://Hero_Game/Scripts/Core/Mechanics/HealthSystem.gd" id="13_jdijq"]
+[ext_resource type="Script" uid="uid://dlxtq17j2uc4f" path="res://Hero_Game/Scripts/Core/Actions/ShootAction.gd" id="15_kskog"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_yk2q0"]
 resource_name = "Scene"
@@ -232,15 +232,15 @@ tracks/3/keys = PackedFloat32Array(0, 1, 0, 0, 0)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6h5co"]
 _data = {
-"RESET": SubResource("Animation_qa0oq")
+&"RESET": SubResource("Animation_qa0oq")
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8qchs"]
 _data = {
-"Idle": ExtResource("4_1amd7"),
-"Strafe": ExtResource("5_kt5f4"),
-"Strafe2": ExtResource("6_du4me"),
-"firing run": ExtResource("7_hhi3p")
+&"Idle": ExtResource("4_1amd7"),
+&"Strafe": ExtResource("5_kt5f4"),
+&"Strafe2": ExtResource("6_du4me"),
+&"firing run": ExtResource("7_hhi3p")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_eop0i"]
