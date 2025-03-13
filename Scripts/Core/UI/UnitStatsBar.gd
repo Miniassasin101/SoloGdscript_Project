@@ -17,8 +17,8 @@ func update_stats(unit: Unit) -> void:
 	var speed_multiplier = Utilities.GAIT_SPEED_MULTIPLIER.get(unit.current_gait)
 	unit_name_label.text = unit.name
 
-	action_points_label.set_text(str(unit.attribute_map.get_attribute_by_name("action_points").current_value))
-	movement_points_label.set_text("MOV: " + str(((move_rate * speed_multiplier)/2) - unit.distance_moved_this_turn))
+	action_points_label.set_text(str(int(unit.attribute_map.get_attribute_by_name("action_points").current_value)))
+	movement_points_label.set_text("MOV: " + str(int(((move_rate * speed_multiplier)/2) - unit.distance_moved_this_turn)))
 	health_text_label.text = "Health: %d / %d" % [unit.attribute_map.get_attribute_by_name("health").current_value, 
 	unit.attribute_map.get_attribute_by_name("health").maximum_value]
 

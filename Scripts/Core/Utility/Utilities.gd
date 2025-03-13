@@ -645,4 +645,4 @@ func spawn_damage_label(in_unit: Unit, damage_val: float, color: Color = Color.C
 	text_label.set_text_color(color)
 	
 	# Initialize the label's text, color, etc.
-	text_label.play(str(damage_val), "DamageNumberAnim")
+	text_label.play(str(int(damage_val)), "DamageNumberAnim")

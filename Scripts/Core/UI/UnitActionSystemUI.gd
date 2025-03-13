@@ -248,8 +248,8 @@ func on_gait_selected(in_gait: int) -> void:
 
 func _update_ability_points() -> void:
 	if selected_unit != null:
-		ability_points_text.text = ("Ability Points: " + str(selected_unit.attribute_map.
-		get_attribute_by_name("action_points").current_buffed_value))
+		ability_points_text.text = ("Ability Points: " + str(int(selected_unit.attribute_map.
+		get_attribute_by_name("action_points").current_buffed_value)))
 
 
 func on_turn_changed() -> void:
