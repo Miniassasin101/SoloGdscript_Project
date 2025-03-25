@@ -129,6 +129,14 @@ func get_enemy_positions(in_unit: Unit) -> Array[GridPosition]:
 	for unit in u:
 		ret_array.append(unit.get_grid_position())
 	return ret_array
+	
+
+func get_all_unit_positions() -> Array[GridPosition]:
+	var ret_array: Array[GridPosition] = []
+	for unit in units:
+		ret_array.append(unit.get_grid_position())
+	return ret_array
+
 
 # Sets the action system reference for all units.
 func set_action_system_for_units(action_system: UnitActionSystem) -> void:

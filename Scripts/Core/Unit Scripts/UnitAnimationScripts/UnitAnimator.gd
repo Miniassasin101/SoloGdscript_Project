@@ -6,8 +6,10 @@ extends Node
 signal rotation_completed
 signal movement_completed
 signal attack_completed
+@warning_ignore("unused_signal")
 signal parry_reset
 signal event_occured
+signal prompt_dodge
 # Exported Variables
 @export_category("References")
 @export var animator: AnimationPlayer
@@ -16,16 +18,11 @@ signal event_occured
 @export var shoot_point: Node3D
 @export var head_look_modifier: HeadLookModifier3D
 @export var height_offset: float = 1.5  # Height offset to aim towards upper body
-
-
-@export_category("Head Look Variables")
 @export var skeleton: Skeleton3D
-@export var neck_bone_name: String = "DEF_neck.001"
-@export var neck_target: Marker3D
-@export var neck_rot_speed: float = 2.0
-@export var max_horizontal_angle: int = 90
-@export var max_vertical_angle: int = 20
-@export var head_look_vertical_offset: float = -3.0
+@export var rig_root: Node3D
+
+
+
 
 
 
@@ -82,6 +79,11 @@ var move_speed: float = 0.0
 var move_rotate_speed: float = 0.0
 var stopping_distance: float = 0.0
 
+
+# Root Motion Variables
+var is_root_motion: bool = false
+
+
 # Attack Variables:
 var miss: bool = false
 var weapon_trail_is_active: bool = false
@@ -91,15 +93,7 @@ var weapon_trail_is_active: bool = false
 func _ready() -> void:
 	#call_deferred("connect_signals")
 	SignalBus.equipment_changed.connect(equipment_anim_check)
-	
-	# Initialize the rest transform for the neck bone.
-	var neck_idx = skeleton.find_bone(neck_bone_name)
-	if neck_idx == -1:
-		push_error("Neck bone '" + neck_bone_name + "' not found!")
-		return
-	default_neck_transform = skeleton.get_bone_rest(neck_idx)
-	# Start with no override.
-	head_look_override_weight = 0.0
+
 
 
 
@@ -110,6 +104,8 @@ func _physics_process(delta: float) -> void:
 		rotate_unit_towards_target_position_process(delta)
 	if is_moving:
 		move_along_curve_process(delta)
+	if is_root_motion:
+		root_motion_process()
 
 
 func get_character_mesh() -> Array[MeshInstance3D]:
@@ -125,13 +121,16 @@ func get_character_mesh() -> Array[MeshInstance3D]:
 # When you want to control head-look via this script, call this function.
 # Passing a valid target will smoothly blend in our override;
 # passing null will smoothly drop the override, allowing your animations to take over.
-func look_at_toggle(target: Node3D = null) -> void:
+func look_at_toggle(_target: Node3D = null) -> void:
+	return
+"""
 	look_target = target
 	is_looking = (target != null)
 	if is_looking:
 		head_look_modifier.set_modifier_active_and_target(true, target)
 	else:
 		head_look_modifier.set_modifier_active_and_target(false)
+"""
 
 
 
@@ -240,7 +239,7 @@ func left_cast_anim(_in_animation: Animation, in_miss: bool = false) -> void:
 	return
 	# Always add call method tracks for resolving the damage
 	
-func play_animation_by_name(animation_name: String, blend_time: float = 0.2) -> void:
+func play_animation_by_name(animation_name: String, blend_time: float = 0.2, use_root_motion: bool = false) -> void:
 	# Get the AnimationTree's state machine root
 	var root: AnimationNodeStateMachine = animator_tree.tree_root as AnimationNodeStateMachine
 	if root == null:
@@ -265,7 +264,12 @@ func play_animation_by_name(animation_name: String, blend_time: float = 0.2) -> 
 	animator_tree.set("parameters/Main/OneShotBlend/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 	print("firing: ", anim_path)
 	var anim: Animation = animator.get_animation(anim_path)
+	
+	is_root_motion = use_root_motion
+	
 	await get_tree().create_timer(anim.length / timescale_multiplier).timeout
+	
+	is_root_motion = false
 	print("done")
 	return
 
@@ -336,6 +340,8 @@ func attack_landed() -> void:
 func emit_attack_completed() -> void:
 	attack_completed.emit()
 
+func emit_dodge_prompt() -> void:
+	prompt_dodge.emit()
 
 func emit_event_occurred() -> void:
 	event_occured.emit()
@@ -407,7 +413,7 @@ func trigger_hit_fx(in_hit_fx: PackedScene, originator: Vector3) -> void:
 	#get_tree().root.add_child(hit_fx)
 	unit.add_child(hit_fx)
 	hit_fx.global_position = chest_point.global_position#unit.get_world_position() + Vector3(0.0, 1.0, 0.0)
-	hit_fx.global_rotation = -originator#chest_point.global_rotation
+	hit_fx.global_rotation = originator#chest_point.global_rotation
 	
 	hit_fx.get_child(0).emitting = true
 	
@@ -415,6 +421,22 @@ func trigger_hit_fx(in_hit_fx: PackedScene, originator: Vector3) -> void:
 
 func testprint() -> void:
 	print_debug("AnimTestPrint")
+
+
+func root_motion_process() -> void:
+	var new_pos: Vector3 = animator_tree.get_root_motion_position()
+	new_pos *= rig_root.get_scale()
+	# Rotate the translation by the unit's current rotation
+	new_pos = unit.get_global_transform().basis * new_pos
+	new_pos += unit.get_global_position()
+	
+	if unit.get_global_position() != new_pos:
+		print_debug(new_pos)
+		unit.set_global_position(new_pos)
+
+
+	
+
 
 # Move Along Curve Process
 # Handles the movement along the given curve in each frame
@@ -460,9 +482,13 @@ func move_along_curve_process(delta: float) -> void:
 
 # Rotation Functions
 # Handles the start and process of rotating towards a target position
-func rotate_unit_towards_target_position(grid_position: GridPosition) -> void:
+func rotate_unit_towards_target_position(grid_position: GridPosition, rot_spd: float = 3.0) -> void:
 	is_rotating = true
 	facing_direction = (LevelGrid.get_world_position(grid_position) - unit.get_world_position()).normalized()
+	rotate_speed = rot_spd
+	await rotation_completed
+	return
+
 
 """
 Sets the facing variable based on the unit's current rotation.

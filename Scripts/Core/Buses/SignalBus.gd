@@ -46,6 +46,8 @@ signal special_effects_chosen
 
 signal reaction_selected
 
+signal reaction_started
+
 signal gait_selected(gait: int)
 
 signal on_round_changed

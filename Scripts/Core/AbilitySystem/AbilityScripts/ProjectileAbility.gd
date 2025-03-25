@@ -111,7 +111,12 @@ func shoot_projectile() -> void:
 	var projectile_instance: Projectile = projectile.instantiate()
 	# Will need to dynamically adjust shoot height later
 	#var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
-	var target_shoot_at_position: Vector3 = event.body_part.get_body_part_marker_position()
+	var target_shoot_at_position: Vector3
+	if event.miss:
+		target_shoot_at_position = get_random_miss_position()
+	else:
+		target_shoot_at_position = event.body_part.get_body_part_marker_position()
+		
 	event.unit.add_child(projectile_instance)
 	projectile_instance.global_position = weapon_projectile.global_position#unit.shoot_point.global_position
 	projectile_instance.global_transform.basis = weapon_projectile.global_transform.basis
@@ -121,6 +126,9 @@ func shoot_projectile() -> void:
 	event.weapon.is_loaded = false
 
 
+func get_random_miss_position():
+	return GridPosition.new(1,1)#event.target_unit.body.get_part_location("chest") += Vector3
+		
 
 
 func apply_effect() -> void:
@@ -197,6 +205,8 @@ func can_activate(_event: ActivationEvent) -> bool:
 	
 	var unit_weapon: Weapon = _event.unit.get_equipped_weapon()
 	if unit_weapon.projectile == null or !unit_weapon.is_loaded:
+		if !unit_weapon.is_loaded:
+			Utilities.spawn_text_line(_event.unit, "Weapon Not Loaded", Color.YELLOW)
 		return false
 	
 	var valid_grid_position_list = get_valid_ability_target_grid_position_list(_event)

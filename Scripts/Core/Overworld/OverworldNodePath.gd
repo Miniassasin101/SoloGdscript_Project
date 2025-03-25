@@ -1,6 +1,8 @@
 @tool
 class_name OverworldNodePath extends Node
 
+@export_tool_button("update") var update_action: Callable = generate_path
+
 @export var overworld_node_1: OverworldNode
 @export var overworld_node_2: OverworldNode
 @export var number_of_twists: int = 2

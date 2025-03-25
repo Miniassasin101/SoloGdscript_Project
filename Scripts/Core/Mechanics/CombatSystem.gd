@@ -29,6 +29,8 @@ var current_phase: TurnPhase:
 		current_phase = phase
 		SignalBus.on_phase_changed.emit()
 
+var current_event: ActivationEvent = null
+
 
 func _ready() -> void:
 	if instance != null:
@@ -230,42 +232,26 @@ func check_declaration_reaction_queue(_action: Ability, _event: ActivationEvent)
 
 
 
-func reaction(reacting_unit: Unit, attacking_unit: Unit, ret_event: ActivationEvent) -> int:
+func reaction(reacting_unit: Unit, attacking_unit: Unit, ret_event: ActivationEvent):
+	
 	# Prompt UI or AI to choose a reaction ability (e.g., a parry, an evade).
 	SignalBus.on_player_reaction.emit(reacting_unit)
-	var ability: Ability = await SignalBus.reaction_selected
+	UnitActionSystem.instance.set_is_reacting()
+
+	var ability: Ability = await SignalBus.ability_complete#await SignalBus.reaction_selected
+	
 	if ability == null:
 		# No valid reaction chosen, treat as no reaction (auto fail)
-		return 0
-
-	# Check if the ability can be activated and the unit can spend AP.
-	if !ability.can_activate(ActivationEvent.new(reacting_unit.ability_container)):
-		push_error("Reaction Could Not Be Activated: " + ability.to_string())
-		return 0
-
-	if !reacting_unit.try_spend_ability_points_to_use_ability(ability):
-		return 0
-
-	reacting_unit.ability_container.activate_one(ability, attacking_unit.get_grid_position())
-	var reacted_ability: Ability = await SignalBus.ability_complete
-	if reacted_ability.ui_name == "Dither":
-		print_debug(reacting_unit._to_string(), " Dithered")
-		return 0
+		push_error("Invalid Reaction Ability on", reacting_unit.ui_name)
+		return 
+	
 
 
 	# After activation, we assume reaction is a skill roll. In Mythras:
 	# For example, if parry: skill = combat_skill
 	# If evade: skill = evade skill
-	determine_defender_facing_penalty(ret_event)
-	var defend_skill_value = reacting_unit.get_attribute_after_sit_mod("combat_skill")
-	var defending_roll = Utilities.roll(100)
-	ret_event.defender_roll = defending_roll
-	print_debug("Defend Skill Value: ", defend_skill_value)
-	print_debug("Defend Roll: ", defending_roll)
-
-	var defender_success_level = Utilities.check_success_level(defend_skill_value, defending_roll)
-	print_debug("Defender Success Level: ", defender_success_level)
-	return defender_success_level
+	UnitActionSystem.instance.set_is_reacting(false)
+	return
 
 
 ## Prompts the ui for the user to choose their special effects.
@@ -337,7 +323,7 @@ func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
 			return
 
 
-func determine_defender_facing_penalty(event: ActivationEvent) -> void:
+func determine_defender_facing_penalty(event: ActivationEvent = current_event) -> void:
 	if !event.weapon:
 		return
 	var penalty_cond: FacingPenaltyCondition = facing_penalty_condition.duplicate()
@@ -395,6 +381,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	event.target_unit = target_unit
 	var ret_event: ActivationEvent = event
+	current_event = ret_event
 
 
 	determine_attacker_facing_penalty(event)
@@ -429,7 +416,8 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	var attack_weapon_size = weapon.size if weapon else 0
 
 	if defender_wants_reaction:
-		defender_success_level = await reaction(target_unit, attacking_unit, ret_event)
+		await reaction(target_unit, attacking_unit, ret_event)
+		defender_success_level = ret_event.defender_success_level
 		#defender_success_level = 2
 		
 		if LevelDebug.instance.parry_fail_debug:
@@ -456,6 +444,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 
 
 	if !defender_wants_reaction:
+		current_event = null
 		return ret_event
 
 	if LevelDebug.instance.parry_fail_debug:
@@ -468,6 +457,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	
 	if ret_event.miss and ret_event.parry_successful == false:
 		hide_all_success_level()
+		current_event = null
 		return ret_event
 
 
@@ -510,6 +500,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 			ret_event.rolled_damage = roll_damage(action, ret_event, target_unit, parrying_weapon_size, attack_weapon_size)
 
 	hide_all_success_level()
+	current_event = null
 	return ret_event
 
 func get_parry_level() -> void:

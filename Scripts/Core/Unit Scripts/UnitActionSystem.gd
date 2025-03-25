@@ -26,6 +26,8 @@ signal grid_position_selected(gridpos: GridPosition)
 var is_busy: bool = false
 # This is true to allow selection of a grid square during a sub ability choice
 var sub_ability_choice: bool = false
+var is_reacting: bool = false
+
 var proactive_action_taken: bool = false
 
 var gridpos_allowed: Array[GridPosition] = []
@@ -57,7 +59,7 @@ func _process(_delta: float) -> void:
 		return
 	
 	
-	if is_busy and !sub_ability_choice:
+	if is_busy and !sub_ability_choice and !is_reacting:
 		return
 
 	if Input.is_action_just_pressed("left_mouse"):
@@ -70,6 +72,9 @@ func _process(_delta: float) -> void:
 		if sub_ability_choice:
 			handle_sub_grid_selected()
 			return
+		
+		if is_reacting:
+			handle_selected_reaction()
 		
 		handle_selected_ability()
 		# Attempt to select a unit
@@ -104,11 +109,26 @@ func handle_selected_ability() -> void:
 					if selected_ability.tags_type.has("action"):
 						TurnSystem.instance.mark_proactive_action_taken(selected_unit)
 
+
+func handle_selected_reaction() -> void:
+	var reacting_unit: Unit = CombatSystem.instance.current_event.target_unit
+	if reacting_unit and selected_ability:
+		
+		var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
+		if mouse_grid_position:
+			var grid_position: GridPosition = LevelGrid.get_grid_position(mouse_grid_position)
+			if reacting_unit.try_spend_ability_points_to_use_ability(selected_ability):
+				reacting_unit.ability_container.activate_one(selected_ability, grid_position)
+				SignalBus.emit_signal("reaction_started")
+
+
 func check_ability_type_invalid(in_ability: Ability) -> bool:
 	var tags: Array[String] = in_ability.tags_type
 	if tags.has("reaction") or tags.has("action"):
 		return true
 	return false
+
+
 
 
 ## Is triggered when the ability completely resolves in order to move to the next phase.
@@ -234,6 +254,10 @@ func reset_unit_cycle_actions(unit: Unit) -> void:
 func set_busy() -> void:
 	is_busy = true
 
+func set_is_reacting(val: bool = true) -> void:
+	is_reacting = val
+	GridSystemVisual.instance.hide_all_grid_positions()
+
 func clear_busy(_ability: Ability) -> void:
 	#print("clearbusy")
 	SignalBus.update_grid_visual.emit()
@@ -251,15 +275,6 @@ func set_selected_ability(ability: Ability) -> void:
 	selected_ability = ability
 	SignalBus.update_grid_visual.emit()
 	
-
-func set_selected_action_by_name(action_name: String) -> void:
-	if selected_unit:
-		var action = selected_unit.get_action(action_name)
-		if action != null:
-			selected_action = action
-			SignalBus.selected_action_changed.emit(action)
-		else:
-			print("Action not found: ", action_name)
 
 
 # Retrieves the currently selected unit

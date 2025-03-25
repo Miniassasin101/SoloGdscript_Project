@@ -111,7 +111,8 @@ func make_tiles_red() -> void:
 
 func make_cone_tiles_red() -> void:
 	var grid_positions: Array[GridPosition] = []
-	grid_positions.append_array(Utilities.get_front_cone(unit, 5))
+	grid_positions.append_array(Utilities.get_left_cone(unit, 20))
+	GridSystemVisual.instance.show_grid_positions(grid_positions)
 	if testbool:
 		GridSystemVisual.instance.unmark_red(grid_positions)
 		testbool = false
@@ -224,8 +225,8 @@ func test_v() -> void:
 		#play_weapon_spin_anim()
 		#drop_equipped_weapon()
 		#create_engagement()
-		apply_knockback()
-		
+		#apply_knockback()
+		print_relative_position()
 		pass
 
 
@@ -245,6 +246,32 @@ func test_c() -> void:
 		#spawn_text_at_bodypart()
 		#apply_condition()
 		pass
+
+
+func select_unit() -> Unit:
+	var pos: GridPosition = await UnitActionSystem.instance.handle_ability_sub_gridpos_choice(UnitManager.instance.get_all_unit_positions())
+	return LevelGrid.get_unit_at_grid_position(pos)
+
+func print_relative_position() -> void:
+	var u_1: Unit = await select_unit()
+	var u_2: Unit = await select_unit()
+	
+	var relative_pos = Utilities.get_cone_relative_position(u_1, u_2)
+	
+	match relative_pos:
+		Utilities.RelativePosition.FRONT:
+			print_debug(u_2.ui_name, " is in front of ", u_1.ui_name)
+		Utilities.RelativePosition.BACK:
+			print_debug(u_2.ui_name, " is behind ", u_1.ui_name)
+		Utilities.RelativePosition.LEFT_SIDE:
+			print_debug(u_2.ui_name, " is to the left of ", u_1.ui_name)
+		Utilities.RelativePosition.RIGHT_SIDE:
+			print_debug(u_2.ui_name, " is to the right of ", u_1.ui_name)
+		Utilities.RelativePosition.UNKNOWN:
+			print_debug(u_2.ui_name, " is in an unknown position relative to ", u_1.ui_name)
+
+	
+
 
 func apply_knockback() -> void:
 	var knock_cond: KnockbackCondition = preload("res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/KnockbackConditionResource.tres")

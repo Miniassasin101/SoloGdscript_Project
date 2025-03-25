@@ -84,9 +84,37 @@ func get_unit_relative_position(focus_unit: Unit, relative_unit: Unit) -> Relati
 		return RelativePosition.LEFT_SIDE
 	return RelativePosition.UNKNOWN
 
+func get_cone_relative_position(focus_unit: Unit, relative_unit: Unit) -> RelativePosition:
+	var focus_position: GridPosition = focus_unit.get_grid_position()
+	var relative_position: GridPosition = relative_unit.get_grid_position()
+	
+	# Calculate distance between the two units using a simple manhattan distance
+	var distance: int = abs(focus_position.x - relative_position.x) + abs(focus_position.z - relative_position.z)
+	
+	# Precalculate cone areas based on the distance
+	var front_cone: Array[GridPosition] = get_front_cone(focus_unit, distance)
+	# Check which cone contains the relative unit's position
+	if front_cone.has(relative_position):
+		return RelativePosition.FRONT
+	
+	var back_cone: Array[GridPosition] = get_back_cone(focus_unit, distance)
+	if back_cone.has(relative_position):
+		return RelativePosition.BACK
+	
+	var left_cone: Array[GridPosition] = get_left_cone(focus_unit, distance)
+	if left_cone.has(relative_position):
+		return RelativePosition.LEFT_SIDE
+	
+	var right_cone: Array[GridPosition] = get_right_cone(focus_unit, distance)
+	
+	if right_cone.has(relative_position):
+		return RelativePosition.RIGHT_SIDE
+	
+	return RelativePosition.UNKNOWN
 
 
 func get_adjacent_tiles_no_diagonal(unit: Unit) -> Array[GridPosition]:
+	if unit == null: return []
 	var ret_tiles: Array[GridPosition] = []
 	ret_tiles.append(get_back_tile(unit))
 	ret_tiles.append_array(get_side_tiles(unit))
@@ -96,6 +124,7 @@ func get_adjacent_tiles_no_diagonal(unit: Unit) -> Array[GridPosition]:
 	
 
 func get_adjacent_tiles_with_diagonal(unit: Unit) -> Array[GridPosition]:
+	if unit == null: return []
 	var ret_tiles: Array[GridPosition] = []
 	ret_tiles.append_array(get_back_tiles(unit))
 	ret_tiles.append_array(get_side_tiles(unit))
@@ -390,7 +419,7 @@ func get_right_cone(unit: Unit, max_range: int) -> Array[GridPosition]:
 			if temp_pos != null and LevelGrid.is_valid_grid_position(temp_pos):
 				right_cone.append(temp_pos)
 
-	return right_cone
+	return LevelGrid.get_grid_positions_from_grid_positions(right_cone)
 
 
 func get_shell_cone_from_behind(unit: Unit, max_range: float) -> Array[GridPosition]:

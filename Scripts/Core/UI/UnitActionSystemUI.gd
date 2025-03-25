@@ -167,9 +167,9 @@ func on_player_reaction(unit: Unit) -> void:
 	reacting_unit = unit
 	print_debug("Selected Unit Ui Is: ", unit._to_string())
 	create_unit_reaction_buttons()
-	await SignalBus.reaction_selected
+	await SignalBus.reaction_started
 	print_debug("Reaction Selected")
-	toggle_containers_visibility_off_except()
+#	toggle_containers_visibility_off_except()
 
 
 ## This function is passed a unit and a parsed list of special effects to choose from before emitting the chosen effect.

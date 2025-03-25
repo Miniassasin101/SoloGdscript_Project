@@ -227,8 +227,11 @@ func melee_attack_anim() -> void:
 		else:
 			target_unit.animator.flash_red()
 	else:
+		Engine.set_time_scale(0.1)
 		target_unit.animator.flash_white()
+		await unit.get_tree().create_timer(1.7, true, false, true).timeout
 		Utilities.spawn_text_line(target_unit, "Miss", Color.AQUA)
+		Engine.set_time_scale(1.0)
 
 
 

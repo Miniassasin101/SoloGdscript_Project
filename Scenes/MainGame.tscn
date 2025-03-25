@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=79 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" uid="uid://dswgp2a8up16v" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" uid="uid://b268e884ur2c8" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -7,11 +7,12 @@
 [ext_resource type="Script" uid="uid://gfxepypxk6c5" path="res://Hero_Game/Scenes/testing.gd" id="3_vw71g"]
 [ext_resource type="Script" uid="uid://b8mwdab0futt7" path="res://Hero_Game/Scripts/Core/mouse_world.gd" id="4_8yks7"]
 [ext_resource type="PackedScene" uid="uid://bputpfvj74kol" path="res://Hero_Game/Prefabs/Grid/GridCellVisual.tscn" id="4_85pbp"]
-[ext_resource type="Animation" uid="uid://dswwaq5xbcffc" path="res://Hero_Game/Animations/AnimsSwordTest/Greatsword_Swing_001.res" id="5_o3n5o"]
 [ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="5_y067e"]
 [ext_resource type="Script" uid="uid://deivi00ihmnlo" path="res://Hero_Game/Scripts/Core/Pathfinding/Pathfinding.gd" id="6_3wgmn"]
+[ext_resource type="Animation" uid="uid://dvv8ewe2tgybq" path="res://Hero_Game/Animations/AnimationImports_1/BowReload_001.res" id="6_hqvk1"]
 [ext_resource type="Script" uid="uid://cuxrm0y0462px" path="res://Hero_Game/Scripts/Core/Pathfinding/ObstacleManager.gd" id="6_ni1mu"]
 [ext_resource type="Script" uid="uid://cvm7nhxktaye1" path="res://Hero_Game/Scripts/Core/Mechanics/TurnSystem.gd" id="6_rwbm0"]
+[ext_resource type="Animation" uid="uid://dpukk54akum8q" path="res://Hero_Game/Animations/AnimationImports_1/BowIdle_Loaded_001.res" id="7_68vw7"]
 [ext_resource type="PackedScene" uid="uid://b37juamn5pbrv" path="res://WallTestInst.tscn" id="7_snusx"]
 [ext_resource type="Script" uid="uid://bijriqmby0ojr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/AccidentalInjuryEffect.gd" id="8_3ubv2"]
 [ext_resource type="Script" uid="uid://c7n55vjiaihq6" path="res://Hero_Game/Scripts/Core/UnitAI/UnitAI.gd" id="8_kmwtl"]
@@ -25,7 +26,7 @@
 [ext_resource type="Script" uid="uid://dsp5f0drsktx2" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
 [ext_resource type="Script" uid="uid://cwsem2fnkteke" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffect.gd" id="18_hnk25"]
-[ext_resource type="Resource" uid="uid://b6eu0ekmy47qr" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/BowTest.tres" id="18_kkuk5"]
+[ext_resource type="Resource" uid="uid://b6eu0ekmy47qr" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/BowTest.tres" id="19_hqvk1"]
 [ext_resource type="Resource" uid="uid://cjxj1gnefr71c" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/AccidentalInjuryEffectResource.tres" id="19_xdtf5"]
 [ext_resource type="Script" uid="uid://baxluukdrdjhd" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
 [ext_resource type="Script" uid="uid://dqx7stk06etai" path="res://Hero_Game/Scenes/UILayer.gd" id="21_3ffgk"]
@@ -169,8 +170,6 @@ size = Vector2(2, 2)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
-attacker_success_debug = true
-parry_fail_debug = true
 auto_equip_debug = true
 grid_dimensions = Vector2(15, 13)
 
@@ -194,11 +193,10 @@ directional_shadow_max_distance = 27.1
 script = ExtResource("1_fqt43")
 GRID_CELL_VISUAL = ExtResource("4_85pbp")
 
-[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit", "unit_2")]
+[node name="GridSystemTest" type="Node3D" parent="." node_paths=PackedStringArray("unit")]
 script = ExtResource("3_vw71g")
 unit = NodePath("../UnitManager/DawnUnit")
-unit_2 = NodePath("../UnitManager/DawnUnit2")
-animlib = Array[Animation]([ExtResource("5_o3n5o")])
+animlib = Array[Animation]([ExtResource("6_hqvk1"), ExtResource("7_68vw7")])
 special_effects = Array[ExtResource("18_hnk25")]([SubResource("Resource_vhtwd")])
 
 [node name="Pathfinding" type="Node" parent="."]
@@ -286,24 +284,24 @@ script = ExtResource("8_kmwtl")
 [node name="UnitManager" type="Node" parent="." node_paths=PackedStringArray("unit_action_system")]
 script = ExtResource("10_iw061")
 unit_action_system = NodePath("../UnitActionSystem")
-sword_test = ExtResource("18_kkuk5")
+sword_test = ExtResource("19_hqvk1")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 6, 0, 8)
+transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, 0, 0, 10)
 ui_name = "Blue"
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, 6)
-ui_name = "Red"
-
-[node name="DawnUnit3" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
+transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, 6, 0, 14)
 ui_name = "Green"
-is_enemy = true
 
 [node name="DawnUnit4" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, 8)
+transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 4, 0, 8)
 ui_name = "Yellow"
+is_enemy = true
+
+[node name="DawnUnit5" parent="UnitManager" instance=ExtResource("52_cckm4")]
+transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 6, 0, 6)
+ui_name = "Red"
 is_enemy = true
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]

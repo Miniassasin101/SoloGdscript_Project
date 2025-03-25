@@ -52,7 +52,7 @@ func play_animation(anim_name: StringName, speed_scale: float = 1.0) -> void:
 func pause_animation() -> void:
 	animator.pause()
 
-func play_animation_on_weapon(anim_name: StringName, speed_scale: float = 1.0, blend: float = -1.0) -> void:
+func play_animation_on_weapon(anim_name: StringName, speed_scale: float = 1.0, _blend: float = -1.0) -> void:
 	if !object_animator:
 		return
 	animator.set_speed_scale(speed_scale)

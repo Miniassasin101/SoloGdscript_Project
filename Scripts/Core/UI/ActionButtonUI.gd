@@ -71,5 +71,5 @@ func handle_special_case() -> void:
 			SignalBus.next_phase.emit()
 		
 		SpecialCase.REACTION:
-			SignalBus.reaction_selected.emit(ability)
+			#SignalBus.reaction_selected.emit(ability)
 			SignalBus.selected_ability_changed.emit(ability)

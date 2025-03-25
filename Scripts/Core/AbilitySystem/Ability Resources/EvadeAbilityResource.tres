@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="EvadeAbility" load_steps=6 format=3 uid="uid://c7cgksdwlogor"]
+
+[ext_resource type="Script" uid="uid://dnh1bt8ds5maa" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/EvadeAbility.gd" id="1_8215c"]
+[ext_resource type="Animation" uid="uid://cc55l7bwpmiks" path="res://Hero_Game/Animations/AnimationImports_1/FrontDodge_001.res" id="1_seaei"]
+[ext_resource type="Animation" uid="uid://bkdkpf482rx3l" path="res://Hero_Game/Animations/AnimationImports_1/BackDodge_001.res" id="1_vqp1e"]
+[ext_resource type="Animation" uid="uid://ba5fxts0r7a0f" path="res://Hero_Game/Animations/AnimationImports_1/LeftDodge_001.res" id="3_82h1p"]
+[ext_resource type="Animation" uid="uid://driuor3dvispq" path="res://Hero_Game/Animations/AnimationImports_1/RightDodge_001.res" id="4_boa28"]
+
+[resource]
+script = ExtResource("1_8215c")
+front_dodge_animation = ExtResource("1_seaei")
+back_dodge_animation = ExtResource("1_vqp1e")
+right_dodge_animation = ExtResource("4_boa28")
+left_dodge_animation = ExtResource("3_82h1p")
+ap_cost = 1
+evade_range = 1
+rotate_speed = 10.0
+ui_name = "Evade"
+movement_gait = 2
+cooldown_duration = 0.0
+cooldown_continuos = false
+grant_automatic = true
+grant_tags = Array[String]([])
+grant_tags_required = Array[String]([])
+tags_type = Array[String](["reaction"])
+tags_activation = Array[String]([])
+tags_activation_required = Array[String]([])
+tags_block = Array[String]([])
+tags_cancellation_required = Array[String]([])
+tags_cooldown_start = Array[String]([])
+tags_cooldown_end = Array[String]([])
+tags_end_blocking = Array[String]([])
+tags_to_remove_on_activation = Array[String]([])
+tags_to_remove_on_block = Array[String]([])
+tags_to_remove_on_cancellation = Array[String]([])
+tags_to_remove_on_cooldown_start = Array[String]([])
+tags_to_remove_on_cooldown_end = Array[String]([])
+tags_to_remove_on_end = Array[String]([])
+metadata/_custom_type_script = "uid://dnh1bt8ds5maa"

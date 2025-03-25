@@ -33,14 +33,7 @@ func try_activate(_event: ActivationEvent) -> void:
 			return
 	
 	var animator: UnitAnimator = unit.animator
-	var timer = Timer.new()
-	
-	timer.one_shot = true
-	timer.autostart = true
-	timer.wait_time = 1.0
-	#event.unit.add_child(timer)
-	#await timer.timeout
-	#await unit.animator.movement_completed
+
 	await rotate_unit_towards_target_enemy(event)
 	animator.toggle_slowdown(1.3)
 	var weapon: Weapon = unit.equipment.get_equipped_weapon()
@@ -53,8 +46,22 @@ func try_activate(_event: ActivationEvent) -> void:
 	animator.toggle_slowdown()
 	animator.play_animation_by_name(parry_animation_idle.resource_name)
 	
+	CombatSystem.instance.determine_defender_facing_penalty()
+	var defend_skill_value: int = unit.get_attribute_after_sit_mod("combat_skill")
+	var defending_roll: int = Utilities.roll(100)
+	
+	var current_event: ActivationEvent = CombatSystem.instance.current_event
+	current_event.defender_roll = defending_roll
+	print_debug("Defend Skill Value: ", defend_skill_value)
+	print_debug("Defend Roll: ", defending_roll)
+
+	var defender_success_level = Utilities.check_success_level(defend_skill_value, defending_roll)
+	current_event.defender_success_level = defender_success_level
+	print_debug("Parry Success Level: ", defender_success_level)
+	
 	if can_end(event):
 		end_ability(event)
+	
 	await animator.parry_reset
 	animator.play_animation_by_name(parry_animation_reset.resource_name)
 	
@@ -63,7 +70,7 @@ func try_activate(_event: ActivationEvent) -> void:
 
 func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 	var animator: UnitAnimator = unit.animator
-	animator.rotate_unit_towards_target_position(event.target_grid_position)
+	animator.rotate_unit_towards_target_position(CombatSystem.instance.current_event.unit.get_grid_position())
 	await animator.rotation_completed
 	
 	""" Test Timer
@@ -95,7 +102,7 @@ func can_activate(_event: ActivationEvent) -> bool:
 
 ## Gets a list of valid grid positions for movement.
 func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
-	return []
+	return [_event.unit.get_grid_position()]
 
 
 

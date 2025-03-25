@@ -1,3 +1,4 @@
+@tool
 @icon("res://addons/godot_gameplay_systems/inventory_system/assets/ItemIcon.png")
 class_name Weapon extends Item
 

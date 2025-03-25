@@ -218,11 +218,23 @@ func update_grid_visual_pathfinding(grid_list: Array[GridPosition]):
 func update_grid_visual() -> void:
 
 	hide_all_grid_positions()
-
+	
+	var unit: Unit
 
 	selected_ability = UnitActionSystem.instance.get_selected_ability()
 	if selected_ability != null:
-		if UnitActionSystem.instance.selected_unit != null:
-			show_grid_positions(UnitActionSystem.instance
-			.selected_unit.ability_container.get_valid_ability_target_grid_position_list(selected_ability)
-			)
+		"""
+		if selected_ability.tags_type.has("reaction"):
+			unit = CombatSystem.instance.current_event.target_unit
+			#show_grid_positions(selected_ability.get_valid_ability_target_grid_position_list())
+		else:
+			unit = UnitActionSystem.instance.selected_unit
+		"""
+		if UnitActionSystem.instance.is_reacting:
+			unit = CombatSystem.instance.current_event.target_unit
+		else:
+			unit = UnitActionSystem.instance.selected_unit
+
+		if unit != null:
+			show_grid_positions(unit.ability_container.
+			get_valid_ability_target_grid_position_list(selected_ability))

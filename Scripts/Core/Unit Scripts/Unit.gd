@@ -37,6 +37,8 @@ var unit_manager: UnitManager = get_parent()
 # The grid position of this unit.
 var grid_position: GridPosition:
 	set(val):
+		if not val is GridPosition:
+			return
 		print_debug("New Grid Position: ", val.to_str())
 		grid_position = val
 var is_holding: bool = false
@@ -91,14 +93,21 @@ func _ready() -> void:
 	for child in get_children():
 		if child is AbilityContainer:
 			ability_container = child
+			continue
 		if child is GameplayAttributeMap:
 			attribute_map = child
+			continue
 		if child is Inventory:
 			inventory = child
+			continue
 		if child is Equipment:
 			equipment = child
+			continue
+	
 	attribute_map.attribute_changed.connect(on_attribute_changed)
+	
 	animator.weapon_setup(holding_weapon)
+	
 	SignalBus.on_round_changed.connect(on_round_changed)
 	SignalBus.on_cycle_changed.connect(on_reset_distance_moved)
 	SignalBus.rotate_unit_towards_facing.connect(on_rotate_unit_toward_facing)

@@ -32,6 +32,7 @@ hue_variation_max = 0.06
 [node name="FireballHitVfx" type="Node3D"]
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_a043u")
 cast_shadow = 0
 emitting = false
