@@ -23,3 +23,12 @@ func apply(unit: Unit) -> void:
 		Utilities.spawn_text_line(unit, "Blind Cleared", Color.AQUA)
 		super.remove_self(unit)
 	
+func get_details_text() -> String:
+	var details: String = "Blinded for %d more round(s)." % remaining_rounds
+	
+	# Add the base condition details (like situational modifier if flagged)
+	var base = super.get_details_text()
+	if base != "":
+		details += "\n" + base
+	
+	return details

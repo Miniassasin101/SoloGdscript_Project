@@ -59,6 +59,9 @@ func try_activate(_event: ActivationEvent) -> void:
 	current_event.defender_success_level = defender_success_level
 	print_debug("Parry Success Level: ", defender_success_level)
 	
+	if defender_success_level >= 1:
+			current_event.parry_successful = true
+	
 	if can_end(event):
 		end_ability(event)
 	

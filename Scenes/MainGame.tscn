@@ -26,7 +26,7 @@
 [ext_resource type="Script" uid="uid://dsp5f0drsktx2" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
 [ext_resource type="Script" uid="uid://cwsem2fnkteke" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffect.gd" id="18_hnk25"]
-[ext_resource type="Resource" uid="uid://b6eu0ekmy47qr" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/BowTest.tres" id="19_hqvk1"]
+[ext_resource type="Resource" uid="uid://cxk0rx8ecss31" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/SwordTest.tres" id="19_hqvk1"]
 [ext_resource type="Resource" uid="uid://cjxj1gnefr71c" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/AccidentalInjuryEffectResource.tres" id="19_xdtf5"]
 [ext_resource type="Script" uid="uid://baxluukdrdjhd" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
 [ext_resource type="Script" uid="uid://dqx7stk06etai" path="res://Hero_Game/Scenes/UILayer.gd" id="21_3ffgk"]
@@ -208,7 +208,7 @@ script = ExtResource("6_3wgmn")
 script = ExtResource("6_ni1mu")
 
 [node name="SM_Buildings_Wall_1x3_14" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 34.1052, -0.0286835, 4.85341)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 34.1052, -0.0286835, 6.85677)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_18" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
@@ -236,7 +236,7 @@ transform = Transform3D(7.85433e-09, 0, -6.3953, 0, 1.0232, 0, 0.0598953, 0, 8.3
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_25" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
-transform = Transform3D(0.0598954, 0, 3.10176e-07, 0, 0.270309, 0, -1.04724e-08, 0, 1.774, 23.0946, -0.0077522, 21.6141)
+transform = Transform3D(0.0544418, 0, 2.81934e-07, 0, 0.245697, 0, -9.51887e-09, 0, 1.61247, 23.2638, -0.140072, 21.8682)
 metadata/_edit_group_ = true
 
 [node name="SM_Buildings_Wall_1x3_20" parent="Objects/ObstacleManager" instance=ExtResource("7_snusx")]
@@ -287,20 +287,20 @@ unit_action_system = NodePath("../UnitActionSystem")
 sword_test = ExtResource("19_hqvk1")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, 0, 0, 10)
+transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 2, 0, 12)
 ui_name = "Blue"
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, 6, 0, 14)
+transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 6, 0, 12)
 ui_name = "Green"
 
 [node name="DawnUnit4" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 4, 0, 8)
+transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 2, 0, 10)
 ui_name = "Yellow"
 is_enemy = true
 
 [node name="DawnUnit5" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 6, 0, 6)
+transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 6, 0, 10)
 ui_name = "Red"
 is_enemy = true
 

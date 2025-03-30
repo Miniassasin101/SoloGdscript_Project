@@ -136,6 +136,7 @@ func next_turn() -> void:
 	# Set the selected unit if it's a player turn
 	if is_player_turn or LevelDebug.instance.control_enemy_debug:
 		UnitActionSystem.instance.set_selected_unit(current_unit_turn)
+		UnitActionSystem.instance.set_selected_ability(null)
 		
 	start_turn()
 

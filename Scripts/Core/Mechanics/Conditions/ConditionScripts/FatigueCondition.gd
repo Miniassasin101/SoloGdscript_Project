@@ -26,6 +26,31 @@ func get_fatigue_details() -> Dictionary:
 		return {"name": "Unknown", "details": "No details available"}
 	return FATIGUE_LEVELS[condition_level]
 
+
+# New method to format the fatigue condition details
+func get_details_text() -> String:
+	var fatigue_details: Dictionary = get_fatigue_details()
+	var details = "Fatigue Level: %s" % fatigue_details.get("name", "Unknown")
+	
+	if "movement_penalty" in fatigue_details:
+		details += "\nMovement Penalty: %s" % str(fatigue_details["movement_penalty"])
+	if "initiative_penalty" in fatigue_details:
+		details += "\nInitiative Penalty: %s" % str(fatigue_details["initiative_penalty"])
+	if "action_points_penalty" in fatigue_details:
+		details += "\nAP Penalty: %s" % str(fatigue_details["action_points_penalty"])
+	if "recovery_period" in fatigue_details:
+		details += "\nRecovery Period: %s" % str(fatigue_details["recovery_period"])
+		
+	
+	# Add the base condition details (like situational modifier if flagged)
+	var base = super.get_details_text()
+	if base != "":
+		details += "\n" + base
+	
+	return details
+
+
+
 func increase_level(unit: Unit, by_amount: int = 1) -> void:
 	super.increase_level(unit, by_amount)
 

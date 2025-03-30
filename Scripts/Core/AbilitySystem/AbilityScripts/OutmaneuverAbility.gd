@@ -10,7 +10,7 @@ class_name OutmaneuverAbility extends Ability
 @export var rotate_speed: float = 4.0  ## Speed for rotating the unit
 @export var move_speed: float = 5.5
 @export var stopping_distance: float = 0.1
-@export var acceleration_timer: float = 0.5  ## Half-second to accelerate movement speed
+#@export var acceleration_timer: float = 0.5  ## Half-second to accelerate movement speed
 
 var event: ActivationEvent = null
 var unit: Unit = null

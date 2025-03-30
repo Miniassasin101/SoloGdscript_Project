@@ -174,7 +174,7 @@ func _populate_conditions(unit: Unit) -> void:
 			text += " (%d rounds left)" % int(rounds_left)
 
 		# If it's a complicated condition like fatigue, make it clickable 
-		if condition is FatigueCondition:
+		if condition.has_method("get_details_text"):
 			var detail_button = Button.new()
 			detail_button.text = text
 			detail_button.pressed.connect(_on_condition_details_pressed.bind(condition))
@@ -190,7 +190,7 @@ func _populate_conditions(unit: Unit) -> void:
 # Fired when a user clicks on a "complicated" condition 
 # (e.g. Fatigue) to see more details in a popup.
 ##
-func _on_condition_details_pressed(condition: Condition) -> void:
+func _on_condition_details_pressed_dep(condition: Condition) -> void:
 	var popup = AcceptDialog.new()
 	popup.title = condition.ui_name
 
@@ -215,6 +215,24 @@ func _on_condition_details_pressed(condition: Condition) -> void:
 	popup.dialog_text = info_str
 	UILayer.instance.add_child(popup)
 	popup.popup_centered()
+
+
+func _on_condition_details_pressed(condition: Condition) -> void:
+	var popup = AcceptDialog.new()
+	popup.title = condition.ui_name
+	
+	var info_str = "Condition: %s" % condition.ui_name
+	
+	# Ask the condition itself for its details text, if available.
+	if condition.has_method("get_details_text"):
+		info_str += "\n" + condition.get_details_text()
+	else:
+		info_str += "\n(No extra information available.)"
+		
+	popup.dialog_text = info_str
+	UILayer.instance.add_child(popup)
+	popup.popup_centered()
+
 
 
 ##

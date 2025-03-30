@@ -17,3 +17,15 @@ func apply(unit: Unit) -> void:
 	else:
 		Utilities.spawn_text_line(unit, "Overextend Cleared", Color.AQUA)
 		super.remove_self(unit)
+
+
+func get_details_text() -> String:
+	var details: String = "Overextended Condition Details:"
+	details += "\nTurns Left: " + str(condition_level)
+	
+	# Add the base condition details (like situational modifier if flagged)
+	var base = super.get_details_text()
+	if base != "":
+		details += "\n" + base
+	
+	return details

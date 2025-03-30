@@ -43,5 +43,25 @@ func increase_level(_unit: Unit, by_amount: int = 1) -> void:
 func get_situational_modifier() -> int:
 	return situational_modifier
 
+func get_details_text() -> String:
+	var details := ""
+	
+	if is_situational_modifier:
+		details += "Situational Modifier: %s" % _map_modifier_to_text(get_situational_modifier())
+
+	return details
+
+func _map_modifier_to_text(mod: int) -> String:
+	match mod:
+		0: return "VERY_EASY"
+		1: return "EASY"
+		2: return "STANDARD"
+		3: return "HARD"
+		4: return "FORMIDABLE"
+		5: return "HERCULEAN"
+		6: return "HOPELESS"
+		_: return "UNKNOWN"
+
+
 func remove_self(unit: Unit) -> void:
 	unit.conditions_manager.remove_condition(self)

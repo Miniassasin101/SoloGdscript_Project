@@ -48,15 +48,12 @@ func try_activate(_event: ActivationEvent) -> void:
 		
 	
 	await attacker_event.unit.animator.prompt_dodge# or attacker_event.unit.animator.attack_completed
-	"""
+	
 	if attacker_event.miss:
 		#unit.animator.toggle_slowdown(0.4)
-		Engine.set_time_scale(0.01)
-		unit.animator.flash_white(1.0)
-		await unit.get_tree().create_timer(1.7, true, false, true).timeout
-		Engine.set_time_scale(1.0)
+		slowdown()
 		#unit.animator.toggle_slowdown(1.0)
-	"""
+	
 	#await unit.animator.move_and_slide(event.target_grid_position)
 	#await unit.animator.rotate_unit_towards_target_position(event.target_grid_position, rotate_speed)
 	if attacker_event.miss:
@@ -64,6 +61,11 @@ func try_activate(_event: ActivationEvent) -> void:
 	await unit.animator.play_animation_by_name(determine_dodge_anim().resource_name, 0.2, true)
 	unit.animator.move_and_slide(unit.get_grid_position())
 
+func slowdown() -> void:
+	Engine.set_time_scale(0.6)
+	unit.animator.flash_white(1.0)
+	await unit.get_tree().create_timer(1.7, true, false, true).timeout
+	Engine.set_time_scale(1.0)
 
 func determine_dodge_anim() -> Animation:
 	# Determine which adjacent tile was selected
@@ -101,7 +103,7 @@ func determine_roll_result() -> void:
 	var defender_success_level = Utilities.check_success_level(evade_skill_value, evading_roll)
 	current_event.defender_success_level = defender_success_level
 	print_debug("Evade Success Level: ", defender_success_level)
-	if current_event.attacker_roll < evading_roll:
+	if current_event.attacker_roll > evading_roll:
 		current_event.miss = true
 
 

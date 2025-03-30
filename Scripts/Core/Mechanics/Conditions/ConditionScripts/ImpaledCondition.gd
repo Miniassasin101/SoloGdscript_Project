@@ -76,3 +76,34 @@ func apply_effect(unit: Unit) -> void:
 		target_unit.add_child(effect)
 	Utilities.spawn_damage_label(target_unit, effect_rolled_damage)
 	#Utilities.spawn_text_line(target_unit, "Impale Remove", Color.FIREBRICK)
+
+
+
+func get_details_text() -> String:
+	var details := "This unit is impaled by a weapon."
+
+	if impaled_weapon:
+		details += "\nImpaled Weapon: %s" % impaled_weapon.name
+	else:
+		details += "\nImpaled Weapon: Unknown"
+
+	if body_part:
+		details += "\nImpacted Body Part: %s" % body_part.part_name
+	else:
+		details += "\nImpacted Body Part: Unknown"
+
+	# Estimate damage on removal: half of weapon's average damage
+	if impaled_weapon:
+		var average_damage = (impaled_weapon.die_number * ((impaled_weapon.die_type + 1) / 2.0)) + impaled_weapon.flat_damage
+		var estimated_removal_damage = ceili(average_damage / 2.0)
+		details += "\nEstimated Damage on Removal: %d" % estimated_removal_damage
+	else:
+		details += "\nEstimated Damage on Removal: Unknown"
+
+	details += "\nRemoving the weapon will cause immediate damage to the body part."
+
+	var base := super.get_details_text()
+	if base != "":
+		details += "\n" + base
+
+	return details

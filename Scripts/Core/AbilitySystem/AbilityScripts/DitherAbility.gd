@@ -54,7 +54,9 @@ func can_activate(_event: ActivationEvent) -> bool:
 	return true
 
 
-
+func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
+	#push_warning(" Method get_valid_ability_target_grid_position_list() was called on base ability ")
+	return [_event.unit.get_grid_position()]
 
 
 # Gets the best AI action for a specified grid position.

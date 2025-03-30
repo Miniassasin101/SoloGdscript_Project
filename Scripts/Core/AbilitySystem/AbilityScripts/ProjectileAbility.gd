@@ -87,21 +87,6 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 
 
 
-
-func shoot_projectile_dep() -> void:
-	assert(unit.shoot_point != null)
-	await unit.animator.left_cast_anim(null, event.miss)
-	var projectile_instance: Projectile = projectile.instantiate()
-	# Will need to dynamically adjust shoot height later
-	var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
-	#projectile_instance.setup(target_shoot_at_position, event.miss, ) #Add miss logic later
-	event.unit.add_child(projectile_instance)
-	projectile_instance.global_position = unit.shoot_point.global_position
-	projectile_instance.global_transform.basis = unit.shoot_point.global_transform.basis
-	projectile_instance.trigger_projectile()
-	await projectile_instance.target_hit
-
-
 func shoot_projectile() -> void:
 	assert(unit.shoot_point != null)
 	event.weapon.item_visual.play_animation_on_weapon("WeaponAnimations/BowFire_001")
@@ -113,15 +98,16 @@ func shoot_projectile() -> void:
 	#var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
 	var target_shoot_at_position: Vector3
 	if event.miss:
-		target_shoot_at_position = get_random_miss_position()
+		target_shoot_at_position = event.target_unit.above_marker.get_global_position()
 	else:
 		target_shoot_at_position = event.body_part.get_body_part_marker_position()
 		
 	event.unit.add_child(projectile_instance)
 	projectile_instance.global_position = weapon_projectile.global_position#unit.shoot_point.global_position
 	projectile_instance.global_transform.basis = weapon_projectile.global_transform.basis
-	projectile_instance.setup(target_shoot_at_position, event.miss, weapon_projectile) #Add miss logic later
+	projectile_instance.setup(target_shoot_at_position, event.miss, weapon_projectile, unit) #Add miss logic later
 	projectile_instance.trigger_projectile()
+
 	await projectile_instance.target_hit
 	event.weapon.is_loaded = false
 
@@ -218,7 +204,14 @@ func can_activate(_event: ActivationEvent) -> bool:
 
 # Gets a list of valid grid positions for shooting.
 func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
+	
+	var unit_weapon: Weapon = _event.unit.get_equipped_weapon()
+	
 	var valid_grid_position_list: Array[GridPosition] = []  # Initialize an empty array for valid grid positions.
+	
+	if unit_weapon.projectile == null or !unit_weapon.is_loaded:
+		return valid_grid_position_list
+	
 
 	# Loop through the x and z ranges based on max_shoot_distance.
 	for x in range(-attack_range, attack_range + 1):
