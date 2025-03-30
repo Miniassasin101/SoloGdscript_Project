@@ -98,7 +98,8 @@ func can_activate(_event: ActivationEvent) -> bool:
 	#Add logic here to check to see if the user can parry the attack, given data like:
 	#weapon has attacking trait. user is stunned. User is facing the wrong way, ect.
 	
-	#var valid_grid_position_list = get_valid_ability_target_grid_position_list(_event)
+	if !(_event.target_grid_position in get_valid_ability_target_grid_position_list(_event)):
+		return false
 
 	return true
 

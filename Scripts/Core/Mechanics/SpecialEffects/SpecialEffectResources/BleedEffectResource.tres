@@ -9,6 +9,6 @@ bleed_condition = ExtResource("1_r0jow")
 ui_name = &"Bleed"
 activation_phase = 1
 activation_allowed = 0
-weapon_types_allowed = Array[String]([])
+weapon_types_allowed = Array[String](["sword"])
 stackable = false
 roll_required = 0

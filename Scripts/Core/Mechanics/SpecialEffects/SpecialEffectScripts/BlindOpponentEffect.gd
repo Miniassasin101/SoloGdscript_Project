@@ -30,7 +30,7 @@ func can_apply(event: ActivationEvent) -> bool:
 func apply(event: ActivationEvent) -> void:
 	super.apply(event)
 	
-	var target_unit: Unit = event.target_unit
+	var target_unit: Unit = event.unit
 	var roll: int = Utilities.roll(100)
 	var success_level: int = Utilities.check_success_level((target_unit.get_attribute_after_sit_mod("evade_skill")), roll)
 	
@@ -48,7 +48,7 @@ func apply(event: ActivationEvent) -> void:
 
 func apply_effect(event: ActivationEvent) -> void:
 
-	var target_unit: Unit = event.target_unit
+	var target_unit: Unit = event.unit
 	
 
 	if target_unit:

@@ -10,7 +10,6 @@ use_max_move_distance = false
 rotate_speed = 4.0
 move_speed = 5.5
 stopping_distance = 0.1
-acceleration_timer = 0.5
 ui_name = "Outmaneuver"
 movement_gait = 1
 cooldown_duration = 0.0

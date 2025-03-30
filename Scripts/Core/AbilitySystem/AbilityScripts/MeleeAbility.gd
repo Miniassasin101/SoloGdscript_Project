@@ -60,6 +60,7 @@ func try_activate(_event: ActivationEvent) -> void:
 		return
 	
 	target_unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
+
 	event.set_target_unit(target_unit)
 
 	# First, declare the action with the CombatSystem.

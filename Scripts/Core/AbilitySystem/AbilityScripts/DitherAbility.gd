@@ -50,6 +50,8 @@ func can_activate(_event: ActivationEvent) -> bool:
 	if !super.can_activate(_event):
 		return false
 	# Should always be able to dither
+	if !(_event.target_grid_position in get_valid_ability_target_grid_position_list(_event)):
+		return false
 
 	return true
 

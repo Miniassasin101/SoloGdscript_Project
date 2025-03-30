@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=102 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" uid="uid://dswgp2a8up16v" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" uid="uid://b268e884ur2c8" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -33,33 +33,55 @@
 [ext_resource type="Script" uid="uid://bd0s3lywx8lk3" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
 [ext_resource type="Resource" uid="uid://bytek5m52blwh" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BleedEffectResource.tres" id="21_kkt7y"]
 [ext_resource type="Script" uid="uid://dhballfce82fs" path="res://Hero_Game/Scenes/BookKeepingSystem.gd" id="21_ktx83"]
+[ext_resource type="Script" uid="uid://bvoxi6hq3h2y7" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="21_mgcs5"]
+[ext_resource type="Resource" uid="uid://b4cltjme3q4uh" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/SizeAttribute.tres" id="22_2eit4"]
 [ext_resource type="Resource" uid="uid://dst4i0rqw46ng" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BlindOpponentEffectResource.tres" id="22_6ytw6"]
 [ext_resource type="PackedScene" uid="uid://bs8kc22xgwd2d" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.tscn" id="22_67ysf"]
+[ext_resource type="Resource" uid="uid://ctkldarvpfe18" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/EnduranceAttribute.tres" id="23_o4fbk"]
 [ext_resource type="Resource" uid="uid://bo28spn03mllg" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BypassArmorEffectResource.tres" id="23_xra60"]
+[ext_resource type="Resource" uid="uid://d3uqoh4pmuljd" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/PowerAttribute.tres" id="24_6ae7d"]
 [ext_resource type="Resource" uid="uid://bhs3peayb8jf2" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ChooseLocationEffectResource.tres" id="24_h0tua"]
+[ext_resource type="Resource" uid="uid://cmi2ppcs6qo5j" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/DexterityAttribute.tres" id="25_up07s"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
 [ext_resource type="Resource" uid="uid://cb2opgmh0nqyu" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/CircumventParryEffectResource.tres" id="26_c6h62"]
+[ext_resource type="Resource" uid="uid://lwvvfaivys7c" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/MindAttribute.tres" id="26_ig887"]
 [ext_resource type="Resource" uid="uid://cjw50deqfhini" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/DamageWeaponEffectResource.tres" id="27_ivlyn"]
 [ext_resource type="PackedScene" uid="uid://bf575s2vrxvov" path="res://Hero_Game/Prefabs/UI_Prefabs/TextController.tscn" id="27_khu5d"]
+[ext_resource type="Resource" uid="uid://b5bfbjeaatofm" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/WillAttribute.tres" id="27_kmaem"]
 [ext_resource type="PackedScene" uid="uid://bc3pj0ahlf2m6" path="res://Hero_Game/Prefabs/UI_Prefabs/DroppablePanelUI.tscn" id="27_naquh"]
 [ext_resource type="PackedScene" uid="uid://8oord2o1icck" path="res://Hero_Game/Prefabs/UI_Prefabs/CharacterLogQueue.tscn" id="28_6i1gy"]
+[ext_resource type="Resource" uid="uid://dcehp7j7jdea6" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/PresenceAttribute.tres" id="28_ttgb8"]
 [ext_resource type="PackedScene" uid="uid://4uwpx7r25fdg" path="res://Hero_Game/Prefabs/UI_Prefabs/SpecialEffectsDragContainer.tscn" id="29_725ge"]
 [ext_resource type="Script" uid="uid://d35gfk2fl3xde" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlotController.gd" id="29_cc03n"]
+[ext_resource type="Resource" uid="uid://dg56ydxgon6r2" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/MovementRateAttribute.tres" id="29_djdvf"]
 [ext_resource type="Resource" uid="uid://b34sriadfy7xr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/DisarmOpponentEffectResource.tres" id="29_itb1b"]
+[ext_resource type="Resource" uid="uid://c3sphq6y72h38" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ActionPointsAttribute.tres" id="30_14qle"]
 [ext_resource type="Resource" uid="uid://dlukj3jgipdjr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/EnhanceParryEffect.tres" id="30_hdg1r"]
 [ext_resource type="Resource" uid="uid://b7wui72oveng1" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ForceFailureEffectResource.tres" id="31_4yuhs"]
+[ext_resource type="Resource" uid="uid://bdvtscqbo08no" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/CombatSkillAttribute.tres" id="31_gmse0"]
+[ext_resource type="Resource" uid="uid://cuoutloeyr4rk" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/EvadeSkillAttribute.tres" id="32_e32bf"]
 [ext_resource type="Resource" uid="uid://cqqeph0m4h0ka" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ImpaleEffectResource.tres" id="32_npgv8"]
+[ext_resource type="Resource" uid="uid://dy71yfbxd4qvx" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/FortitudeSkillAttribute.tres" id="33_3d1mt"]
 [ext_resource type="Resource" uid="uid://bspw2bpavewje" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MaximizeDamageEffectResource.tres" id="33_mywpm"]
+[ext_resource type="Resource" uid="uid://v2bmbg3bnu2u" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/FirstAidSkillAttribute.tres" id="34_h40sd"]
 [ext_resource type="Resource" uid="uid://je1rhqiebrcx" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/OverextendOpponentEffectResource.tres" id="34_lu63c"]
+[ext_resource type="Resource" uid="uid://dhycuxfmfj34a" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Derived/HealthAttribute.tres" id="35_e01xw"]
 [ext_resource type="Shader" uid="uid://bsom40l4vw4gh" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="35_n58oi"]
 [ext_resource type="Resource" uid="uid://cirmysa48hhcs" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/PressAdvantageEffectResource.tres" id="35_t123n"]
 [ext_resource type="PackedScene" uid="uid://cvuecvfamgpwe" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonUI.tscn" id="36_53e25"]
+[ext_resource type="Resource" uid="uid://dxsb2kexd664a" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Derived/InitiativeBonusAttribute.tres" id="36_iery3"]
 [ext_resource type="Resource" uid="uid://tiwgsot8o62f" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BashEffectResource.tres" id="36_puq5n"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_Grid_08.png" id="36_vdge6"]
+[ext_resource type="Resource" uid="uid://bcsymcrsnt8dg" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/DamageModifierAttribute.tres" id="37_02vfd"]
 [ext_resource type="Resource" uid="uid://cqieibalk7a7b" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/WithdrawEffectResource.tres" id="37_c0lde"]
 [ext_resource type="Resource" uid="uid://bdjdjaquppxcv" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/StandFastEffectResource.tres" id="38_qso2c"]
+[ext_resource type="Resource" uid="uid://b1835bsxed8bt" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ExperienceModifierAttribute.tres" id="38_u5m4l"]
 [ext_resource type="Resource" uid="uid://q3sk2uy7wd4u" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/FacingPenaltyConditionResource.tres" id="39_me7ee"]
+[ext_resource type="Resource" uid="uid://c564jeljvouh4" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ExperienceRollsAttribute.tres" id="39_rks31"]
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="39_yrlso"]
+[ext_resource type="Resource" uid="uid://ctx1x6455nyse" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/HealingRateAttribute.tres" id="40_nm3hw"]
+[ext_resource type="Script" uid="uid://c4kj6f1xxvutq" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/HitLocationsAttribute.gd" id="41_46epl"]
+[ext_resource type="Script" uid="uid://dfv2ddkwom1fb" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/AttributesTable.gd" id="42_dlnf1"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
 [ext_resource type="Shader" uid="uid://0l0gx3l42rjg" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
 
@@ -74,6 +96,12 @@ roll_required = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_owyi7"]
 material = ExtResource("5_y067e")
+
+[sub_resource type="Resource" id="Resource_6nfd7"]
+resource_local_to_scene = true
+script = ExtResource("42_dlnf1")
+attributes = Array[ExtResource("21_mgcs5")]([ExtResource("22_2eit4"), ExtResource("23_o4fbk"), ExtResource("24_6ae7d"), ExtResource("25_up07s"), ExtResource("26_ig887"), ExtResource("27_kmaem"), ExtResource("28_ttgb8"), ExtResource("29_djdvf"), ExtResource("30_14qle"), ExtResource("31_gmse0"), ExtResource("32_e32bf"), ExtResource("33_3d1mt"), ExtResource("34_h40sd"), ExtResource("35_e01xw"), ExtResource("36_iery3"), ExtResource("37_02vfd"), ExtResource("38_u5m4l"), ExtResource("39_rks31"), ExtResource("40_nm3hw")])
+hit_locations = Array[ExtResource("41_46epl")]([])
 
 [sub_resource type="Resource" id="Resource_c77yv"]
 script = ExtResource("18_hnk25")
@@ -303,6 +331,264 @@ is_enemy = true
 transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 6, 0, 10)
 ui_name = "Red"
 is_enemy = true
+
+[node name="Skeleton3D" parent="UnitManager/DawnUnit5/Rig_001" index="0"]
+bones/1/position = Vector3(0, 5.96046e-08, 0.960315)
+bones/1/rotation = Quaternion(0.707107, 0, 0, 0.707107)
+bones/3/rotation = Quaternion(0, 1.19209e-07, 0, 1)
+bones/4/position = Vector3(0, 0.0632617, 0)
+bones/4/rotation = Quaternion(0, -1.42109e-14, 0, 1)
+bones/7/rotation = Quaternion(0, -3.55271e-14, 0, 1)
+bones/8/position = Vector3(-9.27231e-09, 0.02778, 0.0388922)
+bones/14/rotation = Quaternion(-0.376641, -0.42231, 0.733443, -0.37664)
+bones/20/rotation = Quaternion(-0.372539, -0.495738, 0.691179, -0.371119)
+bones/30/position = Vector3(-9.27243e-09, 0.0277802, 0.0388922)
+bones/32/position = Vector3(-0.0860993, 0.038024, 0.226256)
+bones/33/rotation = Quaternion(0, -2.84217e-14, 0, 1)
+bones/34/position = Vector3(-3.45525e-15, 0.0250324, 0.488914)
+bones/36/position = Vector3(-0.0794912, 0.027395, 0.486765)
+bones/37/rotation = Quaternion(-0.127505, 0.102176, -0.616933, 0.769868)
+bones/38/rotation = Quaternion(0.13903, 0.119958, -0.530545, 0.827528)
+bones/39/rotation = Quaternion(-1.62982e-09, -3.58559e-08, 8.29459e-09, 1)
+bones/40/rotation = Quaternion(0.0897481, 0.00486179, -0.00614364, 0.995934)
+bones/41/rotation = Quaternion(-3.35276e-08, 2.98023e-08, -1.15484e-07, 1)
+bones/41/scale = Vector3(1, 1, 1)
+bones/42/rotation = Quaternion(-0.0370291, 0.645519, 0.0605189, 0.760442)
+bones/42/scale = Vector3(1, 1, 1)
+bones/43/rotation = Quaternion(0.129317, -0.0066415, -0.0433429, 0.990633)
+bones/44/rotation = Quaternion(0.0817255, -0.000530943, -0.00981448, 0.996606)
+bones/45/rotation = Quaternion(0.0658645, 0.00093574, -0.00534495, 0.997814)
+bones/46/rotation = Quaternion(0.370617, -0.625245, 0.137101, 0.672989)
+bones/47/rotation = Quaternion(0.0285129, 0.996476, -0.0772275, -0.0160513)
+bones/48/rotation = Quaternion(0.306483, 0.206802, -0.0758099, 0.926042)
+bones/49/rotation = Quaternion(0.0823789, 0.0368463, 0.00833423, 0.995885)
+bones/50/rotation = Quaternion(0.129317, -0.0066415, -0.0433429, 0.990633)
+bones/51/rotation = Quaternion(0.0817255, -0.000530948, -0.00981448, 0.996606)
+bones/52/rotation = Quaternion(0.0658645, 0.000935738, -0.00534495, 0.997814)
+bones/53/rotation = Quaternion(0.370617, -0.625245, 0.137101, 0.672989)
+bones/54/rotation = Quaternion(0.0285129, 0.996476, -0.0772275, -0.0160513)
+bones/55/rotation = Quaternion(0.306483, 0.206802, -0.0758099, 0.926042)
+bones/56/rotation = Quaternion(0.0823789, 0.0368463, 0.00833423, 0.995885)
+bones/57/position = Vector3(0.0163496, 0.0549371, 0.0318091)
+bones/57/rotation = Quaternion(0.0982778, -0.0182572, 0.691566, 0.715363)
+bones/58/rotation = Quaternion(0.139036, 0.119967, -0.530542, 0.827527)
+bones/59/rotation = Quaternion(0.0897479, 0.00486176, -0.00614355, 0.995934)
+bones/60/position = Vector3(0.227222, 0.407121, -0.324321)
+bones/62/rotation = Quaternion(0.162409, 0.0179099, -0.108141, 0.980616)
+bones/63/rotation = Quaternion(-0.127505, -0.102176, 0.616933, 0.769868)
+bones/64/rotation = Quaternion(0.13903, -0.119958, 0.530545, 0.827528)
+bones/65/rotation = Quaternion(3.25963e-09, -6.00703e-08, -1.06404e-07, 1)
+bones/66/rotation = Quaternion(0.0897481, -0.0048617, 0.00614375, 0.995934)
+bones/67/rotation = Quaternion(1.86265e-08, 1.49012e-08, 4.47035e-08, 1)
+bones/68/rotation = Quaternion(-0.0370291, -0.645519, -0.0605189, 0.760442)
+bones/69/rotation = Quaternion(0.129316, 0.00664079, 0.0433429, 0.990633)
+bones/70/rotation = Quaternion(0.081726, 0.000531562, 0.00981429, 0.996606)
+bones/71/rotation = Quaternion(0.0658644, -0.000935745, 0.00534493, 0.997814)
+bones/72/rotation = Quaternion(0.370617, 0.625245, -0.137101, 0.67299)
+bones/73/rotation = Quaternion(-0.0285129, 0.996476, -0.0772275, 0.0160515)
+bones/74/rotation = Quaternion(0.306483, -0.206801, 0.0758099, 0.926042)
+bones/75/rotation = Quaternion(0.0823789, -0.0368463, -0.00833416, 0.995885)
+bones/76/rotation = Quaternion(0.129316, 0.0066408, 0.0433429, 0.990633)
+bones/77/rotation = Quaternion(0.0817261, 0.000531561, 0.0098143, 0.996606)
+bones/78/rotation = Quaternion(0.0658644, -0.000935745, 0.00534493, 0.997814)
+bones/79/rotation = Quaternion(0.370617, 0.625245, -0.137101, 0.67299)
+bones/80/rotation = Quaternion(-0.0285129, 0.996476, -0.0772275, 0.0160514)
+bones/81/rotation = Quaternion(0.306483, -0.206801, 0.0758099, 0.926042)
+bones/82/rotation = Quaternion(0.0823789, -0.0368463, -0.00833418, 0.995885)
+bones/83/rotation = Quaternion(0.113777, 0.00322004, -0.691559, 0.713295)
+bones/83/scale = Vector3(1.15884, 1.15884, 1.15884)
+bones/84/rotation = Quaternion(0.139035, -0.119967, 0.530542, 0.827528)
+bones/85/rotation = Quaternion(0.0897482, -0.00486175, 0.00614373, 0.995934)
+bones/86/position = Vector3(-0.227223, 0.407121, -0.324321)
+bones/88/rotation = Quaternion(0.162409, -0.0179099, 0.108142, 0.980616)
+bones/89/position = Vector3(0, 0.250393, 0)
+bones/90/rotation = Quaternion(-0.127505, 0.102176, -0.616933, 0.769868)
+bones/91/rotation = Quaternion(-0.127505, -0.102176, 0.616933, 0.769868)
+bones/92/position = Vector3(3.80771e-15, 0, -1.59707e-08)
+bones/92/rotation = Quaternion(1.26227e-07, -1.19209e-07, 1.50475e-14, 1)
+bones/94/position = Vector3(0, 0, -1.59707e-08)
+bones/95/rotation = Quaternion(-9.91125e-21, -8.88178e-16, 8.80296e-36, 1)
+bones/95/scale = Vector3(1, 0.999996, 1)
+bones/96/rotation = Quaternion(-6.46235e-27, -8.88178e-16, 6.49502e-42, 1)
+bones/96/scale = Vector3(0.999998, 1, 0.999998)
+bones/97/rotation = Quaternion(5.40614e-21, -8.88178e-16, -4.80162e-36, 1)
+bones/97/scale = Vector3(1, 1, 1)
+bones/98/rotation = Quaternion(4.50512e-21, 1.19209e-07, 5.37052e-28, 1)
+bones/98/scale = Vector3(1, 0.999989, 1)
+bones/99/rotation = Quaternion(-4.03897e-28, 0, -9.62965e-35, 1)
+bones/99/scale = Vector3(0.999993, 1.00002, 0.999993)
+bones/100/scale = Vector3(1.00001, 0.999985, 1.00001)
+bones/101/scale = Vector3(0.999993, 1.00002, 0.999993)
+bones/102/position = Vector3(0.191507, 0.330376, -0.0530136)
+bones/102/rotation = Quaternion(-7.94663e-09, -4.47035e-08, -6.51926e-09, 1)
+bones/103/rotation = Quaternion(-0.0213175, -0.0234868, 0.94848, -0.315247)
+bones/104/rotation = Quaternion(0.0897481, 0.00486176, -0.00614365, 0.995934)
+bones/105/rotation = Quaternion(-0.037029, 0.645519, 0.0605189, 0.760442)
+bones/106/position = Vector3(-0.191507, 0.330376, -0.0530136)
+bones/106/rotation = Quaternion(-7.94663e-09, -2.29455e-16, -1.30385e-08, 1)
+bones/107/rotation = Quaternion(0.0213175, -0.0234868, 0.94848, 0.315247)
+bones/108/rotation = Quaternion(0.0897481, -0.00486176, 0.00614365, 0.995934)
+bones/109/rotation = Quaternion(-0.0370291, -0.645519, -0.0605189, 0.760442)
+bones/110/position = Vector3(0, 6.66134e-16, 1.29723e-08)
+bones/110/rotation = Quaternion(-2.98023e-08, 0, 0, 1)
+bones/113/rotation = Quaternion(0.82633, 0.402944, -0.350107, -0.179556)
+bones/115/rotation = Quaternion(0.0364436, -1.36435e-07, 5.99511e-08, 0.999336)
+bones/116/rotation = Quaternion(-0.405972, -0.00161869, 0.00364465, 0.913877)
+bones/117/rotation = Quaternion(-0.352886, -0.0291861, -0.0154199, 0.935084)
+bones/118/rotation = Quaternion(0.82633, 0.402944, -0.350107, -0.179556)
+bones/119/rotation = Quaternion(0.0364437, 1.88984e-08, 1.75026e-08, 0.999336)
+bones/121/rotation = Quaternion(0.82633, 0.402944, -0.350107, -0.179556)
+bones/123/rotation = Quaternion(0.82633, -0.402944, 0.350108, -0.179556)
+bones/125/rotation = Quaternion(0.0364437, 4.02967e-08, 4.02131e-09, 0.999336)
+bones/126/rotation = Quaternion(-0.405972, 0.00161893, -0.00364433, 0.913877)
+bones/127/rotation = Quaternion(-0.352886, 0.0291863, 0.0154195, 0.935084)
+bones/128/rotation = Quaternion(0.82633, -0.402944, 0.350107, -0.179556)
+bones/129/rotation = Quaternion(0.0364437, -1.8871e-08, -1.6657e-08, 0.999336)
+bones/131/rotation = Quaternion(0.82633, -0.402944, 0.350107, -0.179556)
+bones/133/position = Vector3(0.132144, -0.0527501, 3.63652e-08)
+bones/133/rotation = Quaternion(-7.94663e-09, 1.53953e-15, 2.98023e-08, 1)
+bones/134/rotation = Quaternion(0.999276, 0.024366, 0.0234922, 0.017389)
+bones/135/rotation = Quaternion(0.0364437, 2.64227e-08, 1.00393e-08, 0.999336)
+bones/136/rotation = Quaternion(-0.405972, -0.00161893, 0.00364433, 0.913877)
+bones/138/position = Vector3(-0.132144, -0.0527501, 3.63652e-08)
+bones/138/rotation = Quaternion(-7.94663e-09, -1.53953e-15, -2.98023e-08, 1)
+bones/139/rotation = Quaternion(0.999276, -0.024366, -0.0234922, 0.017389)
+bones/140/rotation = Quaternion(0.0364437, -2.64227e-08, -1.00393e-08, 0.999336)
+bones/141/rotation = Quaternion(-0.405972, 0.00161893, -0.00364433, 0.913877)
+bones/143/position = Vector3(0.53173, 0.0157991, 0.82434)
+bones/143/rotation = Quaternion(0.685443, 0.603836, -0.343934, -0.217394)
+bones/144/position = Vector3(-0.53173, 0.0157991, 0.82434)
+bones/144/rotation = Quaternion(0.685443, -0.603836, 0.343934, -0.217394)
+bones/145/position = Vector3(0.170141, -0.0814491, -0.00236204)
+bones/145/rotation = Quaternion(0.707107, 8.42937e-08, 8.42937e-08, 0.707107)
+bones/146/position = Vector3(-6.09147e-09, 7.58226e-09, 0.118826)
+bones/146/rotation = Quaternion(-3.25371e-08, 1.44494e-23, -7.27261e-15, 1)
+bones/148/rotation = Quaternion(3.06912e-08, 6.71471e-16, 1, -2.16429e-23)
+bones/149/rotation = Quaternion(-0.00942129, -0.00942122, 0.707044, 0.707044)
+bones/150/rotation = Quaternion(-4.24585e-08, 5.55112e-17, 1, 6.03901e-17)
+bones/152/position = Vector3(9.26088e-08, -6.79211e-08, 8.88239e-08)
+bones/152/rotation = Quaternion(0.925862, -0.0143581, 0.0255116, -0.376726)
+bones/153/rotation = Quaternion(-0.352886, -0.029186, -0.0154199, 0.935084)
+bones/154/position = Vector3(-0.0340758, -0.364136, 0.387911)
+bones/155/rotation = Quaternion(-0.00291043, 0.999921, -0.0122435, -0.000105448)
+bones/156/position = Vector3(-1.00151e-08, -7.50794e-09, -0.185446)
+bones/156/rotation = Quaternion(8.37107e-22, -2.09516e-22, -7.03019e-15, 1)
+bones/157/position = Vector3(-0.170141, -0.0814491, -0.00236204)
+bones/157/rotation = Quaternion(0.707107, -8.42937e-08, -8.42937e-08, 0.707107)
+bones/158/position = Vector3(6.09147e-09, 7.58226e-09, 0.118826)
+bones/158/rotation = Quaternion(-3.25371e-08, -1.44494e-23, 7.27261e-15, 1)
+bones/160/rotation = Quaternion(-3.06912e-08, 6.71471e-16, 1, 2.16429e-23)
+bones/161/rotation = Quaternion(-0.00942129, 0.00942122, -0.707044, 0.707044)
+bones/162/rotation = Quaternion(4.24585e-08, 5.55112e-17, 1, -6.03901e-17)
+bones/164/position = Vector3(-9.26088e-08, -6.79211e-08, 8.88239e-08)
+bones/164/rotation = Quaternion(0.925862, 0.0143581, -0.0255116, -0.376726)
+bones/165/rotation = Quaternion(-0.352886, 0.029186, 0.0154199, 0.935084)
+bones/166/position = Vector3(0.0340758, -0.364136, 0.387911)
+bones/168/position = Vector3(1.00151e-08, -7.50794e-09, -0.185446)
+bones/168/rotation = Quaternion(8.37107e-22, 2.09516e-22, 7.03019e-15, 1)
+bones/169/position = Vector3(0, 5.96046e-08, 0.950293)
+bones/169/rotation = Quaternion(0.707107, 0, 0, 0.707107)
+bones/170/position = Vector3(0, 5.96046e-08, 0.966036)
+bones/170/rotation = Quaternion(0.707107, -6.28037e-16, -6.28037e-16, 0.707107)
+bones/170/scale = Vector3(1, 0.999996, 1)
+bones/171/position = Vector3(0, 5.96046e-08, 0.981779)
+bones/171/rotation = Quaternion(0.707107, -1.25607e-15, -1.25607e-15, 0.707107)
+bones/172/position = Vector3(0, 5.96046e-08, 0.997522)
+bones/172/rotation = Quaternion(0.707107, -1.88411e-15, -1.88411e-15, 0.707107)
+bones/172/scale = Vector3(1, 1, 1)
+bones/173/position = Vector3(0, 1.19209e-07, 1.01327)
+bones/173/rotation = Quaternion(0.707107, 8.42937e-08, 8.42937e-08, 0.707107)
+bones/173/scale = Vector3(1, 0.999992, 1)
+bones/174/position = Vector3(0, 0, 1.02908)
+bones/174/rotation = Quaternion(0.707107, 8.42937e-08, 8.42937e-08, 0.707107)
+bones/174/scale = Vector3(0.999996, 1.00001, 0.999996)
+bones/175/position = Vector3(0, 1.19209e-07, 1.0449)
+bones/175/rotation = Quaternion(0.707107, 8.42937e-08, 8.42937e-08, 0.707107)
+bones/175/scale = Vector3(1, 0.999992, 1)
+bones/176/position = Vector3(0, 1.19209e-07, 1.06071)
+bones/176/rotation = Quaternion(0.707107, 8.42937e-08, 8.42937e-08, 0.707107)
+bones/176/scale = Vector3(0.999996, 1.00001, 0.999996)
+
+[node name="RightHandShootPointAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="1"]
+transform = Transform3D(0.509942, 0.0506781, -0.858715, -0.733257, 0.547562, -0.403125, 0.44977, 0.835229, 0.316385, 0.2681, 1.14857, 0.236537)
+
+[node name="RightHandEquipmentSocketBone" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="2"]
+transform = Transform3D(-0.487855, 0.589918, 0.643424, 0.818722, 0.564905, 0.102842, -0.302805, 0.576957, -0.75857, -0.146454, 1.23384, 0.37403)
+
+[node name="LeftHandEquipmentSocketBone" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="3"]
+transform = Transform3D(0.509942, 0.0506781, -0.858715, -0.733257, 0.547562, -0.403125, 0.44977, 0.835229, 0.316385, 0.2681, 1.14857, 0.236537)
+
+[node name="ChestAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="4"]
+transform = Transform3D(0.832355, 0.0138999, 0.554069, 0.00869726, 0.999235, -0.0381333, -0.554175, 0.0365593, 0.831597, -0.00039407, 1.02679, 0.0127638)
+
+[node name="HeadAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="5"]
+transform = Transform3D(0.995501, 0.0526413, 0.0787796, -0.0412705, 0.989351, -0.139577, -0.0852882, 0.135698, 0.987072, 0.0130537, 1.48515, 0.0460438)
+
+[node name="AbdomenAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="6"]
+transform = Transform3D(0.967699, 0.00369109, 0.371363, 0.0178792, 0.929182, -0.0580425, -0.370955, 0.0544132, 0.965966, -8.52935e-05, 0.910015, -0.000224113)
+
+[node name="RightArmAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="7"]
+transform = Transform3D(-0.627661, 0.707847, 0.324028, 0.762719, 0.475799, 0.438034, 0.155889, 0.52208, -0.838529, -0.366151, 1.08617, 0.211992)
+
+[node name="LeftArmAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="8"]
+transform = Transform3D(-0.730427, -0.182835, -0.658063, -0.681508, 0.258561, 0.684612, 0.0449788, 0.948534, -0.313464, 0.324847, 1.06832, -0.0578621)
+
+[node name="RightLegAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="9"]
+transform = Transform3D(0.996744, -0.0795694, -0.0130578, -0.0793726, -0.996733, 0.0149646, -0.0142057, -0.0138794, -0.999803, -0.149256, 0.517021, 0.217517)
+
+[node name="LeftLegAttachment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="10"]
+transform = Transform3D(0.687369, -0.0705574, -0.722873, 0.183979, -0.945896, 0.267269, -0.70262, -0.316706, -0.637199, 0.247665, 0.49788, -0.0232477)
+
+[node name="Body_001" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="11"]
+surface_material_override/0 = null
+
+[node name="Collar_001" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="12"]
+surface_material_override/0 = null
+
+[node name="Eye_L" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="13"]
+surface_material_override/0 = null
+
+[node name="Eye_R" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="14"]
+surface_material_override/0 = null
+
+[node name="Eyebrow_L" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="15"]
+surface_material_override/0 = null
+
+[node name="Eyebrow_R" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="16"]
+surface_material_override/0 = null
+
+[node name="Flower Emblem_001" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="17"]
+surface_material_override/0 = null
+
+[node name="Flower Emblem_Background_001" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="18"]
+surface_material_override/0 = null
+
+[node name="Hair Tufts_001" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="19"]
+surface_material_override/0 = null
+
+[node name="Main Hair_001" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="20"]
+surface_material_override/0 = null
+
+[node name="Pants_001" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="21"]
+surface_material_override/0 = null
+
+[node name="Pupil_L" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="22"]
+surface_material_override/0 = null
+
+[node name="Pupil_R" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="23"]
+surface_material_override/0 = null
+
+[node name="SHirt_001" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="24"]
+surface_material_override/0 = null
+
+[node name="Waistcloth_belt_001" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="25"]
+surface_material_override/0 = null
+
+[node name="FacingArrow" parent="UnitManager/DawnUnit5" index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 10)
+
+[node name="GameplayAttributeMap" parent="UnitManager/DawnUnit5" index="8"]
+attributes_table = SubResource("Resource_6nfd7")
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
 script = ExtResource("6_rwbm0")
@@ -790,3 +1076,5 @@ mesh = SubResource("QuadMesh_bteft")
 [connection signal="pressed" from="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController/ConfirmEffectButton" to="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController" method="_on_confirm_effect_button_pressed"]
 [connection signal="pressed" from="UILayer/TurnSystemUI/EndTurnContainer/MarginContainer/EndTurnButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
 [connection signal="pressed" from="UILayer/TurnSystemUI/EndActionPhaseContainer/MarginContainer/EndPhaseButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
+
+[editable path="UnitManager/DawnUnit5"]
