@@ -71,10 +71,7 @@ func try_activate(_event: ActivationEvent) -> void:
 		print_debug("Melee attack action thwarted - out of range or invalid target.")
 		return
 
-	
 	add_weapon_to_event()
-	
-	
 	
 	# Rotate the Unit to face the target, then continue the action (attack).
 	await rotate_unit_towards_target_enemy(event)
@@ -82,7 +79,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	
 	event = await CombatSystem.instance.attack_unit(self, event)
 	
-		# Perform the actual swing animation.
+	# Perform the actual swing animation.
 	await melee_attack_anim()
 	
 	

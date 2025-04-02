@@ -431,7 +431,7 @@ func root_motion_process() -> void:
 	new_pos += unit.get_global_position()
 	
 	if unit.get_global_position() != new_pos:
-		print_debug(new_pos)
+		#print_debug(new_pos)
 		unit.set_global_position(new_pos)
 
 

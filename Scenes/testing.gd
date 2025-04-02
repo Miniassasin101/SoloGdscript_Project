@@ -220,13 +220,13 @@ func test_n() -> void:
 
 func test_v() -> void:
 	if Input.is_action_just_pressed("testkey_v"):
-		#remove_all_ap()
+		remove_all_ap()
 		#add_armor()
 		#play_weapon_spin_anim()
 		#drop_equipped_weapon()
 		#create_engagement()
 		#apply_knockback()
-		print_relative_position()
+		#print_relative_position()
 		pass
 
 

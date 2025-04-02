@@ -287,11 +287,13 @@ func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
 		(relative == Utilities.RelativePosition.LEFT_SIDE):
 			penalty_cond.situational_modifier = 3 # Hard
 			event.unit.conditions_manager.add_condition(penalty_cond) 
+			Utilities.spawn_text_line(event.unit, "Side Attack", Color.YELLOW)
 			return
 		elif relative == Utilities.RelativePosition.BACK:
 			# FIXME: Make it change based off if attacker or defender
-			penalty_cond.situational_modifier = 4 # Hard
+			penalty_cond.situational_modifier = 5 # Herculean
 			event.unit.conditions_manager.add_condition(penalty_cond) 
+			Utilities.spawn_text_line(event.unit, "Back Attack", Color.CRIMSON)
 			return
 	
 
@@ -305,6 +307,7 @@ func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
 				
 				penalty_cond.situational_modifier = 3 # Hard
 				event.unit.conditions_manager.add_condition(penalty_cond) 
+				Utilities.spawn_text_line(event.unit, "Side Attack", Color.YELLOW)
 				return
 			return
 		
@@ -313,33 +316,40 @@ func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
 				
 				penalty_cond.situational_modifier = 3 # Hard
 				event.unit.conditions_manager.add_condition(penalty_cond) 
+				Utilities.spawn_text_line(event.unit, "Side Attack", Color.YELLOW)
 				return
 			return
 		
 		elif relative == Utilities.RelativePosition.BACK:
 			# FIXME: Make it change based off if attacker or defender
-			penalty_cond.situational_modifier = 4 # Hard
+			penalty_cond.situational_modifier = 5 # Herculean
 			event.unit.conditions_manager.add_condition(penalty_cond) 
+			Utilities.spawn_text_line(event.unit, "Back Attack", Color.CRIMSON)
 			return
 
 
 func determine_defender_facing_penalty(event: ActivationEvent = current_event) -> void:
 	if !event.weapon:
 		return
+	
 	var penalty_cond: FacingPenaltyCondition = facing_penalty_condition.duplicate()
 	if event.weapon.hands == 2: # Logic for all two handed weapons
 		var relative: int = Utilities.get_unit_relative_position(event.target_unit, event.unit)
 		if relative == Utilities.RelativePosition.FRONT:
 			return
+		
 		elif (relative == Utilities.RelativePosition.RIGHT_SIDE) or\
 		(relative == Utilities.RelativePosition.LEFT_SIDE):
 			penalty_cond.situational_modifier = 3 # Hard
 			event.target_unit.conditions_manager.add_condition(penalty_cond) 
+			Utilities.spawn_text_line(event.target_unit, "Side Reaction", Color.YELLOW)
 			return
+		
 		elif relative == Utilities.RelativePosition.BACK:
 			# FIXME: Make it change based off if attacker or defender
-			penalty_cond.situational_modifier = 5 # Herculean
-			event.target_unit.conditions_manager.add_condition(penalty_cond) 
+			penalty_cond.situational_modifier = 4 # Formidable
+			event.target_unit.conditions_manager.add_condition(penalty_cond)
+			Utilities.spawn_text_line(event.unit, "Back Reaction", Color.ORANGE)
 			return
 	
 	# FIXME: Make it so that it checks to see which hand the weapon is equipped in
@@ -347,11 +357,12 @@ func determine_defender_facing_penalty(event: ActivationEvent = current_event) -
 		var relative: int = Utilities.get_unit_relative_position(event.target_unit, event.unit)
 		if relative == Utilities.RelativePosition.FRONT:
 			return
+		
 		elif relative == Utilities.RelativePosition.RIGHT_SIDE:
 			if event.weapon.tags.has("left_hand"):
-				
 				penalty_cond.situational_modifier = 3 # Hard
-				event.unit.conditions_manager.add_condition(penalty_cond) 
+				event.target_unit.conditions_manager.add_condition(penalty_cond) 
+				Utilities.spawn_text_line(event.target_unit, "Side Reaction", Color.YELLOW)
 				return
 			return
 		
@@ -359,14 +370,15 @@ func determine_defender_facing_penalty(event: ActivationEvent = current_event) -
 			if event.weapon.tags.has("right_hand"):
 				
 				penalty_cond.situational_modifier = 3 # Hard
-				event.unit.conditions_manager.add_condition(penalty_cond) 
+				event.target_unit.conditions_manager.add_condition(penalty_cond) 
+				Utilities.spawn_text_line(event.target_unit, "Side Reaction", Color.YELLOW)
 				return
 			return
 			
 		elif relative == Utilities.RelativePosition.BACK:
-			# FIXME: Make it change based off if attacker or defender
 			penalty_cond.situational_modifier = 4 # Formidable
 			event.target_unit.conditions_manager.add_condition(penalty_cond) 
+			Utilities.spawn_text_line(event.target_unit, "Back Reaction", Color.ORANGE)
 			return
 		
 		else:
@@ -404,8 +416,11 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	ret_event.attacker_success_level = attacker_success_level
 	if attacker_success_level == 2:
 		ret_event.attacker_critical = true
+		Utilities.spawn_text_line(attacking_unit, "Critical!")
+		
 	elif attacker_success_level == -1:
 		ret_event.attacker_fumble = true
+		Utilities.spawn_text_line(attacking_unit, "Fumble!", Color.FIREBRICK)
 	# Show Attacker's marker
 	show_success(attacking_unit, attacker_success_level)
 
@@ -438,8 +453,10 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 	ret_event.defender_success_level = defender_success_level
 	if defender_success_level == 2:
 		ret_event.defender_critical = true
+		Utilities.spawn_text_line(target_unit, "Critical!")
 	elif defender_success_level == -1:
 		ret_event.defender_fumble = true
+		Utilities.spawn_text_line(target_unit, "Fumble!", Color.FIREBRICK)
 	
 
 

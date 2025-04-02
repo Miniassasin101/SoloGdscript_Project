@@ -103,7 +103,9 @@ func determine_roll_result() -> void:
 	var defender_success_level = Utilities.check_success_level(evade_skill_value, evading_roll)
 	current_event.defender_success_level = defender_success_level
 	print_debug("Evade Success Level: ", defender_success_level)
-	if current_event.attacker_roll > evading_roll:
+	if current_event.defender_success_level > current_event.attacker_success_level:
+		current_event.miss = true
+	elif current_event.attacker_roll > evading_roll:
 		current_event.miss = true
 
 

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MarksmanEffect" load_steps=2 format=3 uid="uid://d3yn60m635vma"]
+
+[ext_resource type="Script" uid="uid://bn51bnq3kbwbw" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/MarksmanEffect.gd" id="1_mwvhm"]
+
+[resource]
+script = ExtResource("1_mwvhm")
+location_prompt = "Choose a body location"
+ui_name = &"Marksman"
+activation_phase = 0
+activation_allowed = 0
+weapon_types_allowed = Array[String](["bow"])
+stackable = false
+roll_required = 0
+metadata/_custom_type_script = "uid://bn51bnq3kbwbw"

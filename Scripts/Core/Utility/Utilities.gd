@@ -634,7 +634,9 @@ func flash_color_on_mesh(mesh: MeshInstance3D ,color: Color = Color.DEEP_SKY_BLU
 
 # Text Utilities
 func spawn_text_line(in_unit: Unit, text: String, color: Color = Color.SNOW, scale: float = 1.0, at_pos: Vector3 = Vector3.ZERO) -> void:
+	var add_to_q: bool = false
 	if at_pos == Vector3.ZERO:
+		add_to_q = true
 		at_pos = in_unit.get_world_position_above_marker()
 	var camera: Camera3D = MouseWorld.instance.camera
 	var screen_pos: Vector2 = camera.unproject_position(at_pos)
@@ -644,7 +646,10 @@ func spawn_text_line(in_unit: Unit, text: String, color: Color = Color.SNOW, sca
 	var text_label = text_label_scene.instantiate() as TextController
 	
 	# Add to CharacterLogQueue instead of UILayer directly
-	UILayer.instance.get_node("CharacterLogQueue").add_message(text_label)
+	if add_to_q:
+		UILayer.instance.get_node("CharacterLogQueue").add_message(text_label)
+	else:
+		UILayer.instance.add_child(text_label)
 
 	# Position it in screen-space
 	text_label.set_position(screen_pos)

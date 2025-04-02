@@ -32,14 +32,18 @@ func apply(event: ActivationEvent) -> void:
 	
 	var target_unit: Unit = event.unit
 	var roll: int = Utilities.roll(100)
-	var success_level: int = Utilities.check_success_level((target_unit.get_attribute_after_sit_mod("evade_skill")), roll)
+	var success_level: int = Utilities.check_success_level((
+		target_unit.get_attribute_after_sit_mod("evade_skill")), roll)
+	
+	if event.forced_sp_eff_fail:
+		success_level = -3
 	
 	if success_level >= 1:
 		Utilities.spawn_text_line(target_unit, "Blind Saved", Color.AQUA)
 		return
 	
 	apply_effect(event)
-	#apply damage effect
+
 	
 	# Animation Stand-in
 	
@@ -53,7 +57,9 @@ func apply_effect(event: ActivationEvent) -> void:
 
 	if target_unit:
 		# Make sure to duplicate the resources always to avoid effects applying on every instance
-		target_unit.conditions_manager.add_condition(blind_condition.duplicate()) 
+		var new_blind: BlindCondition = blind_condition.duplicate() as BlindCondition
+		target_unit.conditions_manager.add_condition(new_blind)
 		
-
-	Utilities.spawn_text_line(target_unit, "Blinded", Color.GOLD)
+		var remaining_rounds: int = new_blind.get_remaining_rounds()
+		
+		Utilities.spawn_text_line(target_unit, "Blinded %d" % remaining_rounds, Color.GOLD)

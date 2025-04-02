@@ -1,4 +1,4 @@
-[gd_scene load_steps=101 format=4 uid="uid://ckh4ee1mgwjn4"]
+[gd_scene load_steps=99 format=4 uid="uid://ckh4ee1mgwjn4"]
 
 [ext_resource type="Script" uid="uid://cc6qiw2g3uffy" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
@@ -728,26 +728,6 @@ _surfaces = [{
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 104,
 "vertex_data": PackedByteArray("ACCRPRUcXj/1wfw9EvecPRLqZz+yXfg95baVPfOlXj9UDfs9/++dPZNeYD8x//c9uYaUPaMcaD/dgPs9G/SoPbgAZj9I6PM9Jk+iPVxGYT9iX/Y9zAavPVh+Yz+npfE9TUCKPUruXj9ZUP89NJGIPbbSZj+t8v89XqF6PWEfaD/qEAI+/MSDPQ0OXj9+3AA+pFxlPba6Zz/kCgQ+XeF9PQaOXj9bwgE+s99rPZ40YD/7bgM+tzpQPbbpZT9xAQY+Qk1iPQkTYT/XUgQ+FCNGPZdBYz858QY+tmd8PeCqWz8V5QE+og8EPXqjVD9rEw0+bFZtPeZ8Wz+KSwM+ZzVRPTOvWj+z6AU+hXARPTlZUz/z1As+F7UDPaXjVj8iHA0+X1lCPQlEWj8vSgc+7AUWPfd2WT+xaAs+FON9PZFkWj+owQE+8G8zPTqcUz8crAg+qcU7PdhrUT+E5Qc+KCyJPWi1Wj/ptf89pixVPUsXUT8YiQU+V+CJPWnaWT+0cv89j1WKPfPPVz+cRv89i354PWICUj/hQAI+EJyKPaO7Vj8cLP896FyLPb6eUz+a4/49T2SNPQCVWj9WJP499USuPe9mUT8G6fE9ywqMPQ7UWT+XpP49CRu6PTipUT+mgu096hqWPWNyWj8P5/o9CRu6PTipUT+mgu09T2SNPQCVWj9WJP49X5C8PVwMVD9Qmew9w/XMPcuiUz/PgOY9bImXPc6ZWz8bX/o9l/bTPd3DVD+d5uM9x1edPcmQWz+LNvg99USuPe9mUT8G6fE92bqMPcvjVz+jYv49ywqMPQ7UWT+XpP49l1acPZIrUj+0k/g9l1acPZIrUj+0k/g9ywyNPUHdVj/oQ/492bqMPcvjVz+jYv49vvOMPRqpUz9fTP49l/bTPd3DVD+d5uM9uSOrPdfwWj9eFfM9/qbTPXJBVz/aBOQ9x1edPcmQWz+LNvg9/qbTPXJBVz/aBOQ9zHyyPdacWj/6WfA9P/fKPTiwWT8pQOc9uSOrPdfwWj9eFfM9SfqXPbkyXD9PNfo9a73lPcwiXT/9TN09VjKdPXnCWz+CRPg9EvGrPSoxWz8WyfI9m6zlPfyHXj+eU909Wi7dPeROWz8Pe+A9urizPbviWj+f5O89IP3JPVnaWT8znec9JKibPflHXT9y1/g9FO/XPTmxXz+Mb+I9x/7cPRJgYT9SjuA95WWTPXr7XT+Z6fs9wLLVPXelYj8WReM9j9GWPVSaXj86pPo9fJSfPd9DYD/ZYvc9gAzFPVyrYz/gdek9C3ikPRYfYT/MkfU9Y3evPTtpYz/Fe/E90Rt+PS6wXT/QvAE+bQDtPBukYj/dVw4+Fkd5PdVvXj/ZLwI+ndRlPXwDYD++/gM+imnSPI5eYT8FlA8+itVyPdEwXT/+yAI+FnHtPDR1Xz82Ug4+n3EaPTldYz/NAAs+CKJbPXPZYD958QQ+xJ9EPSIbYz8yFQc+trd6PdkYXD9JDQI+rkO5PC+QXD+NvhA+5UWuPNsdXj+CQRE+0H1sPSeFWz+vXwM+0F5PPe7jWj92FAY+JwLfPO3fWj9R/Q4+AwhAPaONWj9egQc+ZmwQPfetWT/z7Qs+itVyPdEwXT/+yAI+5UWuPNsdXj+CQRE+FnHtPDR1Xz82Ug4+trd6PdkYXD9JDQI+sKL8f4zNuuOwovx/jM2647Ci/H+MzbrjsKL8f4zNuuOwovx/jM2647Ci/H+MzbrjsKL8f4vNuuOwovx/jM2647Ci/H+MzbrjsKL8f4zNuuOwovx/jM2647Ci/H+MzbrjsKL8f4zNuuOwovx/jM2647Ci/H+MzbrjsKL8f4zNuuOwovx/jM2647Ci/H+MzbrjsKL8fy9jOuywovx/L2M67LCi/H8wYzvssKL8fy9jOuywovx/L2M67LCi/H8vYzrssKL8fy5jOeywovx/L2M67LCi/H8vYzrssKL8fy9jOuywovx/L2M67LCi/H8vYzrssKL8fy9jOuywovx/L2M67LCi/H8vYzrssKL8fy9jOuywovx/MGM67LCi/H8vYzrsrqL8f1mkvfKuovx/WaS98q6i/H9ZpL3yrqL8f1mkvfKwovx/WaS+8rCi/H9ZpL7ysKL8f1mkvvKwovx/WaS+8rCi/H9ZpL7ysKL8f1mkvvKwovx/WaS+8rCi/H9ZpL7ysKL8f1mkvvKwovx/WaS+8rCi/H9ZpL7ysKL8f1mkvvKuovx/WaS98q6i/H9ZpL3yrqL8f1mkvvKuovx/WaS98q6i/H9ZpL7yrqL8f1mkvfKuovx/WaS+8q6i/H9ZpL3ysKL8f1mkvvKwovx/WqS98rCi/H9ZpL7ysKL8f1qkvfKwovx/6NVPn7Ci/H/o1U+fsKL8f+jVTp+wovx/6NVPn7Ci/H/o1U+fsKL8f+jVT5+wovx/6dVPn7Ci/H/o1U+fsKL8f+jVT5+wovx/6NVPn7Ci/H/o1U+fsKL8f+jVT5+wovx/6NVPn7Ci/H/o1U+fsKL8f+jVT5+wovx/6NVPn7Ci/H/o1U+fsKL8f+jVT5+wovx/62Ua7rCi/H/rZRrusKL8f+tlGu6wovx/62Ua7rCi/H/rZRrusKL8f+xlG+6wovx/62Ua7rCi/H/rZRrusKL8f+tlGu6wovx/62Ua7rCi/H/rZRrusKL8f+tlGu6wovx/62Ua7rCi/H/rZRrusKL8f+tlGu6wovx/62Ua7rCi/H/rZRrusKL8f+tlGu6uovx/62Ub7q6i/H/rZRvurqL8f+tlGu6uovx/62Ub7g==")
-}]
-blend_shape_mode = 0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bpkjm"]
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_tk76t"]
-resource_name = "RootMotionTest_001_Plane_003"
-_surfaces = [{
-"aabb": AABB(0.0333139, 0.826336, 0.105704, 0.0631453, 0.0682184, 0.0250802),
-"attribute_data": PackedByteArray("HZwYP+ChhT3/LxU/ULCbPewkFT8IC4U9MLMYP/jynD0vShw/YFiDPTCzGD/48pw9HZwYP+ChhT11CRw/SIObPfsYHD/gxVs9HZwYP+ChhT3Zphg/kHJFPS9KHD9gWIM92aYYP5ByRT3sJBU/CAuFPeskFT/gjFo9HZwYP+ChhT0="),
-"bone_aabbs": [AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0.0333139, 0.826336, 0.105704, 0.0631453, 0.0682184, 0.0250802), AABB(0.0333139, 0.826336, 0.105704, 0.0631453, 0.0682184, 0.0250802), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0, 0, 0, -1, -1, -1), AABB(0.0333139, 0.826336, 0.105704, 0.0631453, 0.0682184, 0.0250802), AABB(0.0333139, 0.826336, 0.105704, 0.0631453, 0.0682184, 0.0250802)],
-"format": 34359745559,
-"index_count": 24,
-"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0A"),
-"material": SubResource("StandardMaterial3D_bpkjm"),
-"primitive": 3,
-"skin_data": PackedByteArray("KAApAHAAcQBCqAsrWBZYFigAKQBwAHEAAqhqK0gWSBYoACkAcABxAFSoGytHFkcWKAApAHAAcQDop2QrWBZYFigAKQBwAHEA0qfxKp0WnRYoACkAcABxAOinZCtYFlgWKAApAHAAcQBCqAsrWBZYFigAKQBwAHEA6qcfK3oWehYoACkAcABxACCo6Cp6FnoWKAApAHAAcQBCqAsrWBZYFigAKQBwAHEAZKjrKlcWVxYoACkAcABxANKn8SqdFp0WKAApAHAAcQBkqOsqVxZXFigAKQBwAHEAVKgbK0cWRxYoACkAcABxAGioAStKFkoWKAApAHAAcQBCqAsrWBZYFg=="),
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 16,
-"vertex_data": PackedByteArray("9YmGPfKKWj/HXfI9WozFPbJOVD99e9g9Ev7DPUgaWz8aGtk93/OGPcOKUz8aHvE9HHQIPdHSWj+KsQU+3/OGPcOKUz8aHvE99YmGPfKKWj/HXfI91G0WPb+aUz+IUAQ+JKILPS9HYT9c7AU+9YmGPfKKWj/HXfI9cjSCPYUBZT9RFfQ9HHQIPdHSWj+KsQU+cjSCPYUBZT9RFfQ9Ev7DPUgaWz8aGtk92IzBPcc6Yj8iEto99YmGPfKKWj/HXfI94QB629snz73hAHrb2yfPveEAetvbJ8+94QB629snz73vALDctSbMve8AsNy1Jsy97wCw3LUmzL3vALDctSbMvcEAgNzYJsy9wQCA3NkmzL3BAIDc2SbMvcEAgNzYJs29EQBCJWAo0L0RAEIlYCjQvREAQiVgKNC9EQBCJWAo0L0=")
 }]
 blend_shape_mode = 0
 
@@ -2355,7 +2335,7 @@ secondary_limit_angle = 0.668985
 secondary_damp_threshold = 1.0
 
 [node name="RightHandShootPointAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.497754, 0.0460175, -0.866097, -0.739029, 0.545168, -0.395761, 0.453957, 0.837062, 0.305368, 0.264955, 1.15076, 0.234636)
+transform = Transform3D(0.883263, 0.160912, -0.440401, -0.211217, -0.702019, -0.680115, -0.418608, 0.693741, -0.58608, 0.152778, 0.894585, 0.517443)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -2363,7 +2343,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="RightHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.482585, 0.596808, 0.64104, 0.820116, 0.564827, 0.0915418, -0.307444, 0.569903, -0.762029, -0.147777, 1.23486, 0.372305)
+transform = Transform3D(-0.82126, 0.497285, 0.279713, 0.0611976, -0.410643, 0.90974, 0.567262, 0.764251, 0.306812, 0.008329, 0.884508, 0.392654)
 bone_name = "DEF_hand.R.001"
 bone_idx = 68
 
@@ -2378,7 +2358,7 @@ equipment_path = NodePath("../../../../../Equipment")
 tags_to_display = Array[String](["right_hand"])
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.497754, 0.0460175, -0.866097, -0.739029, 0.545168, -0.395761, 0.453957, 0.837062, 0.305368, 0.264955, 1.15076, 0.234636)
+transform = Transform3D(0.883263, 0.160912, -0.440401, -0.211217, -0.702019, -0.680115, -0.418608, 0.693741, -0.58608, 0.152778, 0.894585, 0.517443)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -2386,14 +2366,14 @@ bone_idx = 42
 transform = Transform3D(0.0928292, 0.120241, -0.988398, -0.973072, -0.199405, -0.115647, -0.210996, 0.972516, 0.0984913, 0.00414675, 0.0419652, 0.0311842)
 
 [node name="EquippedItem3D" type="Node3D" parent="Rig_001/Skeleton3D/LeftHandEquipmentSocketBone/LeftHandSocket" node_paths=PackedStringArray("unit")]
-transform = Transform3D(0.905267, -0.403418, -0.133217, 0.413246, 0.90891, 0.0557578, 0.0985885, -0.105527, 0.989517, 0, 0, 0)
+transform = Transform3D(0.905267, 0.403416, 0.133216, 0.413246, -0.908911, -0.055758, 0.0985885, 0.105527, -0.989517, 0, 0, 0)
 script = ExtResource("4_3lwao")
 unit = NodePath("../../../../..")
 equipment_path = NodePath("../../../../../Equipment")
 tags_to_display = Array[String](["left_hand"])
 
 [node name="ChestAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.832176, 0.0120573, 0.554381, 0.00754505, 0.999425, -0.0330624, -0.55446, 0.0316965, 0.831606, -8.62902e-06, 1.03084, 0.00490917)
+transform = Transform3D(0.884849, 0.000565707, -0.465877, -0.00624047, 0.999924, -0.0106385, 0.465835, 0.0123207, 0.884786, 0.0252181, 1.06432, 0.0110104)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 
@@ -2401,21 +2381,21 @@ bone_idx = 5
 transform = Transform3D(1, -8.47033e-22, 0, 8.47033e-22, 1, -3.55271e-15, 0, 3.55271e-15, 1, -2.62553e-15, 0.184755, 1.10123e-08)
 
 [node name="HeadAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.99703, 0.0492534, 0.0591989, -0.0411725, 0.990564, -0.130719, -0.0650786, 0.127893, 0.98965, 0.0123128, 1.48946, 0.035318)
+transform = Transform3D(0.999965, 0.000548865, 0.00829363, -0.000695306, 0.999844, 0.0176649, -0.00828266, -0.01767, 0.99981, 0.0254749, 1.52446, 0.0103884)
 bone_name = "DEF_head.001"
 bone_idx = 7
 
 [node name="HeadBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/HeadAttatchment"]
 
 [node name="AbdomenAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.968538, 0.00434574, 0.361141, 0.00608029, 0.935473, -0.0300392, -0.361121, 0.0274062, 0.968084, -7.47438e-05, 0.91281, -0.000196338)
+transform = Transform3D(0.9029, -1.49012e-08, -0.429846, 1.49011e-08, 1, 0, 0.429846, 0, 0.9029, 0.0252181, 0.93809, 0.0110104)
 bone_name = "DEF_spine.002"
 bone_idx = 169
 
 [node name="AbdomenBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/AbdomenAttatchment"]
 
 [node name="RightArmAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.653667, 0.683991, 0.323844, 0.739582, 0.486654, 0.464957, 0.160427, 0.543437, -0.823978, -0.360069, 1.08381, 0.203638)
+transform = Transform3D(-0.26249, 0.529474, 0.806695, 0.581875, -0.580053, 0.570053, 0.769754, 0.619029, -0.155829, -0.156005, 1.06454, 0.200525)
 bone_name = "DEF_forearm.R.001"
 bone_idx = 66
 
@@ -2423,7 +2403,7 @@ bone_idx = 66
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 
 [node name="LeftArmAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.763018, -0.162227, -0.625688, -0.643872, 0.275895, 0.71366, 0.0568494, 0.947399, -0.314967, 0.315305, 1.06513, -0.0594101)
+transform = Transform3D(0.134393, -0.286778, -0.948523, -0.720092, -0.685837, 0.105329, -0.680739, 0.668869, -0.298679, 0.241786, 1.10745, 0.309845)
 bone_name = "DEF_forearm.L.001"
 bone_idx = 40
 
@@ -2431,7 +2411,7 @@ bone_idx = 40
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 
 [node name="RightLegAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.996787, -0.0786391, -0.0151984, -0.0786928, -0.996895, -0.00296432, -0.0149181, 0.00415072, -0.99988, -0.149593, 0.517102, 0.210756)
+transform = Transform3D(0.83678, -0.0311387, 0.546654, -0.121346, -0.984101, 0.129691, 0.533924, -0.174857, -0.827255, -0.166451, 0.512277, -0.0194582)
 bone_name = "DEF.shin.R.001"
 bone_idx = 125
 
@@ -2439,7 +2419,7 @@ bone_idx = 125
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.2, 0)
 
 [node name="LeftLegAttachment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.687258, -0.061551, -0.723801, 0.184075, -0.949126, 0.255493, -0.702704, -0.308824, -0.640964, 0.244285, 0.499084, -0.0261864)
+transform = Transform3D(0.981144, 0.101403, -0.16454, 0.0597867, -0.968795, -0.240545, -0.183797, 0.226172, -0.95659, 0.184442, 0.517235, 0.157866)
 bone_name = "DEF.shin.L.001"
 bone_idx = 115
 
@@ -2452,71 +2432,79 @@ skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Collar_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_d2ren")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Eye_L" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_kruwy")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Eye_R" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_8nlrh")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Eyebrow_L" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_sp44h")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Eyebrow_R" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_ubfnb")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Flower Emblem_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_mf3jb")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
-[node name="Flower Emblem_Background_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
-mesh = SubResource("ArrayMesh_tk76t")
-skin = SubResource("Skin_7oep0")
-surface_material_override/0 = ExtResource("3_bhmb0")
-
 [node name="Hair Tufts_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_rij86")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Main Hair_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_cfcjg")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Pants_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_gu156")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Pupil_L" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_nc1yk")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Pupil_R" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_bavrg")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="SHirt_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_nvlr3")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
 
 [node name="Waistcloth_belt_001" type="MeshInstance3D" parent="Rig_001/Skeleton3D"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_012va")
 skin = SubResource("Skin_7oep0")
 surface_material_override/0 = ExtResource("3_bhmb0")
@@ -2609,60 +2597,67 @@ abilities = Array[ExtResource("23_1urwx")]([ExtResource("24_6kacr"), ExtResource
 [node name="Body" type="Node" parent="."]
 script = ExtResource("29_f43xc")
 
-[node name="LeftLegBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker")]
+[node name="LeftLegBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker", "adjacent_body_parts")]
 script = ExtResource("30_uvroa")
 part_name = "leg_left"
 part_ui_name = "Left Leg"
 body_part_marker = NodePath("../../Rig_001/Skeleton3D/LeftLegAttachment/LeftLegBodyPartMarker")
 hit_range_end = 3
+adjacent_body_parts = [NodePath("../AbdomenBodyPart")]
 
-[node name="RightLegBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker")]
+[node name="RightLegBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker", "adjacent_body_parts")]
 script = ExtResource("30_uvroa")
 part_name = "leg_right"
 part_ui_name = "Right Leg"
 body_part_marker = NodePath("../../Rig_001/Skeleton3D/RightLegAttatchment/RightLegBodyPartMarker")
 hit_range_start = 4
 hit_range_end = 6
+adjacent_body_parts = [NodePath("../AbdomenBodyPart")]
 
-[node name="AbdomenBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker")]
+[node name="AbdomenBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker", "adjacent_body_parts")]
 script = ExtResource("30_uvroa")
 part_name = "abdomen"
 part_ui_name = "Abdomen"
 body_part_marker = NodePath("../../Rig_001/Skeleton3D/AbdomenAttatchment/AbdomenBodyPartMarker")
 hit_range_start = 7
 hit_range_end = 9
+adjacent_body_parts = [NodePath("../ChestBodyPart"), NodePath("../LeftLegBodyPart"), NodePath("../RightLegBodyPart")]
 
-[node name="ChestBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker")]
+[node name="ChestBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker", "adjacent_body_parts")]
 script = ExtResource("30_uvroa")
 part_name = "chest"
 part_ui_name = "Chest"
 body_part_marker = NodePath("../../Rig_001/Skeleton3D/ChestAttatchment/ChestBodyPartMarker")
 hit_range_start = 10
 hit_range_end = 12
+adjacent_body_parts = [NodePath("../AbdomenBodyPart"), NodePath("../RightArmBodyPart"), NodePath("../LeftArmBodyPart"), NodePath("../HeadBodyPart")]
 
-[node name="RightArmBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker")]
+[node name="RightArmBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker", "adjacent_body_parts")]
 script = ExtResource("30_uvroa")
 part_name = "arm_right"
 part_ui_name = "Right Arm"
 body_part_marker = NodePath("../../Rig_001/Skeleton3D/RightArmAttatchment/RightArmBodyPartMarker")
 hit_range_start = 13
 hit_range_end = 15
+adjacent_body_parts = [NodePath("../ChestBodyPart")]
 
-[node name="LeftArmBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker")]
+[node name="LeftArmBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker", "adjacent_body_parts")]
 script = ExtResource("30_uvroa")
 part_name = "arm_left"
 part_ui_name = "Left Arm"
 body_part_marker = NodePath("../../Rig_001/Skeleton3D/LeftArmAttatchment/LeftArmBodyPartMarker")
 hit_range_start = 16
 hit_range_end = 18
+adjacent_body_parts = [NodePath("../ChestBodyPart")]
 
-[node name="HeadBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker")]
+[node name="HeadBodyPart" type="Node" parent="Body" node_paths=PackedStringArray("body_part_marker", "adjacent_body_parts")]
 script = ExtResource("30_uvroa")
 part_name = "head"
 part_ui_name = "Head"
 body_part_marker = NodePath("../../Rig_001/Skeleton3D/HeadAttatchment/HeadBodyPartMarker")
 hit_range_start = 19
 hit_range_end = 20
+adjacent_body_parts = [NodePath("../ChestBodyPart")]
 
 [node name="ConditionsManager" type="Node" parent="." node_paths=PackedStringArray("unit")]
 script = ExtResource("41_3dis5")

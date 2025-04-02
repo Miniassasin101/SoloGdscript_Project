@@ -18,6 +18,9 @@ extends Node
 # Armor points on this body part (reduces damage)
 @export var armor: int = 0           
 
+# Array of adjacent body parts:
+@export var adjacent_body_parts: Array[BodyPart] = []
+
 # Array of conditions (Resources) that represent scars, injuries, etc. 
 @export var wounds: Array[Wound] = []
 
@@ -29,6 +32,8 @@ var body: Body = null
 func set_armor(val: int) -> void:
 	armor = maxi(val, 0)
 
+func get_adjacent_parts() -> Array[BodyPart]:
+	return adjacent_body_parts
 
 func get_body_part_marker_position() -> Vector3:
 	return body_part_marker.global_position if body_part_marker else Vector3.ZERO
