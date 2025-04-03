@@ -9,6 +9,9 @@ class_name ProjectileAbility extends Ability
 @export var flat_damage: int = 0
 @export var attack_range: int = 5
 @export var ap_cost: int = 1
+@export_group("Animation Values")
+@export var miss_overshoot_distance: float = 2.5
+
 
 @export_group("Prefabs")
 @export var projectile: PackedScene
@@ -96,20 +99,34 @@ func shoot_projectile() -> void:
 	var projectile_instance: Projectile = projectile.instantiate()
 	# Will need to dynamically adjust shoot height later
 	#var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
-	var target_shoot_at_position: Vector3
+
+	var hit_position: Vector3
+	var final_position: Vector3
+
 	if event.miss:
-		target_shoot_at_position = event.target_unit.above_marker.get_global_position()
+		hit_position = unit.above_marker.get_global_position()
+		var from_pos: Vector3 = unit.shoot_point.global_position
+		var direction: Vector3 = (hit_position - from_pos).normalized()
+		final_position = hit_position + direction * miss_overshoot_distance
+		# Add a small arc (e.g. +0.75m) for dramatic miss
+		#hit_position += Vector3.UP * 0.75
 	else:
-		target_shoot_at_position = event.body_part.get_body_part_marker_position()
+		hit_position = event.body_part.get_body_part_marker_position()
+		final_position = hit_position
+
+
 		
 	event.unit.add_child(projectile_instance)
 	projectile_instance.global_position = weapon_projectile.global_position#unit.shoot_point.global_position
 	projectile_instance.global_transform.basis = weapon_projectile.global_transform.basis
-	projectile_instance.setup(target_shoot_at_position, event.miss, weapon_projectile, unit) #Add miss logic later
+	projectile_instance.setup(hit_position, final_position, event.miss, weapon_projectile, unit)
 	projectile_instance.trigger_projectile()
 
 	await projectile_instance.target_hit
 	event.weapon.is_loaded = false
+	
+	if event.miss:
+		Utilities.spawn_text_line(target_unit, "Miss", Color.AQUA)
 
 
 func get_random_miss_position():

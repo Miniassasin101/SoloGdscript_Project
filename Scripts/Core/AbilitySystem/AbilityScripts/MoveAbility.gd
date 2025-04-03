@@ -236,7 +236,8 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 		# 2) Filter positions based on walkability and path cost
 		var valid_front_positions: Array[GridPosition] = []
 		for pos in front_cone:
-			if LevelGrid.is_valid_grid_position(pos) and Pathfinding.instance.is_walkable(pos):
+			if LevelGrid.is_valid_grid_position(pos) and Pathfinding.instance.is_walkable(pos)\
+			and (not LevelGrid.has_any_unit_on_grid_position(pos)):
 				# Calculate cost once and reuse
 				var path_cost: float = Pathfinding.instance.get_path_cost(self_unit_pos, pos)
 				if path_cost <= max_range and path_cost < INF:

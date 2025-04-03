@@ -4,6 +4,7 @@ extends Node3D
 
 # Signals
 signal facing_changed(new_facing: int)
+signal gait_changed(new_gait: int)
 
 
 
@@ -318,6 +319,8 @@ func add_distance_moved(val: float) -> void:
 
 func set_gait(gait: int) -> void:
 	current_gait = gait
+	gait_changed.emit(current_gait)
+
 
 func set_color_marker(color: StringName) -> void:
 	color_marker.set_color(color)
