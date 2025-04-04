@@ -5,4 +5,5 @@
 
 [node name="Projectile" type="Node3D"]
 script = ExtResource("1_2hv8c")
+speed = 50.0
 hit_vfx = ExtResource("2_7gbon")

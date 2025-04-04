@@ -12,8 +12,8 @@
 script = ExtResource("2_fru5q")
 category = &"bow"
 die_type = 6
-die_number = 2
-flat_damage = 2
+die_number = 1
+flat_damage = 1
 idle_animation = ExtResource("1_a8lfj")
 parry_animation_part_1 = ExtResource("3_u3qn2")
 parry_animation_part_2 = ExtResource("4_a3ci1")

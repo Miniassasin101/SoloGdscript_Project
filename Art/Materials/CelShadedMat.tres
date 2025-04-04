@@ -24,7 +24,7 @@ gradient = SubResource("Gradient_qyqdn")
 
 [resource]
 resource_name = "GobotMat"
-render_priority = 1
+render_priority = 0
 next_pass = ExtResource("1_8w68l")
 shader = ExtResource("1_ssmxs")
 shader_parameter/texture_albedo = SubResource("GradientTexture1D_c5yo4")

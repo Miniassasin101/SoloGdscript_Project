@@ -220,13 +220,15 @@ func test_n() -> void:
 
 func test_v() -> void:
 	if Input.is_action_just_pressed("testkey_v"):
-		remove_all_ap()
+		#remove_all_ap()
 		#add_armor()
 		#play_weapon_spin_anim()
 		#drop_equipped_weapon()
 		#create_engagement()
 		#apply_knockback()
 		#print_relative_position()
+		set_unit_part_color()
+		#print_pascal()
 		pass
 
 
@@ -246,6 +248,15 @@ func test_c() -> void:
 		#spawn_text_at_bodypart()
 		#apply_condition()
 		pass
+
+
+func print_pascal() -> void:
+	var pasc: String = "Left Leg".to_pascal_case()
+	print_debug(pasc)
+
+func set_unit_part_color() -> void:
+	#UnitUIManager3D.instance.set_unit_part_red(unit, "LeftArm")
+	UnitUIManager3D.instance.set_unit_part_blue(unit, "RightLeg")
 
 
 func select_unit() -> Unit:

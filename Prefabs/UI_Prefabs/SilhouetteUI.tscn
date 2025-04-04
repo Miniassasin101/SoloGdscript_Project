@@ -1,0 +1,101 @@
+[gd_scene load_steps=9 format=3 uid="uid://bamp8ft3f5ucj"]
+
+[ext_resource type="Script" uid="uid://bu85v8wylqein" path="res://Hero_Game/Prefabs/UI_Prefabs/SilhouetteUI.gd" id="1_ls6wu"]
+[ext_resource type="Texture2D" uid="uid://o1fg3hpqocyq" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineHead.png" id="2_q2o3l"]
+[ext_resource type="Texture2D" uid="uid://bk21f17rsxdqm" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineChest.png" id="3_h0vpx"]
+[ext_resource type="Texture2D" uid="uid://bfqy1elyjd4je" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineRightArm.png" id="4_sq4nl"]
+[ext_resource type="Texture2D" uid="uid://cfq6nm323d1t1" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineLeftArm.png" id="5_06iem"]
+[ext_resource type="Texture2D" uid="uid://by0bfedjjxjk0" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineAbdomen.png" id="6_lfeo2"]
+[ext_resource type="Texture2D" uid="uid://cgbfc174gqaoi" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineRightLeg.png" id="7_n7ml5"]
+[ext_resource type="Texture2D" uid="uid://ddibl2acy5nbj" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineLeftLeg.png" id="8_mc4ls"]
+
+[node name="SilhouetteUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ls6wu")
+colors = Dictionary[String, Color]({
+"blue": Color(0.148514, 0.63349, 0.921914, 1),
+"orange": Color(0.885067, 0.585712, 0.162027, 1),
+"red": Color(0.834, 0.20787, 0.274506, 1)
+})
+
+[node name="HeadImage" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 39.0
+offset_bottom = 39.0
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_q2o3l")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="ChestImage" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 39.0
+offset_bottom = 39.0
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("3_h0vpx")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="RightArmImage" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 39.0
+offset_bottom = 39.0
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("4_sq4nl")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="LeftArmImage" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 39.0
+offset_bottom = 39.0
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("5_06iem")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="AbdomenImage" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 39.0
+offset_bottom = 39.0
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("6_lfeo2")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="RightLegImage" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 39.0
+offset_bottom = 39.0
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("7_n7ml5")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="LeftLegImage" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 39.0
+offset_bottom = 39.0
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("8_mc4ls")
+expand_mode = 3
+stretch_mode = 3

@@ -12,6 +12,7 @@ die_number = 1
 flat_damage = 1
 attack_range = 5
 ap_cost = 1
+miss_overshoot_distance = 2.5
 projectile = ExtResource("2_8m2li")
 ui_name = "Fireball"
 movement_gait = 2

@@ -29,7 +29,7 @@ func _init(in_start_point: Node3D, in_end_point: Node3D):
 	start_point = in_start_point
 	end_point = in_end_point
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if is_active:
 		update_line()
 

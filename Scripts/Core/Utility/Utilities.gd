@@ -680,3 +680,18 @@ func spawn_damage_label(in_unit: Unit, damage_val: float, color: Color = Color.C
 	
 	# Initialize the label's text, color, etc.
 	text_label.play(str(int(damage_val)), "DamageNumberAnim")
+
+
+
+var slowdown_end_time: float = 0.0
+var slowdown_active: bool = false
+
+# Call this function to change the game speed (e.g., slow down or speed up)
+# new_time_scale: the desired time scale (e.g., 0.5 for half speed, 2.0 for double speed)
+# duration: how long (in seconds, using real time) to keep that speed before reverting to 1.0
+func slow_game(new_time_scale: float = 1.0, duration: float = 0.7) -> void:
+	# Immediately set the time scale.
+	Engine.set_time_scale(new_time_scale)
+	if new_time_scale != 1.0:
+		await get_tree().create_timer(duration, true, false, true).timeout
+		Engine.set_time_scale(1.0)

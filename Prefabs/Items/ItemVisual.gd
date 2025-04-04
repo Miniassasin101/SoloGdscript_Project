@@ -35,7 +35,7 @@ func add_item(in_item: Item) -> void:
 
 
 func add_projectile(in_projectile: Node3D) -> void:
-	var item_children: Array[Node] = object.get_children()
+	#var item_children: Array[Node] = object.get_children()
 	if projectile_point:
 		projectile_point.add_child(in_projectile)
 		projectile = in_projectile

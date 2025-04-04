@@ -12,6 +12,7 @@ die_number = 3
 flat_damage = 1
 attack_range = 15
 ap_cost = 1
+miss_overshoot_distance = 2.5
 projectile = ExtResource("2_pd8if")
 ui_name = "S-Fire"
 movement_gait = 0

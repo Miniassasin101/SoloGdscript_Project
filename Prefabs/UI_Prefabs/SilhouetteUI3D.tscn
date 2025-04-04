@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://cbqua8yfarqi"]
+
+[ext_resource type="Texture2D" uid="uid://o1fg3hpqocyq" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineHead.png" id="1_an7e8"]
+[ext_resource type="Script" uid="uid://cee0i5c3itvyw" path="res://Hero_Game/Prefabs/UI_Prefabs/SilhouetteUI3D.gd" id="1_h2ch5"]
+[ext_resource type="Texture2D" uid="uid://bk21f17rsxdqm" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineChest.png" id="2_h2ch5"]
+[ext_resource type="Texture2D" uid="uid://bfqy1elyjd4je" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineRightArm.png" id="3_j06ye"]
+[ext_resource type="Texture2D" uid="uid://cfq6nm323d1t1" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineLeftArm.png" id="4_60d16"]
+[ext_resource type="Texture2D" uid="uid://by0bfedjjxjk0" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineAbdomen.png" id="5_stscp"]
+[ext_resource type="Texture2D" uid="uid://cgbfc174gqaoi" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineRightLeg.png" id="6_sqjs4"]
+[ext_resource type="Texture2D" uid="uid://ddibl2acy5nbj" path="res://Hero_Game/Art/Textures/UI/CharacterOutlineLeftLeg.png" id="7_otlfb"]
+
+[node name="SilhouetteUI3D" type="Node3D"]
+script = ExtResource("1_h2ch5")
+colors = Dictionary[String, Color]({
+"blue": Color(0.148514, 0.63349, 0.921914, 1),
+"orange": Color(0.885067, 0.585712, 0.162027, 1),
+"red": Color(0.834, 0.20787, 0.274506, 1)
+})
+
+[node name="Head" type="Sprite3D" parent="."]
+transform = Transform3D(0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0)
+billboard = 1
+double_sided = false
+texture = ExtResource("1_an7e8")
+
+[node name="Chest" type="Sprite3D" parent="."]
+transform = Transform3D(0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0)
+billboard = 1
+double_sided = false
+texture = ExtResource("2_h2ch5")
+
+[node name="RightArm" type="Sprite3D" parent="."]
+transform = Transform3D(0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0)
+billboard = 1
+double_sided = false
+texture = ExtResource("3_j06ye")
+
+[node name="LeftArm" type="Sprite3D" parent="."]
+transform = Transform3D(0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0)
+billboard = 1
+double_sided = false
+texture = ExtResource("4_60d16")
+
+[node name="Abdomen" type="Sprite3D" parent="."]
+transform = Transform3D(0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0)
+billboard = 1
+double_sided = false
+texture = ExtResource("5_stscp")
+
+[node name="RightLeg" type="Sprite3D" parent="."]
+transform = Transform3D(0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0)
+billboard = 1
+double_sided = false
+texture = ExtResource("6_sqjs4")
+
+[node name="LeftLeg" type="Sprite3D" parent="."]
+transform = Transform3D(0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0, 0.0582086, 0, 0, 0)
+billboard = 1
+double_sided = false
+texture = ExtResource("7_otlfb")

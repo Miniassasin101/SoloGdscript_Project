@@ -22,7 +22,7 @@ enum ApplicationInterval {Never, PerRound, PerTurn, PerModify, PerAttackEnd}
 
 
 
-func can_apply(unit: Unit) -> bool:
+func can_apply(_unit: Unit) -> bool:
 	
 	
 	

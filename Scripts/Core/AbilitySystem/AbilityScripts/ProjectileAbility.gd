@@ -10,7 +10,7 @@ class_name ProjectileAbility extends Ability
 @export var attack_range: int = 5
 @export var ap_cost: int = 1
 @export_group("Animation Values")
-@export var miss_overshoot_distance: float = 2.5
+@export var miss_overshoot_distance: float = 5.0
 
 
 @export_group("Prefabs")
@@ -97,15 +97,13 @@ func shoot_projectile() -> void:
 	var weapon_projectile: Node3D = event.weapon.item_visual.projectile
 	await unit.animator.attack_anim(animation, event.miss)#unit.animator.left_cast_anim(null, event.miss)
 	var projectile_instance: Projectile = projectile.instantiate()
-	# Will need to dynamically adjust shoot height later
-	#var target_shoot_at_position: Vector3 = LevelGrid.get_world_position(target_position) + Vector3(0.0, 1.2, 0.0)
 
 	var hit_position: Vector3
 	var final_position: Vector3
 
 	if event.miss:
-		hit_position = unit.above_marker.get_global_position()
-		var from_pos: Vector3 = unit.shoot_point.global_position
+		hit_position = target_unit.above_marker.get_global_position()
+		var from_pos: Vector3 = weapon_projectile.global_position
 		var direction: Vector3 = (hit_position - from_pos).normalized()
 		final_position = hit_position + direction * miss_overshoot_distance
 		# Add a small arc (e.g. +0.75m) for dramatic miss
@@ -126,6 +124,8 @@ func shoot_projectile() -> void:
 	event.weapon.is_loaded = false
 	
 	if event.miss:
+		Utilities.slow_game(0.2)
+		target_unit.animator.flash_white(0.3)
 		Utilities.spawn_text_line(target_unit, "Miss", Color.AQUA)
 
 

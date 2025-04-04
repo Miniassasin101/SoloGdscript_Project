@@ -1,19 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://3p3xt0lymqsd"]
+[gd_scene load_steps=10 format=3 uid="uid://3p3xt0lymqsd"]
 
 [ext_resource type="Script" uid="uid://chd2i3l86bu6y" path="res://Hero_Game/Scripts/Core/UI/UnitStatsBar.gd" id="1_73dlo"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvosu"]
-bg_color = Color(0.132, 0.147, 0.15, 0.945098)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-shadow_size = 5
-shadow_offset = Vector2(-1, 1)
+[ext_resource type="StyleBox" uid="uid://dxf8kqkw1goiw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBarShadowedStyleBox.tres" id="1_cydlx"]
+[ext_resource type="StyleBox" uid="uid://n31yek6n5pbc" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBarFlatStyleBox.tres" id="3_2merk"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwm3i"]
 font_size = 21
@@ -39,13 +28,16 @@ colors = PackedColorArray(0.774322, 0.559134, 0.910283, 1, 1, 1, 1, 1)
 gradient = SubResource("Gradient_nftri")
 
 [node name="UnitStatsBar" type="PanelContainer" node_paths=PackedStringArray("unit_name_label", "action_points_label", "movement_points_label", "health_text_label", "health_bar")]
-theme_override_styles/panel = SubResource("StyleBoxFlat_wvosu")
+theme_override_styles/panel = ExtResource("1_cydlx")
 script = ExtResource("1_73dlo")
 unit_name_label = NodePath("VBoxContainer/UnitNameLabel")
 action_points_label = NodePath("VBoxContainer/ActionPointsLabel")
 movement_points_label = NodePath("VBoxContainer/MovementPointsLabel")
 health_text_label = NodePath("VBoxContainer/HealthTextLabel")
 health_bar = NodePath("VBoxContainer/PanelContainer/MarginContainer/HealthBar")
+shadowed_stylebox = ExtResource("1_cydlx")
+flat_stylebox = ExtResource("3_2merk")
+drift_duration = 1.5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

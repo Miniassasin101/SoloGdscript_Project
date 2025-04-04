@@ -37,35 +37,71 @@ func _on_setup_body() -> void:
 			add_health_attribute(part)
 			if part.body == null:
 				part.body = self
+	# Update the UI to reflect full health (should show blue).
+	update_body_ui()
 
 
+# Updates the UI for a single body part based on its health.
+func update_body_ui_for_part(part: BodyPart) -> void:
+	if attribute_map == null:
+		return
+	
+	var spec: AttributeSpec = attribute_map.get_attribute_by_name(part.part_name + "_health")
+	if spec == null:
+		return
+	
+	var current_health: float = spec.current_value
+	var max_health: float = spec.maximum_value
+	
+	# Determine the color based on health:
+	# Full health => blue; partially damaged (health > 0 but less than max) => orange; 0 or negative => red.
+	if current_health >= max_health:
+		if UnitUIManager3D.instance:
+			UnitUIManager3D.instance.set_unit_part_blue(unit, part.part_ui_name.to_pascal_case())
+	elif current_health > 0:
+		if UnitUIManager3D.instance:
+			UnitUIManager3D.instance.set_unit_part_orange(unit, part.part_ui_name.to_pascal_case())
+	else:
+		if UnitUIManager3D.instance:
+			UnitUIManager3D.instance.set_unit_part_red(unit, part.part_ui_name.to_pascal_case())
+
+
+
+# Updates all body parts (kept for initial setup or complete refresh).
+func update_body_ui() -> void:
+	if attribute_map == null:
+		return
+	
+	for part in body_parts:
+		update_body_ui_for_part(part)
 
 
 func apply_wound_from_event(event: ActivationEvent) -> void:
 	if event.rolled_damage <= 0:
 		return
 	
-	
-	
 	wound_effect_damage(event.body_part_health_name, event.rolled_damage)
-	
 	
 	var wound: Wound = Wound.new()
 	wound.damage = event.rolled_damage
 	
 	add_wound_to_part(event.body_part.part_name, wound)
+	
+	# Update only the damaged body part.
+	update_body_ui_for_part(event.body_part)
 
 
 
 func apply_wound_manual(body_part: BodyPart, rolled_damage: int) -> void:
-	
 	wound_effect_damage((body_part.part_name + "_health"), rolled_damage)
 	
 	var wound: Wound = Wound.new()
 	wound.damage = rolled_damage
 	
 	add_wound_to_part(body_part.part_name, wound)
-
+	
+	# Update only this body part.
+	update_body_ui_for_part(body_part)
 
 
 func wound_effect_damage(body_part_health_name: String, rolled_damage: int) -> void:

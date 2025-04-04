@@ -12,6 +12,7 @@ var enemy_units: Array[Unit] = []
 static var instance: UnitManager = null
 
 @export var sword_test: Weapon = null
+
 func _ready() -> void:
 	if instance != null:
 		push_error("There's more than one UnitManager! - " + str(instance))
@@ -20,11 +21,16 @@ func _ready() -> void:
 	instance = self
 
 	initialize_units()
+	
+
+	
 	if LevelDebug.instance.auto_equip_debug:
 		get_tree().process_frame.connect(test_equip_units, CONNECT_ONE_SHOT)
 
-
 	connect_global_signals()
+
+func trigger_unit_ui_setup() -> void:
+	UnitUIManager3D.instance.setup_unit_ui(units)
 
 func test_equip_units(sword: Weapon = sword_test) -> void:
 	var iteration_num: int = 1
@@ -47,6 +53,8 @@ func initialize_units() -> void:
 func setup_units_for_combat() -> void:
 	for unit in get_all_units():
 		unit.setup_fatigue_left()
+	
+	trigger_unit_ui_setup()
 
 
 # Connects the UnitManager to global signals

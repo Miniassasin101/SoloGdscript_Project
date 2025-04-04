@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=84 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" uid="uid://dswgp2a8up16v" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" uid="uid://b268e884ur2c8" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -61,8 +61,12 @@
 [ext_resource type="Resource" uid="uid://q3sk2uy7wd4u" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/FacingPenaltyConditionResource.tres" id="39_me7ee"]
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="39_yrlso"]
 [ext_resource type="Resource" uid="uid://d3yn60m635vma" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MarksmanEffectResource.tres" id="40_68vw7"]
+[ext_resource type="Script" uid="uid://b4kcedpcju35b" path="res://Hero_Game/Scenes/UnitUIManager3d.gd" id="47_1nha0"]
+[ext_resource type="PackedScene" uid="uid://cbqua8yfarqi" path="res://Hero_Game/Prefabs/UI_Prefabs/SilhouetteUI3D.tscn" id="48_1dbid"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
 [ext_resource type="Shader" uid="uid://0l0gx3l42rjg" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
+[ext_resource type="Script" uid="uid://ywra6wifc8ga" path="res://Hero_Game/Scenes/UnitUIManager.gd" id="63_cfolp"]
+[ext_resource type="PackedScene" uid="uid://bamp8ft3f5ucj" path="res://Hero_Game/Prefabs/UI_Prefabs/SilhouetteUI.tscn" id="64_ab1a1"]
 
 [sub_resource type="Resource" id="Resource_vhtwd"]
 script = ExtResource("8_3ubv2")
@@ -337,7 +341,7 @@ shape = SubResource("ConcavePolygonShape3D_vv6bh")
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.06028, 0)
 script = ExtResource("9_rt187")
-Location_Speed = 0.5
+Location_Speed = 0.3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("BoxShape3D_pqthu")
@@ -354,6 +358,11 @@ spring_length = 20.0
 [node name="CameraShake" type="Node" parent="Player"]
 script = ExtResource("20_lbku0")
 camera_path = NodePath("../CamOrigin/SpringArm3D/fCamera")
+
+[node name="UnitUIManager3D" type="Node3D" parent="." node_paths=PackedStringArray("main_camera")]
+script = ExtResource("47_1nha0")
+main_camera = NodePath("../Player/CamOrigin/SpringArm3D/fCamera")
+silhouette_scene = ExtResource("48_1dbid")
 
 [node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("unit_action_system_ui")]
 script = ExtResource("21_3ffgk")
@@ -732,7 +741,7 @@ theme_override_font_sizes/font_size = 50
 text = "Enemy Turn"
 horizontal_alignment = 1
 
-[node name="UnitStatsUI" type="Control" parent="UILayer" node_paths=PackedStringArray("unit_manager")]
+[node name="UnitStatsUI" type="Control" parent="UILayer" node_paths=PackedStringArray("unit_manager", "unit_stats_container")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -743,6 +752,7 @@ mouse_filter = 2
 script = ExtResource("17_y4lpf")
 unit_manager = NodePath("../../UnitManager")
 unit_stats_bar_scene = ExtResource("18_cp12p")
+unit_stats_container = NodePath("UnitStatsContainer/MarginContainer/UnitStatsContainer")
 show_stats_for_all_units = true
 metadata/_edit_use_anchors_ = true
 
@@ -784,6 +794,15 @@ metadata/_edit_use_anchors_ = true
 
 [node name="UnitCharacterSheetUI" parent="UILayer" instance=ExtResource("26_7hc4r")]
 visible = false
+
+[node name="UnitUIManager" type="Control" parent="UILayer" node_paths=PackedStringArray("main_camera")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("63_cfolp")
+main_camera = NodePath("../../Player/CamOrigin/SpringArm3D/fCamera")
+silhouette_scene = ExtResource("64_ab1a1")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 extra_cull_margin = 16384.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bhyju5fqgh24h"]
+[gd_scene load_steps=14 format=3 uid="uid://bhyju5fqgh24h"]
 
 [ext_resource type="Script" uid="uid://b8g4b74xdtu7m" path="res://OverworldManager.gd" id="1_5evqf"]
 [ext_resource type="Material" uid="uid://8ecpsfh2k0tu" path="res://Hero_Game/Art/Materials/GridSquaresPatternMaterial.tres" id="1_mjhr2"]
@@ -14,10 +14,24 @@ size = Vector2(30, 30)
 
 [sub_resource type="Curve3D" id="Curve3D_hcqog"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0.366458, 0, -0.155333, 0, 0, 0, -0.30559, 0, 0.25502, 0.329043, 0, -0.274592, 1.46583, 0, -0.621334, -0.380283, 0, 0.197625, 0.405581, 0, -0.210772, 2.43717, 0, -2.03386, -0.387602, 0, 0.242251, 0.387602, 0, -0.242251, 4.265, 0, -2.076, -0.367185, 0, 0.272207, 0.344281, 0, -0.255227, 5.10384, 0, -3.70053, -0.391012, 0, 0.175442, 0.363141, 0, -0.162937, 6.79917, 0, -3.95467, 0.300208, 0, -0.261333, 0, 0, 0, 8, 0, -5),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)
+"points": PackedVector3Array(0, 0, 0, 0.438941, 0, -0.187695, 0, 0, 0, -0.370013, 0, 0.301643, 0.394835, 0, -0.321878, 1.75576, 0, -0.75078, -0.444461, 0, 0.248907, 0.460884, 0, -0.258104, 2.94797, 0, -2.40325, -0.460884, 0, 0.258104, 0.444461, 0, -0.248907, 5.05203, 0, -2.59675, -0.394835, 0, 0.321878, 0.370013, 0, -0.301643, 6.24424, 0, -4.24922, 0.438941, 0, -0.187695, 0, 0, 0, 8, 0, -5),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0)
 }
-point_count = 7
+point_count = 6
+
+[sub_resource type="Curve3D" id="Curve3D_dsyxg"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, -0.138867, 0, -0.340756, 0, 0, 0, 0.251194, 0, 0.268886, -0.278973, 0, -0.298622, -0.555467, 0, -1.36302, 0.204865, 0, 0.353597, -0.216513, 0, -0.373703, -1.99566, 0, -2.13622, 0.216513, 0, 0.373703, -0.204865, 0, -0.353597, -2.00434, 0, -3.86378, 0.278973, 0, 0.298622, -0.251194, 0, -0.268886, -3.44453, 0, -4.63698, -0.138867, 0, -0.340756, 0, 0, 0, -4, 0, -6),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0)
+}
+point_count = 6
+
+[sub_resource type="Curve3D" id="Curve3D_gdjyf"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, -0.0176777, 0, 0.375, -4, 0, -6, -0.0125069, 0, -0.375208, 0.0125737, 0, 0.377211, -4.07071, 0, -4.5, 0, 0, -0.377421, 0, 0, 0.377421, -3.9, 0, -3, 0.0125737, 0, -0.377211, -0.0125069, 0, 0.375208, -4.07071, 0, -1.5, 0.0176777, 0, 0.375, 0, 0, 0, -4, 0, 0),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
+}
+point_count = 5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vs4qv"]
 
@@ -33,24 +47,49 @@ surface_material_override/0 = ExtResource("1_mjhr2")
 
 [node name="OverworldManager" type="Node" parent="." node_paths=PackedStringArray("overworld_nodes", "overworld_node_paths")]
 script = ExtResource("1_5evqf")
-overworld_nodes = [null, NodePath("OverworldNode"), NodePath("OverworldNode2"), null]
-overworld_node_paths = [NodePath("OverworldNodePath1")]
+overworld_nodes = [null, NodePath("OverworldNode"), NodePath("OverworldNode2"), null, NodePath("OverworldNode3"), null, null, NodePath("OverworldNode4")]
+overworld_node_paths = [NodePath("OverworldNodePath1"), NodePath("OverworldNodePath2"), NodePath("OverworldNodePath3")]
 
 [node name="OverworldNode" parent="OverworldManager" instance=ExtResource("4_mnobb")]
 node_visual_color = Color(0.8, 0.8, 0.8, 1)
+
+[node name="OverworldNode3" parent="OverworldManager" instance=ExtResource("4_mnobb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -6)
+node_ui_name = "Rio"
+node_visual_color = Color(2.31028e-06, 0.929695, 0.782524, 1)
 
 [node name="OverworldNode2" parent="OverworldManager" instance=ExtResource("4_mnobb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -5)
 node_ui_name = "Orkus"
 node_visual_color = Color(0.77, 0, 0.282333, 1)
 
+[node name="OverworldNode4" parent="OverworldManager" instance=ExtResource("4_mnobb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+node_visual_color = Color(0.75, 0.24, 0.24, 1)
+
 [node name="OverworldNodePath1" type="Node" parent="OverworldManager" node_paths=PackedStringArray("overworld_node_1", "overworld_node_2")]
 script = ExtResource("5_plp45")
 overworld_node_1 = NodePath("../OverworldNode")
 overworld_node_2 = NodePath("../OverworldNode2")
-number_of_twists = 5
+number_of_twists = 4
 twist_scale = 0.5
 path_curve = SubResource("Curve3D_hcqog")
+
+[node name="OverworldNodePath2" type="Node" parent="OverworldManager" node_paths=PackedStringArray("overworld_node_1", "overworld_node_2")]
+script = ExtResource("5_plp45")
+overworld_node_1 = NodePath("../OverworldNode")
+overworld_node_2 = NodePath("../OverworldNode3")
+number_of_twists = 4
+twist_scale = 0.5
+path_curve = SubResource("Curve3D_dsyxg")
+
+[node name="OverworldNodePath3" type="Node" parent="OverworldManager" node_paths=PackedStringArray("overworld_node_1", "overworld_node_2")]
+script = ExtResource("5_plp45")
+overworld_node_1 = NodePath("../OverworldNode3")
+overworld_node_2 = NodePath("../OverworldNode4")
+number_of_twists = 3
+twist_scale = 0.1
+path_curve = SubResource("Curve3D_gdjyf")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 script = ExtResource("5_mi23r")
