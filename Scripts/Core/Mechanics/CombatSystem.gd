@@ -214,10 +214,12 @@ func interrupt_turn(_unit: Unit) -> void:
 func declare_action(action: Ability, event: ActivationEvent) -> void:
 	# Possibly prompt others if they can react to the declaration itself.
 	await check_declaration_reaction_queue(action, event)
+
 	if event.target_unit:
-		pass
-		#event.target_unit.animator.on_is_being_targeted(event.unit)
+		# Have the target unit look at the attacker’s head marker.
+		event.target_unit.animator.enable_head_look(event.unit.body.get_part_marker("head"))
 	print_debug("Action Declared: ", action.ui_name)
+
 
 
 

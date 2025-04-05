@@ -43,7 +43,8 @@ func setup_unit_ui(units: Array[Unit]) -> void:
 		unit_ui_instances[unit] = ui_instance
 
 		# Connect to unit's "tree_exited" to handle unit deletion
-		unit.tree_exited.connect(_on_unit_removed.bind(unit))
+		if !unit.tree_exited.is_connected(_on_unit_removed):
+			unit.tree_exited.connect(_on_unit_removed.bind(unit))
 
 		unit.body.update_body_ui()
 

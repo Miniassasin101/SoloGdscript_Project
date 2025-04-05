@@ -16,7 +16,7 @@ signal prompt_dodge
 @export var animator_tree: AnimationTree
 @export var fireball_projectile_prefab: PackedScene
 @export var shoot_point: Node3D
-@export var head_look_modifier: HeadLookModifier3D
+@export var look_at_modifier: LookAtModifier3D
 @export var height_offset: float = 1.5  # Height offset to aim towards upper body
 @export var skeleton: Skeleton3D
 @export var rig_root: Node3D
@@ -124,14 +124,46 @@ func get_character_mesh() -> Array[MeshInstance3D]:
 # passing null will smoothly drop the override, allowing your animations to take over.
 func look_at_toggle(_target: Node3D = null) -> void:
 	return
-"""
-	look_target = target
-	is_looking = (target != null)
-	if is_looking:
-		head_look_modifier.set_modifier_active_and_target(true, target)
+
+# Enables head-look: sets the LookAtModifier3D target to the given node.
+func enable_head_look(target: Node3D) -> void:
+	if target:
+		look_at_modifier.target_node = target.get_path()
+		look_at_modifier.duration = 0.3  # adjust the interpolation duration as needed
+		is_looking = true
+		head_look_override_weight = 1.0
+		print_debug("Head look enabled for target: ", target.name)
 	else:
-		head_look_modifier.set_modifier_active_and_target(false)
-"""
+		disable_head_look()
+
+# Disables head-look by clearing the target.
+func disable_head_look() -> void:
+	look_at_modifier.target_node = NodePath("")
+	is_looking = false
+	head_look_override_weight = 0.0
+	print_debug("Head look disabled.")
+
+# Toggles the head-look state: if already looking, disables it; otherwise enables toward the given target.
+func toggle_head_look(target: Node3D) -> void:
+	if is_looking:
+		disable_head_look()
+	else:
+		enable_head_look(target)
+
+# Updates the head-look target if different from the current one.
+func update_head_look_target(new_target: Node3D) -> void:
+	# Only update if the new target is different.
+	if new_target and (look_at_modifier.target_node != new_target.get_path()):
+		enable_head_look(new_target)
+	else:
+		print_debug("Head look target remains unchanged.")
+
+# Checks if the current look target is within the LookAtModifier's limitations.
+# If not, disable the head-look (or optionally, adjust parameters).
+func check_head_look_limitation() -> void:
+	if look_at_modifier.target_node != NodePath("") and not look_at_modifier.is_target_within_limitation():
+		print_debug("Target outside angle limitations; disabling head look.")
+		disable_head_look()
 
 
 

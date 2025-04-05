@@ -24,20 +24,20 @@ func _ready() -> void:
 	
 
 	
-	if LevelDebug.instance.auto_equip_debug:
-		get_tree().process_frame.connect(test_equip_units, CONNECT_ONE_SHOT)
+	#if LevelDebug.instance.auto_equip_debug:
+		#get_tree().process_frame.connect(test_equip_units, CONNECT_ONE_SHOT)
 
 	connect_global_signals()
 
 func trigger_unit_ui_setup() -> void:
 	UnitUIManager3D.instance.setup_unit_ui(units)
 
-func test_equip_units(weapon: Weapon = sword_test) -> void:
+func test_equip_units() -> void:
 	var iteration_num: int = 1
 	for unit: Unit in units:
-		var new_weapon = weapon.duplicate()
-		new_weapon.name = new_weapon.name + " " + str(iteration_num)
-		iteration_num += 1
+		var new_weapon: Weapon = sword_test.duplicate()
+		#new_weapon.name = new_weapon.name + " " + str(iteration_num)
+		#iteration_num += 1
 		unit.equipment.equip(new_weapon)
 # Initializes the units by storing references to all child units.
 func initialize_units() -> void:
@@ -55,6 +55,8 @@ func setup_units_for_combat() -> void:
 		unit.setup_fatigue_left()
 	
 	trigger_unit_ui_setup()
+	
+	test_equip_units()
 
 
 # Connects the UnitManager to global signals

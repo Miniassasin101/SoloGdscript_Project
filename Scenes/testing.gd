@@ -1,7 +1,7 @@
 class_name Testing
 extends Node3D
 
-@export var unit: Unit
+@export var unit_1: Unit
 @export var unit_2: Unit
 @export var camerashake: CameraShake
 @onready var unit_action_system: UnitActionSystem = $"../UnitActionSystem"
@@ -441,13 +441,13 @@ func console_hello() -> void:
 	print_debug("Hello!")
 
 func set_facing() -> void:
-	unit.set_facing()
+	unit_1.set_facing()
 
 func turn_unit_towards_facing() -> void:
-	unit.animator.rotate_unit_towards_facing(0)
-	unit.facing = 0
+	unit_1.animator.rotate_unit_towards_facing(0)
+	unit_1.facing = 0
 	await get_tree().create_timer(2.5).timeout
-	print_debug(unit.facing)
+	print_debug(unit_1.facing)
 
 
 
@@ -462,20 +462,20 @@ func toggle_engine_speed() -> void:
 
 func toggle_anims_speed() -> void:
 	for u: Unit in UnitManager.instance.units:
-		unit.animator.toggle_slowdown()
+		unit_1.animator.toggle_slowdown()
 
 func print_front_tiles() -> void:
-	unit.set_facing()
-	var grid_positions: Array[GridPosition] = Utilities.get_front_tiles(unit)
+	unit_1.set_facing()
+	var grid_positions: Array[GridPosition] = Utilities.get_front_tiles(unit_1)
 	for gridpos: GridPosition in grid_positions:
 		print_debug(gridpos.to_str())
 
 
 func make_tiles_red() -> void:
-	unit.set_facing()
+	unit_1.set_facing()
 	var grid_positions: Array[GridPosition] = []
-	grid_positions.append_array(Utilities.get_front_tiles(unit))
-	grid_positions.append(Utilities.get_left_side_tile(unit))
+	grid_positions.append_array(Utilities.get_front_tiles(unit_1))
+	grid_positions.append(Utilities.get_left_side_tile(unit_1))
 	if testbool:
 		GridSystemVisual.instance.unmark_red(grid_positions)
 	GridSystemVisual.instance.mark_red(grid_positions)
@@ -483,7 +483,7 @@ func make_tiles_red() -> void:
 
 func make_cone_tiles_red() -> void:
 	var grid_positions: Array[GridPosition] = []
-	grid_positions.append_array(Utilities.get_left_cone(unit, 20))
+	grid_positions.append_array(Utilities.get_left_cone(unit_1, 20))
 	GridSystemVisual.instance.show_grid_positions(grid_positions)
 	if testbool:
 		GridSystemVisual.instance.unmark_red(grid_positions)
@@ -496,10 +496,10 @@ func make_cone_tiles_red() -> void:
 func toggle_look_at_unit() -> void:
 	var result = mouse_world.get_mouse_raycast_result("position")
 	var in_unit: Unit = LevelGrid.get_unit_at_grid_position(pathfinding.pathfinding_grid_system.get_grid_position(result))
-	if unit.animator.is_looking:
-		unit.animator.look_at_toggle()
-	if in_unit and in_unit != unit:
-		unit.animator.look_at_toggle(in_unit)
+	if unit_1.animator.is_looking:
+		unit_1.animator.look_at_toggle()
+	if in_unit and in_unit != unit_1:
+		unit_1.animator.look_at_toggle(in_unit)
 
 
 func trigger_camera_shake() -> void:
@@ -627,7 +627,7 @@ func print_pascal() -> void:
 
 func set_unit_part_color() -> void:
 	#UnitUIManager3D.instance.set_unit_part_red(unit, "LeftArm")
-	UnitUIManager3D.instance.set_unit_part_blue(unit, "RightLeg")
+	UnitUIManager3D.instance.set_unit_part_blue(unit_1, "RightLeg")
 
 
 func select_unit() -> Unit:
@@ -657,47 +657,47 @@ func print_relative_position() -> void:
 
 func apply_knockback() -> void:
 	var knock_cond: KnockbackCondition = preload("res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/KnockbackConditionResource.tres")
-	unit.conditions_manager.add_condition(knock_cond) 
+	unit_1.conditions_manager.add_condition(knock_cond) 
 		
-	knock_cond.apply(unit)
+	knock_cond.apply(unit_1)
 
 func create_engagement() -> void:
-	if unit and unit_2:
-		var engagement: Engagement = Engagement.new(unit, unit_2)
+	if unit_1 and unit_2:
+		var engagement: Engagement = Engagement.new(unit_1, unit_2)
 		engagement.initialize_line(self)
 
 func apply_condition() -> void:
-	unit.conditions_manager.apply_condition_by_name("impaled")
+	unit_1.conditions_manager.apply_condition_by_name("impaled")
 
 
 func spawn_text_at_bodypart() -> void:
-	var body_part: BodyPart = unit.body._find_part_by_name("leg_left")
+	var body_part: BodyPart = unit_1.body._find_part_by_name("leg_left")
 	var body_part_pos: Vector3 = body_part.get_body_part_marker_position()
-	Utilities.spawn_text_line(unit, body_part.part_ui_name, Color.ALICE_BLUE, 1.0, body_part_pos)
+	Utilities.spawn_text_line(unit_1, body_part.part_ui_name, Color.ALICE_BLUE, 1.0, body_part_pos)
 
 func drop_equipped_weapon() -> void:
-	ObjectManager.instance.drop_item_in_world(unit)
+	ObjectManager.instance.drop_item_in_world(unit_1)
 
 func equip_weapon_on_ground() -> void:
-	var gridobj: GridObject = LevelGrid.grid_system.get_grid_object(unit.get_grid_position())
+	var gridobj: GridObject = LevelGrid.grid_system.get_grid_object(unit_1.get_grid_position())
 
 	for item in gridobj.item_list:
 		if item is Weapon:
-			ObjectManager.instance.equip_item(unit, item)
+			ObjectManager.instance.equip_item(unit_1, item)
 			return
 
 
 
 
 func play_weapon_spin_anim() -> void:
-	var weapon: Weapon = unit.equipment.get_equipped_weapon()
+	var weapon: Weapon = unit_1.equipment.get_equipped_weapon()
 	var weapon_visual: ItemVisual = weapon.get_item_visual()
 	weapon_visual.play_animation("ItemSpin", 3.0)
 
 
 
 func print_situational_modifier_attribute() -> void:
-	print(unit.get_attribute_after_sit_mod("evade_skill"))
+	print(unit_1.get_attribute_after_sit_mod("evade_skill"))
 
 func add_armor() -> void:
 	var units: Array[Unit] = UnitManager.instance.get_all_units()
@@ -710,20 +710,20 @@ func remove_all_ap() -> void:
 		u.spend_all_ability_points()
 
 func print_conditions() -> void:
-	for condition in unit.conditions_manager.get_all_conditions():
+	for condition in unit_1.conditions_manager.get_all_conditions():
 		print("Condition: ", condition.ui_name)
 
 func flash_on_equipped_weapon() -> void:
-	Utilities.flash_color_on_mesh(unit.get_equipped_weapon().get_object() as MeshInstance3D, Color.CRIMSON)
+	Utilities.flash_color_on_mesh(unit_1.get_equipped_weapon().get_object() as MeshInstance3D, Color.CRIMSON)
 
 func flash() -> void:
-	unit.animator.flash_color(Color.YELLOW, 5.0)
+	unit_1.animator.flash_color(Color.YELLOW, 5.0)
 	await get_tree().create_timer(3.0).timeout
-	unit.animator.flash_color(Color.REBECCA_PURPLE)
+	unit_1.animator.flash_color(Color.REBECCA_PURPLE)
 	await get_tree().create_timer(0.6).timeout
-	unit.animator.flash_color(Color.BLACK)
+	unit_1.animator.flash_color(Color.BLACK)
 	await get_tree().create_timer(0.6).timeout
-	unit.animator.flash_color(Color.MAGENTA)
+	unit_1.animator.flash_color(Color.MAGENTA)
 	
 
 #	unit.animator.flash_red()
@@ -731,11 +731,11 @@ func flash() -> void:
 
 
 func spawn_text_label() -> void:
-	Utilities.spawn_text_line(unit, "Testing, Testing, 123", Color.FOREST_GREEN)
+	Utilities.spawn_text_line(unit_1, "Testing, Testing, 123", Color.FOREST_GREEN)
 	await get_tree().create_timer(1.0).timeout
-	Utilities.spawn_text_line(unit, "Testing, Testing, 123", Color.CRIMSON)
+	Utilities.spawn_text_line(unit_1, "Testing, Testing, 123", Color.CRIMSON)
 	await get_tree().create_timer(1.0).timeout
-	Utilities.spawn_text_line(unit, "Testing, Testing, 123")
+	Utilities.spawn_text_line(unit_1, "Testing, Testing, 123")
 
 func test_shift_c() -> void:
 	if Input.is_action_just_pressed("testkey_shift_c"):
@@ -749,7 +749,7 @@ func print_active_special_effects() -> void:
 
 
 func open_special_effect_buttons() -> void:
-	SignalBus.on_player_special_effect.emit(unit, special_effects)
+	SignalBus.on_player_special_effect.emit(unit_1, special_effects)
 
 
 
