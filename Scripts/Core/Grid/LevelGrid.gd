@@ -3,7 +3,7 @@
 extends Node
 
 # Reference to the GridSystem instance
-var grid_system: GridSystem
+var grid_system: GridSystem = null
 
 
 # Initialization
@@ -18,6 +18,8 @@ func _init() -> void:
 	#grid_system.create_debug_objects()
 
 func generate_grid_system(x: int, z: int, grid_scale: float):
+	if grid_system != null:
+		grid_system.queue_free()
 		# Create a new GridSystem with specified dimensions and cell size
 	grid_system = GridSystem.new(x, z, grid_scale)
 	
@@ -30,12 +32,20 @@ func generate_grid_system(x: int, z: int, grid_scale: float):
 func _process(_delta: float) -> void:
 	if !grid_system:
 		return
+	
+	
 	# Rotate labels 45 degrees clockwise
 	if Input.is_action_just_pressed("rotate_right"):
+		var hovered_control = get_viewport().gui_get_hovered_control()
+		if hovered_control != null:
+			return
 		grid_system.rotate_labels(1)  # Pass 1 for clockwise rotation
 
 	# Rotate labels 45 degrees counterclockwise
 	if Input.is_action_just_pressed("rotate_left"):
+		var hovered_control = get_viewport().gui_get_hovered_control()
+		if hovered_control != null:
+			return
 		grid_system.rotate_labels(-1)  # Pass -1 for counterclockwise rotation
 
 # Assigns a unit to a specified grid position
@@ -71,6 +81,11 @@ func get_grid_position(world_position: Vector3) -> GridPosition:
 func get_grid_positions_from_grid_positions(in_grids: Array[GridPosition]) -> Array[GridPosition]:
 	return grid_system.get_grid_positions_from_grid_positions(in_grids)
 
+func get_grid_position_from_grid_position(in_grid: GridPosition) -> GridPosition:
+	return grid_system.get_grid_position_from_grid_position(in_grid)
+
+func get_grid_position_from_coords(in_x: int, in_z: int) -> GridPosition:
+	return grid_system.get_grid_position_from_coords(in_x, in_z)
 
 # Converts a grid position to a world position
 func get_world_position(grid_position: GridPosition) -> Vector3:

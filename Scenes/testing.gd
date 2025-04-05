@@ -19,15 +19,96 @@ extends Node3D
 var testbool: bool = false
 var timescalebool: bool = false
 
+func _ready() -> void:
+	Console.add_command("hello", console_hello, 0, 0, "Prints Hello")
+	Console.add_command("trigger_camera_shake", trigger_camera_shake)
+	Console.add_command("spawn_label", console_spawn_label, ["unit_identifier", "label_text"], 1, "Spawns a text label on a unit by its ui_name or name. Use one parameter for the identifier and optionally a second for the label text.")
+	Console.add_command("move_unit", console_move_unit, ["unit_identifier", "x", "z"], 3, "Moves the unit with the given identifier to the specified grid position (x, z)")
+	Console.add_command("reload_scene", console_reload_scene, 0, 0, "Reloads the currently active scene.")
+	Console.add_command("play_anim", console_play_anim, ["unit_identifier", "animation_name"], 2, "Plays an animation on the specified unit by name.")
+
+
+
+
+func console_spawn_label(unit_identifier: String, label_text: String = "Hello from console") -> void:
+	var found_unit: Unit = null
+	# Loop through all units to find one with matching ui_name or node name.
+	for u in UnitManager.instance.units:
+		if u.ui_name == unit_identifier or u.name == unit_identifier:
+			found_unit = u
+			break
+	if found_unit:
+		# Spawn the text label on the found unit.
+		Utilities.spawn_text_line(found_unit, label_text)
+		Console.print_line("Spawned label on unit: " + unit_identifier)
+	else:
+		Console.print_error("No unit found with identifier: " + unit_identifier)
+
+func console_move_unit(identifier: String, x_str: String, z_str: String) -> void:
+	# Look up the unit by identifier (name or ui_name)
+	var unit = UnitManager.instance.get_unit_by_name(identifier)
+	if unit == null:
+		Console.print_error("Unit not found: " + identifier)
+		return
+
+	# Convert coordinate parameters to integers
+	var new_x = int(x_str)
+	var new_z = int(z_str)
+
+	# Create a new grid position (assumes a constructor GridPosition.new(x, z) exists)
+	var new_grid_position: GridPosition = LevelGrid.get_grid_position_from_coords(new_x, new_z)
+	
+	# Optionally Update the unit's grid position (already handled in unit process
+	#unit.grid_position = new_grid_position
+	
+	# Update the unit's world position.
+	# This example assumes you have a LevelGrid helper function to convert grid positions to world coordinates.
+	var new_world_pos: Vector3 = LevelGrid.get_world_position(new_grid_position)
+	unit.set_global_position(new_world_pos)
+	
+
+	# Output a confirmation message to the console
+	Console.print_line("Moved unit " + identifier + " to grid position (" + str(new_x) + ", " + str(new_z) + ")")
+
+func console_reload_scene() -> void:
+	var current_scene: Node = get_tree().get_current_scene()
+	if current_scene == null:
+		Console.print_error("No current scene is loaded.")
+		return
+
+	var scene_path: String = current_scene.get_scene_file_path()
+	if scene_path.is_empty():
+		Console.print_error("Could not get scene path.")
+		return
+
+	Console.print_info("Reloading current scene: " + scene_path)
+	get_tree().change_scene_to_file(scene_path)
+
+func console_play_anim(unit_identifier: String, animation_name: String) -> void:
+	var unit := UnitManager.instance.get_unit_by_name(unit_identifier)
+	if unit == null:
+		Console.print_error("Unit not found: " + unit_identifier)
+		return
+
+	if unit.animator == null:
+		Console.print_error("Unit has no animator: " + unit_identifier)
+		return
+
+	unit.animator.play_animation_by_name(animation_name)
+	Console.print_info("Playing animation '" + animation_name + "' on unit '" + unit_identifier + "'")
+
+
+
+
 
 # Called every frame
 func _process(_delta: float) -> void:
-	test_pathfinding()
+	#test_pathfinding()
 	handle_right_mouse_click()
 	test_n()
 	test_c()
 	test_v()
-
+"""
 # Testing function to visualize the path when a test key is pressed.
 func test_pathfinding() -> void:
 	if Input.is_action_just_pressed("testkey_b"):
@@ -55,6 +136,8 @@ func test_pathfinding() -> void:
 				
 				# Update the grid visual to show the path.
 				GridSystemVisual.instance.update_grid_visual_pathfinding(path)
+"""
+
 
 func handle_right_mouse_click() -> void:
 	if Input.is_action_just_pressed("right_mouse"):
@@ -67,6 +150,9 @@ func handle_right_mouse_click() -> void:
 		#turn_unit_towards_facing()
 		#set_facing()
 		pass
+
+func console_hello() -> void:
+	print_debug("Hello!")
 
 func set_facing() -> void:
 	unit.set_facing()
@@ -236,7 +322,6 @@ func test_v() -> void:
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
 		open_character_sheet()
-		#equip_weapon()
 		#open_special_effect_buttons()
 		#print_active_special_effects()
 		#spawn_text_label()
@@ -380,30 +465,7 @@ func print_active_special_effects() -> void:
 func open_special_effect_buttons() -> void:
 	SignalBus.on_player_special_effect.emit(unit, special_effects)
 
-func equip_weapon() -> void:
-	# Grab the unit under the mouse or whichever unit you want
-	var result = mouse_world.get_mouse_raycast_result("position")
-	if !result:
-		return
-	var test_unit: Unit = LevelGrid.get_unit_at_grid_position(
-		pathfinding.pathfinding_grid_system.get_grid_position(result)
-	)
-	if test_unit == null:
-		return
-	var testitem_original: Item = preload("res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/SwordTest.tres")
-	var testitem: Item = testitem_original.duplicate()
-	if !testbool:
-		print(test_unit.name)
-		test_unit.inventory.add_item(testitem)
-		for item: Item in test_unit.inventory.items:
-			print("Item: ", item.name)
-		testbool = true
-		return
-	test_unit.equipment.equip(testitem)
-	#var slot: EquipmentSlot = test_unit.equipment.find_slot_by_item(testitem)
-	testbool = false
-	test_unit.holding_weapon = true
-	test_unit.update_weapon_anims()
+
 
 
 

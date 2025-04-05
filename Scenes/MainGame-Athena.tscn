@@ -22,7 +22,7 @@
 [ext_resource type="Script" uid="uid://olntd167cww4" path="res://Hero_Game/Scripts/Core/UI/TurnSystemUI.gd" id="12_m6vvv"]
 [ext_resource type="Script" uid="uid://dc48clv42hytu" path="res://Hero_Game/Scenes/ObjectManager.gd" id="12_qi25r"]
 [ext_resource type="Script" uid="uid://dsaiu1sup3y2i" path="res://Hero_Game/Scripts/Core/Mechanics/CombatSystem.gd" id="16_f3oa4"]
-[ext_resource type="Resource" uid="uid://cxk0rx8ecss31" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/SwordTest.tres" id="17_gypti"]
+[ext_resource type="Resource" uid="uid://cxk0rx8ecss31" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/SwordTest.tres" id="17_gypti"]
 [ext_resource type="Script" uid="uid://dsp5f0drsktx2" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
 [ext_resource type="Script" uid="uid://cwsem2fnkteke" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffect.gd" id="18_hnk25"]

@@ -32,13 +32,13 @@ func _ready() -> void:
 func trigger_unit_ui_setup() -> void:
 	UnitUIManager3D.instance.setup_unit_ui(units)
 
-func test_equip_units(sword: Weapon = sword_test) -> void:
+func test_equip_units(weapon: Weapon = sword_test) -> void:
 	var iteration_num: int = 1
 	for unit: Unit in units:
-		var new_sword = sword.duplicate()
-		new_sword.name = new_sword.name + " " + str(iteration_num)
+		var new_weapon = weapon.duplicate()
+		new_weapon.name = new_weapon.name + " " + str(iteration_num)
 		iteration_num += 1
-		unit.equipment.equip(new_sword)
+		unit.equipment.equip(new_weapon)
 # Initializes the units by storing references to all child units.
 func initialize_units() -> void:
 	# Iterate through all children and add those of type Unit to the units array
@@ -118,9 +118,10 @@ func get_player_units() -> Array[Unit]:
 # Retrieves a specific unit by its name.
 func get_unit_by_name(unitname: String) -> Unit:
 	for unit in units:
-		if unit.name == unitname:
+		if unit.name == unitname or unit.ui_name == unitname:
 			return unit
 	return null
+
 
 ## returns an array of every grid position adjacent to an enemy.
 ## Used for engagement mostly.
