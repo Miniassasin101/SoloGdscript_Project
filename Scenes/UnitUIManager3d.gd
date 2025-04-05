@@ -38,25 +38,29 @@ func setup_unit_ui(units: Array[Unit]) -> void:
 	unit_ui_instances.clear()
 	
 	for unit in units:
-		# Instantiate a new Sprite3D UI from the provided scene.
 		var ui_instance: SilhouetteUI3D = silhouette_scene.instantiate() as SilhouetteUI3D
-		
-		
-		# Optional: adjust scale or other properties if the sprite is too big.
-		# ui_instance.scale = Vector3(0.25, 0.25, 0.25)
-		
-		# Add the UI instance to the scene.
-		#unit.above_marker.add_child(ui_instance)
 		add_child(ui_instance)
-		
-		# Map the unit to its UI sprite.
 		unit_ui_instances[unit] = ui_instance
-		
+
+		# Connect to unit's "tree_exited" to handle unit deletion
+		unit.tree_exited.connect(_on_unit_removed.bind(unit))
+
 		unit.body.update_body_ui()
+
+
+func _on_unit_removed(unit: Unit) -> void:
+	if unit_ui_instances.has(unit):
+		var ui = unit_ui_instances[unit]
+		if is_instance_valid(ui):
+			ui.queue_free()
+		unit_ui_instances.erase(unit)
+
 
 # Updates the 3D UI sprite positions each frame.
 func update_ui_positions() -> void:
 	for unit in unit_ui_instances.keys():
+		if unit == null:
+			return
 		var ui_instance: SilhouetteUI3D = unit_ui_instances[unit]
 		if not is_instance_valid(unit) or not is_instance_valid(ui_instance):
 			continue

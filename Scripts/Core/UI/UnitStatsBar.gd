@@ -59,7 +59,7 @@ func start_drift() -> void:
 	base_position = position
 	var final_position: Vector2 = Vector2(base_position.x + drift_amount, base_position.y)
 	drift_tween = get_tree().create_tween()
-	drift_tween.set_loops(-1)  # Loop indefinitely.
+	drift_tween.set_loops(50)  # Loop indefinitely.
 	drift_tween.tween_property(self, "position", final_position, drift_duration) \
 			   .set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	drift_tween.tween_property(self, "position", base_position, drift_duration) \

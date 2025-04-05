@@ -24,6 +24,8 @@ extends Node
 
 var items: Array[Item] = []
 
+var is_dropping: bool = false
+
 static var instance: ObjectManager = null
 
 func _ready() -> void:
@@ -38,13 +40,16 @@ func drop_item_in_world(unit: Unit, in_item: Item = null) -> void:
 	#if !unit.equipment.has_equipped_weapon():
 	#	return
 	# Choose the item to drop
+	if is_dropping:
+		return
+	is_dropping = true
 	var item = in_item if in_item else unit.get_equipped_weapon()
 	items.append(item)
 
 	var item_visual: ItemVisual = item.get_item_visual()
 	item_visual.reparent(self)
 	unit.equipment.unequip(item)
-
+	is_dropping = false
 	# Find all possible adjacent drop spots
 	var adjacent_pos: Array[GridPosition] = Utilities.get_adjacent_tiles_with_diagonal(unit)
 	var actual_pos: Array[GridPosition] = []
@@ -57,7 +62,7 @@ func drop_item_in_world(unit: Unit, in_item: Item = null) -> void:
 	if num_of_pos == 0:
 		print_debug("No valid drop tile found, dropping in place.")
 		return
-
+	
 	# Randomly pick one spot
 	var num_rolled: int = Utilities.roll(num_of_pos)
 	var drop_pos: GridPosition = actual_pos[num_rolled - 1]
@@ -129,6 +134,22 @@ func drop_item_in_world(unit: Unit, in_item: Item = null) -> void:
 
 	print_debug("Item drop arc + spin complete!")
 	add_item_to_grid_object(item, drop_pos)
+	
+
+func remove_all_dropped_items() -> void:
+	# Iterate over all dropped items.
+	for item in items:
+		# Remove the item from its grid object tracking.
+		remove_item_from_grid_object(item)
+		# Get the item's visual node.
+		var item_visual: ItemVisual = item.get_item_visual()
+		# If the visual exists and is in the scene tree, free it.
+		if item_visual and item_visual.is_inside_tree():
+			item_visual.queue_free()
+	# Clear the items list.
+	items.clear()
+	print_debug("All dropped items have been removed.")
+
 
 
 func equip_item(unit: Unit, in_item: Item) -> void:

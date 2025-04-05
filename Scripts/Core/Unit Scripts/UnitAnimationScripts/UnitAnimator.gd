@@ -93,6 +93,7 @@ var weapon_trail_is_active: bool = false
 func _ready() -> void:
 	#call_deferred("connect_signals")
 	SignalBus.equipment_changed.connect(equipment_anim_check)
+	make_tree_root_unique()
 
 
 
@@ -167,8 +168,12 @@ func equipment_anim_check(in_unit: Unit) -> void:
 		return
 	weapon_setup(false)
 
+func make_tree_root_unique() -> void:
+	animator_tree.set_tree_root(animator_tree.tree_root.duplicate(true))
+
 func weapon_setup(weapon_type: bool, weapon: Weapon = null) -> void:
-	var tween: Tween = create_tween()
+	var tween: Tween = get_tree().create_tween()
+
 	if weapon_type and weapon:
 		var root: AnimationNodeStateMachine = animator_tree.tree_root as AnimationNodeStateMachine
 		if root == null:

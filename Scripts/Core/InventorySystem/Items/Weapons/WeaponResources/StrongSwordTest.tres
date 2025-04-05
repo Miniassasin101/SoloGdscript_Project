@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=7 format=3 uid="uid://t5k41qffqkxg"]
+
+[ext_resource type="Animation" uid="uid://b3dl4a03vrlw1" path="res://Hero_Game/Animations/AnimationImports_1/Idle_Greatsword_shoulder.res" id="1_xvwdx"]
+[ext_resource type="Animation" uid="uid://c5khxrqqcf7uh" path="res://Hero_Game/Animations/AnimationImports_1/Greatsword_Parry_Idle_001.res" id="2_yqv82"]
+[ext_resource type="Animation" uid="uid://b43ekgcb6wwjo" path="res://Hero_Game/Animations/AnimationImports_1/Greatsword_Parry_1st_Half_001.res" id="3_bne68"]
+[ext_resource type="Animation" uid="uid://gs0doxv33o75" path="res://Hero_Game/Animations/AnimationImports_1/Greatsword_Parry_2nd_Half_001.res" id="4_f7ui8"]
+[ext_resource type="PackedScene" uid="uid://ws4usfvbsn2l" path="res://Hero_Game/Prefabs/Items/Weapons/Greatsword.tscn" id="5_jy5ne"]
+[ext_resource type="Script" uid="uid://bkx8m1e0lkceq" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponScripts/Weapon.gd" id="6_epq7o"]
+
+[resource]
+script = ExtResource("6_epq7o")
+category = &"sword"
+die_type = 6
+die_number = 3
+flat_damage = 2
+idle_animation = ExtResource("1_xvwdx")
+parry_animation_part_1 = ExtResource("3_bne68")
+parry_animation_part_2 = ExtResource("4_f7ui8")
+parry_animation_idle = ExtResource("2_yqv82")
+size = 2
+reach = 2
+combat_effects = Array[StringName]([])
+encumberance = 2
+armor_points = 1
+hit_points = 8
+max_hit_points = 8
+traits = Array[StringName]([])
+hands = 1
+is_broken = false
+is_loaded = false
+name = &"Strong Greatsword"
+can_stack = false
+decrease_stack_on_use = false
+scene = ExtResource("5_jy5ne")
+tags = Array[String](["right_hand"])
+quantity_current = 1
+quantity_max = 1
+tags_added_on_activation = Array[String]([])
+tags_added_on_add = Array[String]([])
+tags_added_on_equip = Array[String]([])
+tags_added_on_remove = Array[String]([])
+tags_added_on_unequip = Array[String]([])
+tags_required_to_activate = Array[String]([])
+tags_required_to_add = Array[String]([])
+tags_required_to_equip = Array[String]([])
+tags_required_to_remove = Array[String]([])
+tags_required_to_unequip = Array[String]([])
+tags_removed_on_activation = Array[String]([])
+tags_removed_on_add = Array[String]([])
+tags_removed_on_equip = Array[String]([])
+tags_removed_on_remove = Array[String]([])
+tags_removed_on_unequip = Array[String]([])

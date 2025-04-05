@@ -2,9 +2,20 @@ class_name TurnSystem
 extends Node
 
 @export var unit_manager: UnitManager
-var round_number: int = 1
-var turn_number: int = 1
-var current_cycle: int = 1
+var round_number: int = 1:
+	set(value):
+		round_number = value
+		SignalBus.on_ui_update.emit()
+
+var turn_number: int = 1:
+	set(value):
+		turn_number = value
+		SignalBus.on_ui_update.emit()
+var current_cycle: int = 1:
+	set(value):
+		current_cycle = value
+		SignalBus.on_ui_update.emit()
+		
 ## Tracks who has taken a proactive action this cycle.
 var actions_per_cycle: Dictionary = {}
 var initiative_order: Array[Unit] = []

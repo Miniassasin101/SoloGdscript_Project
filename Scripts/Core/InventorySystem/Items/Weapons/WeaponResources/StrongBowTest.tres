@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=8 format=3 uid="uid://d05f6lm6roql8"]
+
+[ext_resource type="Animation" uid="uid://dpukk54akum8q" path="res://Hero_Game/Animations/AnimationImports_1/BowIdle_Loaded_001.res" id="1_w8aa1"]
+[ext_resource type="Animation" uid="uid://dhf4hwjirrcde" path="res://Hero_Game/Animations/AnimsBowTest/Bow_Parry_Idle_001.res" id="2_v7es8"]
+[ext_resource type="Animation" uid="uid://dqluc6y8i02p0" path="res://Hero_Game/Animations/AnimsBowTest/Bow_Parry_First_Half_001.res" id="3_eint6"]
+[ext_resource type="Animation" uid="uid://dg2e1f3os5s84" path="res://Hero_Game/Animations/AnimationImports_1/Bow_Parry_Second_Half_001.res" id="4_cgdtm"]
+[ext_resource type="PackedScene" uid="uid://iuekcxcs1tys" path="res://Hero_Game/Prefabs/Items/Weapons/TestArrow.tscn" id="5_6anvm"]
+[ext_resource type="PackedScene" uid="uid://cnqkk453j17mw" path="res://Hero_Game/Prefabs/Items/Weapons/TestBow.tscn" id="6_yth7l"]
+[ext_resource type="Script" uid="uid://bkx8m1e0lkceq" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponScripts/Weapon.gd" id="7_soi8s"]
+
+[resource]
+script = ExtResource("7_soi8s")
+category = &"bow"
+die_type = 6
+die_number = 3
+flat_damage = 2
+idle_animation = ExtResource("1_w8aa1")
+parry_animation_part_1 = ExtResource("3_eint6")
+parry_animation_part_2 = ExtResource("4_cgdtm")
+parry_animation_idle = ExtResource("2_v7es8")
+projectile = ExtResource("5_6anvm")
+size = 1
+reach = 1
+combat_effects = Array[StringName]([])
+encumberance = 1
+armor_points = 1
+hit_points = 8
+max_hit_points = 8
+traits = Array[StringName]([])
+hands = 2
+is_broken = false
+is_loaded = true
+name = &"Strong Bow"
+can_stack = false
+decrease_stack_on_use = false
+scene = ExtResource("6_yth7l")
+tags = Array[String](["left_hand", "ranged"])
+quantity_current = 1
+quantity_max = 1
+tags_added_on_activation = Array[String]([])
+tags_added_on_add = Array[String]([])
+tags_added_on_equip = Array[String]([])
+tags_added_on_remove = Array[String]([])
+tags_added_on_unequip = Array[String]([])
+tags_required_to_activate = Array[String]([])
+tags_required_to_add = Array[String]([])
+tags_required_to_equip = Array[String]([])
+tags_required_to_remove = Array[String]([])
+tags_required_to_unequip = Array[String]([])
+tags_removed_on_activation = Array[String]([])
+tags_removed_on_add = Array[String]([])
+tags_removed_on_equip = Array[String]([])
+tags_removed_on_remove = Array[String]([])
+tags_removed_on_unequip = Array[String]([])
