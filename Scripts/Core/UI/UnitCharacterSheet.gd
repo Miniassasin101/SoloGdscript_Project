@@ -159,7 +159,7 @@ func _populate_conditions(unit: Unit) -> void:
 	if not is_instance_valid(unit) or not is_instance_valid(unit.conditions_manager):
 		return
 
-	var all_conditions = unit.conditions_manager.get_all_conditions()
+	var all_conditions: Array[Condition] = unit.conditions_manager.get_all_conditions()
 	
 	for condition in all_conditions:
 		var hbox = HBoxContainer.new()

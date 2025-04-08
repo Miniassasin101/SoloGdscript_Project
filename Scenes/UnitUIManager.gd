@@ -52,5 +52,5 @@ func update_ui_positions() -> void:
 		# Update the UI instance's position.
 		ui_instance.set_position(screen_pos)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	update_ui_positions()

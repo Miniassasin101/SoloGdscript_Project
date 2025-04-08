@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://iuekcxcs1tys"]
 
 [ext_resource type="ArrayMesh" uid="uid://b8jquew4cqu0k" path="res://Hero_Game/Art/SelfAssets/WeaponAssets/WeaponMeshes/Arrow_002_Cube_002.res" id="1_b5krk"]
-[ext_resource type="Material" uid="uid://cpccbvm86p68o" path="res://Hero_Game/Art/Materials/CelShadedMat.tres" id="2_1ye8n"]
+[ext_resource type="Material" uid="uid://d18flcxrogort" path="res://Hero_Game/Art/Materials/CelShadedMats/GrayscaleCelShadedMat.tres" id="2_es4c4"]
 
 [sub_resource type="Skin" id="Skin_lvym6"]
 resource_name = "Skin"
@@ -68,7 +68,7 @@ bones/0/scale = Vector3(1, 1, 1)
 [node name="Arrow_001" type="MeshInstance3D" parent="ArrowArmature_001/Skeleton3D"]
 mesh = ExtResource("1_b5krk")
 skin = SubResource("Skin_lvym6")
-surface_material_override/0 = ExtResource("2_1ye8n")
+surface_material_override/0 = ExtResource("2_es4c4")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

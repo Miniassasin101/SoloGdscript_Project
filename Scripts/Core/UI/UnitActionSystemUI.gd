@@ -162,6 +162,7 @@ func on_selected_unit_changed(unit: Unit) -> void:
 	_update_ability_points()
 
 
+
 func on_player_reaction(unit: Unit) -> void:
 	toggle_containers_visibility_off_except([reaction_button_container])
 	reacting_unit = unit
@@ -256,3 +257,7 @@ func on_turn_changed() -> void:
 	on_selected_unit_changed(UnitActionSystem.instance.get_selected_unit())
 	#self.visible = TurnSystem.instance.is_player_turn
 	# FIXME: Revert back later
+
+
+func get_dynamic_button_picker() -> DynamicButtonPicker:
+	return dynamic_button_picker

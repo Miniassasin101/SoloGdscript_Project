@@ -13,8 +13,8 @@
 script = ExtResource("1_h2ch5")
 colors = Dictionary[String, Color]({
 "blue": Color(0.148514, 0.63349, 0.921914, 1),
-"orange": Color(0.885067, 0.585712, 0.162027, 1),
-"red": Color(0.834, 0.20787, 0.274506, 1)
+"orange": Color(0.823444, 0.622838, 0.152781, 1),
+"red": Color(0.86354, 0.116812, 0.314784, 1)
 })
 
 [node name="Head" type="Sprite3D" parent="."]

@@ -40,10 +40,91 @@ func try_activate(_event: ActivationEvent) -> void:
 				if other_unit != unit and not engaged_opponents.has(other_unit):
 					engaged_opponents.append(other_unit)
 	
+	
+	# Fetch an existing DynamicButtonPicker in the scene tree
+	var dynamic_picker: DynamicButtonPicker = UILayer.instance.unit_action_system_ui.dynamic_button_picker
+	if dynamic_picker == null:
+		push_error("No DynamicButtonPicker in scene. Please instance or reference it properly.")
+		return
+
+
+	
+	
+	
 	# Perform opposed rolls against each engaged opponent.
 	var user_roll = Utilities.roll(100)
-	var success = true
+	var success = false
+	
+	
+	# Loop through each engaged opponent.
 	for opponent in engaged_opponents:
+		# Prompt the opponent for block decision.
+		dynamic_picker.pick_options(["Block", "Don't Block"])
+		GridSystemVisual.instance.hide_all_grid_positions() 
+		GridSystemVisual.instance.show_grid_positions([opponent.get_grid_position()])
+		var choice: String = await dynamic_picker.option_selected
+		if choice == "Block" and unit.get_ability_points() > 0:
+			# Opponent has opted to block; they must spend 1 AP.
+			if opponent.can_spend_ability_points_to_use_ability(self):  # Passing null or a dummy ability; adjust if needed.
+				opponent.spend_ability_points(1)
+				var opponent_roll = Utilities.roll(100)
+				print_debug("Outmaneuver: " + unit.ui_name + " rolled " + str(user_roll) + " vs. " + opponent.ui_name + " rolled " + str(opponent_roll))
+				# If opponent’s roll is greater than or equal to the outmaneuverer’s roll, block succeeds.
+				if opponent_roll >= user_roll:
+					Utilities.spawn_text_line(opponent, "Block Successful", Color.AQUA)
+					success = true
+					#if can_end(event):
+					#	end_ability(event)
+					#	return
+				else:
+					# Opponent failed the opposed roll—apply Outmaneuvered Condition.
+					Utilities.spawn_text_line(opponent, "Outmaneuvered", Color.FIREBRICK)
+					var cond: OutmaneuveredCondition = OutmaneuveredCondition.new()
+					cond.outmaneuvering_units.append(unit)
+					opponent.conditions_manager.add_condition(cond)
+				# End of block branch.
+			else:
+				# Not enough AP to block; automatically fail the block.
+				Utilities.spawn_text_line(opponent, "Outmaneuvered", Color.FIREBRICK)
+				var cond_insufficient: OutmaneuveredCondition = OutmaneuveredCondition.new()
+				cond_insufficient.outmaneuvering_units.append(unit)
+				opponent.conditions_manager.add_condition(cond_insufficient)
+		else:  # Opponent chooses "Don't Block"
+			# Automatically treat as block failure.
+			Utilities.spawn_text_line(opponent, "Outmaneuvered", Color.FIREBRICK)
+			var cond_ignore: OutmaneuveredCondition = OutmaneuveredCondition.new()
+			cond_ignore.outmaneuvering_units.append(unit)
+			opponent.conditions_manager.add_condition(cond_ignore)
+
+		# Loop continues for each opponent.
+		await opponent.get_tree().create_timer(0.1).timeout
+	# End for each engaged opponent.
+
+	# If all opponents failed to block successfully, proceed with movement.
+	if success:
+		event.successful = true
+		# You might choose to exit early or continue differently if any opponent succeeds.
+		# For this implementation, we exit outmaneuver if any opponent blocked.
+		if can_end(event):
+			end_ability(event)
+			return
+	
+	"""
+	for opponent in engaged_opponents:
+		
+		# Show the list of body parts
+		dynamic_picker.pick_options(["Ignore", "Block"])
+
+		# Wait for user to pick one
+		var chosen_part_name: String = await dynamic_picker.option_selected
+		
+		if chosen_part_name == "Ignore":
+			# Unit chose not to use an action to counter the outmaneuver
+			event.successful = true
+			if can_end(event):
+				end_ability(event)
+				return
+		
 		var opponent_roll = Utilities.roll(100)
 		print_debug("Outmaneuver: " + unit.ui_name + " rolled " + str(user_roll) + " vs. " + opponent.ui_name + " rolled " + str(opponent_roll))
 		if user_roll <= opponent_roll:
@@ -55,7 +136,7 @@ func try_activate(_event: ActivationEvent) -> void:
 				return
 		else:
 			Utilities.spawn_text_line(unit, "Outmaneuvered", Color.AQUA)
-	
+"""
 	# Now move the unit along the full path (like MoveAbility, but without trimming)
 
 	var path_package: PathPackage = Pathfinding.instance.get_path_package(event.target_grid_position, unit, true, true)
@@ -80,11 +161,11 @@ func try_activate(_event: ActivationEvent) -> void:
 		movement_curve.add_point(point, -control_offset, control_offset)
 	
 	var curve_length = movement_curve.get_baked_length()
-	var curve_travel_offset = 0.0
+	#var curve_travel_offset = 0.0
 	var acceleration_timer = 0.2
 	var rotation_acceleration_timer = 0.3
-	var current_speed = 0.1
-	var start_timer = 0.1
+	#var current_speed = 0.1
+	#var start_timer = 0.1
 
 
 	unit.animator.animate_movement_along_curve(move_speed, movement_curve, curve_length, 
@@ -101,10 +182,8 @@ func try_activate(_event: ActivationEvent) -> void:
 	
 	
 	# Finally, set the event's success based on the opposed rolls.
-	if success:
-		event.successful = true
-	else:
-		event.successful = false
+	
+	
 	
 
 	
@@ -112,6 +191,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	
 
 	
+	event.successful = true
 	if can_end(event):
 		end_ability(event)
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://ws4usfvbsn2l"]
 
 [ext_resource type="ArrayMesh" uid="uid://clq4o2souep2c" path="res://Hero_Game/Art/SelfAssets/WeaponAssets/WeaponMeshes/Greatsword_Cube_001.res" id="1_w1yhh"]
-[ext_resource type="Material" uid="uid://cpccbvm86p68o" path="res://Hero_Game/Art/Materials/CelShadedMat.tres" id="2_g8fl0"]
+[ext_resource type="Material" uid="uid://d18flcxrogort" path="res://Hero_Game/Art/Materials/CelShadedMats/GrayscaleCelShadedMat.tres" id="2_ce7vn"]
 [ext_resource type="Shader" uid="uid://c8yn8n8vk1kvl" path="res://addons/GPUTrail-main/shaders/trail.gdshader" id="3_ay403"]
 [ext_resource type="Shader" uid="uid://d05n4cg3f5xxd" path="res://addons/GPUTrail-main/shaders/trail_draw_pass.gdshader" id="4_gakp0"]
 [ext_resource type="Texture2D" uid="uid://crk6pkb7e5rwc" path="res://addons/GPUTrail-main/defaults/texture.tres" id="5_oh5wc"]
@@ -28,7 +28,7 @@ material = SubResource("ShaderMaterial_yknik")
 [node name="Greatsword" type="MeshInstance3D"]
 transform = Transform3D(1.38456, 2.79835e-15, -5.56739e-08, 0, 1.38456, 6.95924e-08, 5.56739e-08, -6.95924e-08, 1.38456, 0, 0, 0)
 mesh = ExtResource("1_w1yhh")
-surface_material_override/0 = ExtResource("2_g8fl0")
+surface_material_override/0 = ExtResource("2_ce7vn")
 
 [node name="GPUTrail3D2" type="GPUParticles3D" parent="."]
 transform = Transform3D(0.596289, -2.39771e-08, -2.39771e-08, 2.39771e-08, -2.60646e-08, 0.596289, -2.39771e-08, -0.596289, -2.60646e-08, -3.26579e-08, 4.08225e-08, -0.812174)

@@ -234,7 +234,7 @@ func check_declaration_reaction_queue(_action: Ability, _event: ActivationEvent)
 
 
 
-func reaction(reacting_unit: Unit, attacking_unit: Unit, ret_event: ActivationEvent):
+func reaction(reacting_unit: Unit, _attacking_unit: Unit, _ret_event: ActivationEvent):
 	
 	# Prompt UI or AI to choose a reaction ability (e.g., a parry, an evade).
 	SignalBus.on_player_reaction.emit(reacting_unit)

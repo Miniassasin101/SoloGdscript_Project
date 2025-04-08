@@ -519,7 +519,7 @@ func move_along_curve_process(delta: float) -> void:
 
 # Rotation Functions
 # Handles the start and process of rotating towards a target position
-func rotate_unit_towards_target_position(grid_position: GridPosition, rot_spd: float = 3.0) -> void:
+func rotate_unit_towards_target_position(grid_position: GridPosition, rot_spd: float = 4.0) -> void:
 	is_rotating = true
 	facing_direction = (LevelGrid.get_world_position(grid_position) - unit.get_world_position()).normalized()
 	rotate_speed = rot_spd

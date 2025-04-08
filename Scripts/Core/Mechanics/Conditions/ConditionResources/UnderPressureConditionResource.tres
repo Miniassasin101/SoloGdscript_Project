@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_mgamh")
-ui_name = "Under Pressure"
+ui_name = "under pressure"
 condition_level = 1
 application_interval = 2
 tags_type = Array[StringName]([])
-blocking_tags = Array[StringName]([&"attack"])
+blocking_tags = Array[StringName]([])
 is_situational_modifier = false
 situational_modifier = 2

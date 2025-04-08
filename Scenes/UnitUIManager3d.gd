@@ -81,7 +81,7 @@ func update_ui_positions() -> void:
 		# Set the UI sprite's global position.
 		ui_instance.global_position = world_pos + offset
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	update_ui_positions()
 	#pass
 

@@ -1,7 +1,7 @@
 class_name Condition extends Resource
 
 
-@export var ui_name: String
+@export var ui_name: String = "n/a"
 
 @export var condition_level: int = 0
 
@@ -62,6 +62,15 @@ func _map_modifier_to_text(mod: int) -> String:
 		6: return "HOPELESS"
 		_: return "UNKNOWN"
 
+func merge_with(other: Condition) -> void:
+	# Default implementation: no merging.
+	pass
 
 func remove_self(unit: Unit) -> void:
 	unit.conditions_manager.remove_condition(self)
+
+
+# New virtual function to determine if this condition blocks targeting from the given ability and attacker.
+func blocks_targeting(ability: Ability, event: ActivationEvent) -> bool:
+	# By default, no condition blocks targeting.
+	return false

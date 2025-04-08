@@ -44,7 +44,8 @@ func _ready() -> void:
 	if selected_unit:
 		set_selected_unit(selected_unit)
 	
-	SignalBus.selected_ability_changed.connect(set_selected_ability)
+	#SignalBus.selected_ability_changed.connect(set_selected_ability)
+	SignalBus.selected_ability_changed.connect(on_selected_ability_changed)
 	SignalBus.ability_complete.connect(clear_busy)
 	SignalBus.ability_complete_next.connect(on_ability_ended)
 	SignalBus.new_grid_pos_hovered.connect(on_new_grid_pos_hovered)
@@ -109,6 +110,27 @@ func handle_selected_ability() -> void:
 					if selected_ability.tags_type.has("action"):
 						TurnSystem.instance.mark_proactive_action_taken(selected_unit)
 
+func use_ability(unit: Unit, ability: Ability, target_pos: GridPosition) -> void:
+	if is_busy and !sub_ability_choice and !is_reacting:
+		return
+	if TurnSystem.instance.is_player_turn or LevelDebug.instance.control_enemy_debug:
+		# Check if we've already taken a proactive action this cycle
+		if TurnSystem.instance.has_taken_proactive_action_this_cycle(unit) and check_ability_type_invalid(selected_ability):
+			print_debug("You have already taken a proactive action this cycle!")
+			return
+			
+		if target_pos:
+			if unit.ability_container.can_activate_at_position(ability, target_pos):
+				# Attempt to spend AP
+				if unit.try_spend_ability_points_to_use_ability(ability):
+					# Activate ability
+					set_busy()
+					unit.ability_container.activate_one(ability, target_pos)
+					SignalBus.emit_signal("ability_started")
+					
+					# Mark that we have taken a proactive action this cycle if the ability is of type "action"
+					if ability.tags_type.has("action"):
+						TurnSystem.instance.mark_proactive_action_taken(unit)
 
 func handle_selected_reaction() -> void:
 	var reacting_unit: Unit = CombatSystem.instance.current_event.target_unit
@@ -168,6 +190,7 @@ func handle_ability_sub_gridpos_choice(in_gridpos_allowed: Array[GridPosition]) 
 	return ret_pos
 	
 
+# For when an ability has a sub grid choice
 func handle_sub_grid_selected() -> void:
 	
 	var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
@@ -207,6 +230,21 @@ func on_new_grid_pos_hovered() -> void:
 	update_move_path()
 
 
+func on_selected_ability_changed(ability: Ability) -> void:
+	if ability != selected_ability:
+		set_selected_ability(ability)
+	else:
+		var unit: Unit
+		if UnitActionSystem.instance.is_reacting:
+			unit = CombatSystem.instance.current_event.target_unit
+		else:
+			unit = UnitActionSystem.instance.selected_unit
+
+		if unit != null:
+			var gridpositions: Array[GridPosition] = unit.ability_container.get_valid_ability_target_grid_position_list(ability)
+			if gridpositions.size() == 1:
+				use_ability(unit, ability, gridpositions[0])
+				
 
 
 func update_move_path() -> void:
@@ -272,6 +310,7 @@ func set_selected_unit(unit: Unit) -> void:
 
 
 func set_selected_ability(ability: Ability) -> void:
+	
 	selected_ability = ability
 	SignalBus.update_grid_visual.emit()
 	

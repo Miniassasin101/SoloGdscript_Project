@@ -33,7 +33,7 @@ func trigger_unit_ui_setup() -> void:
 	UnitUIManager3D.instance.setup_unit_ui(units)
 
 func test_equip_units() -> void:
-	var iteration_num: int = 1
+	#var iteration_num: int = 1
 	for unit: Unit in units:
 		var new_weapon: Weapon = sword_test.duplicate()
 		#new_weapon.name = new_weapon.name + " " + str(iteration_num)

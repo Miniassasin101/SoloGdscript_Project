@@ -1,4 +1,4 @@
-[gd_scene load_steps=84 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=109 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" uid="uid://dswgp2a8up16v" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" uid="uid://b268e884ur2c8" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -32,35 +32,58 @@
 [ext_resource type="Script" uid="uid://dqx7stk06etai" path="res://Hero_Game/Scenes/UILayer.gd" id="21_3ffgk"]
 [ext_resource type="Script" uid="uid://bd0s3lywx8lk3" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
 [ext_resource type="Resource" uid="uid://bytek5m52blwh" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BleedEffectResource.tres" id="21_kkt7y"]
+[ext_resource type="Material" uid="uid://4o6omd2mfl0" path="res://Hero_Game/Art/Materials/CelShadedMats/ItemMats/RedCelShadedMat.tres" id="21_kmaem"]
 [ext_resource type="Script" uid="uid://dhballfce82fs" path="res://Hero_Game/Scenes/BookKeepingSystem.gd" id="21_ktx83"]
 [ext_resource type="Resource" uid="uid://dst4i0rqw46ng" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BlindOpponentEffectResource.tres" id="22_6ytw6"]
 [ext_resource type="PackedScene" uid="uid://bs8kc22xgwd2d" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.tscn" id="22_67ysf"]
+[ext_resource type="Script" uid="uid://bvoxi6hq3h2y7" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="22_ttgb8"]
+[ext_resource type="Resource" uid="uid://b4cltjme3q4uh" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/SizeAttribute.tres" id="23_djdvf"]
 [ext_resource type="Resource" uid="uid://bo28spn03mllg" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BypassArmorEffectResource.tres" id="23_xra60"]
+[ext_resource type="Resource" uid="uid://ctkldarvpfe18" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/EnduranceAttribute.tres" id="24_14qle"]
 [ext_resource type="Resource" uid="uid://bhs3peayb8jf2" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ChooseLocationEffectResource.tres" id="24_h0tua"]
+[ext_resource type="Resource" uid="uid://d3uqoh4pmuljd" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/PowerAttribute.tres" id="25_gmse0"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
 [ext_resource type="Resource" uid="uid://cb2opgmh0nqyu" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/CircumventParryEffectResource.tres" id="26_c6h62"]
+[ext_resource type="Resource" uid="uid://cmi2ppcs6qo5j" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/DexterityAttribute.tres" id="26_e32bf"]
+[ext_resource type="Resource" uid="uid://lwvvfaivys7c" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/MindAttribute.tres" id="27_3d1mt"]
 [ext_resource type="Resource" uid="uid://cjw50deqfhini" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/DamageWeaponEffectResource.tres" id="27_ivlyn"]
 [ext_resource type="PackedScene" uid="uid://bf575s2vrxvov" path="res://Hero_Game/Prefabs/UI_Prefabs/TextController.tscn" id="27_khu5d"]
 [ext_resource type="PackedScene" uid="uid://bc3pj0ahlf2m6" path="res://Hero_Game/Prefabs/UI_Prefabs/DroppablePanelUI.tscn" id="27_naquh"]
 [ext_resource type="PackedScene" uid="uid://8oord2o1icck" path="res://Hero_Game/Prefabs/UI_Prefabs/CharacterLogQueue.tscn" id="28_6i1gy"]
+[ext_resource type="Resource" uid="uid://b5bfbjeaatofm" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/WillAttribute.tres" id="28_h40sd"]
 [ext_resource type="PackedScene" uid="uid://4uwpx7r25fdg" path="res://Hero_Game/Prefabs/UI_Prefabs/SpecialEffectsDragContainer.tscn" id="29_725ge"]
 [ext_resource type="Script" uid="uid://d35gfk2fl3xde" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlotController.gd" id="29_cc03n"]
+[ext_resource type="Resource" uid="uid://dcehp7j7jdea6" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/PresenceAttribute.tres" id="29_e01xw"]
 [ext_resource type="Resource" uid="uid://b34sriadfy7xr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/DisarmOpponentEffectResource.tres" id="29_itb1b"]
 [ext_resource type="Resource" uid="uid://dlukj3jgipdjr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/EnhanceParryEffect.tres" id="30_hdg1r"]
+[ext_resource type="Resource" uid="uid://dg56ydxgon6r2" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/MovementRateAttribute.tres" id="30_iery3"]
+[ext_resource type="Resource" uid="uid://c3sphq6y72h38" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ActionPointsAttribute.tres" id="31_02vfd"]
 [ext_resource type="Resource" uid="uid://b7wui72oveng1" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ForceFailureEffectResource.tres" id="31_4yuhs"]
 [ext_resource type="Resource" uid="uid://cqqeph0m4h0ka" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ImpaleEffectResource.tres" id="32_npgv8"]
+[ext_resource type="Resource" uid="uid://bdvtscqbo08no" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/CombatSkillAttribute.tres" id="32_u5m4l"]
 [ext_resource type="Resource" uid="uid://bspw2bpavewje" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MaximizeDamageEffectResource.tres" id="33_mywpm"]
+[ext_resource type="Resource" uid="uid://cuoutloeyr4rk" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/EvadeSkillAttribute.tres" id="33_rks31"]
 [ext_resource type="Resource" uid="uid://je1rhqiebrcx" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/OverextendOpponentEffectResource.tres" id="34_lu63c"]
+[ext_resource type="Resource" uid="uid://dy71yfbxd4qvx" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/FortitudeSkillAttribute.tres" id="34_nm3hw"]
+[ext_resource type="Resource" uid="uid://v2bmbg3bnu2u" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/FirstAidSkillAttribute.tres" id="35_46epl"]
 [ext_resource type="Shader" uid="uid://bsom40l4vw4gh" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="35_n58oi"]
 [ext_resource type="Resource" uid="uid://cirmysa48hhcs" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/PressAdvantageEffectResource.tres" id="35_t123n"]
 [ext_resource type="PackedScene" uid="uid://cvuecvfamgpwe" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonUI.tscn" id="36_53e25"]
+[ext_resource type="Resource" uid="uid://dhycuxfmfj34a" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Derived/HealthAttribute.tres" id="36_dlnf1"]
 [ext_resource type="Resource" uid="uid://tiwgsot8o62f" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BashEffectResource.tres" id="36_puq5n"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_Grid_08.png" id="36_vdge6"]
+[ext_resource type="Resource" uid="uid://dxsb2kexd664a" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Derived/InitiativeBonusAttribute.tres" id="37_6nfd7"]
 [ext_resource type="Resource" uid="uid://cqieibalk7a7b" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/WithdrawEffectResource.tres" id="37_c0lde"]
 [ext_resource type="Resource" uid="uid://bdjdjaquppxcv" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/StandFastEffectResource.tres" id="38_qso2c"]
+[ext_resource type="Resource" uid="uid://bcsymcrsnt8dg" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/DamageModifierAttribute.tres" id="38_rv7e5"]
+[ext_resource type="Resource" uid="uid://b1835bsxed8bt" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ExperienceModifierAttribute.tres" id="39_4elcw"]
 [ext_resource type="Resource" uid="uid://q3sk2uy7wd4u" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/FacingPenaltyConditionResource.tres" id="39_me7ee"]
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="39_yrlso"]
 [ext_resource type="Resource" uid="uid://d3yn60m635vma" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MarksmanEffectResource.tres" id="40_68vw7"]
+[ext_resource type="Resource" uid="uid://c564jeljvouh4" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ExperienceRollsAttribute.tres" id="40_n1hep"]
+[ext_resource type="Resource" uid="uid://ctx1x6455nyse" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/HealingRateAttribute.tres" id="41_7rgij"]
+[ext_resource type="Script" uid="uid://c4kj6f1xxvutq" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/HitLocationsAttribute.gd" id="42_ngpf3"]
+[ext_resource type="Script" uid="uid://dfv2ddkwom1fb" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/AttributesTable.gd" id="43_1xsnk"]
 [ext_resource type="Script" uid="uid://b4kcedpcju35b" path="res://Hero_Game/Scenes/UnitUIManager3d.gd" id="47_1nha0"]
 [ext_resource type="PackedScene" uid="uid://cbqua8yfarqi" path="res://Hero_Game/Prefabs/UI_Prefabs/SilhouetteUI3D.tscn" id="48_1dbid"]
 [ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
@@ -79,6 +102,18 @@ roll_required = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_owyi7"]
 material = ExtResource("5_y067e")
+
+[sub_resource type="Resource" id="Resource_plijg"]
+resource_local_to_scene = true
+script = ExtResource("43_1xsnk")
+attributes = Array[ExtResource("22_ttgb8")]([ExtResource("23_djdvf"), ExtResource("24_14qle"), ExtResource("25_gmse0"), ExtResource("26_e32bf"), ExtResource("27_3d1mt"), ExtResource("28_h40sd"), ExtResource("29_e01xw"), ExtResource("30_iery3"), ExtResource("31_02vfd"), ExtResource("32_u5m4l"), ExtResource("33_rks31"), ExtResource("34_nm3hw"), ExtResource("35_46epl"), ExtResource("36_dlnf1"), ExtResource("37_6nfd7"), ExtResource("38_rv7e5"), ExtResource("39_4elcw"), ExtResource("40_n1hep"), ExtResource("41_7rgij")])
+hit_locations = Array[ExtResource("42_ngpf3")]([])
+
+[sub_resource type="Resource" id="Resource_lvg8g"]
+resource_local_to_scene = true
+script = ExtResource("43_1xsnk")
+attributes = Array[ExtResource("22_ttgb8")]([ExtResource("23_djdvf"), ExtResource("24_14qle"), ExtResource("25_gmse0"), ExtResource("26_e32bf"), ExtResource("27_3d1mt"), ExtResource("28_h40sd"), ExtResource("29_e01xw"), ExtResource("30_iery3"), ExtResource("31_02vfd"), ExtResource("32_u5m4l"), ExtResource("33_rks31"), ExtResource("34_nm3hw"), ExtResource("35_46epl"), ExtResource("36_dlnf1"), ExtResource("37_6nfd7"), ExtResource("38_rv7e5"), ExtResource("39_4elcw"), ExtResource("40_n1hep"), ExtResource("41_7rgij")])
+hit_locations = Array[ExtResource("42_ngpf3")]([])
 
 [sub_resource type="Resource" id="Resource_c77yv"]
 script = ExtResource("18_hnk25")
@@ -175,6 +210,8 @@ size = Vector2(2, 2)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
+attacker_success_debug = true
+parry_fail_debug = true
 auto_equip_debug = true
 grid_dimensions = Vector2(13, 15)
 
@@ -291,23 +328,102 @@ unit_action_system = NodePath("../UnitActionSystem")
 sword_test = ExtResource("19_1dbid")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 4, 0, 18)
+transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 4, 0, 14)
 ui_name = "Blue"
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(1, 0, 3.49691e-07, 0, 1, 0, -3.49691e-07, 0, 1, 4, 0, 6)
+transform = Transform3D(1, 0, 3.49691e-07, 0, 1, 0, -3.49691e-07, 0, 1, 4, 0, 12)
 ui_name = "Green"
 is_enemy = true
 
+[node name="RightHandShootPointAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="1"]
+transform = Transform3D(0.629517, 0.0941694, -0.771259, -0.666431, 0.575779, -0.473653, 0.399471, 0.812164, 0.425221, 0.281886, 1.16981, 0.245966)
+visible = false
+
+[node name="RightHandEquipmentSocketBone" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="2"]
+transform = Transform3D(-0.534211, 0.529787, 0.658744, 0.809609, 0.544833, 0.21838, -0.243211, 0.649986, -0.719977, -0.141067, 1.25113, 0.384537)
+
+[node name="LeftHandEquipmentSocketBone" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="3"]
+transform = Transform3D(0.629517, 0.0941694, -0.771259, -0.666431, 0.575779, -0.473653, 0.399471, 0.812164, 0.425221, 0.281886, 1.16981, 0.245966)
+
+[node name="ChestAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="4"]
+transform = Transform3D(0.831285, 0.00260411, 0.555841, 0.0016305, 0.999973, -0.00712333, -0.555844, 0.0068278, 0.831258, -5.87842e-05, 1.05302, 0.00237936)
+
+[node name="HeadAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="5"]
+transform = Transform3D(0.997666, 0.0325773, 0.0600095, -0.0272396, 0.995773, -0.0877114, -0.0626133, 0.085872, 0.994337, 0.00638913, 1.51267, 0.0177259)
+
+[node name="AbdomenAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="6"]
+transform = Transform3D(0.960919, 0.000715894, 0.299937, 0.00248677, 0.986795, -0.0104177, -0.299928, 0.0104753, 0.960863, -1.54783e-05, 0.928485, -4.06504e-05)
+
+[node name="RightArmAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="7"]
+transform = Transform3D(-0.662545, 0.675143, 0.324371, 0.72598, 0.472235, 0.499947, 0.184356, 0.566724, -0.803017, -0.350612, 1.10456, 0.208642)
+
+[node name="LeftArmAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="8"]
+transform = Transform3D(-0.764224, -0.0963099, -0.637719, -0.638308, 0.254493, 0.726495, 0.0923263, 0.962267, -0.255965, 0.311778, 1.09082, -0.0526948)
+
+[node name="RightLegAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="9"]
+transform = Transform3D(0.996983, -0.0712888, -0.0306935, -0.075368, -0.983676, -0.163408, -0.0185432, 0.165229, -0.986081, -0.152418, 0.512016, 0.150009)
+
+[node name="LeftLegAttachment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="10"]
+transform = Transform3D(0.686464, 0.00521837, -0.727145, 0.184987, -0.968329, 0.167688, -0.703241, -0.249624, -0.665688, 0.219098, 0.506319, -0.0485727)
+
+[node name="Hair Tufts_001" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="18"]
+surface_material_override/0 = ExtResource("21_kmaem")
+
+[node name="FacingArrow" parent="UnitManager/DawnUnit2" index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 12)
+
+[node name="GameplayAttributeMap" parent="UnitManager/DawnUnit2" index="8"]
+attributes_table = SubResource("Resource_plijg")
+
 [node name="DawnUnit4" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 2, 0, 6)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2, 0, 14)
 ui_name = "Yellow"
 is_enemy = true
 
 [node name="DawnUnit5" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 6, 0, 6)
+transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 2, 0, 8)
 ui_name = "Red"
 is_enemy = true
+
+[node name="RightHandShootPointAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="1"]
+transform = Transform3D(0.629517, 0.0941694, -0.771259, -0.666431, 0.575779, -0.473653, 0.399471, 0.812164, 0.425221, 0.281886, 1.16981, 0.245966)
+
+[node name="RightHandEquipmentSocketBone" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="2"]
+transform = Transform3D(-0.534211, 0.529787, 0.658744, 0.809609, 0.544833, 0.21838, -0.243211, 0.649986, -0.719977, -0.141067, 1.25113, 0.384537)
+
+[node name="LeftHandEquipmentSocketBone" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="3"]
+transform = Transform3D(0.629517, 0.0941694, -0.771259, -0.666431, 0.575779, -0.473653, 0.399471, 0.812164, 0.425221, 0.281886, 1.16981, 0.245966)
+
+[node name="ChestAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="4"]
+transform = Transform3D(0.831285, 0.00260411, 0.555841, 0.0016305, 0.999973, -0.00712333, -0.555844, 0.0068278, 0.831258, -5.87842e-05, 1.05302, 0.00237936)
+
+[node name="HeadAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="5"]
+transform = Transform3D(0.997666, 0.0325773, 0.0600095, -0.0272396, 0.995773, -0.0877114, -0.0626133, 0.085872, 0.994337, 0.00638913, 1.51267, 0.0177259)
+
+[node name="AbdomenAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="6"]
+transform = Transform3D(0.960919, 0.000715894, 0.299937, 0.00248677, 0.986795, -0.0104177, -0.299928, 0.0104753, 0.960863, -1.54783e-05, 0.928485, -4.06504e-05)
+
+[node name="RightArmAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="7"]
+transform = Transform3D(-0.662545, 0.675143, 0.324371, 0.72598, 0.472235, 0.499947, 0.184356, 0.566724, -0.803017, -0.350612, 1.10456, 0.208642)
+
+[node name="LeftArmAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="8"]
+transform = Transform3D(-0.764224, -0.0963099, -0.637719, -0.638308, 0.254493, 0.726495, 0.0923263, 0.962267, -0.255965, 0.311778, 1.09082, -0.0526948)
+
+[node name="RightLegAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="9"]
+transform = Transform3D(0.996983, -0.0712888, -0.0306935, -0.075368, -0.983676, -0.163408, -0.0185432, 0.165229, -0.986081, -0.152418, 0.512016, 0.150009)
+
+[node name="LeftLegAttachment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="10"]
+transform = Transform3D(0.686464, 0.00521837, -0.727145, 0.184987, -0.968329, 0.167688, -0.703241, -0.249624, -0.665688, 0.219098, 0.506319, -0.0485727)
+
+[node name="Hair Tufts_001" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="18"]
+surface_material_override/0 = ExtResource("21_kmaem")
+
+[node name="FacingArrow" parent="UnitManager/DawnUnit5" index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 8)
+
+[node name="GameplayAttributeMap" parent="UnitManager/DawnUnit5" index="8"]
+attributes_table = SubResource("Resource_lvg8g")
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
 script = ExtResource("6_rwbm0")
@@ -370,7 +486,7 @@ text_controller_scene = ExtResource("27_khu5d")
 character_log_queue_scene = ExtResource("28_6i1gy")
 unit_action_system_ui = NodePath("UnitActionSystemUI")
 
-[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system_ui", "action_button_container", "reaction_button_container", "gait_button_container", "dynamic_button_picker", "special_effect_container", "selected_special_effect_container", "mouse_event_droppable_controller", "ability_points_text")]
+[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system_ui", "action_button_container", "reaction_button_container", "gait_button_container", "dynamic_button_picker", "dynamic_button_container", "special_effect_container", "selected_special_effect_container", "mouse_event_droppable_controller", "ability_points_text")]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -392,6 +508,7 @@ action_button_container = NodePath("ActionButtonsContainer")
 reaction_button_container = NodePath("ReactionButtonsContainer")
 gait_button_container = NodePath("GaitButtonsContainer")
 dynamic_button_picker = NodePath("DynamicButtonPicker")
+dynamic_button_container = NodePath("DynamicButtonsContainer")
 special_effect_container = NodePath("MouseEventDroppableSlotController/SpecialEffectContainer")
 selected_special_effect_container = NodePath("MouseEventDroppableSlotController/SelectedSpecialEffectContainer")
 mouse_event_droppable_controller = NodePath("MouseEventDroppableSlotController")
@@ -558,7 +675,12 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_cbngh")
 
 [node name="DynamicButtonPicker" parent="UILayer/UnitActionSystemUI" instance=ExtResource("39_yrlso")]
-visible = false
+transparent_bg = true
+position = Vector2i(513, 356)
+size = Vector2i(124, 100)
+borderless = true
+transparent = true
+max_size = Vector2i(450, 100)
 
 [node name="TurnSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system", "combat_system", "end_turn_container", "end_turn_button", "end_phase_container", "end_phase_button", "turn_phase_label", "round_counter_label", "cycle_counter_label", "movement_gait_label", "enemy_turn_container")]
 layout_mode = 3
@@ -685,14 +807,17 @@ text = "END TURN"
 
 [node name="EndActionPhaseContainer" type="PanelContainer" parent="UILayer/TurnSystemUI"]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -120.0
-offset_top = 17.0
-offset_right = -24.0
-offset_bottom = 54.0
-grow_horizontal = 0
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 168.0
+offset_top = -166.0
+offset_right = 264.0
+offset_bottom = -129.0
+grow_horizontal = 2
+grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
@@ -779,7 +904,7 @@ theme_override_constants/margin_bottom = 2
 [node name="UnitStatsContainer" type="VBoxContainer" parent="UILayer/UnitStatsUI/UnitStatsContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UILayer"]
+[node name="FPSLabel" type="Label" parent="UILayer"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -810,3 +935,6 @@ mesh = SubResource("QuadMesh_bteft")
 [connection signal="pressed" from="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController/ConfirmEffectButton" to="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController" method="_on_confirm_effect_button_pressed"]
 [connection signal="pressed" from="UILayer/TurnSystemUI/EndTurnContainer/MarginContainer/EndTurnButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
 [connection signal="pressed" from="UILayer/TurnSystemUI/EndActionPhaseContainer/MarginContainer/EndPhaseButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
+
+[editable path="UnitManager/DawnUnit2"]
+[editable path="UnitManager/DawnUnit5"]

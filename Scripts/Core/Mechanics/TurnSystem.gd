@@ -90,6 +90,8 @@ func _compare_initiative(a, b) -> int:
 ## This is the first function that is called when combat begins. Will return with an error if initiative hasnt been rolled
 ## Likely it should also probably trigger initiative at the same time.
 func start_combat() -> void:
+	if combat_started == true:
+		return
 	if initiative_order.is_empty():
 		push_error("No units in initiative")
 		return

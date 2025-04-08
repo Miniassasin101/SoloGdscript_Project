@@ -112,12 +112,19 @@ func modify_condition_given_conditions(condition: Condition) -> void:
 
 func add_condition(condition: Condition) -> bool:
 	if condition != null:
-		if !has_condition_by_condition(condition):
-			# Allow existing conditions to modify the new condition
+		# Look for an existing condition with the same identifier (for example, ui_name).
+		var existing = get_condition_by_name(condition.ui_name)
+		if existing:
+			# Let the existing condition handle merging.
+			existing.merge_with(condition)
+			return true
+		else:
+			# Allow existing conditions to modify the new condition.
 			modify_condition_given_conditions(condition)
 			conditions.append(condition)
 			return true
 	return false
+
 
 
 func remove_condition(condition: Condition) -> void:

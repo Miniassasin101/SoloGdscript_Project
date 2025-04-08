@@ -45,6 +45,16 @@ func _ready() -> void:
 	Console.add_command("set_attribute", console_set_attribute, ["unit_name", "attribute_name", "new_value"], 3, "Sets the specified attribute's current value on a unit.")
 	Console.add_command("apply_attribute_effect", console_apply_attribute_effect, ["unit_name", "attribute_name", "effect_value"], 3, "Applies an attribute effect on a unit's attribute map.")
 	Console.add_command("apply_damage", console_apply_damage, ["unit_name", "damage", "body_part_ui_name"], 3, "Applies a damage effect to a unit's health and spawns labels. Damage should be a positive number.")
+	Console.add_command("add_condition", console_add_condition, ["unit_identifier", "condition_resource_name"], 2, "Adds a condition resource to a unit (loads from ConditionResources folder).")
+	Console.add_command("remove_condition", console_remove_condition, ["unit_identifier", "condition_name"], 2, "Removes a condition (by name) from a unit.")
+	Console.add_command("apply_condition", console_apply_condition, ["unit_identifier", "condition_name"], 2, "Calls apply on the condition (by name) for a unit.")
+	Console.add_command("find_path", console_find_path, ["start_x", "start_z", "end_x", "end_z"], 4, "Finds and prints a path from a start grid position to an end grid position.")
+	Console.add_command("create_engagement", console_create_engagement, ["unit_a", "unit_b"], 2, "Creates an engagement between two units.")
+	Console.add_command("remove_engagement", console_remove_engagement, ["unit_a", "unit_b"], 2, "Removes the engagement between two units.")
+   
+
+
+
 
 
 
@@ -355,6 +365,130 @@ func console_apply_damage(unit_name: String, damage_str: String, body_part_ui_na
 
 	Console.print_info("Applied damage effect of " + damage_str + " to unit '" + unit_name + "' on part '" + body_part_ui_name + "'.")
 
+func console_add_condition(unit_identifier: String, condition_resource_name: String) -> void:
+	# Find the unit from UnitManager (using name or ui_name).
+	var unit: Unit = UnitManager.instance.get_unit_by_name(unit_identifier)
+	if unit == null:
+		Console.print_error("Unit not found: " + unit_identifier)
+		return
+	
+	# Build the file path for the condition resource.
+	var condition_path: String = "res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/%s.tres" % condition_resource_name
+	if not ResourceLoader.exists(condition_path):
+		Console.print_error("Condition resource not found at path: " + condition_path)
+		return
+	
+	var condition_resource = load(condition_path)
+	if condition_resource == null:
+		Console.print_error("Failed to load condition resource: " + condition_resource_name)
+		return
+	
+	# Create a new instance of the condition (duplicate to avoid reference issues).
+	var condition_instance: Condition = condition_resource.duplicate() as Condition
+	if condition_instance == null:
+		Console.print_error("Failed to instantiate condition: " + condition_resource_name)
+		return
+	
+	# Add the condition via the conditions manager.
+	if unit.conditions_manager.add_condition(condition_instance):
+		Console.print_line("Added condition '" + condition_instance.ui_name + "' to unit '" + unit_identifier + "'.")
+	else:
+		Console.print_error("Could not add condition; it may already be on the unit '" + unit_identifier + "'.")
+
+func console_remove_condition(unit_identifier: String, condition_name: String) -> void:
+	# Find the target unit.
+	var unit: Unit = UnitManager.instance.get_unit_by_name(unit_identifier)
+	if unit == null:
+		Console.print_error("Unit not found: " + unit_identifier)
+		return
+	
+	# Look up the condition on the unit.
+	var cond: Condition = unit.conditions_manager.get_condition_by_name(condition_name)
+	if cond == null:
+		Console.print_error("Condition '" + condition_name + "' not found on unit '" + unit_identifier + "'.")
+		return
+	
+	# Remove the condition.
+	unit.conditions_manager.remove_condition(cond)
+	Console.print_line("Removed condition '" + condition_name + "' from unit '" + unit_identifier + "'.")
+
+func console_apply_condition(unit_identifier: String, condition_name: String) -> void:
+	# Find the target unit.
+	var unit: Unit = UnitManager.instance.get_unit_by_name(unit_identifier)
+	if unit == null:
+		Console.print_error("Unit not found: " + unit_identifier)
+		return
+	
+	# Use the ConditionsManager method to apply the condition with this name.
+	unit.conditions_manager.apply_condition_by_name(condition_name)
+	Console.print_line("Attempted to apply condition '" + condition_name + "' on unit '" + unit_identifier + "'.")
+
+func console_find_path(start_x: String, start_z: String, end_x: String, end_z: String) -> void:
+	# Convert the coordinates from strings to integers.
+	var sx: int = int(start_x)
+	var sz: int = int(start_z)
+	var ex: int = int(end_x)
+	var ez: int = int(end_z)
+	
+	# Create GridPosition objects (assuming GridPosition.new(x, z) exists).
+	var start_grid: GridPosition = GridPosition.new(sx, sz)
+	var end_grid: GridPosition = GridPosition.new(ex, ez)
+	
+	# Validate the grid positions.
+	if not LevelGrid.is_valid_grid_position(start_grid):
+		Console.print_error("Start grid position (" + str(sx) + ", " + str(sz) + ") is invalid.")
+		return
+	if not LevelGrid.is_valid_grid_position(end_grid):
+		Console.print_error("End grid position (" + str(ex) + ", " + str(ez) + ") is invalid.")
+		return
+	
+	# Find the path using your pathfinding node.
+	var path: Array = pathfinding.find_path(start_grid, end_grid)
+	
+	# Check if a path was found.
+	if path.is_empty():
+		Console.print_error("No path found from (" + str(sx) + ", " + str(sz) + ") to (" + str(ex) + ", " + str(ez) + ").")
+	else:
+		# Optionally, get the path cost.
+		var cost = pathfinding.get_path_cost(start_grid, end_grid)
+		Console.print_line("Path found from (" + str(sx) + ", " + str(sz) + ") to (" + str(ex) + ", " + str(ez) + ") with cost " + str(cost) + ":")
+		# Print each grid position along the path.
+		for grid_position in path:
+			Console.print_line(" -> " + grid_position.to_str())
+		GridSystemVisual.instance.update_grid_visual_pathfinding(path)
+
+func console_create_engagement(unit_a_identifier: String, unit_b_identifier: String) -> void:
+	# Find the units via UnitManager (by name or ui_name)
+	var unit_a: Unit = UnitManager.instance.get_unit_by_name(unit_a_identifier)
+	if unit_a == null:
+		Console.print_error("Unit not found: " + unit_a_identifier)
+		return
+
+	var unit_b: Unit = UnitManager.instance.get_unit_by_name(unit_b_identifier)
+	if unit_b == null:
+		Console.print_error("Unit not found: " + unit_b_identifier)
+		return
+
+	# Call the CombatSystem's add_engagement() function.
+	CombatSystem.instance.add_engagement(unit_a, unit_b)
+	Console.print_line("Engagement created between " + unit_a_identifier + " and " + unit_b_identifier)
+
+func console_remove_engagement(unit_a_identifier: String, unit_b_identifier: String) -> void:
+	# Look up the units via UnitManager.
+	var unit_a: Unit = UnitManager.instance.get_unit_by_name(unit_a_identifier)
+	if unit_a == null:
+		Console.print_error("Unit not found: " + unit_a_identifier)
+		return
+
+	var unit_b: Unit = UnitManager.instance.get_unit_by_name(unit_b_identifier)
+	if unit_b == null:
+		Console.print_error("Unit not found: " + unit_b_identifier)
+		return
+
+	# Call the CombatSystem's remove_engagement() method.
+	CombatSystem.instance.remove_engagement(unit_a, unit_b)
+	Console.print_line("Engagement removed between " + unit_a_identifier + " and " + unit_b_identifier)
+
 
 
 
@@ -366,35 +500,8 @@ func _process(_delta: float) -> void:
 	test_n()
 	test_c()
 	test_v()
-"""
-# Testing function to visualize the path when a test key is pressed.
-func test_pathfinding() -> void:
-	if Input.is_action_just_pressed("testkey_b"):
-		pathfinding.update_astar_walkable()
-		# Get the grid position that the mouse is hovering over.
-		var result = mouse_world.get_mouse_raycast_result("position")
-		
-		if result:
-			var hovered_grid_position = pathfinding.pathfinding_grid_system.get_grid_position(result)
-			
-			if hovered_grid_position != null:
-				# Find path from (0, 0) to the hovered grid position.
-				var start_grid_position: GridPosition
-				if unit_action_system.selected_unit:
-					start_grid_position = unit_action_system.selected_unit.get_grid_position()
-				elif start_grid_position == null:
-					start_grid_position = pathfinding.pathfinding_grid_system.get_grid_position_from_coords(0, 0)
-				var path = pathfinding.find_path(start_grid_position, hovered_grid_position)
-				var cost = pathfinding.get_path_cost(start_grid_position, hovered_grid_position)
-				# Print the path as a list of grid positions.
-				for grid_position in path:
-					pass
-				print("Size: " + str(path.size()))
-				print("Cost: " + str(cost))
-				
-				# Update the grid visual to show the path.
-				GridSystemVisual.instance.update_grid_visual_pathfinding(path)
-"""
+
+
 
 func get_all_weapon_names() -> PackedStringArray:
 	var dir := DirAccess.open("res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources")
@@ -589,7 +696,6 @@ func test_n() -> void:
 		TurnSystem.instance.start_combat()
 
 
-
 func test_v() -> void:
 	if Input.is_action_just_pressed("testkey_v"):
 		#remove_all_ap()
@@ -599,10 +705,9 @@ func test_v() -> void:
 		#create_engagement()
 		#apply_knockback()
 		#print_relative_position()
-		set_unit_part_color()
+		#set_unit_part_color()
 		#print_pascal()
 		pass
-
 
 
 func test_c() -> void:

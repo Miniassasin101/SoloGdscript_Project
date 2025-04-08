@@ -24,17 +24,17 @@ func try_activate(_event: ActivationEvent) -> void:
 			push_error("no unit: " + event.to_string())
 			end_ability(event)
 			return
-
+	"""
 	# Animation stand-in
 	var timer = Timer.new()
 	
 	timer.one_shot = true
 	timer.autostart = true
-	timer.wait_time = 0.5
+	timer.wait_time = 0.2
 	event.unit.add_child(timer)
-	await timer.timeout
+	#await timer.timeout
 	# FIXME: add an (await unit.animator.dither flourish animation)
-
+	"""
 
 	if can_end(event):
 		event.successful = true

@@ -40,7 +40,7 @@ func try_activate(_event: ActivationEvent) -> void:
 
 
 func reload() -> void:
-	var target_unit: Unit = event.unit
+	#var target_unit: Unit = event.unit
 	
 	unit.animator.play_animation_by_name(animation.resource_name)
 	

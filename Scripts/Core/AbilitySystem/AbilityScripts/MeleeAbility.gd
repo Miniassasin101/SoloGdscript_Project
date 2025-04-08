@@ -146,11 +146,31 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 			if targ_unit.is_enemy == _event.unit.is_enemy:
 				# If they're on the same team, skip.
 				continue
+			
+			if is_blocked_by_condition(_event):
+				continue
+
 
 			valid_grid_position_list.append(candidate_position)
 
 	return valid_grid_position_list
 
+func is_blocked_by_condition(_event: ActivationEvent) -> bool:
+	var event_unit: Unit = _event.unit
+	# Check all conditions on the target unit that might block an attack.
+	var is_blocked: bool = false
+	if event_unit.conditions_manager:
+		for condition in event_unit.conditions_manager.get_all_conditions():
+			# If the condition has any blocking_tags and its logic
+			# blocks targeting with this ability from this attacker,
+			# then skip this candidate.
+			if condition.blocks_targeting(self, _event):
+				is_blocked = true
+				break
+		# If any condition blocks the attack, skip this candidate.
+		if is_blocked:
+			return true
+	return false
 
 ##
 # Called by the system once the ability has completed all logic

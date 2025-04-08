@@ -151,7 +151,8 @@ func can_spend_ability_points_to_use_ability(ability: Ability) -> bool:
 	else:
 		return false
 
-
+func get_ability_points() -> int:
+	return int(attribute_map.get_attribute_by_name("action_points").current_value)
 
 func spend_ability_points(amount: int) -> void:
 	attribute_map.get_attribute_by_name("action_points").current_value -= amount

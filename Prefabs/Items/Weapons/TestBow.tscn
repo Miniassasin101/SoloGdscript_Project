@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=4 uid="uid://cnqkk453j17mw"]
 
-[ext_resource type="Material" uid="uid://cpccbvm86p68o" path="res://Hero_Game/Art/Materials/CelShadedMat.tres" id="2_rli8f"]
+[ext_resource type="Material" uid="uid://d18flcxrogort" path="res://Hero_Game/Art/Materials/CelShadedMats/GrayscaleCelShadedMat.tres" id="1_83rsd"]
 [ext_resource type="Animation" uid="uid://cn4hvpgttufwd" path="res://Hero_Game/Animations/ItemAnimations/WeaponAnimations/BowFire_001.res" id="3_o6m33"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mxl5b"]
@@ -665,7 +665,7 @@ bones/33/scale = Vector3(1, 1, 1)
 [node name="Bow_001" type="MeshInstance3D" parent="BowArmature_001/Skeleton3D"]
 mesh = SubResource("ArrayMesh_qlisn")
 skin = SubResource("Skin_hvnj5")
-surface_material_override/0 = ExtResource("2_rli8f")
+surface_material_override/0 = ExtResource("1_83rsd")
 
 [node name="ProjectilePoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0362496, 0)
