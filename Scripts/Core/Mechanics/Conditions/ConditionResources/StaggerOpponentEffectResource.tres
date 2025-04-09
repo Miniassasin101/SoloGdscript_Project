@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="StaggerOpponentEffect" load_steps=3 format=3 uid="uid://ycuthnbx4wcn"]
+
+[ext_resource type="Script" uid="uid://c0s6vy8gr65kg" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/StaggerOpponentEffect.gd" id="1_ki1ul"]
+[ext_resource type="Resource" uid="uid://bpp5ufeiq2jo8" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/StaggeredConditionResource.tres" id="2_v7d7r"]
+
+[resource]
+script = ExtResource("1_ki1ul")
+staggered_condition = ExtResource("2_v7d7r")
+ui_name = &"Stagger"
+activation_phase = 0
+activation_allowed = 2
+weapon_types_allowed = Array[String]([])
+stackable = false
+roll_required = 0
+metadata/_custom_type_script = "uid://c0s6vy8gr65kg"

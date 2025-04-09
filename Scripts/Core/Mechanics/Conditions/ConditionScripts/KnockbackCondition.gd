@@ -3,6 +3,8 @@ class_name KnockbackCondition
 
 @export var knockback_distance: int = 1  # Number of grid tiles to push back
 
+@export var staggered_condition: StaggeredCondition = null
+
 var knockback_direction = -1
 
 
@@ -45,7 +47,9 @@ func apply(unit: Unit) -> void:
 	var previous_gridpos: GridPosition = current_grid
 	
 	if path.is_empty():
-		Utilities.spawn_text_line(unit, "Fell Prone", Color.FIREBRICK)
+		var stag_cond: StaggeredCondition = staggered_condition.duplicate()
+		unit.conditions_manager.add_condition(stag_cond)
+		Utilities.spawn_text_line(unit, "Staggered", Color.FIREBRICK)
 		unit.conditions_manager.remove_condition(self)
 		return
 	
@@ -53,7 +57,9 @@ func apply(unit: Unit) -> void:
 		# FIXME: Add wall logic here later
 		if !Pathfinding.instance.is_walkable(gridpos) or LevelGrid.has_any_unit_on_grid_position(gridpos):
 			target_grid = previous_gridpos
-			Utilities.spawn_text_line(unit, "Fell Prone", Color.FIREBRICK)
+			var stag_cond: StaggeredCondition = staggered_condition.duplicate()
+			unit.conditions_manager.add_condition(stag_cond)
+			Utilities.spawn_text_line(unit, "Staggered", Color.FIREBRICK)
 			break
 		else:
 			previous_gridpos = gridpos
@@ -65,7 +71,7 @@ func apply(unit: Unit) -> void:
 		return
 	
 	# Get the target world position from the grid coordinates.
-	var target_world_pos = LevelGrid.get_world_position(target_grid)
+	var target_world_pos = LevelGrid.get_world_position(previous_gridpos)
 	
 	# Create a tween to animate the unit’s movement.
 	var tween = unit.get_tree().create_tween()

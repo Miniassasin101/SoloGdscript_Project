@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="KnockbackCondition" load_steps=2 format=3 uid="uid://b8e3xr8ip2oea"]
+[gd_resource type="Resource" script_class="KnockbackCondition" load_steps=3 format=3 uid="uid://b8e3xr8ip2oea"]
 
 [ext_resource type="Script" uid="uid://nkagyjfsmlqq" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionScripts/KnockbackCondition.gd" id="1_s8va1"]
+[ext_resource type="Resource" uid="uid://bpp5ufeiq2jo8" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/StaggeredConditionResource.tres" id="2_qxg25"]
 
 [resource]
 script = ExtResource("1_s8va1")
 knockback_distance = 2
+staggered_condition = ExtResource("2_qxg25")
 ui_name = "knockback"
 condition_level = 0
 application_interval = 0

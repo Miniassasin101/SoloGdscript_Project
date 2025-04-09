@@ -147,6 +147,8 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 				# If they're on the same team, skip.
 				continue
 			
+			_event.set_target_unit(targ_unit)
+			
 			if is_blocked_by_condition(_event):
 				continue
 

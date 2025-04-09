@@ -75,6 +75,7 @@ func _ready() -> void:
 
 
 
+#region Console Functions
 
 func console_spawn_label(unit_identifier: String, label_text: String = "Hello from console") -> void:
 	var found_unit: Unit = null
@@ -488,8 +489,10 @@ func console_remove_engagement(unit_a_identifier: String, unit_b_identifier: Str
 	# Call the CombatSystem's remove_engagement() method.
 	CombatSystem.instance.remove_engagement(unit_a, unit_b)
 	Console.print_line("Engagement removed between " + unit_a_identifier + " and " + unit_b_identifier)
+#endregion
 
 
+#region Non-Console-Functions
 
 
 
@@ -888,3 +891,4 @@ func apply_effect(att_name: String) -> void:
 	effect.attributes_affected.append(health_effect)
 	
 	unit_action_system.selected_unit.add_child(effect)
+#endregion

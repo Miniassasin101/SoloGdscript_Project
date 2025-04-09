@@ -1,4 +1,4 @@
-[gd_scene load_steps=103 format=4 uid="uid://ckh4ee1mgwjn4"]
+[gd_scene load_steps=104 format=4 uid="uid://ckh4ee1mgwjn4"]
 
 [ext_resource type="Script" uid="uid://cc6qiw2g3uffy" path="res://Hero_Game/Scripts/Core/Unit Scripts/Unit.gd" id="1_y16nl"]
 [ext_resource type="PackedScene" uid="uid://jpjrq5vek1s4" path="res://Hero_Game/Prefabs/VFX/DeathExplosionVFX.tscn" id="2_2wk6w"]
@@ -36,6 +36,7 @@
 [ext_resource type="Script" uid="uid://cj78elh2d8n2h" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/DabAbility.gd" id="34_nsbb5"]
 [ext_resource type="Script" uid="uid://dlexln1egnvp7" path="res://addons/godot_gameplay_systems/inventory_system/resources/item.gd" id="35_icsct"]
 [ext_resource type="Animation" uid="uid://ba5fxts0r7a0f" path="res://Hero_Game/Animations/AnimationImports_1/LeftDodge_001.res" id="36_0f5iq"]
+[ext_resource type="Resource" uid="uid://cko5dhgbeh30p" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/RegainFootingAbilityResource.tres" id="37_ubfnb"]
 [ext_resource type="Resource" uid="uid://d24lxlvd0ufdn" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/PickupAbilityResource.tres" id="37_wv3v5"]
 [ext_resource type="Animation" uid="uid://dvv8ewe2tgybq" path="res://Hero_Game/Animations/AnimationImports_1/BowReload_001.res" id="37_wxv4j"]
 [ext_resource type="Resource" uid="uid://bh2no358biy4l" path="res://Hero_Game/Scripts/Core/AbilitySystem/Ability Resources/ParryResource.tres" id="38_1p8t2"]
@@ -2335,7 +2336,7 @@ secondary_limit_angle = 0.668985
 secondary_damp_threshold = 1.0
 
 [node name="RightHandShootPointAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.034184, 0.678251, -0.734035, -0.208954, -0.713382, -0.668898, -0.977328, 0.176245, 0.117337, 0.531731, 0.824339, -0.0157991)
+transform = Transform3D(0.618573, 0.0902515, -0.780527, -0.673335, 0.572864, -0.467383, 0.404954, 0.814666, 0.415128, 0.280566, 1.16776, 0.24506)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -2343,7 +2344,7 @@ bone_idx = 42
 transform = Transform3D(1, -2.98023e-08, -2.98023e-08, 0, 1, 2.98023e-08, -7.45058e-08, 0, 1, 0.00524047, 0.0604797, 0.0204556)
 
 [node name="RightHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.0341839, -0.678251, 0.734035, 0.208954, -0.713382, -0.668898, 0.977328, 0.176245, 0.117337, -0.531731, 0.824339, -0.0157991)
+transform = Transform3D(-0.529679, 0.535636, 0.657673, 0.810896, 0.547194, 0.207425, -0.24877, 0.643173, -0.724183, -0.14158, 1.24947, 0.383525)
 bone_name = "DEF_hand.R.001"
 bone_idx = 68
 
@@ -2358,7 +2359,7 @@ equipment_path = NodePath("../../../../../Equipment")
 tags_to_display = Array[String](["right_hand"])
 
 [node name="LeftHandEquipmentSocketBone" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.034184, 0.678251, -0.734035, -0.208954, -0.713382, -0.668898, -0.977328, 0.176245, 0.117337, 0.531731, 0.824339, -0.0157991)
+transform = Transform3D(0.618573, 0.0902515, -0.780527, -0.673335, 0.572864, -0.467383, 0.404954, 0.814666, 0.415128, 0.280566, 1.16776, 0.24506)
 bone_name = "DEF_hand.L.001"
 bone_idx = 42
 
@@ -2373,7 +2374,7 @@ equipment_path = NodePath("../../../../../Equipment")
 tags_to_display = Array[String](["left_hand"])
 
 [node name="ChestAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(1, 0, 2.38419e-07, -1.42108e-14, 1, 5.96046e-08, -2.38419e-07, -5.96046e-08, 1, -4.23516e-22, 1.07653, -4.81953e-08)
+transform = Transform3D(0.831387, 0.00371564, 0.555681, 0.00232638, 0.999946, -0.0101669, -0.555689, 0.00974539, 0.831333, -8.33161e-05, 1.05052, 0.00337567)
 bone_name = "DEF_chest.001"
 bone_idx = 5
 
@@ -2381,21 +2382,21 @@ bone_idx = 5
 transform = Transform3D(1, -8.47033e-22, 0, 8.47033e-22, 1, -3.55271e-15, 0, 3.55271e-15, 1, -2.62553e-15, 0.184755, 1.10123e-08)
 
 [node name="HeadAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(1, 0, 2.38418e-07, -1.42108e-14, 1, 5.96046e-08, -2.38418e-07, -5.96046e-08, 1, -4.23516e-22, 1.53671, -7.56243e-08)
+transform = Transform3D(0.997495, 0.0345089, 0.0617519, -0.0286937, 0.995281, -0.0926977, -0.0646595, 0.0906936, 0.993778, 0.00704444, 1.51009, 0.0204672)
 bone_name = "DEF_head.001"
 bone_idx = 7
 
 [node name="HeadBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/HeadAttatchment"]
 
 [node name="AbdomenAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.950293, -5.96046e-08)
+transform = Transform3D(0.961802, 0.00101957, 0.306725, 0.00367318, 0.981105, -0.0149702, -0.306705, 0.0149473, 0.961686, -2.21981e-05, 0.926709, -5.82933e-05)
 bone_name = "DEF_spine.002"
 bone_idx = 169
 
 [node name="AbdomenBodyPartMarker" type="Marker3D" parent="Rig_001/Skeleton3D/AbdomenAttatchment"]
 
 [node name="RightArmAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.806763, -0.574244, 0.139203, 0.587217, -0.805376, 0.0809049, 0.0656514, 0.147013, 0.986953, -0.353502, 1.07431, -0.0614279)
+transform = Transform3D(-0.659389, 0.678312, 0.324188, 0.729443, 0.472858, 0.494285, 0.181985, 0.562403, -0.806588, -0.352109, 1.1027, 0.208971)
 bone_name = "DEF_forearm.R.001"
 bone_idx = 66
 
@@ -2403,7 +2404,7 @@ bone_idx = 66
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 
 [node name="LeftArmAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(-0.806763, 0.574244, -0.139203, -0.587217, -0.805376, 0.0809049, -0.0656514, 0.147013, 0.986953, 0.353502, 1.07431, -0.0614279)
+transform = Transform3D(-0.761123, -0.104694, -0.640102, -0.642639, 0.255294, 0.722385, 0.0877844, 0.961179, -0.261591, 0.31306, 1.08853, -0.0532629)
 bone_name = "DEF_forearm.L.001"
 bone_idx = 40
 
@@ -2411,7 +2412,7 @@ bone_idx = 40
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 
 [node name="RightLegAttatchment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.997709, -0.051234, -0.044183, -0.0495136, -0.998004, 0.0391894, -0.0461028, -0.0369119, -0.998254, -0.150853, 0.517519, 0.0140269)
+transform = Transform3D(0.996964, -0.0726658, -0.0279732, -0.0757158, -0.988542, -0.130579, -0.0181642, 0.132301, -0.991043, -0.151891, 0.513902, 0.162401)
 bone_name = "DEF.shin.R.001"
 bone_idx = 125
 
@@ -2419,7 +2420,7 @@ bone_idx = 125
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.2, 0)
 
 [node name="LeftLegAttachment" type="BoneAttachment3D" parent="Rig_001/Skeleton3D"]
-transform = Transform3D(0.997709, 0.0512339, 0.0441843, 0.0495136, -0.998004, 0.0391893, 0.046104, -0.0369117, -0.998254, 0.150853, 0.517519, 0.0140269)
+transform = Transform3D(0.686572, -0.00453143, -0.727047, 0.18487, -0.966026, 0.1806, -0.703165, -0.258404, -0.662409, 0.222771, 0.505449, -0.0452657)
 bone_name = "DEF.shin.L.001"
 bone_idx = 115
 
@@ -2599,7 +2600,7 @@ attributes_table = ExtResource("20_xrhce")
 [node name="AbilityContainer" type="Node" parent="."]
 script = ExtResource("22_250xw")
 gameplay_attribute_map_path = NodePath("../GameplayAttributeMap")
-abilities = Array[ExtResource("23_1urwx")]([ExtResource("24_6kacr"), ExtResource("25_33lcd"), ExtResource("27_lclct"), ExtResource("57_q5bk8"), SubResource("Resource_sefws"), ExtResource("38_1p8t2"), ExtResource("27_0f5iq"), ExtResource("39_1xl8t"), ExtResource("40_8r1ak"), ExtResource("37_wv3v5"), ExtResource("39_ku6yw"), ExtResource("40_10kvf"), ExtResource("38_xnfjd"), ExtResource("66_soida"), ExtResource("32_qle3s"), SubResource("Resource_cyj61"), SubResource("Resource_yhnmf"), SubResource("Resource_mlbtq")])
+abilities = Array[ExtResource("23_1urwx")]([ExtResource("24_6kacr"), ExtResource("25_33lcd"), ExtResource("27_lclct"), ExtResource("57_q5bk8"), SubResource("Resource_sefws"), ExtResource("38_1p8t2"), ExtResource("27_0f5iq"), ExtResource("39_1xl8t"), ExtResource("40_8r1ak"), ExtResource("37_wv3v5"), ExtResource("39_ku6yw"), ExtResource("40_10kvf"), ExtResource("37_ubfnb"), ExtResource("38_xnfjd"), ExtResource("66_soida"), ExtResource("32_qle3s"), SubResource("Resource_cyj61"), SubResource("Resource_yhnmf"), SubResource("Resource_mlbtq")])
 
 [node name="Body" type="Node" parent="."]
 script = ExtResource("29_f43xc")
