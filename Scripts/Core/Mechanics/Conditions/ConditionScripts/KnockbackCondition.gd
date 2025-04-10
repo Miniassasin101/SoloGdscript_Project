@@ -33,13 +33,13 @@ func apply(unit: Unit) -> void:
 	)
 	
 	# Check if the target grid is valid and not occupied by an impassable obstacle.
-	if !LevelGrid.is_valid_grid_position(target_grid) or \
-	LevelGrid.has_any_unit_on_grid_position(target_grid):
-		# If blocked, you might want the unit to fall prone instead.
-		Utilities.spawn_text_line(unit, "Fell Prone", Color.FIREBRICK)
-		# (Insert prone-handling logic here, e.g. unit.fall_prone())
-		unit.conditions_manager.remove_condition(self)
-		return
+	#if !LevelGrid.is_valid_grid_position(target_grid) or \
+	#LevelGrid.has_any_unit_on_grid_position(target_grid):
+	#	# If blocked, you might want the unit to fall prone instead.
+	#	Utilities.spawn_text_line(unit, "Fell Prone", Color.FIREBRICK)
+	#	# (Insert prone-handling logic here, e.g. unit.fall_prone())
+	#	unit.conditions_manager.remove_condition(self)
+	#	return
 	
 	
 	var path: Array[GridPosition] = Pathfinding.instance.find_path_ignoring_obstacles(current_grid, target_grid)

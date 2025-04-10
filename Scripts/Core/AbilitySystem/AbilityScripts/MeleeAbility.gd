@@ -59,7 +59,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	if not unit or not target_position:
 		return
 	
-	target_unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
+	target_unit = LevelGrid.get_unit_at_grid_position(target_position)
 
 	event.set_target_unit(target_unit)
 

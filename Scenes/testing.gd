@@ -21,7 +21,6 @@ var timescalebool: bool = false
 
 func _ready() -> void:
 	Console.add_command("hello", console_hello, 0, 0, "Prints Hello")
-	Console.add_command("trigger_camera_shake", trigger_camera_shake)
 	Console.add_command("spawn_label", console_spawn_label, ["unit_identifier", "label_text"], 1, "Spawns a text label on a unit by its ui_name or name. Use one parameter for the identifier and optionally a second for the label text.")
 	Console.add_command("move_unit", console_move_unit, ["unit_identifier", "x", "z"], 3, "Moves the unit with the given identifier to the specified grid position (x, z)")
 	Console.add_command("reload_scene", console_reload_scene, 0, 0, "Reloads the currently active scene.")
@@ -51,7 +50,8 @@ func _ready() -> void:
 	Console.add_command("find_path", console_find_path, ["start_x", "start_z", "end_x", "end_z"], 4, "Finds and prints a path from a start grid position to an end grid position.")
 	Console.add_command("create_engagement", console_create_engagement, ["unit_a", "unit_b"], 2, "Creates an engagement between two units.")
 	Console.add_command("remove_engagement", console_remove_engagement, ["unit_a", "unit_b"], 2, "Removes the engagement between two units.")
-   
+	Console.add_command("set_timescale", console_set_timescale, ["value"], 1, "Sets the game time scale (e.g., 2.0 runs twice as fast, 0.5 runs slower).")
+
 
 
 
@@ -76,6 +76,9 @@ func _ready() -> void:
 
 
 #region Console Functions
+
+func console_hello() -> void:
+	print_debug("Hello!")
 
 func console_spawn_label(unit_identifier: String, label_text: String = "Hello from console") -> void:
 	var found_unit: Unit = null
@@ -489,8 +492,16 @@ func console_remove_engagement(unit_a_identifier: String, unit_b_identifier: Str
 	# Call the CombatSystem's remove_engagement() method.
 	CombatSystem.instance.remove_engagement(unit_a, unit_b)
 	Console.print_line("Engagement removed between " + unit_a_identifier + " and " + unit_b_identifier)
-#endregion
 
+func console_set_timescale(value_str: String) -> void:
+	var value: float = float(value_str)
+	if value <= 0:
+		Console.print_error("Time scale must be greater than 0.")
+		return
+	Engine.time_scale = value
+	Console.print_info("Engine time scale set to " + str(value))
+
+#endregion
 
 #region Non-Console-Functions
 
@@ -547,17 +558,11 @@ func handle_right_mouse_click() -> void:
 		#set_facing()
 		pass
 
-func console_hello() -> void:
-	print_debug("Hello!")
 
-func set_facing() -> void:
-	unit_1.set_facing()
 
-func turn_unit_towards_facing() -> void:
-	unit_1.animator.rotate_unit_towards_facing(0)
-	unit_1.facing = 0
-	await get_tree().create_timer(2.5).timeout
-	print_debug(unit_1.facing)
+
+
+
 
 
 
@@ -603,21 +608,10 @@ func make_cone_tiles_red() -> void:
 	testbool = true
 
 
-func toggle_look_at_unit() -> void:
-	var result = mouse_world.get_mouse_raycast_result("position")
-	var in_unit: Unit = LevelGrid.get_unit_at_grid_position(pathfinding.pathfinding_grid_system.get_grid_position(result))
-	if unit_1.animator.is_looking:
-		unit_1.animator.look_at_toggle()
-	if in_unit and in_unit != unit_1:
-		unit_1.animator.look_at_toggle(in_unit)
 
 
-func trigger_camera_shake() -> void:
-	var strength = 0.2 # the maximum shake strenght. The higher, the messier
-	var shake_time = 0.2 # how much it will last
-	var shake_frequency = 150 # will apply 250 shakes per `shake_time`
 
-	CameraShake.instance.shake(strength, shake_time, shake_frequency)
+
 
 func trigger_attack_anim() -> void:
 	var root: AnimationNodeStateMachine = UnitActionSystem.instance.selected_unit.animator.animator_tree.tree_root
@@ -632,11 +626,7 @@ func trigger_attack_anim() -> void:
 	print("New Animation: ", animation)
 
 
-func toggle_sword_hold():
-	var units: Array[Unit] = UnitManager.instance.units
-	for in_unit: Unit in units:
-		in_unit.holding_weapon = !in_unit.holding_weapon
-		in_unit.animator.weapon_setup(in_unit.holding_weapon)
+
 
 func toggle_difficult_terrain() -> void:
 	# Get the grid position under the mouse
@@ -701,47 +691,24 @@ func test_n() -> void:
 
 func test_v() -> void:
 	if Input.is_action_just_pressed("testkey_v"):
-		#remove_all_ap()
-		#add_armor()
-		#play_weapon_spin_anim()
-		#drop_equipped_weapon()
-		#create_engagement()
-		#apply_knockback()
-		#print_relative_position()
-		#set_unit_part_color()
-		#print_pascal()
+
 		pass
 
 
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
 		open_character_sheet()
-		#open_special_effect_buttons()
-		#print_active_special_effects()
-		#spawn_text_label()
-		#flash()
-		#flash_on_equipped_weapon()
-		#print_conditions()
-		#print_situational_modifier_attribute()
-		#equip_weapon_on_ground()
-		#spawn_text_at_bodypart()
-		#apply_condition()
+
 		pass
 
 
-func print_pascal() -> void:
-	var pasc: String = "Left Leg".to_pascal_case()
-	print_debug(pasc)
-
-func set_unit_part_color() -> void:
-	#UnitUIManager3D.instance.set_unit_part_red(unit, "LeftArm")
-	UnitUIManager3D.instance.set_unit_part_blue(unit_1, "RightLeg")
 
 
-func select_unit() -> Unit:
-	var pos: GridPosition = await UnitActionSystem.instance.handle_ability_sub_gridpos_choice(UnitManager.instance.get_all_unit_positions())
-	return LevelGrid.get_unit_at_grid_position(pos)
 
+
+
+
+""" Relative Position Function
 func print_relative_position() -> void:
 	var u_1: Unit = await select_unit()
 	var u_2: Unit = await select_unit()
@@ -759,91 +726,9 @@ func print_relative_position() -> void:
 			print_debug(u_2.ui_name, " is to the right of ", u_1.ui_name)
 		Utilities.RelativePosition.UNKNOWN:
 			print_debug(u_2.ui_name, " is in an unknown position relative to ", u_1.ui_name)
-
+"""
 	
 
-
-func apply_knockback() -> void:
-	var knock_cond: KnockbackCondition = preload("res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/KnockbackConditionResource.tres")
-	unit_1.conditions_manager.add_condition(knock_cond) 
-		
-	knock_cond.apply(unit_1)
-
-func create_engagement() -> void:
-	if unit_1 and unit_2:
-		var engagement: Engagement = Engagement.new(unit_1, unit_2)
-		engagement.initialize_line(self)
-
-func apply_condition() -> void:
-	unit_1.conditions_manager.apply_condition_by_name("impaled")
-
-
-func spawn_text_at_bodypart() -> void:
-	var body_part: BodyPart = unit_1.body._find_part_by_name("leg_left")
-	var body_part_pos: Vector3 = body_part.get_body_part_marker_position()
-	Utilities.spawn_text_line(unit_1, body_part.part_ui_name, Color.ALICE_BLUE, 1.0, body_part_pos)
-
-func drop_equipped_weapon() -> void:
-	ObjectManager.instance.drop_item_in_world(unit_1)
-
-func equip_weapon_on_ground() -> void:
-	var gridobj: GridObject = LevelGrid.grid_system.get_grid_object(unit_1.get_grid_position())
-
-	for item in gridobj.item_list:
-		if item is Weapon:
-			ObjectManager.instance.equip_item(unit_1, item)
-			return
-
-
-
-
-func play_weapon_spin_anim() -> void:
-	var weapon: Weapon = unit_1.equipment.get_equipped_weapon()
-	var weapon_visual: ItemVisual = weapon.get_item_visual()
-	weapon_visual.play_animation("ItemSpin", 3.0)
-
-
-
-func print_situational_modifier_attribute() -> void:
-	print(unit_1.get_attribute_after_sit_mod("evade_skill"))
-
-func add_armor() -> void:
-	var units: Array[Unit] = UnitManager.instance.get_all_units()
-	for u in units:
-		u.body.set_all_part_armor(100)
-
-func remove_all_ap() -> void:
-	var units: Array[Unit] = UnitManager.instance.get_all_units()
-	for u in units:
-		u.spend_all_ability_points()
-
-func print_conditions() -> void:
-	for condition in unit_1.conditions_manager.get_all_conditions():
-		print("Condition: ", condition.ui_name)
-
-func flash_on_equipped_weapon() -> void:
-	Utilities.flash_color_on_mesh(unit_1.get_equipped_weapon().get_object() as MeshInstance3D, Color.CRIMSON)
-
-func flash() -> void:
-	unit_1.animator.flash_color(Color.YELLOW, 5.0)
-	await get_tree().create_timer(3.0).timeout
-	unit_1.animator.flash_color(Color.REBECCA_PURPLE)
-	await get_tree().create_timer(0.6).timeout
-	unit_1.animator.flash_color(Color.BLACK)
-	await get_tree().create_timer(0.6).timeout
-	unit_1.animator.flash_color(Color.MAGENTA)
-	
-
-#	unit.animator.flash_red()
-#	unit.animator.trigger_camera_shake_large()
-
-
-func spawn_text_label() -> void:
-	Utilities.spawn_text_line(unit_1, "Testing, Testing, 123", Color.FOREST_GREEN)
-	await get_tree().create_timer(1.0).timeout
-	Utilities.spawn_text_line(unit_1, "Testing, Testing, 123", Color.CRIMSON)
-	await get_tree().create_timer(1.0).timeout
-	Utilities.spawn_text_line(unit_1, "Testing, Testing, 123")
 
 func test_shift_c() -> void:
 	if Input.is_action_just_pressed("testkey_shift_c"):
@@ -877,18 +762,5 @@ func open_character_sheet() -> void:
 		# Emit your signal passing in the unit reference
 		SignalBus.emit_signal("open_character_sheet", hovered_unit)
 
-func apply_effect(att_name: String) -> void:
-	# creating a new [GameplayEffect] resource
-	var effect = GameplayEffect.new()
-	# creating a new [AttributeEffect] resource
-	var health_effect = AttributeEffect.new()
-	
-	health_effect.attribute_name = att_name
-	health_effect.minimum_value = -2
-	health_effect.maximum_value = -2
 
-	
-	effect.attributes_affected.append(health_effect)
-	
-	unit_action_system.selected_unit.add_child(effect)
 #endregion
