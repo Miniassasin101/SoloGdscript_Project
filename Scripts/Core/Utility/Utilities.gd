@@ -603,7 +603,10 @@ func lookup_table_value(derived_from: Array[StringName], table: Dictionary, spec
 
 # Material Utilities
 
-func set_color_on_mesh(mesh: MeshInstance3D ,color: Color = Color.DEEP_SKY_BLUE) -> void:
+func set_color_on_mesh(mesh: MeshInstance3D ,color: Color = Color.DEEP_SKY_BLUE, remove_overlay: bool = false) -> void:
+	if remove_overlay:
+		mesh.set_material_overlay(null)
+		return
 	var mesh_mat: StandardMaterial3D = preload("res://Hero_Game/Art/Materials/UnitMaterials/UnitVFXMaterials/GeneralHitFXMaterial.tres").duplicate(true)
 	mesh_mat.set_albedo(color)
 	mesh.set_material_overlay(mesh_mat)

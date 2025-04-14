@@ -7,7 +7,7 @@
 script = ExtResource("1_ki1ul")
 staggered_condition = ExtResource("2_v7d7r")
 ui_name = &"Stagger"
-activation_phase = 0
+activation_phase = 1
 activation_allowed = 2
 weapon_types_allowed = Array[String]([])
 stackable = false

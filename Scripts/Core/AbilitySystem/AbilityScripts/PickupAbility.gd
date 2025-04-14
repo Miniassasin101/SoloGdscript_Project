@@ -155,7 +155,7 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 	if item_at_pos_check_by_pos(unit_pos) or _event.unit.conditions_manager.has_condition("impaled"):
 		valid_grid_position_list.append(_event.unit.get_grid_position())
 	
-	for gridpos in Utilities.get_adjacent_tiles_no_diagonal(_event.unit):
+	for gridpos in Utilities.get_adjacent_tiles_with_diagonal(_event.unit):
 		var in_unit: Unit = LevelGrid.get_unit_at_grid_position(gridpos)
 		if in_unit:
 			if in_unit.conditions_manager.has_condition("impaled"):

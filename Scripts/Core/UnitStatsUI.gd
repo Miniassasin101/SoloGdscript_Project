@@ -15,8 +15,10 @@ func _ready() -> void:
 	instantiate_stats_bars()
 	SignalBus.update_stat_bars.connect(_on_update_stats_bars)
 	SignalBus.on_ui_update.connect(_on_update_stats_bars)
+	SignalBus.on_unit_added.connect(instantiate_stats_bars)
+	SignalBus.on_unit_removed.connect(instantiate_stats_bars)
 
-func instantiate_stats_bars() -> void:
+func instantiate_stats_bars(_unit: Unit = null) -> void:
 	if unit_manager:
 		# Remove all current children from the container.
 		for child in unit_stats_container.get_children():

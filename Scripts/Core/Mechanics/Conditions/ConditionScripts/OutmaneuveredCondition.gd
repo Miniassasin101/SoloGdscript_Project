@@ -11,7 +11,7 @@ func _init():
 
 func apply(unit: Unit) -> void:
 	# In this design the condition persists until cleared by round-end logic.
-	Utilities.spawn_text_line(unit, "Outmaneuvered", Color.FIREBRICK)
+	Utilities.spawn_text_line(unit, "Outmaneuver Cleared", Color.AQUA)
 	super.remove_self(unit)
 	# (Don't remove immediately; wait until conditions naturally expire.)
 	# You might add additional tick-down logic here if needed.

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_j5unh")
-ui_name = "outmaneuver"
+ui_name = "outmaneuvered"
 condition_level = 1
 application_interval = 1
 tags_type = Array[StringName]([])

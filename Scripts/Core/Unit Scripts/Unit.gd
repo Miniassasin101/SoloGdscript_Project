@@ -23,6 +23,8 @@ var action_system: UnitActionSystem
 @export var above_marker: Marker3D
 @export var conditions_manager: ConditionsManager
 
+@export var hair_tufts: MeshInstance3D
+
 @export_category("Sockets")
 @export var left_hand_socket: Node3D
 @export var right_hand_socket: Node3D
@@ -40,7 +42,7 @@ var grid_position: GridPosition:
 	set(val):
 		if not val is GridPosition:
 			return
-		print_debug("New Grid Position: ", val.to_str())
+		#print_debug("New Grid Position: ", val.to_str())
 		grid_position = val
 var is_holding: bool = false
 # Reference to the action array node attached to this unit.
@@ -114,6 +116,9 @@ func _ready() -> void:
 	SignalBus.rotate_unit_towards_facing.connect(on_rotate_unit_toward_facing)
 	SignalBus.add_unit.emit(self)
 
+	if is_enemy and hair_tufts:
+		Utilities.set_color_on_mesh(hair_tufts, Color.RED)
+
 
 
 
@@ -129,7 +134,7 @@ func update_grid_position() -> void:
 		LevelGrid.unit_moved_grid_position(self, grid_position, new_grid_position)
 		grid_position = new_grid_position
 		SignalBus.unit_moved_position.emit()
-		CombatSystem.instance.update_engagements_for_unit(self)
+		CombatSystem.instance.engagement_system.update_engagements_for_unit(self)
 		
 
 func update_weapon_anims() -> void:
@@ -181,7 +186,11 @@ func reset_ability_points() -> void:
 
 
 
-
+func remove_self() -> void:
+	LevelGrid.remove_unit_at_grid_position(grid_position, self)
+	SignalBus.remove_unit.emit(self)
+	
+	queue_free()
 
 func on_dead() -> void:
 	var death_effect = death_vfx_scene.instantiate() as Node3D
@@ -189,10 +198,8 @@ func on_dead() -> void:
 	death_effect.global_transform.origin = self.global_position
 	if death_effect.get_child_count() > 0 and death_effect.get_child(0) is GPUParticles3D:
 		death_effect.get_child(0).emitting = true
-	LevelGrid.remove_unit_at_grid_position(grid_position, self)
-	SignalBus.remove_unit.emit(self)
 	
-	queue_free()
+	remove_self()
 
 func on_attribute_changed(_attribute: AttributeSpec):
 	SignalBus.emit_signal("update_stat_bars")

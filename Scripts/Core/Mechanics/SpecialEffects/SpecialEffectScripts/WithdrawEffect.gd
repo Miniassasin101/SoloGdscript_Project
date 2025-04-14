@@ -60,59 +60,7 @@ func apply(event: ActivationEvent) -> void:
 	
 
 
-""" depreciated apply function
-func apply_dep(event: ActivationEvent) -> void:
-	super.apply(event)
-	
-	
-	
-	
-	var unit = event.target_unit
 
-	# Gather engaged opponents from CombatSystem.engagements.
-	var engaged_opponents: Array[Unit] = CombatSystem.instance.get_engaged_opponents(unit)
-
-	var target_grid_position: GridPosition = await handle_move_select(event)
-	
-	# Now move the unit along the full path (like MoveAbility, but without trimming)
-
-	var path_package: PathPackage = Pathfinding.instance.get_path_package(target_grid_position, unit, true)
-	var grid_position_list: Array[GridPosition] = path_package.get_path()
-	if grid_position_list.is_empty():
-		push_error("No valid path found to target position: " + target_grid_position.to_str())
-		return
-	
-	# Unlike MoveAbility, do not trim the path; use the full path.
-	var position_list = LevelGrid.get_world_positions(grid_position_list)
-	
-	# Create the movement curve.
-	var movement_curve = Curve3D.new()
-	movement_curve.bake_interval = 0.2  # Adjust for smoothness
-	
-	for i in range(position_list.size()):
-		var point = position_list[i]
-		var control_offset = Vector3(0, 0, 0)
-		if i > 0 and i < position_list.size() - 1:
-			control_offset = (position_list[i + 1] - position_list[i - 1]).normalized() * 0.5
-		movement_curve.add_point(point, -control_offset, control_offset)
-	
-	var curve_length = movement_curve.get_baked_length()
-	var curve_travel_offset = 0.0
-	var acceleration_timer = 0.2
-	var rotation_acceleration_timer = 0.3
-	var current_speed = 0.1
-	var start_timer = 0.1
-
-
-	unit.animator.animate_movement_along_curve(move_speed, movement_curve, curve_length, 
-		acceleration_timer, rotation_acceleration_timer, stopping_distance, rotate_speed)
-	await unit.animator.movement_completed  # Wait until movement finishes
-	
-	unit.animator.rotate_unit_towards_facing(unit.facing)
-"""
-	
-
-	
 	
 	
 
@@ -128,7 +76,7 @@ func handle_move_select(event: ActivationEvent) -> GridPosition:
 
 func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
 	var in_unit: Unit = _event.target_unit
-	if !CombatSystem.instance.is_unit_engaged(in_unit):
+	if !CombatSystem.instance.engagement_system.is_unit_engaged(in_unit):
 		return []
 	var self_unit_pos: GridPosition = in_unit.get_grid_position()
 	if self_unit_pos == null:

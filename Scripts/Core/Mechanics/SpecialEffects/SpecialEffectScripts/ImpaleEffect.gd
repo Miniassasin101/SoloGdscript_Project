@@ -39,6 +39,9 @@ func can_activate(event: ActivationEvent) -> bool:
 		return false
 	if !event.weapon:
 		return false
+	if event.losing_unit.conditions_manager.has_condition("impaled"):
+		return false
+	
 	return true
 
 

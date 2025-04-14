@@ -27,6 +27,8 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
+	SignalBus.on_unit_added.connect(on_units_changed)
+	SignalBus.on_unit_removed.connect(on_units_changed)
 
 
 # Call this method after UnitManager has finished setting up the units.
@@ -42,12 +44,11 @@ func setup_unit_ui(units: Array[Unit]) -> void:
 		add_child(ui_instance)
 		unit_ui_instances[unit] = ui_instance
 
-		# Connect to unit's "tree_exited" to handle unit deletion
-		if !unit.tree_exited.is_connected(_on_unit_removed):
-			unit.tree_exited.connect(_on_unit_removed.bind(unit))
 
 		unit.body.update_body_ui()
 
+func on_units_changed(unit: Unit = null) -> void:
+	setup_unit_ui(UnitManager.instance.get_all_units())
 
 func _on_unit_removed(unit: Unit) -> void:
 	if unit_ui_instances.has(unit):

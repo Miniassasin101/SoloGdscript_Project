@@ -4,7 +4,7 @@ class_name CharacterLogQueue extends Control
 @export var messages_offset: float = 15.0
 var messages: Array[TextController] = []
 
-func add_message(text_controller: TextController, add_to_q: bool = true) -> void:
+func add_message(text_controller: TextController, _add_to_q: bool = true) -> void:
 	# Add the new message at the bottom
 	messages.append(text_controller)
 	add_child(text_controller)

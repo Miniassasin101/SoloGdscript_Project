@@ -1,4 +1,4 @@
-[gd_scene load_steps=110 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=86 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" uid="uid://dswgp2a8up16v" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" uid="uid://b268e884ur2c8" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -33,63 +33,41 @@
 [ext_resource type="Script" uid="uid://bd0s3lywx8lk3" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
 [ext_resource type="Resource" uid="uid://bytek5m52blwh" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BleedEffectResource.tres" id="21_kkt7y"]
 [ext_resource type="Script" uid="uid://dhballfce82fs" path="res://Hero_Game/Scenes/BookKeepingSystem.gd" id="21_ktx83"]
-[ext_resource type="Material" uid="uid://4o6omd2mfl0" path="res://Hero_Game/Art/Materials/CelShadedMats/ItemMats/RedCelShadedMat.tres" id="21_ttgb8"]
 [ext_resource type="Resource" uid="uid://dst4i0rqw46ng" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BlindOpponentEffectResource.tres" id="22_6ytw6"]
 [ext_resource type="PackedScene" uid="uid://bs8kc22xgwd2d" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.tscn" id="22_67ysf"]
-[ext_resource type="Script" uid="uid://bvoxi6hq3h2y7" path="res://addons/godot_gameplay_systems/attributes_and_abilities/resources/attribute.gd" id="22_ttgb8"]
-[ext_resource type="Resource" uid="uid://b4cltjme3q4uh" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/SizeAttribute.tres" id="23_djdvf"]
 [ext_resource type="Resource" uid="uid://bo28spn03mllg" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BypassArmorEffectResource.tres" id="23_xra60"]
-[ext_resource type="Resource" uid="uid://ctkldarvpfe18" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/EnduranceAttribute.tres" id="24_14qle"]
 [ext_resource type="Resource" uid="uid://bhs3peayb8jf2" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ChooseLocationEffectResource.tres" id="24_h0tua"]
-[ext_resource type="Resource" uid="uid://d3uqoh4pmuljd" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/PowerAttribute.tres" id="25_gmse0"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
 [ext_resource type="Resource" uid="uid://cb2opgmh0nqyu" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/CircumventParryEffectResource.tres" id="26_c6h62"]
-[ext_resource type="Resource" uid="uid://cmi2ppcs6qo5j" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/DexterityAttribute.tres" id="26_e32bf"]
-[ext_resource type="Resource" uid="uid://lwvvfaivys7c" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/MindAttribute.tres" id="27_3d1mt"]
 [ext_resource type="Resource" uid="uid://cjw50deqfhini" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/DamageWeaponEffectResource.tres" id="27_ivlyn"]
 [ext_resource type="PackedScene" uid="uid://bf575s2vrxvov" path="res://Hero_Game/Prefabs/UI_Prefabs/TextController.tscn" id="27_khu5d"]
 [ext_resource type="PackedScene" uid="uid://bc3pj0ahlf2m6" path="res://Hero_Game/Prefabs/UI_Prefabs/DroppablePanelUI.tscn" id="27_naquh"]
 [ext_resource type="PackedScene" uid="uid://8oord2o1icck" path="res://Hero_Game/Prefabs/UI_Prefabs/CharacterLogQueue.tscn" id="28_6i1gy"]
-[ext_resource type="Resource" uid="uid://b5bfbjeaatofm" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/WillAttribute.tres" id="28_h40sd"]
 [ext_resource type="PackedScene" uid="uid://4uwpx7r25fdg" path="res://Hero_Game/Prefabs/UI_Prefabs/SpecialEffectsDragContainer.tscn" id="29_725ge"]
 [ext_resource type="Script" uid="uid://d35gfk2fl3xde" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlotController.gd" id="29_cc03n"]
-[ext_resource type="Resource" uid="uid://dcehp7j7jdea6" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/PresenceAttribute.tres" id="29_e01xw"]
 [ext_resource type="Resource" uid="uid://b34sriadfy7xr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/DisarmOpponentEffectResource.tres" id="29_itb1b"]
 [ext_resource type="Resource" uid="uid://dlukj3jgipdjr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/EnhanceParryEffect.tres" id="30_hdg1r"]
-[ext_resource type="Resource" uid="uid://dg56ydxgon6r2" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Base/MovementRateAttribute.tres" id="30_iery3"]
-[ext_resource type="Resource" uid="uid://c3sphq6y72h38" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ActionPointsAttribute.tres" id="31_02vfd"]
 [ext_resource type="Resource" uid="uid://b7wui72oveng1" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ForceFailureEffectResource.tres" id="31_4yuhs"]
 [ext_resource type="Resource" uid="uid://cqqeph0m4h0ka" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ImpaleEffectResource.tres" id="32_npgv8"]
-[ext_resource type="Resource" uid="uid://bdvtscqbo08no" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/CombatSkillAttribute.tres" id="32_u5m4l"]
 [ext_resource type="Resource" uid="uid://bspw2bpavewje" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MaximizeDamageEffectResource.tres" id="33_mywpm"]
-[ext_resource type="Resource" uid="uid://cuoutloeyr4rk" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/EvadeSkillAttribute.tres" id="33_rks31"]
 [ext_resource type="Resource" uid="uid://je1rhqiebrcx" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/OverextendOpponentEffectResource.tres" id="34_lu63c"]
-[ext_resource type="Resource" uid="uid://dy71yfbxd4qvx" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/FortitudeSkillAttribute.tres" id="34_nm3hw"]
-[ext_resource type="Resource" uid="uid://v2bmbg3bnu2u" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Skills/FirstAidSkillAttribute.tres" id="35_46epl"]
 [ext_resource type="Shader" uid="uid://bsom40l4vw4gh" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="35_n58oi"]
 [ext_resource type="Resource" uid="uid://cirmysa48hhcs" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/PressAdvantageEffectResource.tres" id="35_t123n"]
 [ext_resource type="PackedScene" uid="uid://cvuecvfamgpwe" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonUI.tscn" id="36_53e25"]
-[ext_resource type="Resource" uid="uid://dhycuxfmfj34a" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Derived/HealthAttribute.tres" id="36_dlnf1"]
 [ext_resource type="Resource" uid="uid://tiwgsot8o62f" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BashEffectResource.tres" id="36_puq5n"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_Grid_08.png" id="36_vdge6"]
-[ext_resource type="Resource" uid="uid://dxsb2kexd664a" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/Derived/InitiativeBonusAttribute.tres" id="37_6nfd7"]
 [ext_resource type="Resource" uid="uid://cqieibalk7a7b" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/WithdrawEffectResource.tres" id="37_c0lde"]
 [ext_resource type="Resource" uid="uid://bdjdjaquppxcv" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/StandFastEffectResource.tres" id="38_qso2c"]
-[ext_resource type="Resource" uid="uid://bcsymcrsnt8dg" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/DamageModifierAttribute.tres" id="38_rv7e5"]
-[ext_resource type="Resource" uid="uid://b1835bsxed8bt" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ExperienceModifierAttribute.tres" id="39_4elcw"]
 [ext_resource type="Resource" uid="uid://q3sk2uy7wd4u" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/FacingPenaltyConditionResource.tres" id="39_me7ee"]
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="39_yrlso"]
 [ext_resource type="Resource" uid="uid://d3yn60m635vma" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MarksmanEffectResource.tres" id="40_68vw7"]
-[ext_resource type="Resource" uid="uid://c564jeljvouh4" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/ExperienceRollsAttribute.tres" id="40_n1hep"]
-[ext_resource type="Resource" uid="uid://ctx1x6455nyse" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/tables_misc/HealingRateAttribute.tres" id="41_7rgij"]
-[ext_resource type="Script" uid="uid://c4kj6f1xxvutq" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/HitLocationsAttribute.gd" id="42_ngpf3"]
-[ext_resource type="Script" uid="uid://dfv2ddkwom1fb" path="res://Hero_Game/Scripts/Core/AbilitySystem/Attributes/AttributeResources/AttributesTable.gd" id="43_1xsnk"]
+[ext_resource type="Script" uid="uid://dxsb2537kj36" path="res://Hero_Game/Scenes/EngagementSystem.gd" id="44_wgkkd"]
 [ext_resource type="Script" uid="uid://b4kcedpcju35b" path="res://Hero_Game/Scenes/UnitUIManager3d.gd" id="47_1nha0"]
 [ext_resource type="PackedScene" uid="uid://cbqua8yfarqi" path="res://Hero_Game/Prefabs/UI_Prefabs/SilhouetteUI3D.tscn" id="48_1dbid"]
-[ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Scenes/dawn_unit.tscn" id="52_cckm4"]
+[ext_resource type="PackedScene" uid="uid://ckh4ee1mgwjn4" path="res://Hero_Game/Prefabs/Units/dawn_unit.tscn" id="52_cckm4"]
 [ext_resource type="Shader" uid="uid://0l0gx3l42rjg" path="res://Hero_Game/Scenes/MainGame.gdshader" id="53_fbtsm"]
 [ext_resource type="Script" uid="uid://ywra6wifc8ga" path="res://Hero_Game/Scenes/UnitUIManager.gd" id="63_cfolp"]
-[ext_resource type="Resource" uid="uid://ycuthnbx4wcn" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/StaggerOpponentEffectResource.tres" id="63_kmaem"]
+[ext_resource type="Resource" uid="uid://ycuthnbx4wcn" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/StaggerOpponentEffectResource.tres" id="63_kmaem"]
 [ext_resource type="PackedScene" uid="uid://bamp8ft3f5ucj" path="res://Hero_Game/Prefabs/UI_Prefabs/SilhouetteUI.tscn" id="64_ab1a1"]
 
 [sub_resource type="Resource" id="Resource_vhtwd"]
@@ -103,18 +81,6 @@ roll_required = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_owyi7"]
 material = ExtResource("5_y067e")
-
-[sub_resource type="Resource" id="Resource_djdvf"]
-resource_local_to_scene = true
-script = ExtResource("43_1xsnk")
-attributes = Array[ExtResource("22_ttgb8")]([ExtResource("23_djdvf"), ExtResource("24_14qle"), ExtResource("25_gmse0"), ExtResource("26_e32bf"), ExtResource("27_3d1mt"), ExtResource("28_h40sd"), ExtResource("29_e01xw"), ExtResource("30_iery3"), ExtResource("31_02vfd"), ExtResource("32_u5m4l"), ExtResource("33_rks31"), ExtResource("34_nm3hw"), ExtResource("35_46epl"), ExtResource("36_dlnf1"), ExtResource("37_6nfd7"), ExtResource("38_rv7e5"), ExtResource("39_4elcw"), ExtResource("40_n1hep"), ExtResource("41_7rgij")])
-hit_locations = Array[ExtResource("42_ngpf3")]([])
-
-[sub_resource type="Resource" id="Resource_14qle"]
-resource_local_to_scene = true
-script = ExtResource("43_1xsnk")
-attributes = Array[ExtResource("22_ttgb8")]([ExtResource("23_djdvf"), ExtResource("24_14qle"), ExtResource("25_gmse0"), ExtResource("26_e32bf"), ExtResource("27_3d1mt"), ExtResource("28_h40sd"), ExtResource("29_e01xw"), ExtResource("30_iery3"), ExtResource("31_02vfd"), ExtResource("32_u5m4l"), ExtResource("33_rks31"), ExtResource("34_nm3hw"), ExtResource("35_46epl"), ExtResource("36_dlnf1"), ExtResource("37_6nfd7"), ExtResource("38_rv7e5"), ExtResource("39_4elcw"), ExtResource("40_n1hep"), ExtResource("41_7rgij")])
-hit_locations = Array[ExtResource("42_ngpf3")]([])
 
 [sub_resource type="Resource" id="Resource_c77yv"]
 script = ExtResource("18_hnk25")
@@ -330,108 +296,34 @@ sword_test = ExtResource("19_1dbid")
 transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 4, 0, 14)
 ui_name = "Blue"
 
-[node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(1, 0, 3.49691e-07, 0, 1, 0, -3.49691e-07, 0, 1, 4, 0, 12)
-ui_name = "Green"
-is_enemy = true
-
-[node name="RightHandShootPointAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="1"]
-transform = Transform3D(0.653982, 0.103041, -0.74946, -0.650635, 0.582067, -0.48772, 0.385981, 0.806585, 0.447704, 0.284996, 1.17415, 0.248085)
-
-[node name="RightHandEquipmentSocketBone" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="2"]
-transform = Transform3D(-0.544136, 0.516625, 0.661071, 0.806649, 0.538819, 0.242878, -0.230721, 0.665411, -0.709926, -0.13995, 1.25469, 0.386973)
-
-[node name="LeftHandEquipmentSocketBone" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="3"]
-transform = Transform3D(0.653982, 0.103041, -0.74946, -0.650635, 0.582067, -0.48772, 0.385981, 0.806585, 0.447704, 0.284996, 1.17415, 0.248085)
-
-[node name="ChestAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="4"]
-transform = Transform3D(0.831062, 0.000166638, 0.556179, 0.000104305, 1, -0.000455446, -0.556179, 0.000436422, 0.831062, -3.21827e-06, 1.05854, 0.000137619)
-
-[node name="HeadAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="5"]
-transform = Transform3D(0.998043, 0.0282942, 0.0557603, -0.0239747, 0.996768, -0.0766675, -0.0577495, 0.0751806, 0.995496, 0.00494438, 1.51836, 0.0116349)
-
-[node name="AbdomenAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="6"]
-transform = Transform3D(0.958652, 1.85804e-05, 0.284705, 4.76705e-05, 0.999929, -0.00022579, -0.284705, 0.000230057, 0.958652, -6.37726e-07, 0.932404, -1.72853e-06)
-
-[node name="RightArmAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="7"]
-transform = Transform3D(-0.669465, 0.667854, 0.32525, 0.718248, 0.47022, 0.512847, 0.189568, 0.576944, -0.794481, -0.347233, 1.10874, 0.207906)
-
-[node name="LeftArmAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="8"]
-transform = Transform3D(-0.771138, -0.0769638, -0.631999, -0.628376, 0.251692, 0.736067, 0.102419, 0.964742, -0.242451, 0.308883, 1.09603, -0.0513441)
-
-[node name="RightLegAttatchment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="9"]
-transform = Transform3D(0.997025, -0.0683835, -0.0355748, -0.0746099, -0.972088, -0.222437, -0.019371, 0.22443, -0.974298, -0.153339, 0.510232, 0.127008)
-
-[node name="LeftLegAttachment" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="10"]
-transform = Transform3D(0.686038, 0.0317803, -0.726872, 0.185353, -0.973716, 0.132367, -0.70356, -0.225536, -0.673896, 0.209007, 0.508234, -0.0578372)
-
-[node name="Hair Tufts_001" parent="UnitManager/DawnUnit2/Rig_001/Skeleton3D" index="18"]
-surface_material_override/0 = ExtResource("21_ttgb8")
-
-[node name="FacingArrow" parent="UnitManager/DawnUnit2" index="7"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 12)
-
-[node name="GameplayAttributeMap" parent="UnitManager/DawnUnit2" index="8"]
-attributes_table = SubResource("Resource_djdvf")
-
 [node name="DawnUnit5" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 4, 0, 8)
+transform = Transform3D(-4.37113e-08, 0, 1, 0, 1, 0, -0.999999, 0, -4.37114e-08, 4, 0, 8)
 ui_name = "Red"
 is_enemy = true
 
-[node name="RightHandShootPointAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="1"]
-transform = Transform3D(0.653982, 0.103041, -0.74946, -0.650635, 0.582067, -0.48772, 0.385981, 0.806585, 0.447704, 0.284996, 1.17415, 0.248085)
-
-[node name="RightHandEquipmentSocketBone" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="2"]
-transform = Transform3D(-0.544136, 0.516625, 0.661071, 0.806649, 0.538819, 0.242878, -0.230721, 0.665411, -0.709926, -0.13995, 1.25469, 0.386973)
-
-[node name="LeftHandEquipmentSocketBone" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="3"]
-transform = Transform3D(0.653982, 0.103041, -0.74946, -0.650635, 0.582067, -0.48772, 0.385981, 0.806585, 0.447704, 0.284996, 1.17415, 0.248085)
-
-[node name="ChestAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="4"]
-transform = Transform3D(0.831062, 0.000166638, 0.556179, 0.000104305, 1, -0.000455446, -0.556179, 0.000436422, 0.831062, -3.21827e-06, 1.05854, 0.000137619)
-
-[node name="HeadAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="5"]
-transform = Transform3D(0.998043, 0.0282942, 0.0557603, -0.0239747, 0.996768, -0.0766675, -0.0577495, 0.0751806, 0.995496, 0.00494438, 1.51836, 0.0116349)
-
-[node name="AbdomenAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="6"]
-transform = Transform3D(0.958652, 1.85804e-05, 0.284705, 4.76705e-05, 0.999929, -0.00022579, -0.284705, 0.000230057, 0.958652, -6.37726e-07, 0.932404, -1.72853e-06)
-
-[node name="RightArmAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="7"]
-transform = Transform3D(-0.669465, 0.667854, 0.32525, 0.718248, 0.47022, 0.512847, 0.189568, 0.576944, -0.794481, -0.347233, 1.10874, 0.207906)
-
-[node name="LeftArmAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="8"]
-transform = Transform3D(-0.771138, -0.0769638, -0.631999, -0.628376, 0.251692, 0.736067, 0.102419, 0.964742, -0.242451, 0.308883, 1.09603, -0.0513441)
-
-[node name="RightLegAttatchment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="9"]
-transform = Transform3D(0.997025, -0.0683835, -0.0355748, -0.0746099, -0.972088, -0.222437, -0.019371, 0.22443, -0.974298, -0.153339, 0.510232, 0.127008)
-
-[node name="LeftLegAttachment" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="10"]
-transform = Transform3D(0.686038, 0.0317803, -0.726872, 0.185353, -0.973716, 0.132367, -0.70356, -0.225536, -0.673896, 0.209007, 0.508234, -0.0578372)
-
-[node name="Hair Tufts_001" parent="UnitManager/DawnUnit5/Rig_001/Skeleton3D" index="18"]
-surface_material_override/0 = ExtResource("21_ttgb8")
-
-[node name="FacingArrow" parent="UnitManager/DawnUnit5" index="7"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 8)
-
-[node name="GameplayAttributeMap" parent="UnitManager/DawnUnit5" index="8"]
-attributes_table = SubResource("Resource_14qle")
+[node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 12)
+ui_name = "Green"
+is_enemy = true
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
 script = ExtResource("6_rwbm0")
 unit_manager = NodePath("../UnitManager")
 
-[node name="CombatSystem" type="Node" parent="." node_paths=PackedStringArray("unit_action_system_ui", "book_keeping_system")]
+[node name="CombatSystem" type="Node" parent="." node_paths=PackedStringArray("unit_action_system_ui", "book_keeping_system", "engagement_system")]
 script = ExtResource("16_f3oa4")
 unit_action_system_ui = NodePath("../UILayer/UnitActionSystemUI")
 book_keeping_system = NodePath("BookKeepingSystem")
+engagement_system = NodePath("EngagementSystem")
 special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), ExtResource("21_kkt7y"), ExtResource("22_6ytw6"), ExtResource("23_xra60"), ExtResource("24_h0tua"), ExtResource("26_c6h62"), ExtResource("27_ivlyn"), ExtResource("29_itb1b"), ExtResource("30_hdg1r"), ExtResource("31_4yuhs"), ExtResource("32_npgv8"), ExtResource("33_mywpm"), ExtResource("34_lu63c"), ExtResource("35_t123n"), ExtResource("36_puq5n"), ExtResource("37_c0lde"), ExtResource("38_qso2c"), ExtResource("40_68vw7"), ExtResource("63_kmaem"), SubResource("Resource_c77yv")])
 facing_penalty_condition = ExtResource("39_me7ee")
 
 [node name="BookKeepingSystem" type="Node" parent="CombatSystem" node_paths=PackedStringArray("combat_system")]
 script = ExtResource("21_ktx83")
 combat_system = NodePath("..")
+
+[node name="EngagementSystem" type="Node" parent="CombatSystem"]
+script = ExtResource("44_wgkkd")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(32.7711, -2.64261e-05, 0.046329, 2.63892e-05, 32.7711, 2.57785e-05, -0.046329, -2.57406e-05, 32.7711, 24.867, 0, 26.089)
@@ -928,6 +820,3 @@ mesh = SubResource("QuadMesh_bteft")
 [connection signal="pressed" from="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController/ConfirmEffectButton" to="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController" method="_on_confirm_effect_button_pressed"]
 [connection signal="pressed" from="UILayer/TurnSystemUI/EndTurnContainer/MarginContainer/EndTurnButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
 [connection signal="pressed" from="UILayer/TurnSystemUI/EndActionPhaseContainer/MarginContainer/EndPhaseButton" to="UILayer/TurnSystemUI" method="_on_end_turn_button_pressed"]
-
-[editable path="UnitManager/DawnUnit2"]
-[editable path="UnitManager/DawnUnit5"]

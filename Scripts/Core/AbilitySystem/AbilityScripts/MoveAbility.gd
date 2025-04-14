@@ -223,7 +223,7 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 	if self_unit_pos == null:
 		return []
 	
-	if CombatSystem.instance.is_unit_engaged(in_unit):
+	if CombatSystem.instance.engagement_system.is_unit_engaged(in_unit):
 		return []
 	
 	var valid_positions: Array[GridPosition] = []

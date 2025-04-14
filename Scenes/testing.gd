@@ -51,6 +51,9 @@ func _ready() -> void:
 	Console.add_command("create_engagement", console_create_engagement, ["unit_a", "unit_b"], 2, "Creates an engagement between two units.")
 	Console.add_command("remove_engagement", console_remove_engagement, ["unit_a", "unit_b"], 2, "Removes the engagement between two units.")
 	Console.add_command("set_timescale", console_set_timescale, ["value"], 1, "Sets the game time scale (e.g., 2.0 runs twice as fast, 0.5 runs slower).")
+	Console.add_command("add_unit", console_add_unit, ["unit_name", "spawn_with_weapon", "pos_x", "pos_z"], 4, "Adds a unit from res://Hero_Game/Prefabs/Units/dawn_unit.tscn at the specified grid position. " + "Pass true as the second argument to spawn the unit with a weapon.");
+	Console.add_command("remove_unit", console_remove_unit, ["unit_identifier"], 1, "Removes the unit with the given identifier.");
+	Console.add_command("set_enemy", console_set_enemy, ["unit_identifier", "is_enemy"], 2, "Sets the is_enemy flag on a unit and updates hair tufts (red for enemy, white for friendly).");
 
 
 
@@ -474,7 +477,7 @@ func console_create_engagement(unit_a_identifier: String, unit_b_identifier: Str
 		return
 
 	# Call the CombatSystem's add_engagement() function.
-	CombatSystem.instance.add_engagement(unit_a, unit_b)
+	CombatSystem.instance.engagement_system.add_engagement(unit_a, unit_b)
 	Console.print_line("Engagement created between " + unit_a_identifier + " and " + unit_b_identifier)
 
 func console_remove_engagement(unit_a_identifier: String, unit_b_identifier: String) -> void:
@@ -489,8 +492,8 @@ func console_remove_engagement(unit_a_identifier: String, unit_b_identifier: Str
 		Console.print_error("Unit not found: " + unit_b_identifier)
 		return
 
-	# Call the CombatSystem's remove_engagement() method.
-	CombatSystem.instance.remove_engagement(unit_a, unit_b)
+	# Call the EngagementSystem's remove_engagement() method.
+	CombatSystem.instance.engagement_system.remove_engagement(unit_a, unit_b)
 	Console.print_line("Engagement removed between " + unit_a_identifier + " and " + unit_b_identifier)
 
 func console_set_timescale(value_str: String) -> void:
@@ -761,6 +764,98 @@ func open_character_sheet() -> void:
 	if hovered_unit:
 		# Emit your signal passing in the unit reference
 		SignalBus.emit_signal("open_character_sheet", hovered_unit)
+
+func console_add_unit(unit_name: String, spawn_with_weapon: String, pos_x: String, pos_z: String) -> void:
+	# Load and instance the unit scene.
+	var scene: PackedScene = load("res://Hero_Game/Prefabs/Units/dawn_unit.tscn")
+	if scene == null:
+		Console.print_error("Failed to load unit scene at res://Hero_Game/Prefabs/Units/dawn_unit.tscn.")
+		return
+	var unit_instance: Unit = scene.instantiate()
+	if unit_instance == null:
+		Console.print_error("Failed to instance the unit scene.")
+		return
+
+	# Set the unit's name and UI name.
+	unit_instance.name = unit_name
+	unit_instance.ui_name = unit_name
+
+	# Convert coordinate parameters into integers.
+	var new_x: int = int(pos_x)
+	var new_z: int = int(pos_z)
+	
+	# Get the grid position from the coordinates.
+	var new_grid_position: GridPosition = LevelGrid.get_grid_position_from_coords(new_x, new_z)
+	# Convert the grid position to world position.
+	var new_world_pos: Vector3 = LevelGrid.get_world_position(new_grid_position)
+	# Set the new global position for the unit.
+	
+	# Add the instance as a child of the UnitManager and register it.
+	UnitManager.instance.add_child(unit_instance)
+	UnitManager.instance.add_unit(unit_instance)
+	unit_instance.set_global_position(new_world_pos)
+	
+	# Check if the weapon should be equipped.
+	var with_weapon: bool = (spawn_with_weapon.to_lower() == "true")
+	if with_weapon and UnitManager.instance.sword_test != null:
+		var weapon_instance: Weapon = UnitManager.instance.sword_test.duplicate()
+		unit_instance.equipment.equip(weapon_instance)
+		Console.print_line("Spawned unit '" + unit_name + "' at position (" + str(new_x) + ", " + str(new_z) + ") with weapon equipped.")
+	else:
+		Console.print_line("Spawned unit '" + unit_name + "' at position (" + str(new_x) + ", " + str(new_z) + ") without weapon.")
+
+
+func console_remove_unit(unit_identifier: String) -> void:
+	var unit: Unit = UnitManager.instance.get_unit_by_name(unit_identifier)
+	if unit == null:
+		Console.print_error("Unit not found: " + unit_identifier)
+		return
+
+	# Remove the unit from the manager and then free its node.
+	UnitManager.instance.remove_unit(unit)
+	Console.print_line("Removed unit '" + unit_identifier + "'.")
+
+func console_set_enemy(unit_identifier: String, enemy_str: String) -> void:
+	var unit: Unit = UnitManager.instance.get_unit_by_name(unit_identifier)
+	if unit == null:
+		Console.print_error("Unit not found: " + unit_identifier)
+		return
+	
+	# Convert parameter to a Boolean.
+	var new_enemy: bool = (enemy_str.to_lower() == "true")
+	if unit.is_enemy == new_enemy:
+		Console.print_line("Unit '" + unit_identifier + "' already has is_enemy = " + enemy_str + ".")
+		return
+
+	# Remove unit from its old list.
+	if unit.is_enemy:
+		if unit in UnitManager.instance.enemy_units:
+			UnitManager.instance.enemy_units.erase(unit)
+	else:
+		if unit in UnitManager.instance.friendly_units:
+			UnitManager.instance.friendly_units.erase(unit)
+	
+	# Set is_enemy and update hair tufts.
+	unit.is_enemy = new_enemy
+	if unit.hair_tufts:
+		if new_enemy:
+			Utilities.set_color_on_mesh(unit.hair_tufts, Color.RED)
+		else:
+			Utilities.set_color_on_mesh(unit.hair_tufts, Color.ALICE_BLUE, true)
+
+	
+	# Add the unit to the appropriate list.
+	if unit.is_enemy:
+		if not (unit in UnitManager.instance.enemy_units):
+			UnitManager.instance.enemy_units.append(unit)
+	else:
+		if not (unit in UnitManager.instance.friendly_units):
+			UnitManager.instance.friendly_units.append(unit)
+	
+	Console.print_line("Set unit '" + unit_identifier + "' is_enemy to " + enemy_str + ".")
+
+
+
 
 
 #endregion

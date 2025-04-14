@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="OutmaneuverAbility" load_steps=2 format=3 uid="uid://c1jfwpoqjm3de"]
+[gd_resource type="Resource" script_class="OutmaneuverAbility" load_steps=3 format=3 uid="uid://c1jfwpoqjm3de"]
 
+[ext_resource type="Resource" uid="uid://cooduik7yadke" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/OutmaneuveredConditionResource.tres" id="1_kfmsu"]
 [ext_resource type="Script" uid="uid://dvin6j2wg8fan" path="res://Hero_Game/Scripts/Core/AbilitySystem/AbilityScripts/OutmaneuverAbility.gd" id="1_t8d7m"]
 
 [resource]
 script = ExtResource("1_t8d7m")
+outmaneuvered_condition = ExtResource("1_kfmsu")
 ap_cost = 1
 max_move_distance = 3
 use_max_move_distance = false

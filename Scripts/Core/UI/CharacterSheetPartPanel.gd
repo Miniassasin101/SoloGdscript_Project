@@ -17,7 +17,7 @@ func _testfunc() -> void:
 	var test: String = get_child(0).get_child(0).text
 	print("Test: ", test)
 
-func set_part_data(part_name: String, armor_value: int, health_value: float, max_health_value: float) -> void:
+func set_part_data(part_name: String, armor_value: int, health_value: int, max_health_value: int) -> void:
 	if part_name_label == null:
 		construct_labels()
 	# Update this panel's labels based on the given data

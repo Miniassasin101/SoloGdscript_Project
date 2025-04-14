@@ -19,6 +19,8 @@ func can_apply(event: ActivationEvent) -> bool:
 	if !super.can_apply(event):
 		return false
 	
+	if event.losing_unit.conditions_manager.has_condition_by_condition(staggered_condition):
+		return false
 	# NOTE: Add in a check to see if the target has eyes to begin with?
 	
 	return true
@@ -30,7 +32,7 @@ func can_apply(event: ActivationEvent) -> bool:
 func apply(event: ActivationEvent) -> void:
 	super.apply(event)
 	
-	var target_unit: Unit = event.target_unit
+	var target_unit: Unit = event.losing_unit
 	var roll: int = Utilities.roll(100)
 	var success_level: int = Utilities.check_success_level((
 		target_unit.get_attribute_after_sit_mod("evade_skill")), roll)
@@ -52,7 +54,7 @@ func apply(event: ActivationEvent) -> void:
 
 func apply_effect(event: ActivationEvent) -> void:
 
-	var target_unit: Unit = event.target_unit
+	var target_unit: Unit = event.losing_unit
 	
 
 	if target_unit:

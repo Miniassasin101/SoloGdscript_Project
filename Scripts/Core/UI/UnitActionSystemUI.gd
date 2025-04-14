@@ -99,7 +99,7 @@ func create_unit_action_buttons_move_phase() -> void:
 			continue
 		if TurnSystem.instance.current_cycle >= 3 and ability.tags_type.has("move"):
 			continue
-		if CombatSystem.instance.is_unit_engaged(selected_unit) and ability.tags_type.has("move"):
+		if CombatSystem.instance.engagement_system.is_unit_engaged(selected_unit) and ability.tags_type.has("move"):
 			continue
 		var ability_button_ui: ActionButtonUI = action_button_prefab.instantiate()
 		ability_button_ui.set_base_ability(ability) # Always call a setup function on the button when adding.
@@ -170,7 +170,7 @@ func on_player_reaction(unit: Unit) -> void:
 	create_unit_reaction_buttons()
 	await SignalBus.reaction_started
 	print_debug("Reaction Selected")
-#	toggle_containers_visibility_off_except()
+	#toggle_containers_visibility_off_except()
 
 
 ## This function is passed a unit and a parsed list of special effects to choose from before emitting the chosen effect.
@@ -254,7 +254,10 @@ func _update_ability_points() -> void:
 
 
 func on_turn_changed() -> void:
-	on_selected_unit_changed(UnitActionSystem.instance.get_selected_unit())
+	var sel_unit: Unit = UnitActionSystem.instance.get_selected_unit()
+	if sel_unit == null:
+		return
+	on_selected_unit_changed(sel_unit)
 	#self.visible = TurnSystem.instance.is_player_turn
 	# FIXME: Revert back later
 

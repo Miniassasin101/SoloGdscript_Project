@@ -83,14 +83,33 @@ func add_unit(unit: Unit) -> void:
 		units.append(unit)
 		unit.unit_manager = self  # Set reference back to this manager
 		_update_unit_lists(unit)
-		SignalBus.update_stat_bars.emit()  # Notify UI of new unit
+		unit.body._on_setup_body()
+		call_deferred("unit_setup", unit)
+
+
+
+
+func unit_setup(unit: Unit) -> void:
+		TurnSystem.instance.setup_initiative()
+		
+		SignalBus.on_unit_added.emit(unit)
+		
+		
+		unit.body.update_body_ui()
+
 
 # Removes a unit from the manager (e.g., when it is destroyed).
 func remove_unit(unit: Unit) -> void:
 	if unit in units:
 		units.erase(unit)
 		_update_unit_lists(unit, true)
-		SignalBus.update_stat_bars.emit()  # Notify UI of unit removal
+
+		# If combat is underway, update the initiative order.
+
+		unit_setup(unit)
+		# Finally, remove the unit node from the scene.
+		unit.remove_self()
+
 
 # Updates the friendly and enemy unit lists based on a unit's type.
 func _update_unit_lists(unit: Unit, remove: bool = false) -> void:

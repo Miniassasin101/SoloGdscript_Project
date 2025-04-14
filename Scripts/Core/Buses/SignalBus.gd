@@ -4,6 +4,7 @@ extends Node
 
 
 
+
 signal selected_unit_changed(unit: Unit)
 
 
@@ -71,6 +72,10 @@ signal form_body
 signal remove_unit(unit: Unit)
 
 signal add_unit(unit: Unit)
+
+signal on_unit_added(unit: Unit)
+
+signal on_unit_removed(unit: Unit)
 
 signal obstacles_changed
 
