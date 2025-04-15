@@ -1,4 +1,4 @@
-[gd_scene load_steps=86 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=87 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" uid="uid://dswgp2a8up16v" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" uid="uid://b268e884ur2c8" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -61,6 +61,7 @@
 [ext_resource type="Resource" uid="uid://q3sk2uy7wd4u" path="res://Hero_Game/Scripts/Core/Mechanics/Conditions/ConditionResources/FacingPenaltyConditionResource.tres" id="39_me7ee"]
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="39_yrlso"]
 [ext_resource type="Resource" uid="uid://d3yn60m635vma" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MarksmanEffectResource.tres" id="40_68vw7"]
+[ext_resource type="Resource" uid="uid://cmxj4ciw26ys2" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/SunderEffectResource.tres" id="42_711r1"]
 [ext_resource type="Script" uid="uid://dxsb2537kj36" path="res://Hero_Game/Scenes/EngagementSystem.gd" id="44_wgkkd"]
 [ext_resource type="Script" uid="uid://b4kcedpcju35b" path="res://Hero_Game/Scenes/UnitUIManager3d.gd" id="47_1nha0"]
 [ext_resource type="PackedScene" uid="uid://cbqua8yfarqi" path="res://Hero_Game/Prefabs/UI_Prefabs/SilhouetteUI3D.tscn" id="48_1dbid"]
@@ -296,11 +297,6 @@ sword_test = ExtResource("19_1dbid")
 transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 4, 0, 14)
 ui_name = "Blue"
 
-[node name="DawnUnit5" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-4.37113e-08, 0, 1, 0, 1, 0, -0.999999, 0, -4.37114e-08, 4, 0, 8)
-ui_name = "Red"
-is_enemy = true
-
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 12)
 ui_name = "Green"
@@ -315,7 +311,7 @@ script = ExtResource("16_f3oa4")
 unit_action_system_ui = NodePath("../UILayer/UnitActionSystemUI")
 book_keeping_system = NodePath("BookKeepingSystem")
 engagement_system = NodePath("EngagementSystem")
-special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), ExtResource("21_kkt7y"), ExtResource("22_6ytw6"), ExtResource("23_xra60"), ExtResource("24_h0tua"), ExtResource("26_c6h62"), ExtResource("27_ivlyn"), ExtResource("29_itb1b"), ExtResource("30_hdg1r"), ExtResource("31_4yuhs"), ExtResource("32_npgv8"), ExtResource("33_mywpm"), ExtResource("34_lu63c"), ExtResource("35_t123n"), ExtResource("36_puq5n"), ExtResource("37_c0lde"), ExtResource("38_qso2c"), ExtResource("40_68vw7"), ExtResource("63_kmaem"), SubResource("Resource_c77yv")])
+special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), ExtResource("21_kkt7y"), ExtResource("22_6ytw6"), ExtResource("23_xra60"), ExtResource("24_h0tua"), ExtResource("26_c6h62"), ExtResource("27_ivlyn"), ExtResource("29_itb1b"), ExtResource("30_hdg1r"), ExtResource("31_4yuhs"), ExtResource("32_npgv8"), ExtResource("33_mywpm"), ExtResource("34_lu63c"), ExtResource("35_t123n"), ExtResource("36_puq5n"), ExtResource("37_c0lde"), ExtResource("38_qso2c"), ExtResource("40_68vw7"), ExtResource("63_kmaem"), ExtResource("42_711r1"), SubResource("Resource_c77yv")])
 facing_penalty_condition = ExtResource("39_me7ee")
 
 [node name="BookKeepingSystem" type="Node" parent="CombatSystem" node_paths=PackedStringArray("combat_system")]

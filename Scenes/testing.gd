@@ -54,6 +54,8 @@ func _ready() -> void:
 	Console.add_command("add_unit", console_add_unit, ["unit_name", "spawn_with_weapon", "pos_x", "pos_z"], 4, "Adds a unit from res://Hero_Game/Prefabs/Units/dawn_unit.tscn at the specified grid position. " + "Pass true as the second argument to spawn the unit with a weapon.");
 	Console.add_command("remove_unit", console_remove_unit, ["unit_identifier"], 1, "Removes the unit with the given identifier.");
 	Console.add_command("set_enemy", console_set_enemy, ["unit_identifier", "is_enemy"], 2, "Sets the is_enemy flag on a unit and updates hair tufts (red for enemy, white for friendly).");
+	Console.add_command("add_armor", console_add_armor, ["unit_identifier", "armor_value", "body_part_identifier"], 3, "Adds armor to a unit's body part. Use 'all' as the body_part_identifier to affect all parts.")
+	Console.add_command("remove_armor", console_remove_armor, ["unit_identifier", "armor_value", "body_part_identifier"], 3, "Removes armor from a unit's body part. Use 'all' as the body_part_identifier to affect all parts.")
 
 
 
@@ -503,6 +505,66 @@ func console_set_timescale(value_str: String) -> void:
 		return
 	Engine.time_scale = value
 	Console.print_info("Engine time scale set to " + str(value))
+
+
+func console_add_armor(unit_identifier: String, armor_str: String, body_part_identifier: String) -> void:
+	# Find the target unit by name or UI name.
+	var unit: Unit = UnitManager.instance.get_unit_by_name(unit_identifier)
+	if unit == null:
+		Console.print_error("Unit not found: " + unit_identifier)
+		return
+	
+	# Convert the armor value from string to an integer.
+	var armor_value: int = int(armor_str)
+	
+	# Check if the command should apply to all body parts.
+	if body_part_identifier.to_lower() == "all":
+		for part in unit.body.body_parts:
+			part.armor += armor_value
+		Console.print_info("Added " + str(armor_value) + " armor to all body parts of " + unit_identifier)
+	else:
+		# Find the specific body part by name.
+		var body_part: BodyPart = unit.body._find_part_by_name(body_part_identifier)
+		if body_part == null:
+			Console.print_error("No body part found with name: " + body_part_identifier)
+			return
+		body_part.armor += armor_value
+		Console.print_info("Added " + str(armor_value) + " armor to " + body_part.part_name + " on " + unit_identifier)
+
+func console_remove_armor(unit_identifier: String, armor_str: String, body_part_identifier: String) -> void:
+	# Find the target unit by name or UI name.
+	var unit: Unit = UnitManager.instance.get_unit_by_name(unit_identifier)
+	if unit == null:
+		Console.print_error("Unit not found: " + unit_identifier)
+		return
+	
+	# Convert the amount to remove from string to an integer.
+	var remove_value: int = int(armor_str)
+	
+	# If "all" is specified, remove the armor from every body part.
+	if body_part_identifier.to_lower() == "all":
+		for part in unit.body.body_parts:
+			# Clamp the resulting armor value to 0 to avoid negative values.
+			part.set_armor(part.armor - remove_value)
+		Console.print_info("Removed " + str(remove_value) + " armor from all body parts of " + unit_identifier)
+	else:
+		# Otherwise, find the specific body part.
+		var body_part: BodyPart = unit.body._find_part_by_name(body_part_identifier)
+		if body_part == null:
+			Console.print_error("No body part found with name: " + body_part_identifier)
+			return
+		body_part.set_armor(body_part.armor - remove_value)
+		Console.print_info("Removed " + str(remove_value) + " armor from " + body_part.part_name + " on " + unit_identifier)
+
+
+
+
+
+
+
+
+
+
 
 #endregion
 
