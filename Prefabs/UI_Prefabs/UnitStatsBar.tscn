@@ -15,17 +15,17 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.39, 0.39, 0.39, 1)
 
-[sub_resource type="Gradient" id="Gradient_4j8ym"]
+[sub_resource type="Gradient" id="Gradient_cydlx"]
 colors = PackedColorArray(0.485703, 0.485704, 0.485703, 1, 0.4, 0.4, 0.4, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_ci46t"]
-gradient = SubResource("Gradient_4j8ym")
+gradient = SubResource("Gradient_cydlx")
 
-[sub_resource type="Gradient" id="Gradient_nftri"]
+[sub_resource type="Gradient" id="Gradient_2merk"]
 colors = PackedColorArray(0.774322, 0.559134, 0.910283, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_hmxcl"]
-gradient = SubResource("Gradient_nftri")
+gradient = SubResource("Gradient_2merk")
 
 [node name="UnitStatsBar" type="PanelContainer" node_paths=PackedStringArray("unit_name_label", "action_points_label", "movement_points_label", "health_text_label", "health_bar")]
 theme_override_styles/panel = ExtResource("1_cydlx")

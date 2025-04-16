@@ -5,7 +5,7 @@ class_name Weapon extends Item
 
 @export_group("Weapon Attributes")
 @export var category: StringName = "sword"
-@export_subgroup("Damage")
+@export_subgroup("Damage") # Ex: the default is 1d6+0
 @export var die_type: int = 6
 @export var die_number: int = 1
 @export var flat_damage: int = 0
@@ -66,10 +66,6 @@ func load_projectile() -> void:
 
 
 
-func get_damage_after_armor(in_damage: int) -> int:
-	return maxi(in_damage - armor_points, 0)
-
-
 func roll_damage_dep() -> int:
 	var damage_total: int = 0
 	damage_total += Utilities.roll(die_type, die_number)
@@ -94,3 +90,17 @@ func roll_damage(maximize_count: int = 0) -> int:
 	if is_broken:
 		damage_total = ceili(damage_total / 2.0)
 	return damage_total
+
+
+func get_damage_after_armor(in_damage: int) -> int:
+	return maxi(in_damage - armor_points, 0)
+
+
+func get_size_string() -> String:
+	match size:
+		0: return "Small"
+		1: return "Medium"
+		2: return "Large"
+		3: return "Huge"
+		4: return "Enormous"
+		_: return "Unknown"

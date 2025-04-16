@@ -1,0 +1,485 @@
+[gd_scene load_steps=6 format=3 uid="uid://bowfhohga2dnm"]
+
+[ext_resource type="Script" uid="uid://cfnx6lqdr80aa" path="res://CombatForecastUI.gd" id="1_5wgmi"]
+[ext_resource type="PackedScene" uid="uid://cd4utembpymj8" path="res://Hero_Game/Prefabs/UI_Prefabs/BodyPartHealthBarUI.tscn" id="2_u6g00"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u6g00"]
+bg_color = Color(0.132, 0.147, 0.15, 0.945098)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_size = 5
+shadow_offset = Vector2(-1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dm32p"]
+bg_color = Color(0.339158, 0.360457, 0.361902, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ga2he"]
+color = Color(0.466667, 0.466667, 0.466667, 1)
+grow_begin = -3.0
+grow_end = -3.0
+
+[node name="CombatForecastUI" type="Control" node_paths=PackedStringArray("attacker_name_label", "attacker_weapon_name_label", "attacker_force_label", "attacker_diff_modifier_label", "attacker_hit_label", "attacker_crit_label", "defender_name_label", "defender_weapon_name_label", "defender_force_label", "defender_diff_modifier_label", "defender_hit_label", "defender_crit_label", "damage_label", "defender_body_parts_container")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.84, 0.84)
+script = ExtResource("1_5wgmi")
+attacker_name_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/AttackerUnitNameLabel")
+attacker_weapon_name_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer/PanelContainer/AttackerWeaponNameLabel")
+attacker_force_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer4/PanelContainer/VBoxContainer/AttackerWeaponForceLabel")
+attacker_diff_modifier_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer5/PanelContainer/VBoxContainer/AttackerModifierLabel")
+attacker_hit_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer2/PanelContainer/VBoxContainer/AttackerHitLabel")
+attacker_crit_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer3/PanelContainer/VBoxContainer/AttackerCritLabel")
+defender_name_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/DefenderUnitNameLabel")
+defender_weapon_name_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer/PanelContainer/DefenderWeaponNameLabel")
+defender_force_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer4/PanelContainer/VBoxContainer/DefenderWeaponForceLabel")
+defender_diff_modifier_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer5/PanelContainer/VBoxContainer/DefenderModifierLabel")
+defender_hit_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer2/PanelContainer/VBoxContainer/DefenderHitLabel")
+defender_crit_label = NodePath("MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer3/PanelContainer/VBoxContainer/DefenderCritLabel")
+damage_label = NodePath("MarginContainer/Forecast/VBoxContainer/LowerMarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/DamageLabel")
+defender_body_parts_container = NodePath("MarginContainer/Forecast/VBoxContainer/LowerMarginContainer/PanelContainer/MarginContainer/VBoxContainer/BodyPartHealthBarsContainer")
+body_part_health_bar_scene = ExtResource("2_u6g00")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Forecast" type="PanelContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(502, 370)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_u6g00")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Forecast"]
+layout_mode = 2
+theme_override_constants/separation = -1
+
+[node name="UpperMarginContainer" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.56
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/UpperMarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dm32p")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/UpperMarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.45
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="CombatForecastLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer/MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Combat Forecast"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterMarginContainer" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dm32p")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="AttributesMarginContainer" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="AttackerUnitNameLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Attacker Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ga2he")
+
+[node name="GridContainer" type="VBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="AttackerWeaponNameLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Weapon Name"
+horizontal_alignment = 1
+
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer4"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer4/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer4/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "FORCE: "
+horizontal_alignment = 1
+
+[node name="AttackerWeaponForceLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer4/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SMALL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer5" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer5"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer5/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer5/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "MOD:"
+horizontal_alignment = 1
+
+[node name="AttackerModifierLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer5/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "STANDARD"
+horizontal_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer2/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HIT: "
+horizontal_alignment = 1
+
+[node name="AttackerHitLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+horizontal_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer3"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer3/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer3/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "CRIT: "
+horizontal_alignment = 1
+
+[node name="AttackerCritLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer/PanelContainer/VBoxContainer/GridContainer/MarginContainer3/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+horizontal_alignment = 1
+
+[node name="AttributesMarginContainer2" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.4
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer"]
+layout_mode = 2
+
+[node name="DefenderUnitNameLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Defender Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ga2he")
+
+[node name="GridContainer" type="VBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="DefenderWeaponNameLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Weapon Name"
+horizontal_alignment = 1
+
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer4"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer4/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer4/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "FORCE: "
+horizontal_alignment = 1
+
+[node name="DefenderWeaponForceLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer4/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SMALL"
+horizontal_alignment = 1
+
+[node name="MarginContainer5" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer5"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer5/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer5/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "MOD:"
+horizontal_alignment = 1
+
+[node name="DefenderModifierLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer5/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "STANDARD"
+horizontal_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer2/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HIT: "
+horizontal_alignment = 1
+
+[node name="DefenderHitLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer2/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+horizontal_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer3"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer3/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer3/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "CRIT: "
+horizontal_alignment = 1
+
+[node name="DefenderCritLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/CenterMarginContainer/PanelContainer2/HBoxContainer/AttributesMarginContainer2/PanelContainer/VBoxContainer/GridContainer/MarginContainer3/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+horizontal_alignment = 1
+
+[node name="LowerMarginContainer" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.56
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/LowerMarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dm32p")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/LowerMarginContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.45
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/LowerMarginContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Forecast/VBoxContainer/LowerMarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/Forecast/VBoxContainer/LowerMarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="DamageLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/LowerMarginContainer/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer"]
+layout_mode = 2
+text = "1d6 or 1-6 DMG"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BodyPartHealthBarsContainer" type="VBoxContainer" parent="MarginContainer/Forecast/VBoxContainer/LowerMarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="BodyPartHealthBar" parent="MarginContainer/Forecast/VBoxContainer/LowerMarginContainer/PanelContainer/MarginContainer/VBoxContainer/BodyPartHealthBarsContainer" instance=ExtResource("2_u6g00")]
+layout_mode = 2
+colors = Dictionary[String, Color]({
+"blue": Color(0.148514, 0.63349, 0.921914, 1),
+"orange": Color(0.811428, 0.487241, 0.0351562, 1),
+"red": Color(0.86354, 0.116812, 0.314784, 1)
+})

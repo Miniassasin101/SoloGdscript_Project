@@ -78,6 +78,20 @@ func get_highest_situational_modifier(sit_mod_change: int = 0) -> float:
 	return diff_mod
 
 
+func get_highest_situational_modifier_name(sit_mod_change: int = 0) -> String:
+	var highest_difficulty: int = Utilities.DIFFICULTY_GRADE.STANDARD
+	
+	for condition in conditions:
+		if condition.is_situational_modifier:
+			var condition_modifier = condition.get_situational_modifier()
+			if condition_modifier > highest_difficulty:
+				highest_difficulty = condition_modifier
+	
+	var adjusted_difficulty: int = clampi(highest_difficulty + sit_mod_change, 0, Utilities.DIFFICULTY_GRADE.size() - 1)
+	return Utilities.DIFFICULTY_GRADE.keys()[adjusted_difficulty]
+
+
+
 
 func book_keeping_check() -> void:
 	

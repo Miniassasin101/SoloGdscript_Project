@@ -241,7 +241,11 @@ func get_attribute_buffed_value_by_name(attribute_name: String) -> float:
 
 ## Gets the current buffed value of the attribute after applying the situational modifier
 func get_attribute_after_sit_mod(attribute_name: String, sit_mod_change: int = 0) -> int:
-	var base_value = attribute_map.get_attribute_by_name(attribute_name).current_buffed_value
+	var attribute: AttributeSpec = attribute_map.get_attribute_by_name(attribute_name)
+	if attribute == null:
+		push_error("Cannot find attribute ", attribute_name)
+		return 0
+	var base_value: float = attribute.current_buffed_value
 	
 	# Get the highest situational modifier multiplier from conditions
 	# FIXME: The sit mod change can bring outside the bounds of the multiplier dictionary
@@ -249,6 +253,11 @@ func get_attribute_after_sit_mod(attribute_name: String, sit_mod_change: int = 0
 
 	# Apply the multiplier
 	return ceili(base_value * highest_modifier)
+
+
+func get_situational_modifier_grade_name(sit_mod_change: int = 0) -> String:
+	return conditions_manager.get_highest_situational_modifier_name(sit_mod_change)
+
 
 
 func get_animation_tree() -> AnimationTree:

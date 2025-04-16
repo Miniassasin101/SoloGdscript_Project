@@ -237,20 +237,22 @@ func melee_attack_anim() -> void:
 	# 1) If your animator signals when the attack hits or finishes,
 	#    you can "await" that signal here. For example:
 	await unit.animator.attack_anim(animation, event.miss)
+	
 
 	# 2) Here you can trigger any hit fx on the ability by passing it to the target unit's animator:
 	if !event.miss:
-		target_unit.animator.trigger_hit_fx(hit_vfx, unit.get_global_rotation())
+		event.target_unit.animator.trigger_hit_fx(hit_vfx, unit.get_global_rotation())
 		
 		if event.rolled_damage == 0:
-			target_unit.animator.flash_white()
+			event.target_unit.animator.flash_white()
 		else:
-			target_unit.animator.flash_red()
+			event.target_unit.animator.flash_red()
 	else:
 		Engine.set_time_scale(0.1)
-		target_unit.animator.flash_white()
+		if event.target_unit:
+			event.target_unit.animator.flash_white()
 		await unit.get_tree().create_timer(1.7, true, false, true).timeout
-		Utilities.spawn_text_line(target_unit, "Miss", Color.AQUA)
+		Utilities.spawn_text_line(event.target_unit, "Miss", Color.AQUA)
 		Engine.set_time_scale(1.0)
 
 

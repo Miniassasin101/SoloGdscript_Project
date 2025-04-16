@@ -83,7 +83,7 @@ func apply(unit: Unit) -> void:
 	# Optionally, show a knockback message.
 	Utilities.spawn_text_line(unit, "Knocked Back", Color.FIREBRICK)
 	
-func _on_tween_completed(unit: Unit, target_grid: GridPosition) -> void:
+func _on_tween_completed(unit: Unit, _target_grid: GridPosition) -> void:
 	# Update the unit’s grid position if needed.
 	#unit.grid_position = target_grid
 	# Remove this condition once the tween is finished.

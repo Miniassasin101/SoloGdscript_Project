@@ -1,0 +1,164 @@
+[gd_scene load_steps=7 format=3 uid="uid://cd4utembpymj8"]
+
+[ext_resource type="Script" uid="uid://huqmbrmqt54i" path="res://Hero_Game/Prefabs/UI_Prefabs/BodyPartHealthBar.gd" id="1_xgkj4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_40qju"]
+bg_color = Color(0.142468, 0.155178, 0.182624, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.39, 0.39, 0.39, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="Gradient" id="Gradient_4j8ym"]
+colors = PackedColorArray(1, 1, 1, 1, 0.53, 0.53, 0.53, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qe0ah"]
+gradient = SubResource("Gradient_4j8ym")
+
+[sub_resource type="Gradient" id="Gradient_nftri"]
+colors = PackedColorArray(0.774322, 0.559134, 0.910283, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_u1204"]
+gradient = SubResource("Gradient_nftri")
+
+[node name="BodyPartHealthBar" type="HBoxContainer" node_paths=PackedStringArray("body_part_name_label", "body_part_health_bar_under", "body_part_health_bar_middle", "body_part_health_bar_above", "damage_range_label", "health_points_label")]
+theme_override_constants/separation = 0
+script = ExtResource("1_xgkj4")
+colors = Dictionary[String, Color]({
+"blue": Color(0.148514, 0.63349, 0.921914, 1),
+"orange": Color(0.823444, 0.622838, 0.152781, 1),
+"red": Color(0.86354, 0.116812, 0.314784, 1)
+})
+body_part_name_label = NodePath("MarginContainer2/PanelContainer/MarginContainer/BodyPartName")
+body_part_health_bar_under = NodePath("PanelContainer2/MarginContainer/BodyPartHealthBarUnder")
+body_part_health_bar_middle = NodePath("PanelContainer2/MarginContainer/BodyPartHealthBarMiddle")
+body_part_health_bar_above = NodePath("PanelContainer2/MarginContainer/BodyPartHealthBarAbove")
+damage_range_label = NodePath("MarginContainer4/PanelContainer/MarginContainer/DamageRangeLabel")
+health_points_label = NodePath("MarginContainer3/PanelContainer/MarginContainer/HealthPointsLabel")
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.34
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_40qju")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="BodyPartName" type="Label" parent="MarginContainer2/PanelContainer/MarginContainer"]
+layout_mode = 2
+text = "Body Part"
+horizontal_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_stretch_ratio = 0.34
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_40qju")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer3/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HealthPointsLabel" type="Label" parent="MarginContainer3/PanelContainer/MarginContainer"]
+layout_mode = 2
+text = "HP/HP"
+horizontal_alignment = 1
+
+[node name="MarginContainer4" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_stretch_ratio = 0.34
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_40qju")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer4/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="DamageRangeLabel" type="Label" parent="MarginContainer4/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.84, 0.28784, 0.2688, 1)
+text = "1 - 6"
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_40qju")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="BodyPartHealthBarUnder" type="TextureProgressBar" parent="PanelContainer2/MarginContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+value = 70.0
+rounded = true
+nine_patch_stretch = true
+texture_under = SubResource("GradientTexture2D_qe0ah")
+texture_progress = SubResource("GradientTexture2D_u1204")
+tint_under = Color(0.94, 0.51089, 0.1598, 1)
+tint_over = Color(1, 1, 1, 0)
+
+[node name="BodyPartHealthBarMiddle" type="TextureProgressBar" parent="PanelContainer2/MarginContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+value = 60.0
+rounded = true
+nine_patch_stretch = true
+texture_progress = SubResource("GradientTexture2D_u1204")
+tint_under = Color(0.53, 0.53, 0.53, 0)
+tint_over = Color(1, 1, 1, 0)
+tint_progress = Color(0.631235, 0.843109, 0.999604, 1)
+
+[node name="BodyPartHealthBarAbove" type="TextureProgressBar" parent="PanelContainer2/MarginContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+value = 50.0
+rounded = true
+nine_patch_stretch = true
+texture_progress = SubResource("GradientTexture2D_u1204")
+tint_under = Color(0.53, 0.53, 0.53, 0)
+tint_over = Color(1, 1, 1, 0)
+tint_progress = Color(0.306515, 0.565112, 0.991265, 1)

@@ -47,7 +47,7 @@ func setup_unit_ui(units: Array[Unit]) -> void:
 
 		unit.body.update_body_ui()
 
-func on_units_changed(unit: Unit = null) -> void:
+func on_units_changed(_unit: Unit = null) -> void:
 	setup_unit_ui(UnitManager.instance.get_all_units())
 
 func _on_unit_removed(unit: Unit) -> void:

@@ -187,6 +187,7 @@ func prompt_special_effect_choice(event: ActivationEvent, abs_dif: int) -> Activ
 	
 
 
+#region Attacker and Defender positional penalties
 func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
 	if !event.weapon:
 		return
@@ -295,7 +296,78 @@ func determine_defender_facing_penalty(event: ActivationEvent = current_event) -
 		
 		else:
 			push_warning("No relative position on ", relative)
+#endregion
 
+#region Compute positional penalties
+func compute_attacker_facing_penalty(attacker: Unit, target: Unit, weapon: Weapon) -> FacingPenaltyCondition:
+	if weapon == null:
+		return null
+	var penalty_cond: FacingPenaltyCondition = facing_penalty_condition.duplicate()
+	var relative: int = Utilities.get_unit_relative_position(attacker, target)
+	
+	if weapon.hands == 2:
+		if relative == Utilities.RelativePosition.FRONT:
+			return null
+		elif relative == Utilities.RelativePosition.RIGHT_SIDE or relative == Utilities.RelativePosition.LEFT_SIDE:
+			penalty_cond.situational_modifier = 3  # Hard penalty
+			return penalty_cond
+		elif relative == Utilities.RelativePosition.BACK:
+			penalty_cond.situational_modifier = 5  # Herculean penalty
+			return penalty_cond
+	elif weapon.hands == 1:
+		if relative == Utilities.RelativePosition.FRONT:
+			return null
+		elif relative == Utilities.RelativePosition.RIGHT_SIDE:
+			if weapon.tags.has("left_hand"):
+				penalty_cond.situational_modifier = 3
+				return penalty_cond
+			return null
+		elif relative == Utilities.RelativePosition.LEFT_SIDE:
+			if weapon.tags.has("right_hand"):
+				penalty_cond.situational_modifier = 3
+				return penalty_cond
+			return null
+		elif relative == Utilities.RelativePosition.BACK:
+			penalty_cond.situational_modifier = 5
+			return penalty_cond
+	return null
+
+func compute_defender_facing_penalty(attacker: Unit, target: Unit, weapon: Weapon) -> FacingPenaltyCondition:
+	if weapon == null:
+		return null
+	var penalty_cond: FacingPenaltyCondition = facing_penalty_condition.duplicate()
+	# For the defender the relative position is determined with the target (defender) first
+	var relative: int = Utilities.get_unit_relative_position(target, attacker)
+	
+	if weapon.hands == 2:
+		if relative == Utilities.RelativePosition.FRONT:
+			return null
+		elif relative == Utilities.RelativePosition.RIGHT_SIDE or relative == Utilities.RelativePosition.LEFT_SIDE:
+			penalty_cond.situational_modifier = 3  # Hard penalty
+			return penalty_cond
+		elif relative == Utilities.RelativePosition.BACK:
+			penalty_cond.situational_modifier = 4  # Formidable penalty
+			return penalty_cond
+	elif weapon.hands == 1:
+		if relative == Utilities.RelativePosition.FRONT:
+			return null
+		elif relative == Utilities.RelativePosition.RIGHT_SIDE:
+			if weapon.tags.has("left_hand"):
+				penalty_cond.situational_modifier = 3
+				return penalty_cond
+			return null
+		elif relative == Utilities.RelativePosition.LEFT_SIDE:
+			if weapon.tags.has("right_hand"):
+				penalty_cond.situational_modifier = 3
+				return penalty_cond
+			return null
+		elif relative == Utilities.RelativePosition.BACK:
+			penalty_cond.situational_modifier = 4
+			return penalty_cond
+		else:
+			push_warning("No relative position on ", relative)
+	return null
+#endregion
 
 
 
@@ -343,7 +415,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 func _calculate_attacker_success(attacking_unit: Unit, event: ActivationEvent) -> int:
 	determine_attacker_facing_penalty(event)
 	
-	var attacker_combat_skill = attacking_unit.get_attribute_after_sit_mod("combat_skill")
+	var attacker_combat_skill: int = attacking_unit.get_attribute_after_sit_mod("combat_skill")
 	var attacker_roll: int = Utilities.roll(100)
 	print_debug("Attacker Combat Skill: ", attacker_combat_skill)
 	print_debug("Attacker Roll: ", attacker_roll)

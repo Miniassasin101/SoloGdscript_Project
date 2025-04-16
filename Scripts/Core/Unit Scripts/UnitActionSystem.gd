@@ -12,16 +12,16 @@ signal grid_position_selected(gridpos: GridPosition)
 # Reference to the MouseWorld instance (set in the editor)
 @export var mouse_world: MouseWorld
 
-# Reference to the RayCast3D node (set in the editor)
-@export var raycast: RayCast3D
 
 # Self-reference for signal emission
 @onready var unit_action_system: UnitActionSystem = self
 
-
-
 # Reference to the active Camera3D
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
+
+
+@export var combat_forecast: CombatForecastData = null
+
 
 var is_busy: bool = false
 # This is true to allow selection of a grid square during a sub ability choice
@@ -49,6 +49,8 @@ func _ready() -> void:
 	SignalBus.ability_complete.connect(clear_busy)
 	SignalBus.ability_complete_next.connect(on_ability_ended)
 	SignalBus.new_grid_pos_hovered.connect(on_new_grid_pos_hovered)
+	
+	Console.add_command("create_combat_forecast", create_combat_forecast, [], 0, "Test Command in unit action system.")
 
 
 
@@ -228,6 +230,52 @@ func try_handle_unit_selection() -> bool:
 func on_new_grid_pos_hovered() -> void:
 	
 	update_move_path()
+	
+	create_combat_forecast()
+
+func create_combat_forecast() -> void:
+	if !selected_ability:
+		var combat_forecast_ui: CombatForecastUI = CombatForecastUI.instance
+		combat_forecast_ui.set_visible(false)
+		return
+	
+	if !selected_ability.tags_type.has("attack"):
+		var combat_forecast_ui: CombatForecastUI = CombatForecastUI.instance
+		combat_forecast_ui.set_visible(false)
+		return
+	
+	var attacker: Unit = selected_unit
+	
+	if !MouseWorld.instance.current_hovered_grid:
+		var combat_forecast_ui: CombatForecastUI = CombatForecastUI.instance
+		combat_forecast_ui.set_visible(false)
+		return
+	
+	var target_unit: Unit = LevelGrid.get_unit_at_grid_position(MouseWorld.instance.current_hovered_grid)
+	if target_unit == null:
+		var combat_forecast_ui: CombatForecastUI = CombatForecastUI.instance
+		combat_forecast_ui.set_visible(false)
+		# clear any current forecast
+		return
+	
+	if target_unit == attacker:
+		var combat_forecast_ui: CombatForecastUI = CombatForecastUI.instance
+		combat_forecast_ui.set_visible(false)
+		return
+	
+	
+	
+	var forecast_data: CombatForecastData = CombatForecastData.new(attacker, target_unit)
+	
+	combat_forecast = forecast_data
+	
+	var combat_forecast_ui: CombatForecastUI = CombatForecastUI.instance
+	
+	combat_forecast_ui.set_combat_forcast_data(forecast_data)
+	
+	combat_forecast_ui.set_visible(true)
+	return
+	
 
 
 func on_selected_ability_changed(ability: Ability) -> void:
