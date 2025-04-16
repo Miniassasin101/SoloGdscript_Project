@@ -145,6 +145,7 @@ func try_spend_ability_points_to_use_ability(ability: Ability) -> bool:
 	if can_spend_ability_points_to_use_ability(ability):
 		spend_ability_points(ability.ap_cost)
 		return true
+	Utilities.spawn_text_line(self, "No AP", Color.GOLD, 0.9)
 	return false
 
 

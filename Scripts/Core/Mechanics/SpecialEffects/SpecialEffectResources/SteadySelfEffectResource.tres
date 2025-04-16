@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="SteadySelfEffect" load_steps=2 format=3 uid="uid://dn1tdnykdievx"]
+
+[ext_resource type="Script" uid="uid://lhlbd3nmvbj3" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/SteadySelfEffect.gd" id="1_8eggh"]
+
+[resource]
+script = ExtResource("1_8eggh")
+ui_name = &"Steady Self"
+activation_phase = 0
+activation_allowed = 2
+weapon_types_allowed = Array[String]([])
+stackable = false
+roll_required = 0
+metadata/_custom_type_script = "uid://lhlbd3nmvbj3"

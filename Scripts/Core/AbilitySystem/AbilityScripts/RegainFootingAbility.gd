@@ -14,7 +14,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	event = _event
 	unit = event.unit
 	if not unit or not event.target_grid_position:
-		push_error("BraceAbility: Missing unit or target grid position.")
+		push_error("RegainFootingAbility: Missing unit or target grid position.")
 		end_ability(event)
 		return
 	

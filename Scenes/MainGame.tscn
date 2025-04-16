@@ -26,7 +26,7 @@
 [ext_resource type="Script" uid="uid://dsp5f0drsktx2" path="res://Hero_Game/Scripts/Core/UnitStatsUI.gd" id="17_y4lpf"]
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
 [ext_resource type="Script" uid="uid://cwsem2fnkteke" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffect.gd" id="18_hnk25"]
-[ext_resource type="Resource" uid="uid://cxk0rx8ecss31" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/SwordTest.tres" id="19_1dbid"]
+[ext_resource type="Resource" uid="uid://b6eu0ekmy47qr" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/BowTest.tres" id="19_wk6ai"]
 [ext_resource type="Resource" uid="uid://cjxj1gnefr71c" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/AccidentalInjuryEffectResource.tres" id="19_xdtf5"]
 [ext_resource type="Script" uid="uid://baxluukdrdjhd" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
 [ext_resource type="Script" uid="uid://dqx7stk06etai" path="res://Hero_Game/Scenes/UILayer.gd" id="21_3ffgk"]
@@ -46,7 +46,7 @@
 [ext_resource type="PackedScene" uid="uid://4uwpx7r25fdg" path="res://Hero_Game/Prefabs/UI_Prefabs/SpecialEffectsDragContainer.tscn" id="29_725ge"]
 [ext_resource type="Script" uid="uid://d35gfk2fl3xde" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlotController.gd" id="29_cc03n"]
 [ext_resource type="Resource" uid="uid://b34sriadfy7xr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/DisarmOpponentEffectResource.tres" id="29_itb1b"]
-[ext_resource type="Resource" uid="uid://dlukj3jgipdjr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/EnhanceParryEffect.tres" id="30_hdg1r"]
+[ext_resource type="Resource" uid="uid://dlukj3jgipdjr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/EnhanceParryEffectResource.tres" id="30_hdg1r"]
 [ext_resource type="Resource" uid="uid://b7wui72oveng1" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ForceFailureEffectResource.tres" id="31_4yuhs"]
 [ext_resource type="Resource" uid="uid://cqqeph0m4h0ka" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ImpaleEffectResource.tres" id="32_npgv8"]
 [ext_resource type="Resource" uid="uid://bspw2bpavewje" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MaximizeDamageEffectResource.tres" id="33_mywpm"]
@@ -62,6 +62,7 @@
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="39_yrlso"]
 [ext_resource type="Resource" uid="uid://d3yn60m635vma" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/MarksmanEffectResource.tres" id="40_68vw7"]
 [ext_resource type="Resource" uid="uid://cmxj4ciw26ys2" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/SunderEffectResource.tres" id="42_711r1"]
+[ext_resource type="Resource" uid="uid://dn1tdnykdievx" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/SteadySelfEffectResource.tres" id="43_an7oc"]
 [ext_resource type="Script" uid="uid://dxsb2537kj36" path="res://Hero_Game/Scenes/EngagementSystem.gd" id="44_wgkkd"]
 [ext_resource type="Script" uid="uid://b4kcedpcju35b" path="res://Hero_Game/Scenes/UnitUIManager3d.gd" id="47_1nha0"]
 [ext_resource type="PackedScene" uid="uid://cbqua8yfarqi" path="res://Hero_Game/Prefabs/UI_Prefabs/SilhouetteUI3D.tscn" id="48_1dbid"]
@@ -83,15 +84,6 @@ roll_required = 0
 
 [sub_resource type="SphereMesh" id="SphereMesh_owyi7"]
 material = ExtResource("5_y067e")
-
-[sub_resource type="Resource" id="Resource_c77yv"]
-script = ExtResource("18_hnk25")
-ui_name = &"TacoTest"
-activation_phase = 0
-activation_allowed = 0
-weapon_types_allowed = Array[String]([])
-stackable = true
-roll_required = 0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pcwnq"]
 render_priority = 0
@@ -291,14 +283,14 @@ script = ExtResource("8_kmwtl")
 [node name="UnitManager" type="Node" parent="." node_paths=PackedStringArray("unit_action_system")]
 script = ExtResource("10_iw061")
 unit_action_system = NodePath("../UnitActionSystem")
-sword_test = ExtResource("19_1dbid")
+sword_test = ExtResource("19_wk6ai")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 4, 0, 14)
 ui_name = "Blue"
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 12)
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 8)
 ui_name = "Green"
 is_enemy = true
 
@@ -311,7 +303,7 @@ script = ExtResource("16_f3oa4")
 unit_action_system_ui = NodePath("../UILayer/UnitActionSystemUI")
 book_keeping_system = NodePath("BookKeepingSystem")
 engagement_system = NodePath("EngagementSystem")
-special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), ExtResource("21_kkt7y"), ExtResource("22_6ytw6"), ExtResource("23_xra60"), ExtResource("24_h0tua"), ExtResource("26_c6h62"), ExtResource("27_ivlyn"), ExtResource("29_itb1b"), ExtResource("30_hdg1r"), ExtResource("31_4yuhs"), ExtResource("32_npgv8"), ExtResource("33_mywpm"), ExtResource("34_lu63c"), ExtResource("35_t123n"), ExtResource("36_puq5n"), ExtResource("37_c0lde"), ExtResource("38_qso2c"), ExtResource("40_68vw7"), ExtResource("63_kmaem"), ExtResource("42_711r1"), SubResource("Resource_c77yv")])
+special_effects = Array[ExtResource("18_hnk25")]([ExtResource("19_xdtf5"), ExtResource("21_kkt7y"), ExtResource("22_6ytw6"), ExtResource("23_xra60"), ExtResource("24_h0tua"), ExtResource("26_c6h62"), ExtResource("27_ivlyn"), ExtResource("29_itb1b"), ExtResource("30_hdg1r"), ExtResource("31_4yuhs"), ExtResource("32_npgv8"), ExtResource("33_mywpm"), ExtResource("34_lu63c"), ExtResource("35_t123n"), ExtResource("36_puq5n"), ExtResource("37_c0lde"), ExtResource("38_qso2c"), ExtResource("40_68vw7"), ExtResource("63_kmaem"), ExtResource("42_711r1"), ExtResource("43_an7oc")])
 facing_penalty_condition = ExtResource("39_me7ee")
 
 [node name="BookKeepingSystem" type="Node" parent="CombatSystem" node_paths=PackedStringArray("combat_system")]

@@ -78,6 +78,7 @@ func _process(_delta: float) -> void:
 		
 		if is_reacting:
 			handle_selected_reaction()
+			return
 		
 		handle_selected_ability()
 		# Attempt to select a unit

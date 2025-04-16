@@ -1,6 +1,6 @@
 class_name Condition extends Resource
 
-
+## Internal name for the condition, Always use snakecase.
 @export var ui_name: String = "n/a"
 
 @export var condition_level: int = 0
