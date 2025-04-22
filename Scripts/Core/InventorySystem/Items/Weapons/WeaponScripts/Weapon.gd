@@ -76,6 +76,11 @@ func roll_damage_dep() -> int:
 
 
 func roll_damage(maximize_count: int = 0) -> int:
+	var event: ActivationEvent = CombatSystem.instance.current_event
+	if event:
+		if event.attacker_long_reach_at_short:
+			return roll_long_weapon_short_range(maximize_count)
+	
 	# Ensure that the number of dice to maximize does not exceed the weapon's dice.
 	var dice_to_maximize: int = clampi(maximize_count, 0, die_number)
 	var normal_dice: int = die_number - dice_to_maximize
@@ -92,8 +97,33 @@ func roll_damage(maximize_count: int = 0) -> int:
 	return damage_total
 
 
+## Seperate roll damage function for when attacking at close range with longer weapon.
+## Damage is set to 1d3 + 1 (should probably make it the lower of it and the weapon itself.)
+func roll_long_weapon_short_range(maximize_count: int = 0) -> int:
+	
+	var temp_die_num: int = 1
+	var temp_die_type: int = 3
+	var temp_flat_damage: int = 1
+	
+	# Ensure that the number of dice to maximize does not exceed the weapon's dice.
+	var dice_to_maximize: int = clampi(maximize_count, 0, temp_die_num)
+	var normal_dice: int = temp_die_num - dice_to_maximize
+	var damage_total: int = 0
+	# Roll normally for the remaining dice.
+	if normal_dice > 0:
+		damage_total += Utilities.roll(temp_die_type, normal_dice)
+	# For each maximized die, add its maximum possible value.
+	damage_total += dice_to_maximize * temp_die_type
+	# Add the flat damage bonus (which is not affected by maximisation).
+	damage_total += temp_flat_damage
+	if is_broken:
+		damage_total = ceili(damage_total / 2.0)
+	return damage_total
+
+
 func get_damage_after_armor(in_damage: int) -> int:
 	return maxi(in_damage - armor_points, 0)
+
 
 
 func get_size_string() -> String:

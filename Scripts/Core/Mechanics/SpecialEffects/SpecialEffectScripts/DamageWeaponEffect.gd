@@ -24,7 +24,8 @@ func can_activate(event: ActivationEvent) -> bool:
 
 
 func on_activated(event: ActivationEvent) -> void:
-	event.bypass_attack = true
+	CombatSystem.instance.current_event.bypass_attack = true
+
 
 
 

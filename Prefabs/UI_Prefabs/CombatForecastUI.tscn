@@ -103,7 +103,7 @@ layout_mode = 2
 [node name="CombatForecastLabel" type="Label" parent="MarginContainer/Forecast/VBoxContainer/UpperMarginContainer/PanelContainer/HBoxContainer/MarginContainer/MarginContainer/PanelContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Combat Forecast"
+text = "Forecast"
 horizontal_alignment = 1
 vertical_alignment = 1
 

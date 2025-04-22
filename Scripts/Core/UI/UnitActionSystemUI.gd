@@ -123,6 +123,9 @@ func create_unit_free_action_buttons(granted_abilities: Array[Ability]) -> void:
 ## Determines if a next_phase button needs to be made.
 func create_next_phase_button() -> void:
 	if TurnSystem.instance.get_current_unit().attribute_map.get_attribute_by_name("action_points").current_buffed_value <= 0:
+		if TurnSystem.instance.current_cycle >= 3:
+			return
+		
 		var ability_button_ui: ActionButtonUI = action_button_prefab.instantiate()
 		ability_button_ui.set_no_ap()
 		action_button_container.add_child(ability_button_ui)

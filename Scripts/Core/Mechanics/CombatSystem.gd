@@ -16,8 +16,8 @@ var initiative_order: Array[Unit] = []
 @export var unit_action_system_ui: UnitActionSystemUI
 @export var book_keeping_system: BookKeepingSystem
 @export var engagement_system: EngagementSystem
-@export_category("Special Effects")
-@export var special_effects: Array[SpecialEffect]
+@export var special_effect_system: SpecialEffectSystem
+
 @export_category("Conditions")
 @export var facing_penalty_condition: FacingPenaltyCondition
 
@@ -38,6 +38,8 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
+	
+	
 
 
 # Tracks and handles any over time effects or spells
@@ -118,17 +120,50 @@ func interrupt_turn(_unit: Unit) -> void:
 
 
 func declare_action(action: Ability, event: ActivationEvent) -> void:
-	# Possibly prompt others if they can react to the declaration itself.
+	current_event = event
 	await check_declaration_reaction_queue(action, event)
+	if not event.target_unit:
+		return
 
-	if event.target_unit and event.unit:
-		# Have the target unit look at the attacker’s head marker.
-		event.target_unit.animator.enable_head_look(event.unit.body.get_part_marker("head"))
+	var attacker: Unit = event.unit
+	var defender: Unit = event.target_unit
+	# Make them look at each other...
+	defender.animator.enable_head_look(attacker.body.get_part_marker("head"))
+	attacker.animator.enable_head_look(defender.body.get_part_marker("head"))
+	attacker.conditions_manager.apply_conditions_attack_declared_interval()
 
-		# Have the unit look at the defender’s head marker.
-		event.unit.animator.enable_head_look(event.target_unit.body.get_part_marker("head"))
-	
+	# —— Weapon Reach Debuffs/Effects —— #
+	var engagement: Engagement = engagement_system.get_engagement(attacker, defender)
+	if engagement:
+		# fetch raw reach values
+		var atk_w: Weapon = attacker.equipment.get_equipped_weapon()
+		var def_w: Weapon = defender.equipment.get_equipped_weapon()
+		var atk_reach: int = atk_w.reach if atk_w else -1
+		var def_reach: int = def_w.reach if def_w else -1
+
+		# 1) Fighting at the Longer Reach
+		if engagement.is_fighting_at_longer_range():
+			# a) attacker has the shorter weapon
+			if atk_reach < def_reach:
+				current_event.special_effects.\
+				append(special_effect_system.find_special_effect_by_name("Damage Weapon"))
+			# b) attacker has the longer weapon → no penalty here
+
+		# 2) Fighting at the Shorter Reach
+		elif engagement.is_fighting_at_shorter_range():
+			# a) attacker has the longer weapon
+			if atk_reach > def_reach:
+				event.attacker_long_reach_at_short = true
+
+			# b) defender has the longer weapon
+			if def_reach > atk_reach:
+				event.defender_long_reach_at_short = true
+
+	# —— end Weapon Reach logic —— #
+
 	print_debug("Action Declared: ", action.ui_name)
+
+
 
 
 
@@ -171,13 +206,13 @@ func reaction(reacting_unit: Unit, _attacking_unit: Unit, _ret_event: Activation
 func prompt_special_effect_choice(event: ActivationEvent, abs_dif: int) -> ActivationEvent:
 	#here the ui will be prompted for the user to choose a number of special effects equal to the degree of level of success
 	var ret_effects: Array[SpecialEffect] = []
-	for effect: SpecialEffect in special_effects:
+	for effect: SpecialEffect in special_effect_system.special_effects:
 		if effect.can_activate(event):
 			ret_effects.append(effect)
 	SignalBus.on_player_special_effect.emit(event.winning_unit, ret_effects, abs_dif)
 	var chosen_effects: Array[SpecialEffect] = await UIBus.effects_chosen
 	event.special_effects.append_array(chosen_effects)
-	for effect in chosen_effects:
+	for effect in event.special_effects:
 		@warning_ignore("redundant_await")
 		await effect.on_activated(event)
 		if effect.activation_phase == effect.ActivationPhase.Initial and effect.can_apply(event):
@@ -400,7 +435,7 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		UILayer.instance.unit_action_system_ui.toggle_containers_visibility_off_except()
 		current_event = null
 		return event
-
+	
 	# Step 3: Resolve combat outcome based on success differential
 	event = await _resolve_combat(action, event, attacker_success_level, defender_success_level,
 								  attacking_unit, target_unit, parrying_weapon_size, attack_weapon_size)
@@ -422,14 +457,16 @@ func _calculate_attacker_success(attacking_unit: Unit, event: ActivationEvent) -
 	event.attacker_roll = attacker_roll
 	
 	var success_level: int = Utilities.check_success_level(attacker_combat_skill, attacker_roll)
-	print_debug("Attacker Success Level: ", success_level)
+	print_debug("Attacker Success Level (pre-debug): ", success_level)
 	
-	# Allow debug overrides.
-	if LevelDebug.instance.attacker_success_debug:
-		success_level = 1
+	# — Debug overrides — #
 	if LevelDebug.instance.attacker_fail_debug:
 		success_level = 0
-
+	elif LevelDebug.instance.attacker_success_debug:
+		success_level = 1
+	
+	print_debug("Attacker Success Level (post-debug): ", success_level)
+	
 	event.attacker_success_level = success_level
 	if success_level == 2:
 		event.attacker_critical = true
@@ -442,6 +479,7 @@ func _calculate_attacker_success(attacking_unit: Unit, event: ActivationEvent) -
 	return success_level
 
 
+
 # Helper: Handle the defender's reaction.  
 # Returns a Dictionary with:
 # - defender_success_level (int)
@@ -451,19 +489,31 @@ func _handle_defender_reaction(target_unit: Unit, attacking_unit: Unit, event: A
 	var defender_success_level: int = 0
 	var parrying_weapon_size: int = 0
 	var attack_weapon_size: int = event.weapon.size if event.weapon else 0
-	var defender_wants_reaction: bool = true  # Placeholder for a prompt or AI decision
-
-	if defender_wants_reaction:
-		await reaction(target_unit, attacking_unit, event)
-		defender_success_level = event.defender_success_level
-		if LevelDebug.instance.parry_fail_debug:
-			defender_success_level = 0
-		if LevelDebug.instance.parry_success_debug:
-			defender_success_level = 1
+	
+	# Normally prompt for a parry/evade...
+	await reaction(target_unit, attacking_unit, event)
+	defender_success_level = event.defender_success_level
+	
+	print_debug("Defender Success Level (pre-debug): ", defender_success_level)
+	
+	# — Debug overrides — #
+	if LevelDebug.instance.parry_fail_debug:
+		defender_success_level = 0
+	elif LevelDebug.instance.parry_success_debug:
+		defender_success_level = 1
+	
+	print_debug("Defender Success Level (post-debug): ", defender_success_level)
+	
+	# Mark whether a parry actually succeeded
+	event.parry_successful = defender_success_level > 0
+	
+	# Show feedback
+	show_success(target_unit, defender_success_level)
+	if not target_unit.equipment.equipped_items.is_empty():
+		var defender_weapon: Weapon = target_unit.equipment.get_equipped_weapon()
+		parrying_weapon_size = defender_weapon.size
+		event.defender_weapon = defender_weapon
 		
-		show_success(target_unit, defender_success_level)
-		if not target_unit.equipment.equipped_items.is_empty():
-			parrying_weapon_size = target_unit.equipment.get_equipped_weapon().size
 
 	event.defender_success_level = defender_success_level
 	if defender_success_level == 2:
@@ -478,6 +528,7 @@ func _handle_defender_reaction(target_unit: Unit, attacking_unit: Unit, event: A
 		"parrying_weapon_size": parrying_weapon_size,
 		"attack_weapon_size": attack_weapon_size
 	}
+
 
 
 # Helper: Resolve the combat based on success differential,
@@ -524,11 +575,9 @@ func get_hit_location(target_unit: Unit) -> BodyPart:
 	return ret
 
 
-
-
 func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit, 
-			parrying_weapon_size: int, attack_weapon_size: int) -> int:
-	# Roll base damage
+	parrying_weapon_size: int, attack_weapon_size: int) -> int:
+	# 1. Roll base damage
 	var weapon: Weapon = event.weapon
 	var damage_total: int = 0
 	if weapon:
@@ -537,29 +586,48 @@ func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit,
 	else:
 		damage_total += Utilities.roll(ability.damage, ability.die_number)
 		damage_total += ability.flat_damage
-
 	print_debug("Base damage rolled: ", damage_total)
 
-	# Apply parry reduction based on weapon size comparison
-	if event.parry_successful:
-		if parrying_weapon_size >= attack_weapon_size or (event.enhance_parry):
-			print_debug("Parry successful - Full damage blocked by equal or larger weapon.")
-			return 0  # Fully blocked
-		
-		elif parrying_weapon_size == attack_weapon_size - 1:
-			damage_total = ceili(damage_total / 2.0)  # Half damage
-			print_debug("Parry successful - Half damage taken (smaller parrying weapon).")
-		
-		else:
-			print_debug("Parry unsuccessful - Weapon too small to reduce damage.")
+	# 2. Compute effective sizes with reach penalties
+	var effective_parry_size: int = parrying_weapon_size
+	var effective_attack_size: int = attack_weapon_size
 
-	# Apply armor reduction after parry
-	if !event.bypass_armor:
+	# Penalty when attacker has long weapon at short range
+	if event.attacker_long_reach_at_short:
+		var atk_weapon: Weapon = event.weapon
+		var def_weapon: Weapon = event.defender_weapon
+		if atk_weapon and def_weapon:
+			var reach_diff = absi(atk_weapon.reach - def_weapon.reach)
+			effective_parry_size = maxi(parrying_weapon_size - reach_diff, 0)
+		print_debug("Effective parry size after attacker-reach penalty: ", effective_parry_size)
+
+	# Penalty when defender has long weapon at short range
+	if event.defender_long_reach_at_short:
+		var atk_weapon: Weapon = event.weapon
+		var def_weapon: Weapon = event.defender_weapon
+		if atk_weapon and def_weapon:
+			var reach_diff: int = absi(def_weapon.reach - atk_weapon.reach)
+			effective_attack_size = maxi(attack_weapon_size - reach_diff, 0)
+		print_debug("Effective attack size after defender-reach penalty: ", effective_attack_size)
+
+	# 3. Apply parry reduction using effective sizes
+	if event.parry_successful:
+		if effective_parry_size >= effective_attack_size or event.enhance_parry:
+			print_debug("Parry successful - Full damage blocked (effective sizes).")
+			return 0
+		elif effective_parry_size == effective_attack_size - 1:
+			damage_total = ceili(damage_total / 2.0)
+			print_debug("Parry successful - Half damage taken (effective sizes).")
+		else:
+			print_debug("Parry unsuccessful - Effective parry too small.")
+
+	# 4. Apply armor reduction
+	if not event.bypass_armor:
 		damage_total = event.body_part.get_damage_after_armor(damage_total)
 
-	print_debug("Damage after armor reduction: ", damage_total, "\nOn ", event.body_part.part_name)
-
+	print_debug("Damage after armor reduction: ", damage_total, " on ", event.body_part.part_name)
 	return damage_total
+
 
 
 ## Sets the hit location / body part variables on the event.

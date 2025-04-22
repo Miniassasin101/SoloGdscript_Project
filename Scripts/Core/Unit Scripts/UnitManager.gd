@@ -33,9 +33,15 @@ func trigger_unit_ui_setup() -> void:
 	UnitUIManager3D.instance.setup_unit_ui(units)
 
 func test_equip_units() -> void:
+
 	#var iteration_num: int = 1
 	for unit: Unit in units:
-		var new_weapon: Weapon = sword_test.duplicate()
+		var new_weapon: Weapon = null
+		if unit.weapon_equip_combat_start == null:
+			if sword_test:
+				new_weapon = sword_test.duplicate()
+		else:
+			new_weapon = unit.weapon_equip_combat_start.duplicate()
 		#new_weapon.name = new_weapon.name + " " + str(iteration_num)
 		#iteration_num += 1
 		unit.equipment.equip(new_weapon)

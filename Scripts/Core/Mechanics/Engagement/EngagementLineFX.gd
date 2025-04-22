@@ -33,6 +33,12 @@ func _physics_process(_delta: float) -> void:
 	if is_active:
 		update_line()
 
+func set_color(color: Color) -> void:
+	line_color = color
+	material.set_shader_parameter("line_color", line_color)
+
+
+
 func update_line():
 	if start_point == null or end_point == null:
 		remove()

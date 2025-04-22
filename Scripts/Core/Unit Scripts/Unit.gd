@@ -34,6 +34,9 @@ var action_system: UnitActionSystem
 
 
 @export_category("")
+@export var weapon_equip_combat_start: Weapon
+
+
 var ability_container: AbilityContainer
 var attribute_map: GameplayAttributeMap
 var unit_manager: UnitManager = get_parent()

@@ -21,7 +21,10 @@ func apply(_event: ActivationEvent) -> void:
 	pass
 
 func can_activate(event: ActivationEvent) -> bool:
-
+	
+	if check_has_effect_already(event):
+		return false
+	
 	if !check_offensive_defensive(event):
 		return false
 	
@@ -38,6 +41,11 @@ func can_activate(event: ActivationEvent) -> bool:
 func on_activated(_event: ActivationEvent) -> void:
 	pass
 
+
+func check_has_effect_already(event: ActivationEvent) -> bool:
+	if event.special_effects.has(self):
+		return true
+	return false
 
 func check_specific_roll(event: ActivationEvent) -> bool:
 	# If we don't require a specific roll (roll_required == 0 => "None"), just return true.

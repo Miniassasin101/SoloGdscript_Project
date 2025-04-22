@@ -95,7 +95,7 @@ func update_body_part_health(current_hp: float, max_hp: float) -> void:
 
 	# For the under bar, fill it completely and use a nearly white fill.
 	body_part_health_bar_under.value = max_hp
-	body_part_health_bar_under.tint_progress = Color(0.95, 0.95, 0.95, 1)  # Almost white
+	body_part_health_bar_under.tint_progress = next_tier_color#Color(0.95, 0.95, 0.95, 1)  # Almost white
 	body_part_health_bar_under.tint_under = next_tier_color
 
 	# Optionally update damage range and HP labels.

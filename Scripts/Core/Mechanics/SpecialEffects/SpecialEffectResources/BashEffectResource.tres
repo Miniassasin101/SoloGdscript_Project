@@ -10,5 +10,5 @@ ui_name = &"Bash"
 activation_phase = 1
 activation_allowed = 0
 weapon_types_allowed = Array[String](["sword"])
-stackable = null
-roll_required = null
+stackable = false
+roll_required = 0
