@@ -31,7 +31,7 @@ var defender : Unit = null
 var defender_weapon : Weapon = null
 
 # Chance of parry (or, if use_evade is true, chance of evade) and its critical chance.
-var parrt_base_chance: int = 0
+var parry_base_chance: int = 0
 var parry_chance : int = 0
 var parry_crit_chance : int = 0
 var evade_chance : int = 0
@@ -42,6 +42,14 @@ var defender_modifier_name: String = "STANDARD"
 
 # Toggle to use evade chance instead of parry
 var use_evade : bool = false
+
+var damaging_weapon: bool = false
+
+var attacker_long_reach_at_short: bool = false
+
+var defender_long_reach_at_short: bool = false
+
+
 
 #------------------------------------------------------------------
 # Damage Forecast
@@ -63,6 +71,35 @@ func construct_forecast(_attacker: Unit, _defender: Unit) -> void:
 	defender = _defender
 	attacker_weapon = _attacker.equipment.get_equipped_weapon()
 	defender_weapon = _defender.equipment.get_equipped_weapon()
+	
+	var atk_reach: int = attacker_weapon.reach
+	var def_reach: int = defender_weapon.reach
+	
+	
+	var engagement_system: EngagementSystem = CombatSystem.instance.engagement_system
+	var engagement: Engagement = engagement_system.get_engagement(attacker, defender)
+	
+	
+	# 1) Fighting at the Longer Reach
+	if engagement.is_fighting_at_longer_range():
+		# a) attacker has the shorter weapon so it can only damage the weapon
+		if atk_reach < def_reach:
+			damaging_weapon = true
+		# b) attacker has the longer weapon → no penalty here
+
+	# 2) Fighting at the Shorter Reach
+	elif engagement.is_fighting_at_shorter_range():
+		# a) attacker has the longer weapon, so weapon damage is reduced
+		if atk_reach > def_reach:
+			attacker_long_reach_at_short = true
+
+		# b) defender has the longer weapon, so they cant parry the shorter one
+		elif def_reach > atk_reach:
+			defender_long_reach_at_short = true
+		
+	
+	
+	
 
 	#------------------------------------------------------------------
 	# Attacker Data
@@ -112,7 +149,10 @@ func construct_forecast(_attacker: Unit, _defender: Unit) -> void:
 	
 	# Compute the defender's original (buffed) combat skill (without temporary modifiers).
 	var defender_original_skill: int = int(defender.get_attribute_buffed_value_by_name("combat_skill"))
-	parrt_base_chance = defender_original_skill
+	parry_base_chance = defender_original_skill
+	
+	if defender_long_reach_at_short:
+		parry_chance = 0
 	
 	# Compute the defender's original evade skill.
 	# If the defender has an "evade" attribute, use that; otherwise fall back to the combat skill.

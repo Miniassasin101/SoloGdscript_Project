@@ -20,14 +20,17 @@ class_name BodyPartHealthBar
 @export var body_part_name: String = "n/a"
 @export var body_part_health: int = 0
 
+@export var weapon: Weapon = null
+@export var weapon_name: String = "n/a"
+
+
 # Minimum and maximum damage (set via the UI or calculated from a dice expression)
 @export var min_damage: int = 0
 @export var max_damage: int = 0
 
 # Helper: a very basic armor reduction calculation.
-func apply_armor_reduction(hp: float, damage: float) -> float:
-	var armor_value = body_part.get_armor()   # Example armor constant; adjust as needed.
-	var effective_damage = max(damage - armor_value, 0)
+func apply_armor_reduction(hp: float, damage: float, armor_points: int) -> float:
+	var effective_damage = max(damage - armor_points, 0)
 	return hp - effective_damage
 
 # Called to set up the body part info.
@@ -36,6 +39,12 @@ func init_body_part(in_body_part: BodyPart) -> void:
 	body_part_name = body_part.part_ui_name
 	body_part_name_label.text = body_part_name
 	body_part_health = body_part.body.get_part_health(in_body_part.part_name)
+
+func init_weapon_health(in_weapon: Weapon) -> void:
+	weapon = in_weapon
+	weapon_name = in_weapon.name
+	body_part_name_label.text = weapon_name
+	body_part_health = weapon.hit_points
 
 
 func get_color_for_hp(hp_value: float, max_hp: float) -> Color:
@@ -49,7 +58,7 @@ func get_color_for_hp(hp_value: float, max_hp: float) -> Color:
 
 
 # Call this whenever HP changes or a new damage forecast is to be displayed.
-func update_body_part_health(current_hp: float, max_hp: float) -> void:
+func update_body_part_health(current_hp: float, max_hp: float, armor_points: int) -> void:
 	# Clamp current_hp so it does not drop below -max_hp.
 	var clamped_hp = current_hp
 	if clamped_hp < -max_hp:
@@ -61,8 +70,8 @@ func update_body_part_health(current_hp: float, max_hp: float) -> void:
 	body_part_health_bar_under.max_value = max_hp
 
 	# Compute predicted HP after damage (post armor reduction)
-	var predicted_hp_after_max = apply_armor_reduction(clamped_hp, max_damage)
-	var predicted_hp_after_min = apply_armor_reduction(clamped_hp, min_damage)
+	var predicted_hp_after_max = apply_armor_reduction(clamped_hp, max_damage, armor_points)
+	var predicted_hp_after_min = apply_armor_reduction(clamped_hp, min_damage, armor_points)
 
 	# Convert negative predicted HP to a display value.
 	# If the predicted HP is negative, add max_hp to convert it to a value between 0 and max_hp.
@@ -99,7 +108,7 @@ func update_body_part_health(current_hp: float, max_hp: float) -> void:
 	body_part_health_bar_under.tint_under = next_tier_color
 
 	# Optionally update damage range and HP labels.
-	var dmg_text: String = "%d - %d DMG" % [maxi(min_damage - body_part.get_armor(), 0), maxi(max_damage - body_part.get_armor(), 0)]
+	var dmg_text: String = "%d - %d DMG" % [maxi(min_damage - armor_points, 0), maxi(max_damage - armor_points, 0)]
 	if damage_range_label:
 		damage_range_label.text = dmg_text
 		

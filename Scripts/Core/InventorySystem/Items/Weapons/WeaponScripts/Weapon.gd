@@ -47,6 +47,11 @@ class_name Weapon extends Item
 @export var is_loaded: bool = false
 
 
+var long_w_short_die_num: int = 1
+var long_w_short_die_type: int = 3
+var long_w_short_flat_damage: int = 1
+
+
 func setup_weapon() -> void:
 	if is_loaded:
 		load_projectile()
@@ -101,9 +106,9 @@ func roll_damage(maximize_count: int = 0) -> int:
 ## Damage is set to 1d3 + 1 (should probably make it the lower of it and the weapon itself.)
 func roll_long_weapon_short_range(maximize_count: int = 0) -> int:
 	
-	var temp_die_num: int = 1
-	var temp_die_type: int = 3
-	var temp_flat_damage: int = 1
+	var temp_die_num: int = long_w_short_die_num
+	var temp_die_type: int = long_w_short_die_type
+	var temp_flat_damage: int = long_w_short_flat_damage
 	
 	# Ensure that the number of dice to maximize does not exceed the weapon's dice.
 	var dice_to_maximize: int = clampi(maximize_count, 0, temp_die_num)
