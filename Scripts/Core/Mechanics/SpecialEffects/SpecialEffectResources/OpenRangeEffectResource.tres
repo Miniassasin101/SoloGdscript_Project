@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="OpenRangeEffect" load_steps=2 format=3 uid="uid://46tb7kalsfge"]
+
+[ext_resource type="Script" uid="uid://c47nj66ubbao4" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/OpenRangeEffect.gd" id="1_vov7x"]
+
+[resource]
+script = ExtResource("1_vov7x")
+ui_name = &"Open Range"
+activation_phase = 1
+activation_allowed = 2
+weapon_types_allowed = Array[String]([])
+stackable = false
+roll_required = 0
+metadata/_custom_type_script = "uid://c47nj66ubbao4"

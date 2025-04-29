@@ -78,24 +78,24 @@ func construct_forecast(_attacker: Unit, _defender: Unit) -> void:
 	
 	var engagement_system: EngagementSystem = CombatSystem.instance.engagement_system
 	var engagement: Engagement = engagement_system.get_engagement(attacker, defender)
+	if engagement:
 	
-	
-	# 1) Fighting at the Longer Reach
-	if engagement.is_fighting_at_longer_range():
-		# a) attacker has the shorter weapon so it can only damage the weapon
-		if atk_reach < def_reach:
-			damaging_weapon = true
-		# b) attacker has the longer weapon → no penalty here
+		# 1) Fighting at the Longer Reach
+		if engagement.is_fighting_at_longer_range():
+			# a) attacker has the shorter weapon so it can only damage the weapon
+			if atk_reach < def_reach:
+				damaging_weapon = true
+			# b) attacker has the longer weapon → no penalty here
 
-	# 2) Fighting at the Shorter Reach
-	elif engagement.is_fighting_at_shorter_range():
-		# a) attacker has the longer weapon, so weapon damage is reduced
-		if atk_reach > def_reach:
-			attacker_long_reach_at_short = true
+		# 2) Fighting at the Shorter Reach
+		elif engagement.is_fighting_at_shorter_range():
+			# a) attacker has the longer weapon, so weapon damage is reduced
+			if atk_reach > def_reach:
+				attacker_long_reach_at_short = true
 
-		# b) defender has the longer weapon, so they cant parry the shorter one
-		elif def_reach > atk_reach:
-			defender_long_reach_at_short = true
+			# b) defender has the longer weapon, so they cant parry the shorter one
+			elif def_reach > atk_reach:
+				defender_long_reach_at_short = true
 		
 	
 	

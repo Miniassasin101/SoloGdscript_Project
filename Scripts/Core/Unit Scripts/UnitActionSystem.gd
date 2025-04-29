@@ -118,7 +118,7 @@ func use_ability(unit: Unit, ability: Ability, target_pos: GridPosition) -> void
 		return
 	if TurnSystem.instance.is_player_turn or LevelDebug.instance.control_enemy_debug:
 		# Check if we've already taken a proactive action this cycle
-		if TurnSystem.instance.has_taken_proactive_action_this_cycle(unit) and check_ability_type_invalid(selected_ability):
+		if TurnSystem.instance.has_taken_proactive_action_this_cycle(unit) and check_ability_type_invalid(selected_ability) and !is_reacting:
 			print_debug("You have already taken a proactive action this cycle!")
 			return
 			
@@ -138,6 +138,9 @@ func use_ability(unit: Unit, ability: Ability, target_pos: GridPosition) -> void
 func handle_selected_reaction() -> void:
 	var reacting_unit: Unit = CombatSystem.instance.current_event.target_unit
 	if reacting_unit and selected_ability:
+		
+		if !selected_ability.tags_type.has("reaction"):
+			return
 		
 		var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
 		if mouse_grid_position:
@@ -288,6 +291,7 @@ func on_selected_ability_changed(ability: Ability) -> void:
 			unit = CombatSystem.instance.current_event.target_unit
 		else:
 			unit = UnitActionSystem.instance.selected_unit
+			#return
 
 		if unit != null:
 			var gridpositions: Array[GridPosition] = unit.ability_container.get_valid_ability_target_grid_position_list(ability)

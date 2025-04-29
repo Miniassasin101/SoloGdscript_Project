@@ -1,6 +1,7 @@
 class_name Testing
 extends Node3D
 
+@export var obstacle_manager: ObstacleManager
 @export var unit_1: Unit
 @export var unit_2: Unit
 @export var camerashake: CameraShake
@@ -56,7 +57,7 @@ func _ready() -> void:
 	Console.add_command("set_enemy", console_set_enemy, ["unit_identifier", "is_enemy"], 2, "Sets the is_enemy flag on a unit and updates hair tufts (red for enemy, white for friendly).");
 	Console.add_command("add_armor", console_add_armor, ["unit_identifier", "armor_value", "body_part_identifier"], 3, "Adds armor to a unit's body part. Use 'all' as the body_part_identifier to affect all parts.")
 	Console.add_command("remove_armor", console_remove_armor, ["unit_identifier", "armor_value", "body_part_identifier"], 3, "Removes armor from a unit's body part. Use 'all' as the body_part_identifier to affect all parts.")
-
+	Console.add_command("get_obstacle_positions", console_get_obstacle_positions, ["obstacle_index"], 0, "Test for obstacles")
 
 
 
@@ -556,7 +557,15 @@ func console_remove_armor(unit_identifier: String, armor_str: String, body_part_
 		body_part.set_armor(body_part.armor - remove_value)
 		Console.print_info("Removed " + str(remove_value) + " armor from " + body_part.part_name + " on " + unit_identifier)
 
-
+func console_get_obstacle_positions(obs_index: String = "0") -> void:
+	var obstacle_index: int = obs_index.to_int()
+	
+	var obstacle: Obstacle = obstacle_manager.get_child(obstacle_index)
+	
+	var positions: Array[GridPosition] = obstacle.get_occupied_tiles()
+	
+	for pos in positions:
+		Console.print_info(pos.to_str())
 
 
 

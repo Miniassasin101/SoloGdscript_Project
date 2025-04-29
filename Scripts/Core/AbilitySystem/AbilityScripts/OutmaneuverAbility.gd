@@ -35,12 +35,8 @@ func try_activate(_event: ActivationEvent) -> void:
 		return
 
 	# Gather engaged opponents from CombatSystem.engagements.
-	var engaged_opponents: Array[Unit] = []
-	for engagement in CombatSystem.instance.engagement_system.engagements:
-		if engagement.units.has(unit):
-			for other_unit in engagement.units:
-				if other_unit != unit and not engaged_opponents.has(other_unit):
-					engaged_opponents.append(other_unit)
+	var engaged_opponents: Array[Unit] = CombatSystem.instance.engagement_system.get_engaged_opponents(unit)
+
 
 	# Determine if there is at least one other engaged enemy (besides the one being processed).
 	var extraEnemyEngaged: bool = engaged_opponents.size() > 1

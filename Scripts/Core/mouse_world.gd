@@ -97,7 +97,7 @@ func has_line_of_sight(start_position: Vector3, end_position: Vector3) -> bool:
 	query.collide_with_areas = true  # Include areas if needed
 
 	# Perform the raycast
-	var result = space_state.intersect_ray(query)
+	var result: Dictionary = space_state.intersect_ray(query)
 
 	# Debug visualization (optional)
 	if debug_visual:
@@ -111,6 +111,7 @@ func has_line_of_sight(start_position: Vector3, end_position: Vector3) -> bool:
 		print_debug("collided")
 	# If no collision is detected, line of sight is clear
 	return not result.has("position")
+
 
 
 
@@ -184,4 +185,3 @@ func _adjust_mouse_debug_position() -> void:
 			# Update the node's position to the raycast hit position
 			global_transform.origin = hit_position
 			
-	

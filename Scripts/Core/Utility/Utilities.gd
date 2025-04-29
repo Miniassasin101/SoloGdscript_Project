@@ -64,6 +64,16 @@ const DIFFICULTY_GRADE_MULTIPLIER = {
 enum RelativePosition { FRONT, RIGHT_SIDE, LEFT_SIDE, BACK, UNKNOWN }
 
 
+const DIR_TO_OFF = {
+	GridObject.CoverDir.NORTH: Vector2(0, -1),
+	GridObject.CoverDir.EAST:  Vector2(1,  0),
+	GridObject.CoverDir.SOUTH: Vector2(0,  1),
+	GridObject.CoverDir.WEST:  Vector2(-1, 0),
+}
+
+
+
+
 # This helper returns the relative position of focus from relative.
 # Whoever is calling this is the focus.
 # FIXME: Wont work on map edges

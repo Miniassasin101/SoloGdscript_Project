@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CloseRangeEffect" load_steps=2 format=3 uid="uid://ciy8odacvhm77"]
+
+[ext_resource type="Script" uid="uid://c3ynnrmapqqs" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/CloseRangeEffect.gd" id="1_3377j"]
+
+[resource]
+script = ExtResource("1_3377j")
+ui_name = &"Close Range"
+activation_phase = 1
+activation_allowed = 2
+weapon_types_allowed = Array[String]([])
+stackable = false
+roll_required = 0
+metadata/_custom_type_script = "uid://c3ynnrmapqqs"

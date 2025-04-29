@@ -146,6 +146,15 @@ func create_unit_reaction_buttons() -> void:
 		if ability.tags_type.has("reaction"):
 			if !verify_gait_allowed(reacting_unit.current_gait, ability):
 				continue
+			
+			var can_activate: bool = false
+			for gridpos in reacting_unit.ability_container.get_valid_ability_target_grid_position_list(ability):
+				if reacting_unit.ability_container.can_activate_at_position(ability, gridpos):
+					can_activate = true
+					continue
+			if !can_activate:
+				continue
+			
 			var ability_button_ui = action_button_prefab.instantiate()
 			ability_button_ui.set_base_ability(ability)
 			reaction_button_container.add_child(ability_button_ui)

@@ -51,10 +51,10 @@ func populate_body_parts(unit: Unit) -> void:
 		# 1) Create a label for the body part name.
 		var name_label = Label.new()
 		name_label.name = "PartNameLabel"
-		name_label.text = part.part_name
+		name_label.text = part.part_ui_name
 		name_label.add_theme_font_size_override("font_size", 15)
 		# Left-align the part name.
-		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 		# 2) Create a label for the armor value.
 		var armor_label = Label.new()

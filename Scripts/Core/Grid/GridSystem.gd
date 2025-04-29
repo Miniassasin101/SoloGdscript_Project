@@ -122,6 +122,19 @@ func update_walkability_from_bounding_boxes(bounding_boxes: Array) -> void:
 	
 
 
+# Cover Functions
+
+func clear_all_cover() -> void:
+	for x in range(width):
+		for z in range(height):
+			var grid_obj: GridObject = get_grid_object(get_grid_position_from_coords(x, z))
+			
+			grid_obj.cover_mask = GridObject.CoverDir.NONE
+			grid_obj.cover_type_n = Obstacle.Cover.None
+			grid_obj.cover_type_e = Obstacle.Cover.None
+			grid_obj.cover_type_s = Obstacle.Cover.None
+			grid_obj.cover_type_w = Obstacle.Cover.None
+
 
 #getter/setter functions
 

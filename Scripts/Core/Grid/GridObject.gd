@@ -4,6 +4,19 @@
 class_name GridObject
 extends RefCounted
 
+
+# at top of file, after class_name…
+enum CoverDir {
+	NONE  = 0,
+	NORTH = 1,
+	EAST  = 2,
+	SOUTH = 4,
+	WEST  = 8
+}
+
+
+
+
 # Reference to the GridSystem.
 var grid_system: GridSystem
 
@@ -19,6 +32,17 @@ var is_difficult_terrain: bool = false  # New property
 var unit_list: Array[Unit] = []
 
 var item_list: Array[Item] = []
+
+
+# Cover Variables
+var cover_mask: int = CoverDir.NONE
+
+var cover_type_n: int = Obstacle.Cover.None # North
+var cover_type_e: int = Obstacle.Cover.None # East
+var cover_type_s: int = Obstacle.Cover.None # South
+var cover_type_w: int = Obstacle.Cover.None # West
+
+
 
 func _init(ingrid_system: GridSystem, ingrid_position: GridPosition) -> void:
 	grid_system = ingrid_system

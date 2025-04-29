@@ -135,18 +135,18 @@ func add_health_attribute(part: BodyPart) -> void:
 	attribute_map.add_single_attribute(new_attr)
 
 
-func get_part_health(part_name: String, get_max: bool = false) -> float:
+func get_part_health(part_name: String, get_max: bool = false) -> int:
 	var part = _find_part_by_name(part_name)
 	if not part:
 		push_warning("Body part '%s' not found." % part_name)
-		return 0.0
+		return 0
 		
 	var spec = attribute_map.get_attribute_by_name(part.part_name + "_health")
 	if spec:
 		if get_max:
-			return spec.maximum_value
-		return spec.current_value
-	return 0.0
+			return int(spec.maximum_value)
+		return int(spec.current_value)
+	return 0
 
 func get_part_location(part_name: String) -> Vector3:
 	var part = _find_part_by_name(part_name)

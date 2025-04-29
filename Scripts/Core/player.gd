@@ -8,24 +8,24 @@ extends CharacterBody3D
 @onready var spring_arm: SpringArm3D = $CamOrigin/SpringArm3D
 
 # Zoom variables
-var Zoom_Desired: float
-var Zoom_Min: float
-var Zoom_Max: float
-var Zoom_Speed: float
-var Zoom_Interp: float
+@export var Zoom_Desired: float = 10
+@export var Zoom_Min: float = 0.5
+@export var Zoom_Max: float = 100.0
+@export var Zoom_Speed: float = 5.0
+@export var Zoom_Interp: float = 5.0
 
 # Location variables
 var Location_Desired: Vector3
-@export var Location_Speed: float = 1.0
-var Location_Interp: float
+@export var Location_Speed: float = 0.3
+@export var Location_Interp: float = 5.0
 # Rotation variables
 var Rotation_Desired: Vector3
 var Angle_Rotation_Desired: Vector3
-var Rotation_Speed: float
-var Rotation_Interp: float
+@export var Rotation_Speed: float = 5.0
+@export var Rotation_Interp: float = 5.0
 
 # Smoothing speed for camera interpolation
-var smooth_speed = 7
+@export var smooth_speed = 7
 
 # Vertical rotation clamping (prevents flipping the camera vertically)
 var vertical_min = deg_to_rad(-80)  # Maximum downward rotation
@@ -33,22 +33,13 @@ var vertical_max = deg_to_rad(80)   # Maximum upward rotation
 
 # Initialization
 func _ready():
-	# Initialize zoom parameters
-	Zoom_Desired = 10
-	Zoom_Min = 1.0
-	Zoom_Max = 100.0
-	Zoom_Speed = 5.0
-	Zoom_Interp = 5
+
 	
 	# Initialize location and rotation to the current transform of the CharacterBody3D
 	Location_Desired = transform.origin
-	#Location_Speed = 1.0
-	Location_Interp = 5
-	
 	Rotation_Desired = rotation
 	Angle_Rotation_Desired = spring_arm.rotation
-	Rotation_Speed = 5.0
-	Rotation_Interp = 5
+
 
 # Function to calculate the shortest angle between two angles
 func shortest_angle_between(current_angle: float, target_angle: float) -> float:
@@ -121,8 +112,8 @@ func handle_movement():
 # Handle zoom input (zoom in/out)
 func handle_zoom_input():
 	if Input.is_action_just_pressed("zoom_out"):
-		var zoom_input = Zoom_Speed
-		var zoom_clamp = Zoom_Desired + zoom_input
+		var zoom_input: float = Zoom_Speed
+		var zoom_clamp: float = Zoom_Desired + zoom_input
 		Zoom_Desired = clamp(zoom_clamp, Zoom_Min, Zoom_Max)
 
 	if Input.is_action_just_pressed("zoom_in"):

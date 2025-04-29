@@ -98,6 +98,9 @@ func can_activate(_event: ActivationEvent) -> bool:
 	#Add logic here to check to see if the user can parry the attack, given data like:
 	#weapon has attacking trait. user is stunned. User is facing the wrong way, ect.
 	
+	if !can_activate_given_current_event():
+		return false
+	
 	if !(_event.target_grid_position in get_valid_ability_target_grid_position_list(_event)):
 		return false
 
@@ -108,6 +111,13 @@ func can_activate(_event: ActivationEvent) -> bool:
 func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Array[GridPosition]:
 	return [_event.unit.get_grid_position()]
 
+
+func can_activate_given_current_event() -> bool:
+	var current_event: ActivationEvent = CombatSystem.instance.current_event
+	if current_event:
+		if current_event.defender_long_reach_at_short:
+			return false
+	return true
 
 
 # Gets the best AI action for a specified grid position.
