@@ -58,8 +58,14 @@ func _ready() -> void:
 	Console.add_command("add_armor", console_add_armor, ["unit_identifier", "armor_value", "body_part_identifier"], 3, "Adds armor to a unit's body part. Use 'all' as the body_part_identifier to affect all parts.")
 	Console.add_command("remove_armor", console_remove_armor, ["unit_identifier", "armor_value", "body_part_identifier"], 3, "Removes armor from a unit's body part. Use 'all' as the body_part_identifier to affect all parts.")
 	Console.add_command("get_obstacle_positions", console_get_obstacle_positions, ["obstacle_index"], 0, "Test for obstacles")
-
-
+	Console.add_command("set_cover_type", console_set_cover_type, ["x","z","cover_type"], 3, "Sets the cover type (None, Full, Half, Soft) of the obstacle at grid position x z.")
+	Console.add_command("get_cover_type", console_get_cover_type, ["x","z"], 2, "Prints the cover type of the obstacle at grid position x z.")
+	Console.add_command("list_cover_tiles", console_list_cover_tiles, 0, 0, "Lists all grid cells receiving any cover.")
+	Console.add_command("list_cover_dir", console_list_cover_dir, ["direction"], 1, "Lists all grid cells receiving cover from a specific direction: north, east, south, west.")
+	Console.add_command("list_cover_type", console_list_cover_type, ["cover_type"], 1, "Lists all grid cells receiving a specific cover type: none, full, half, soft.")
+	Console.add_command("show_cover_tiles", console_show_cover_tiles, 0, 0, "Show on the grid all cells receiving any cover.")
+	Console.add_command("show_cover_dir", console_show_cover_dir, ["direction"], 1, "Show on the grid cells receiving cover from a specific direction: north, east, south, west.")
+	Console.add_command("show_cover_type", console_show_cover_type, ["cover_type"], 1, "Show on the grid cells receiving a specific cover type: none, full, half, soft.")
 
 
 
@@ -138,6 +144,10 @@ func console_reload_scene() -> void:
 		return
 
 	Console.print_info("Reloading current scene: " + scene_path)
+	call_deferred("change_scene_to_file", scene_path)
+
+
+func change_scene_to_file(scene_path: String) -> void:
 	get_tree().change_scene_to_file(scene_path)
 
 func console_play_anim(unit_identifier: String, animation_name: String) -> void:
@@ -568,6 +578,167 @@ func console_get_obstacle_positions(obs_index: String = "0") -> void:
 		Console.print_info(pos.to_str())
 
 
+func console_set_cover_type(x_str: String, z_str: String, cover_str: String) -> void:
+	var x: int = int(x_str)
+	var z: int = int(z_str)
+	var gp: GridPosition = LevelGrid.get_grid_position_from_coords(x, z)
+	if gp == null or not LevelGrid.is_valid_grid_position(gp):
+		Console.print_error("Invalid grid position (" + x_str + ", " + z_str + ").")
+		return
+
+	var obs: Obstacle = obstacle_manager.get_obstacle_at(gp)
+	if obs == null:
+		Console.print_error("No obstacle at grid position (" + x_str + ", " + z_str + ").")
+		return
+
+	match cover_str.to_lower():
+		"none":
+			obs.set_cover_type(Obstacle.Cover.None)
+		"full":
+			obs.set_cover_type(Obstacle.Cover.Full)
+		"half":
+			obs.set_cover_type(Obstacle.Cover.Half)
+		"soft":
+			obs.set_cover_type(Obstacle.Cover.Soft)
+		_:
+			Console.print_error("Invalid cover type '" + cover_str + "'. Use: None, Full, Half, Soft.")
+			return
+	
+	ObstacleManager.instance.update_cover()
+
+	Console.print_info("Cover at (" + x_str + ", " + z_str + ") set to " + cover_str.capitalize() + ".")
+
+
+func console_get_cover_type(x_str: String, z_str: String) -> void:
+	var x := int(x_str)
+	var z := int(z_str)
+	var gp := LevelGrid.get_grid_position_from_coords(x, z)
+	if gp == null or not LevelGrid.is_valid_grid_position(gp):
+		Console.print_error("Invalid grid position (" + x_str + ", " + z_str + ").")
+		return
+
+	var obs: Obstacle = obstacle_manager.get_obstacle_at(gp)
+	if obs == null:
+		Console.print_error("No obstacle at grid position (" + x_str + ", " + z_str + ").")
+		return
+
+	var cover_val: int = obs.get_cover_type()
+	var cover_name: String = "n/a"
+	match cover_val:
+			Obstacle.Cover.None: cover_name = "None"
+			Obstacle.Cover.Full: cover_name = "Full"
+			Obstacle.Cover.Half: cover_name = "Half"
+			Obstacle.Cover.Soft: cover_name = "Soft"
+	Console.print_info("Cover at (" + x_str + ", " + z_str + ") is " + cover_name + ".")
+
+
+func console_list_cover_tiles() -> void:
+	var gs: GridSystem = LevelGrid.grid_system
+	var tiles: Array[GridPosition]= gs.get_all_tiles_with_any_cover()
+	if tiles.is_empty():
+		Console.print_line("No tiles are receiving any cover.")
+		return
+	Console.print_info("Tiles receiving any cover:")
+	for gp in tiles:
+		Console.print_line("  " + gp.to_str())
+
+func console_list_cover_dir(dir_str: String) -> void:
+	var d: String = dir_str.to_lower()
+	var dir: int = 0
+	match d:
+		"north": dir = GridObject.CoverDir.NORTH
+		"east" : dir = GridObject.CoverDir.EAST
+		"south": dir = GridObject.CoverDir.SOUTH
+		"west" : dir = GridObject.CoverDir.WEST
+		_: dir = -1
+	if dir < 0:
+		Console.print_error("Invalid direction '" + dir_str + "'. Use: north, east, south, west.")
+		return
+	var gs := LevelGrid.grid_system
+	var tiles := gs.get_tiles_with_cover_direction(dir)
+	if tiles.is_empty():
+		Console.print_line("No tiles receiving cover from " + d + ".")
+		return
+	Console.print_info("Tiles receiving cover from " + d + ":")
+	for gp in tiles:
+		Console.print_line("  " + gp.to_str())
+
+func console_list_cover_type(type_str: String) -> void:
+	var t: String = type_str.to_lower()
+	var ct: int = -1
+	match t:
+		"none": ct = Obstacle.Cover.None
+		"full": ct = Obstacle.Cover.Full
+		"half": ct = Obstacle.Cover.Half
+		"soft": ct = Obstacle.Cover.Soft
+		_: ct = -1
+	
+	if ct < 0:
+		Console.print_error("Invalid cover type '" + type_str + "'. Use: none, full, half, soft.")
+		return
+	var gs: GridSystem = LevelGrid.grid_system
+	var tiles: Array[GridPosition]= gs.get_tiles_with_cover_type(ct)
+	if tiles.is_empty():
+		Console.print_line("No tiles receiving " + t + " cover.")
+		return
+	Console.print_info("Tiles receiving " + t + " cover:")
+	for gp in tiles:
+		Console.print_line("  " + gp.to_str())
+
+
+func console_show_cover_tiles() -> void:
+	var gs := LevelGrid.grid_system
+	var tiles := gs.get_all_tiles_with_any_cover()
+	if tiles.is_empty():
+		Console.print_line("No tiles are receiving any cover.")
+		return
+	Console.print_info("Highlighting all tiles with any cover...")
+	GridSystemVisual.instance.hide_all_grid_positions()
+	GridSystemVisual.instance.show_grid_positions(tiles)
+
+func console_show_cover_dir(dir_str: String) -> void:
+	var d := dir_str.to_lower()
+	var dir: int = -1
+	match d:
+		"north": dir = GridObject.CoverDir.NORTH
+		"east" : dir = GridObject.CoverDir.EAST
+		"south": dir = GridObject.CoverDir.SOUTH
+		"west" : dir = GridObject.CoverDir.WEST
+		_: dir = -1
+	if dir < 0:
+		Console.print_error("Invalid direction '" + dir_str + "'. Use: north, east, south, west.")
+		return
+	var gs := LevelGrid.grid_system
+	var tiles := gs.get_tiles_with_cover_direction(dir)
+	if tiles.is_empty():
+		Console.print_line("No tiles receiving cover from " + d + ".")
+		return
+	Console.print_info("Highlighting tiles receiving cover from " + d + "...")
+	GridSystemVisual.instance.hide_all_grid_positions()
+	GridSystemVisual.instance.show_grid_positions(tiles)
+
+func console_show_cover_type(type_str: String) -> void:
+	var t := type_str.to_lower()
+	var ct = -1
+	match t:
+		"none": ct = Obstacle.Cover.None
+		"full": ct = Obstacle.Cover.Full
+		"half": ct = Obstacle.Cover.Half
+		"soft": ct = Obstacle.Cover.Soft
+		_: ct = -1
+	if ct < 0:
+		Console.print_error("Invalid cover type '" + type_str + "'. Use: none, full, half, soft.")
+		return
+	var gs := LevelGrid.grid_system
+	var tiles := gs.get_tiles_with_cover_type(ct)
+	if tiles.is_empty():
+		Console.print_line("No tiles receiving " + t + " cover.")
+		return
+	Console.print_info("Highlighting tiles receiving " + t + " cover...")
+	GridSystemVisual.instance.hide_all_grid_positions()
+	GridSystemVisual.instance.show_grid_positions(tiles)
+
+
 
 
 
@@ -584,10 +755,10 @@ func console_get_obstacle_positions(obs_index: String = "0") -> void:
 # Called every frame
 func _process(_delta: float) -> void:
 	#test_pathfinding()
-	handle_right_mouse_click()
+	#handle_right_mouse_click()
 	test_n()
 	test_c()
-	test_v()
+	#test_v()
 
 
 
@@ -622,82 +793,7 @@ func get_all_unit_and_weapon_names() -> PackedStringArray:
 
 func handle_right_mouse_click() -> void:
 	if Input.is_action_just_pressed("right_mouse"):
-		#toggle_look_at_unit()
-		#print_front_tiles()
-		#toggle_anims_speed()
-		#toggle_engine_speed()
-		#make_tiles_red()
-		#make_cone_tiles_red()
-		#turn_unit_towards_facing()
-		#set_facing()
 		pass
-
-
-
-
-
-
-
-
-
-func toggle_engine_speed() -> void:
-	if timescalebool:
-		Engine.time_scale = 1.0
-		timescalebool = false
-		return
-	Engine.time_scale = 0.1
-	timescalebool = true
-
-
-func toggle_anims_speed() -> void:
-	for u: Unit in UnitManager.instance.units:
-		unit_1.animator.toggle_slowdown()
-
-func print_front_tiles() -> void:
-	unit_1.set_facing()
-	var grid_positions: Array[GridPosition] = Utilities.get_front_tiles(unit_1)
-	for gridpos: GridPosition in grid_positions:
-		print_debug(gridpos.to_str())
-
-
-func make_tiles_red() -> void:
-	unit_1.set_facing()
-	var grid_positions: Array[GridPosition] = []
-	grid_positions.append_array(Utilities.get_front_tiles(unit_1))
-	grid_positions.append(Utilities.get_left_side_tile(unit_1))
-	if testbool:
-		GridSystemVisual.instance.unmark_red(grid_positions)
-	GridSystemVisual.instance.mark_red(grid_positions)
-	testbool = true
-
-func make_cone_tiles_red() -> void:
-	var grid_positions: Array[GridPosition] = []
-	grid_positions.append_array(Utilities.get_left_cone(unit_1, 20))
-	GridSystemVisual.instance.show_grid_positions(grid_positions)
-	if testbool:
-		GridSystemVisual.instance.unmark_red(grid_positions)
-		testbool = false
-		return
-	GridSystemVisual.instance.mark_red(grid_positions)
-	testbool = true
-
-
-
-
-
-
-
-func trigger_attack_anim() -> void:
-	var root: AnimationNodeStateMachine = UnitActionSystem.instance.selected_unit.animator.animator_tree.tree_root
-	var attack: AnimationNodeBlendTree = root.get_node("Attack")
-	var attack_anim: AnimationNodeAnimation = attack.get_node("AttackAnimation")
-	var animation: StringName = attack_anim.get_animation()
-	print("Old Animation: ", animation)
-	attack_anim.set_animation("HumanoidAnimLib01/Greatsword_Swing_001")
-	#HumanoidAnimLib01/Greatsword_Swing_001
-	#UnitActionSystem.instance.selected_unit.danimator.attack_anim()
-	animation = attack_anim.get_animation()
-	print("New Animation: ", animation)
 
 
 
@@ -729,34 +825,6 @@ func toggle_difficult_terrain() -> void:
 					print("Grid position " + hovered_grid_position.to_str() + " is now normal terrain.")
 
 
-# Prints out all of the stats of the unit under the mouse
-func print_statblock() -> void:
-	var result = mouse_world.get_mouse_raycast_result("position")
-	var in_unit: Unit = LevelGrid.get_unit_at_grid_position(pathfinding.pathfinding_grid_system.get_grid_position(result))
-	var attributes_dict = in_unit.attribute_map.get_attributes_dict()
-	print(in_unit.name)
-	for attribute_name in attributes_dict.keys():
-		var attribute_value = attributes_dict[attribute_name]
-		print(attribute_name, ": ", attribute_value)
-
-# Disables grid object walkability and update pathfinding.
-func turn_unwalkable() -> void:
-	# Get the grid position that the mouse is hovering over.
-	var result = mouse_world.get_mouse_raycast_result("position")
-	
-	if result:
-		var hovered_grid_position = pathfinding.pathfinding_grid_system.get_grid_position(result)
-		
-		if hovered_grid_position != null:
-			# Get the grid object at the hovered position.
-			var grid_object = pathfinding.pathfinding_grid_system.get_grid_object(hovered_grid_position)
-			if grid_object:
-				# Set the grid object to not walkable.
-				grid_object.is_walkable = false
-				
-				# Update the AStar points in the pathfinding system.
-				pathfinding.update_astar_walkable()
-				print("Grid object at " + hovered_grid_position.to_str() + " is now not walkable.")
 
 func test_n() -> void:
 	if Input.is_action_just_pressed("testkey_n"):
@@ -780,44 +848,10 @@ func test_c() -> void:
 
 
 
-
-
-""" Relative Position Function
-func print_relative_position() -> void:
-	var u_1: Unit = await select_unit()
-	var u_2: Unit = await select_unit()
-	
-	var relative_pos = Utilities.get_cone_relative_position(u_1, u_2)
-	
-	match relative_pos:
-		Utilities.RelativePosition.FRONT:
-			print_debug(u_2.ui_name, " is in front of ", u_1.ui_name)
-		Utilities.RelativePosition.BACK:
-			print_debug(u_2.ui_name, " is behind ", u_1.ui_name)
-		Utilities.RelativePosition.LEFT_SIDE:
-			print_debug(u_2.ui_name, " is to the left of ", u_1.ui_name)
-		Utilities.RelativePosition.RIGHT_SIDE:
-			print_debug(u_2.ui_name, " is to the right of ", u_1.ui_name)
-		Utilities.RelativePosition.UNKNOWN:
-			print_debug(u_2.ui_name, " is in an unknown position relative to ", u_1.ui_name)
-"""
-	
-
-
 func test_shift_c() -> void:
 	if Input.is_action_just_pressed("testkey_shift_c"):
 		#open_character_sheet()
 		pass
-
-func print_active_special_effects() -> void:
-	var effects: Array[SpecialEffect] = MouseEventDroppableSlotController.instance.get_active_special_effects()
-	for eff in effects:
-		print(eff.ui_name)
-
-
-func open_special_effect_buttons() -> void:
-	SignalBus.on_player_special_effect.emit(unit_1, special_effects)
-
 
 
 

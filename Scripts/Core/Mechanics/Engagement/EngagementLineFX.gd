@@ -86,3 +86,4 @@ func attach_to():
 func remove():
 	if mesh_instance != null:
 		mesh_instance.queue_free()
+	queue_free()

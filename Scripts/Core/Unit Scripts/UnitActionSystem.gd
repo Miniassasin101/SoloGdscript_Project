@@ -145,9 +145,10 @@ func handle_selected_reaction() -> void:
 		var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
 		if mouse_grid_position:
 			var grid_position: GridPosition = LevelGrid.get_grid_position(mouse_grid_position)
-			if reacting_unit.try_spend_ability_points_to_use_ability(selected_ability):
-				reacting_unit.ability_container.activate_one(selected_ability, grid_position)
-				SignalBus.emit_signal("reaction_started")
+			if reacting_unit.ability_container.can_activate_at_position(selected_ability, grid_position):
+				if reacting_unit.try_spend_ability_points_to_use_ability(selected_ability):
+					reacting_unit.ability_container.activate_one(selected_ability, grid_position)
+					SignalBus.emit_signal("reaction_started")
 
 
 func check_ability_type_invalid(in_ability: Ability) -> bool:

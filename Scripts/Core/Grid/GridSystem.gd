@@ -197,8 +197,58 @@ func is_valid_grid_position(grid_position: GridPosition) -> bool:
 	else:
 		return false
 
+
 func get_width() -> int:
 	return width
 	
 func get_height() -> int:
 	return height
+
+
+
+# Returns all grid positions receiving any cover (i.e. mask != NONE)
+func get_all_tiles_with_any_cover() -> Array[GridPosition]:
+	var result: Array[GridPosition] = []
+	for x in range(width):
+		for z in range(height):
+			var go: GridObject = grid_object_array[x][z]
+			if go.cover_mask != GridObject.CoverDir.NONE:
+				result.append(grid_positions[x][z])
+	return result
+
+# Returns all grid positions receiving cover from a specific direction
+# dir should be one of GridObject.CoverDir.NORTH, EAST, SOUTH or WEST
+func get_tiles_with_cover_direction(dir: int) -> Array[GridPosition]:
+	var result: Array[GridPosition] = []
+	for x in range(width):
+		for z in range(height):
+			var go: GridObject = grid_object_array[x][z]
+			var has_cover: bool = false
+			match dir:
+				GridObject.CoverDir.NORTH:
+					has_cover = go.cover_type_n != Obstacle.Cover.None
+				GridObject.CoverDir.EAST:
+					has_cover = go.cover_type_e != Obstacle.Cover.None
+				GridObject.CoverDir.SOUTH:
+					has_cover = go.cover_type_s != Obstacle.Cover.None
+				GridObject.CoverDir.WEST:
+					has_cover = go.cover_type_w != Obstacle.Cover.None
+				_:
+					has_cover = false
+			if has_cover:
+				result.append(grid_positions[x][z])
+	return result
+
+# Returns all grid positions receiving a specific cover type in any direction
+# cover_type should be one of Obstacle.Cover.None, Full, Half or Soft
+func get_tiles_with_cover_type(cover_type: int) -> Array:
+	var result: Array[GridPosition] = []
+	for x in range(width):
+		for z in range(height):
+			var go: GridObject = grid_object_array[x][z]
+			if go.cover_type_n == cover_type \
+			or go.cover_type_e == cover_type \
+			or go.cover_type_s == cover_type \
+			or go.cover_type_w == cover_type:
+				result.append(grid_positions[x][z])
+	return result

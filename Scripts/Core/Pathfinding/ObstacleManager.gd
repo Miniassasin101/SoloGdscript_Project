@@ -3,12 +3,28 @@ extends Node
 
 var grid_system: GridSystem
 
-var obstacles: Array = []
+var obstacles: Array[Obstacle] = []
+
+var tile_to_obstacles: Dictionary = {}
+
+static var instance: ObstacleManager = null
+
+
 
 func _ready() -> void:
+	if instance != null:
+		push_error("There's more than one ObstacleManager! - " + str(instance))
+		queue_free()
+		return
+	instance = self
+	
+	
+	
 	grid_system = LevelGrid.grid_system
 	SignalBus.obstacles_changed.connect(update_obstacles)
 	update_obstacles()
+	call_deferred("update_cover")
+
 
 func _process(_delta: float) -> void:
 	#can optionally add the update obstacles function here
@@ -17,6 +33,7 @@ func _process(_delta: float) -> void:
 
 func _on_obstacles_changed() -> void:
 	update_obstacles()
+
 	update_cover()
 
 
@@ -65,6 +82,11 @@ func update_obstacles() -> void:
 	
 
 func update_cover() -> void:
+	# 1) rebuild the map of which tiles are occupied
+	_build_tile_map()
+	# 2) clear out any old cover on the grid
+	LevelGrid.grid_system.clear_all_cover()
+	
 	for obs in obstacles:
 		if obs is Obstacle:
 			_tag_cover_for_obstacle(obs)
@@ -83,7 +105,13 @@ func _tag_cover_for_obstacle(obstacle: Obstacle) -> void:
 			if not grid_system.is_valid_grid_coords(nx, nz):
 				continue
 			var neigh = grid_system.get_grid_position_from_coords(nx, nz)
+			
+			if get_obstacles_at(neigh).size() > 0:
+				continue
+			
+			
 			var go = grid_system.get_grid_object(neigh)
+
 			# set bit in mask
 			go.cover_mask = dir
 			# record type
@@ -96,3 +124,32 @@ func _tag_cover_for_obstacle(obstacle: Obstacle) -> void:
 					go.cover_type_s = cover
 				GridObject.CoverDir.WEST:
 					go.cover_type_w = cover
+
+
+#--- Helper: build a map from grid "x,z" to obstacles
+func _build_tile_map() -> void:
+	tile_to_obstacles.clear()
+	for obs in obstacles:
+		for gp in obs.get_occupied_tiles():
+			var key := _grid_pos_key(gp)
+			tile_to_obstacles[key] = tile_to_obstacles.get(key, [])
+			tile_to_obstacles[key].append(obs)
+
+func set_obstacle_cover_at(gp: GridPosition, new_cover: int) -> void:
+	for obs in get_obstacles_at(gp):
+		obs.set_cover_type(new_cover)
+
+#--- Return obstacles at a given grid position
+func get_obstacles_at(gp: GridPosition) -> Array:
+	return tile_to_obstacles.get(_grid_pos_key(gp), [])
+
+#--- Return first obstacle at position or null
+func get_obstacle_at(gp: GridPosition) -> Obstacle:
+	var list := get_obstacles_at(gp)
+	return list[0] if list.size() > 0 else null
+	
+
+
+#--- Utility: create unique string key for a grid position
+func _grid_pos_key(gp: GridPosition) -> String:
+	return "%d,%d" % [gp.x, gp.z]

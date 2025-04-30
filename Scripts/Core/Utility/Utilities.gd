@@ -88,9 +88,9 @@ func get_unit_relative_position(focus_unit: Unit, relative_unit: Unit) -> Relati
 		return RelativePosition.FRONT
 	elif back_focus.has(relative_pos):
 		return RelativePosition.BACK
-	elif right_focus.equals(relative_pos):
+	elif right_focus and right_focus.equals(relative_pos):
 		return RelativePosition.RIGHT_SIDE
-	elif left_focus.equals(relative_pos):
+	elif left_focus and left_focus.equals(relative_pos):
 		return RelativePosition.LEFT_SIDE
 	return RelativePosition.UNKNOWN
 
@@ -187,7 +187,7 @@ func get_front_tile(unit: Unit) -> GridPosition:
 		3:  # Facing West
 			return (LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x - 1, grid_position.z))      # Center front
 	push_error("Facing not set on ", unit)
-	return null
+	return GridPosition.new(-1, -1)
 
 
 
@@ -259,7 +259,7 @@ func get_back_tile(unit: Unit) -> GridPosition:
 		3:  # Facing West
 			return (LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x + 1, grid_position.z))      # Center back
 	push_error("Facing not set on ", unit)
-	return null
+	return GridPosition.new(-1, -1)
 
 
 # Functions to get tiles within immidiate range.
@@ -279,7 +279,7 @@ func get_right_side_tile(unit: Unit) -> GridPosition:
 		3:  # Facing West
 			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z - 1)
 	push_error("Facing not set on ", unit)
-	return null
+	return GridPosition.new(-1, -1)
 
 
 func get_left_side_tile(unit: Unit) -> GridPosition:
@@ -297,7 +297,7 @@ func get_left_side_tile(unit: Unit) -> GridPosition:
 		3:  # Facing West
 			return LevelGrid.grid_system.get_grid_position_from_coords(grid_position.x, grid_position.z + 1)
 	push_error("Facing not set on ", unit)
-	return null
+	return GridPosition.new(-1, -1)
 
 
 
@@ -522,7 +522,7 @@ func is_cone_path_available(unit: Unit, path: Array[GridPosition]) -> bool:
 
 func check_success_level(skill: int, in_roll: int) -> int:
 	# Check for critical failure
-	if in_roll == 99 or in_roll == 100:
+	if in_roll == 98 or in_roll == 99 or in_roll == 100:
 		return -1
 	
 	# Check for critical success

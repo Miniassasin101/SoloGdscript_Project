@@ -557,6 +557,7 @@ func _resolve_combat(action: Ability, event: ActivationEvent, attacker_success_l
 		print_debug("Defender wins. Prompt Special Effects")
 		event.set_winning_unit(target_unit)
 		event.set_losing_unit(attacking_unit)
+		event.special_effects.clear()
 		event = await prompt_special_effect_choice(event, abs_dif)
 		if not event.bypass_attack:
 			setup_hit_location(event)

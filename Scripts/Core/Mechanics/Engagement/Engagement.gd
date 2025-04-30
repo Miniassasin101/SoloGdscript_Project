@@ -8,7 +8,16 @@ enum ReachState {
 	## Long-range advantage (longer-weapon holder).
 	LONG,
 	## Short-range advantage (shorter-weapon holder).
-	SHORT
+	SHORT,
+	
+}
+
+enum Reach {
+	TOUCH, # Fists, Gauntlets, Spells that require direct contact
+	SHORT, # Daggers, Hatchets, Shortswords, all Shields
+	MEDIUM, # Broadswords, Battleaxes, Flails
+	LONG, # Longswords, Shortspears, "Great" class weapons (Ex: Greatsword)
+	VERY_LONG, # Halberds, Longspears, P
 }
 
 ## Engaged units.

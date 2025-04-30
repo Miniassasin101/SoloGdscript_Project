@@ -7,6 +7,8 @@ var engagements: Array[Engagement] = []
 
 func _ready() -> void:
 	engagements.clear()
+	
+	SignalBus.on_unit_removed.connect(_on_unit_removed)
 
 
 ## Generate engagements for every opposing, adjacent pair.
@@ -88,6 +90,13 @@ func remove_engagement(unit_a: Unit, unit_b: Unit) -> void:
 		engagements.erase(e)
 		SignalBus.on_ui_update.emit()
 
+func remove_engagement_by_engagement(engagement: Engagement) -> void:
+	for eng in engagements:
+		if engagement == eng:
+			eng.remove_engagement()
+			engagements.erase(eng)
+			SignalBus.on_ui_update.emit()
+
 
 ## Returns true if `unit` is in any Engagement.
 func is_unit_engaged(unit: Unit) -> bool:
@@ -109,6 +118,17 @@ func update_engagements_for_unit(changed_unit: Unit) -> void:
 			add_engagement(changed_unit, other)
 		else:
 			remove_engagement(changed_unit, other)
+
+
+func _on_unit_removed(unit: Unit) -> void:
+	if !is_unit_engaged(unit):
+		return
+	
+	var unit_engagements: Array[Engagement] = get_engagements(unit)
+	
+	for engagement in unit_engagements:
+		remove_engagement_by_engagement(engagement)
+
 
 
 #region Reach Queries

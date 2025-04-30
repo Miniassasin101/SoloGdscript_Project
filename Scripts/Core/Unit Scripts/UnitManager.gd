@@ -91,6 +91,7 @@ func add_unit(unit: Unit) -> void:
 		_update_unit_lists(unit)
 		unit.body._on_setup_body()
 		call_deferred("unit_setup", unit)
+		SignalBus.on_unit_added.emit(unit)
 
 
 
@@ -113,8 +114,11 @@ func remove_unit(unit: Unit) -> void:
 		# If combat is underway, update the initiative order.
 
 		unit_setup(unit)
+		
+		SignalBus.on_unit_removed.emit(unit)
 		# Finally, remove the unit node from the scene.
 		unit.remove_self()
+		
 
 
 # Updates the friendly and enemy unit lists based on a unit's type.

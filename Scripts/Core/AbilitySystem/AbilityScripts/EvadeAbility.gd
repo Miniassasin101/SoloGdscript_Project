@@ -100,12 +100,12 @@ func determine_roll_result() -> void:
 	print_debug("Evade Skill Value: ", evade_skill_value)
 	print_debug("Evade Roll: ", evading_roll)
 
-	var defender_success_level = Utilities.check_success_level(evade_skill_value, evading_roll)
+	var defender_success_level: int = Utilities.check_success_level(evade_skill_value, evading_roll)
 	current_event.defender_success_level = defender_success_level
 	print_debug("Evade Success Level: ", defender_success_level)
 	if current_event.defender_success_level > current_event.attacker_success_level:
 		current_event.miss = true
-	elif current_event.attacker_roll < evading_roll:
+	elif current_event.attacker_roll > evading_roll:
 		current_event.miss = true
 
 
@@ -117,9 +117,14 @@ func can_activate(_event: ActivationEvent) -> bool:
 	if not super.can_activate(_event):
 		return false
 	var valid_positions = get_valid_ability_target_grid_position_list(_event)
-	if !valid_positions.is_empty():
-		return true
-	return false
+	
+	if valid_positions.is_empty():
+		return false
+	
+	if !valid_positions.has(_event.target_grid_position):
+		return false
+	
+	return true
 
 
 
@@ -133,6 +138,9 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 
 		# We only care if there's an enemy unit there (or some valid target).
 		if LevelGrid.has_any_unit_on_grid_position(position):
+			continue
+		
+		if !Pathfinding.instance.is_walkable(position):
 			continue
 
 		valid_grid_position_list.append(position)
