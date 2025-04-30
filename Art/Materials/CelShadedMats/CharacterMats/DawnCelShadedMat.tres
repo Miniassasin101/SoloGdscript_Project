@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://ytx2ncjkksdn"]
 
 [ext_resource type="Shader" uid="uid://bo6gdfcll35hj" path="res://Hero_Game/Art/Shaders/Gobotcelshading.gdshader" id="2_8qknf"]
-[ext_resource type="Texture2D" uid="uid://dd1b276iaspvv" path="res://Hero_Game/Art/SelfAssets/Albedo Map Test 2.png" id="3_8qknf"]
+[ext_resource type="Texture2D" uid="uid://dd1b276iaspvv" path="res://Hero_Game/Art/Textures/AlbedoMaps/CharacterAlbedos/Albedo Map Test 2.png" id="3_8qknf"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vuxs1"]
 transparency = 1

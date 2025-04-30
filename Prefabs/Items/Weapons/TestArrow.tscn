@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://iuekcxcs1tys"]
 
-[ext_resource type="ArrayMesh" uid="uid://b8jquew4cqu0k" path="res://Hero_Game/Art/SelfAssets/WeaponAssets/WeaponMeshes/Arrow_002_Cube_002.res" id="1_b5krk"]
+[ext_resource type="ArrayMesh" uid="uid://b8jquew4cqu0k" path="res://Hero_Game/Art/SelfAssets/WeaponAssets/WeaponMeshes/WeaponMeshArrayMeshes/Arrow_002_Cube_002.res" id="1_b5krk"]
 [ext_resource type="Material" uid="uid://d18flcxrogort" path="res://Hero_Game/Art/Materials/CelShadedMats/GrayscaleCelShadedMat.tres" id="2_es4c4"]
 
 [sub_resource type="Skin" id="Skin_lvym6"]

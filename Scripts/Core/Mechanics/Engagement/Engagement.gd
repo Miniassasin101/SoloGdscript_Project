@@ -17,7 +17,7 @@ enum Reach {
 	SHORT, # Daggers, Hatchets, Shortswords, all Shields
 	MEDIUM, # Broadswords, Battleaxes, Flails
 	LONG, # Longswords, Shortspears, "Great" class weapons (Ex: Greatsword)
-	VERY_LONG, # Halberds, Longspears, P
+	VERY_LONG, # Halberds, Longspears, Pikes, Reels
 }
 
 ## Engaged units.
@@ -29,6 +29,10 @@ var line_fx: EngagementLineFX = null
 
 ## Current reach state (NONE by default).
 var reach_state: int = ReachState.NONE
+
+## Current reach state (MEDIUM by default).
+var reach: int = Reach.MEDIUM
+
 ## Color of the engagement line.
 var line_color: Color = Color.RED
 
@@ -52,6 +56,25 @@ func force_shorter_reach() -> void:
 func reset_reach() -> void:
 	reach_state = ReachState.NONE
 	reevaluate_reach()
+
+func initialize_reach() -> void:
+	var w1: Weapon = unit_1.equipment.get_equipped_weapon()
+	var w2: Weapon = unit_2.equipment.get_equipped_weapon()
+	if not (w1 and w2):
+		return
+
+	var diff: int = absi(w1.reach - w2.reach)
+	
+	if diff < 2:
+		reach_state
+	
+	
+	
+
+#func get_unit_with_longer_reach() -> Unit:
+#	var w1: Weapon = unit_1.get_equipped_weapon()
+#	var w2: Weapon = unit_2.get_equipped_weapon()
+
 
 ## Recalculate reach: initial or forced, update visuals and text.
 func reevaluate_reach() -> void:

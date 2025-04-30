@@ -328,6 +328,15 @@ func get_combat_skill() -> float:
 func get_equipped_weapon() -> Weapon:
 	return equipment.get_equipped_weapon()
 
+#func get_all_equipped_weapons() -> Array[Weapon]:
+	
+
+#func get_right_hand_weapon() -> Weapon:
+	#pass
+
+#func get_left_hand_weapon() -> Weapon:
+	#pass
+
 func set_distance_moved(val: float) -> void:
 	distance_moved_this_turn = val
 	SignalBus.update_stat_bars.emit()
