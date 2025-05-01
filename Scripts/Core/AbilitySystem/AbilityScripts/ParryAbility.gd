@@ -16,6 +16,7 @@ class_name ParryAbility extends Ability
 var start_timer: float = 0.1
 var event: ActivationEvent = null
 var unit: Unit = null
+var attacker: Unit = null
 
 # NOTE: Logic for which parry animation to use will go here, depends on character and weapon.
 # By default will use strike animation.
@@ -41,10 +42,14 @@ func try_activate(_event: ActivationEvent) -> void:
 		parry_animation_part_1 = weapon.parry_animation_part_1
 		parry_animation_reset = weapon.parry_animation_part_2
 		parry_animation_idle = weapon.parry_animation_idle
-		
-	await animator.play_animation_by_name(parry_animation_part_1.resource_name, 0.0) # Always be careful to wait for the animation to complete
+	
+	#var mask: int = -1
+	#if !unit.get_equipped_weapons().is_empty():
+	#	if unit.get_equipped_weapon()
+	
+	await animator.play_animation_by_name(parry_animation_part_1.resource_name, 0.0, false, animator.AnimationMask.RIGHT, false) # Always be careful to wait for the animation to complete
 	animator.toggle_slowdown()
-	animator.play_animation_by_name(parry_animation_idle.resource_name)
+	animator.play_animation_by_name(parry_animation_idle.resource_name, 0.2, false, animator.AnimationMask.RIGHT, false)
 	
 	CombatSystem.instance.determine_defender_facing_penalty()
 	var defend_skill_value: int = unit.get_attribute_after_sit_mod("combat_skill")
@@ -62,11 +67,13 @@ func try_activate(_event: ActivationEvent) -> void:
 	if defender_success_level >= 1:
 			current_event.parry_successful = true
 	
+	attacker = current_event.unit
+	
 	if can_end(event):
 		end_ability(event)
 	
 	await animator.parry_reset
-	animator.play_animation_by_name(parry_animation_reset.resource_name)
+	animator.play_animation_by_name(parry_animation_reset.resource_name, 0.2, false, animator.AnimationMask.RIGHT)
 	
 
 

@@ -66,6 +66,13 @@ func _ready() -> void:
 	Console.add_command("show_cover_tiles", console_show_cover_tiles, 0, 0, "Show on the grid all cells receiving any cover.")
 	Console.add_command("show_cover_dir", console_show_cover_dir, ["direction"], 1, "Show on the grid cells receiving cover from a specific direction: north, east, south, west.")
 	Console.add_command("show_cover_type", console_show_cover_type, ["cover_type"], 1, "Show on the grid cells receiving a specific cover type: none, full, half, soft.")
+	Console.add_command("list_inventory", console_list_inventory, ["unit_name"], 1, "Lists all items in a unit's inventory.")
+	Console.add_command("add_to_inventory", console_add_to_inventory, ["unit_name", "weapon_name"], 2, "Loads a weapon resource and adds it to the unit's inventory.")
+	Console.add_command("equip_from_inventory", console_equip_from_inventory, ["unit_name", "item_name"], 2, "Equips an item already in the unit's inventory.")
+	Console.add_command("unequip_to_inventory", console_unequip_to_inventory, ["unit_name", "item_name"], 2, "Unequips an item and returns it to the unit's inventory.")
+
+
+
 
 
 
@@ -79,7 +86,10 @@ func _ready() -> void:
 	Console.add_command_autocomplete_list("equip_weapon", get_all_unit_and_weapon_names())
 	Console.add_command_autocomplete_list("open_character_sheet", get_all_unit_names())
 	Console.add_command_autocomplete_list("flash_color", get_all_unit_names())
-	
+	Console.add_command_autocomplete_list("list_inventory", get_all_unit_names())
+	Console.add_command_autocomplete_list("add_to_inventory", get_all_unit_and_weapon_names())
+	Console.add_command_autocomplete_list("equip_from_inventory", get_all_unit_and_weapon_names())
+	Console.add_command_autocomplete_list("unequip_to_inventory", get_all_unit_and_weapon_names())
 	
 	# Already have weapon name autocomplete for other cases if needed:
 	# Console.add_command_autocomplete_list("equip_weapon", get_all_weapon_names())
@@ -200,7 +210,7 @@ func console_weapon_animation_update(unit_name: String) -> void:
 		Console.print_error("Unit not found: " + unit_name)
 		return
 	
-	unit.animator.weapon_setup(true, unit.get_equipped_weapon())
+	unit.animator.weapon_idle_blend_setup(true, unit.get_equipped_weapon())
 
 func console_remove_all_dropped_items() -> void:
 	if ObjectManager.instance:
@@ -737,6 +747,87 @@ func console_show_cover_type(type_str: String) -> void:
 	Console.print_info("Highlighting tiles receiving " + t + " cover...")
 	GridSystemVisual.instance.hide_all_grid_positions()
 	GridSystemVisual.instance.show_grid_positions(tiles)
+
+
+func console_list_inventory(unit_name: String) -> void:
+	var unit = UnitManager.instance.get_unit_by_name(unit_name)
+	if not unit:
+		Console.print_error("Unit not found: %s" % unit_name)
+		return
+	var items = unit.inventory.items
+	if items.is_empty():
+		Console.print_line("Inventory is empty for '%s'." % unit_name)
+		return
+	Console.print_info("Inventory for '%s':" % unit_name)
+	for item in items:
+		Console.print_line(" - %s x%d" % [item.name, item.quantity_current])
+
+func console_add_to_inventory(unit_name: String, weapon_name: String) -> void:
+	var unit = UnitManager.instance.get_unit_by_name(unit_name)
+	if not unit:
+		Console.print_error("Unit not found: %s" % unit_name)
+		return
+	var path = "res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/%s.tres" % weapon_name
+	if not ResourceLoader.exists(path):
+		Console.print_error("Weapon not found: %s" % weapon_name)
+		return
+	var w_res = load(path)
+	if not w_res:
+		Console.print_error("Failed to load resource: %s" % path)
+		return
+	var weapon = w_res.duplicate() as Item
+	var added = unit.inventory.add_item(weapon)
+	if added:
+		Console.print_info("Added '%s' to %s's inventory." % [weapon.name, unit_name])
+	else:
+		Console.print_error("Could not add '%s' to inventory." % weapon.name)
+
+func console_equip_from_inventory(unit_name: String, item_name: String) -> void:
+	var unit = UnitManager.instance.get_unit_by_name(unit_name)
+	if not unit:
+		Console.print_error("Unit not found: %s" % unit_name)
+		return
+	var inv = unit.inventory
+	# find first matching item by name
+	var item = inv.find_by(func(i): return i.name == item_name)
+	
+	if item_name.to_int() >= 1 and item_name.to_int() <= inv.items.size():
+		item = inv.items[item_name.to_int() - 1]
+	
+	if not item:
+		Console.print_error("Item '%s' not in inventory." % item_name)
+		return
+	unit.equipment.equip(item)
+	Console.print_info("Equipped '%s' from inventory on '%s'." % [item_name, unit_name])
+
+
+func console_unequip_to_inventory(unit_name: String, item_name: String) -> void:
+	var unit: Unit = UnitManager.instance.get_unit_by_name(unit_name)
+	if not unit:
+		Console.print_error("Unit not found: %s" % unit_name)
+		return
+	# find on equipment
+	var equipped: Array[Item] = unit.equipment.equipped_items
+	var item: Item = null
+	for e in equipped:
+		if e.name == item_name:
+			item = e
+			break
+	
+	if item_name.to_int() >= 1 and item_name.to_int() <= equipped.size():
+		item = equipped[item_name.to_int() - 1]
+	
+	if not item:
+		Console.print_error("Item '%s' is not currently equipped." % item_name)
+		return
+	# unequip and return to inventory
+	unit.equipment.unequip(item)
+	unit.inventory.add_item(item)
+	Console.print_info("Unequipped '%s' and returned to inventory of '%s'." % [item_name, unit_name])
+
+
+
+
 
 
 

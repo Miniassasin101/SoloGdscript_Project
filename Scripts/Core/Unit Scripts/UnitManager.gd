@@ -37,14 +37,18 @@ func test_equip_units() -> void:
 	#var iteration_num: int = 1
 	for unit: Unit in units:
 		var new_weapon: Weapon = null
-		if unit.weapon_equip_combat_start == null:
+		if unit.weapons_equip_combat_start.is_empty():
 			if sword_test:
 				new_weapon = sword_test.duplicate()
+				unit.equipment.equip(new_weapon)
 		else:
-			new_weapon = unit.weapon_equip_combat_start.duplicate()
+			for weapon in unit.weapons_equip_combat_start:
+				new_weapon = weapon.duplicate()
+				unit.equipment.equip(new_weapon)
+
 		#new_weapon.name = new_weapon.name + " " + str(iteration_num)
 		#iteration_num += 1
-		unit.equipment.equip(new_weapon)
+		#unit.equipment.equip(new_weapon)
 # Initializes the units by storing references to all child units.
 func initialize_units() -> void:
 	# Iterate through all children and add those of type Unit to the units array

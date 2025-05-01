@@ -10,6 +10,15 @@ signal attack_completed
 signal parry_reset
 signal event_occured
 signal prompt_dodge
+
+enum AnimationMask {
+	NONE  = -1,
+	LEFT  = 0,
+	RIGHT = 1,
+	BOTH  = 2,
+}
+
+
 # Exported Variables
 @export_category("References")
 @export var animator: AnimationPlayer
@@ -84,6 +93,29 @@ var stopping_distance: float = 0.0
 var is_root_motion: bool = false
 
 
+# Animation Tree Variables
+var root: AnimationNodeStateMachine = null
+
+var main: AnimationNodeBlendTree = null
+
+var state_machine: AnimationNodeStateMachine = null
+
+var idleblend: AnimationNodeBlendTree = null
+
+var runblend: AnimationNodeBlendTree = null
+
+var base_idle: AnimationNodeAnimation = null
+
+var left_weapon_anim: AnimationNodeAnimation = null
+
+var right_weapon_anim: AnimationNodeAnimation = null
+
+var left_arm_anim: AnimationNodeAnimation = null
+
+var right_arm_anim: AnimationNodeAnimation = null
+
+
+
 # Attack Variables:
 var miss: bool = false
 var weapon_trail_is_active: bool = false
@@ -93,7 +125,8 @@ var weapon_trail_is_active: bool = false
 func _ready() -> void:
 	#call_deferred("connect_signals")
 	SignalBus.equipment_changed.connect(equipment_anim_check)
-	make_tree_root_unique()
+	animator_tree_setup()
+
 
 
 
@@ -195,74 +228,157 @@ func equipment_anim_check(in_unit: Unit) -> void:
 	if in_unit != unit:
 		return
 	if !unit.equipment.equipped_items.is_empty():
-		var active_weapon: Weapon = unit.equipment.get_equipped_weapon()
-		weapon_setup(true, active_weapon)
-		return
-	weapon_setup(false)
+		var active_weapons: Array[Weapon] = unit.equipment.get_equipped_weapons()
+		
+		if active_weapons.is_empty():
+			return
+		
+		var right_weapon: Weapon = null
+		var left_weapon: Weapon = null
+		
+		
+		if active_weapons.size() == 1 and active_weapons[0] != null:
+			var active_weapon: Weapon = active_weapons[0]
+			if active_weapon.tags.has("both") or active_weapon.hands == 2: # If is two handed weapon
+				right_weapon = active_weapon
+				left_weapon = active_weapon
+			elif active_weapon.tags.has("right"):
+				right_weapon = active_weapon
+			elif active_weapon.tags.has("left"):
+				left_weapon = active_weapon
 
+
+		else:
+			if active_weapons[0].tags.has("right"):
+				right_weapon = active_weapons[0]
+				left_weapon = active_weapons[1]
+			else:
+				right_weapon = active_weapons[1]
+				left_weapon = active_weapons[0]
+			
+		weapon_idle_blend_setup(false, right_weapon, left_weapon)
+		return
+	weapon_idle_blend_setup(true)
+
+# This prevents any animation changes like weapon equips duplicating across instances
 func make_tree_root_unique() -> void:
 	animator_tree.set_tree_root(animator_tree.tree_root.duplicate(true))
 
-func weapon_setup(weapon_type: bool, weapon: Weapon = null) -> void:
+func animator_tree_setup() -> void:
+	make_tree_root_unique()
+	
+	set_animator_tree_properties()
+
+func set_animator_tree_properties() -> void:
+	root = animator_tree.tree_root as AnimationNodeStateMachine
+	
+	if root == null:
+		push_error("AnimationTree does not have a valid StateMachine root.")
+		return
+	
+	main = root.get_node("Main")
+	
+	state_machine = main.get_node("AnimationNodeStateMachine")
+	
+	idleblend = state_machine.get_node("IdleBlend")
+	
+	runblend = state_machine.get_node("RunCycleBlend")
+	
+	base_idle = idleblend.get_node("WeaponIdle")
+	
+	right_weapon_anim = idleblend.get_node("WeaponIdleRightArmAnimation")
+	
+	left_weapon_anim = idleblend.get_node("WeaponIdleLeftArmAnimation")
+	
+	left_arm_anim = runblend.get_node("LeftArmAnimation")
+	
+	right_arm_anim = runblend.get_node("RightArmAnimation")
+
+
+func weapon_idle_blend_setup(clear_weapons: bool, right_weapon: Weapon = null, left_weapon: Weapon = null) -> void:
 	var tween: Tween = get_tree().create_tween()
 
-	if weapon_type and weapon:
-		var root: AnimationNodeStateMachine = animator_tree.tree_root as AnimationNodeStateMachine
-		if root == null:
-			push_error("AnimationTree does not have a valid StateMachine root.")
-			return
-	
-		var main: AnimationNodeBlendTree = root.get_node("Main")
+	if !clear_weapons and (right_weapon or left_weapon):
+
 		
-		var state_machine: AnimationNodeStateMachine = main.get_node("AnimationNodeStateMachine")
+		var right_weapon_anim_path: String = ("HumanoidAnimLib01/" + right_weapon.idle_animation.resource_name)if right_weapon else ""
+		var left_weapon_anim_path: String = ("HumanoidAnimLib01/" + left_weapon.idle_animation.resource_name) if left_weapon else ""
 		
-		var idleblend: AnimationNodeBlendTree = state_machine.get_node("IdleBlend")
+		"""
+		if right_weapon:
+			base_idle.set_animation(right_weapon_anim_path)
+		elif left_weapon:
+			base_idle.set_animation(left_weapon_anim_path)
+		"""
+
+
 		
-		var runblend: AnimationNodeBlendTree = state_machine.get_node("RunCycleBlend")
+		if left_weapon:
+			base_idle.set_animation(left_weapon_anim_path)
+		elif right_weapon:
+			base_idle.set_animation(right_weapon_anim_path)
 		
-		var weapon_idle: AnimationNodeAnimation = idleblend.get_node("WeaponIdle")
+		if left_weapon:
+			left_arm_anim.set_animation(left_weapon_anim_path)
+		if right_weapon:
+			right_arm_anim.set_animation(right_weapon_anim_path)
 		
-		var left_arm_anim: AnimationNodeAnimation = runblend.get_node("LeftArmAnimation")
-		
-		var right_arm_anim: AnimationNodeAnimation = runblend.get_node("RightArmAnimation")
-		
-		var anim_path: String = ("HumanoidAnimLib01/" + weapon.idle_animation.resource_name)
-		
-		weapon_idle.set_animation(anim_path)
-		
-		left_arm_anim.set_animation(anim_path)
-		right_arm_anim.set_animation(anim_path)
-		
-		if weapon.hands == 1:
-			if weapon.tags.has("right_hand"):
-				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmAnimation/animation", anim_path)
-				#animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmAnimation/animation", anim_path)
+		# If only ONE hand has a weapon equipped, blend in that weapon and blend out the other hand
+		if !right_weapon or !left_weapon:
+			# If only the right hand has a weapon equipped set the idle and run arm blends
+			if right_weapon and !left_weapon:
+				right_weapon_anim.set_animation(right_weapon_anim_path)
+				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmAnimation/animation", right_weapon_anim_path)
+				#animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmAnimation/animation", left_weapon_anim_path)
 		
 				tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount", 1.0, 0.7)
+				tween.parallel().tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleRightArmBlend/blend_amount", 1.0, 0.7)
+				tween.parallel().tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleLeftArmBlend/blend_amount", 0.0, 0.7)
+		
+				
 				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmBlend/blend_amount", 1.0)
 				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmBlend/blend_amount", 0.0)
 				return
-			elif weapon.tags.has("left_hand"):
-				#animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmAnimation/animation", anim_path)
-				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmAnimation/animation", anim_path)
+			# If only the left hand has a weapon equipped set the idle and run arm blends
+			elif left_weapon and !right_weapon:
+				left_weapon_anim.set_animation(left_weapon_anim_path)
+				#animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmAnimation/animation", right_weapon_anim_path)
+				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmAnimation/animation", left_weapon_anim_path)
 		
 				tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount", 1.0, 0.7)
+				tween.parallel().tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleRightArmBlend/blend_amount", 0.0, 0.7)
+				tween.parallel().tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleLeftArmBlend/blend_amount", 1.0, 0.7)
+		
+		
 				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmBlend/blend_amount", 0.0)
 				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmBlend/blend_amount", 1.0)
 				return
 		
-		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmAnimation/animation", anim_path)
-		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmAnimation/animation", anim_path)
+		# If BOTH hands have a weapon equipped, blend in both weapons. This also works with two handed weapons like bows.
+		elif left_weapon and right_weapon:
+			right_weapon_anim.set_animation(right_weapon_anim_path)
+			left_weapon_anim.set_animation(left_weapon_anim_path)
+			
+			animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmAnimation/animation", right_weapon_anim_path)
+			animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmAnimation/animation", left_weapon_anim_path)
 		
-		tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount", 1.0, 0.7)
-		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmBlend/blend_amount", 1.0)
-		animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmBlend/blend_amount", 1.0)
-		return
+			tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount", 1.0, 0.7)
+			tween.parallel().tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleRightArmBlend/blend_amount", 1.0, 0.7)
+			tween.parallel().tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleLeftArmBlend/blend_amount", 1.0, 0.7)
+
+			
+			animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmBlend/blend_amount", 1.0)
+			animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmBlend/blend_amount", 1.0)
+			return
 	
+	
+	tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount", 0.0, 0.7)
+	tween.parallel().tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleRightArmBlend/blend_amount", 0.0, 0.7)
+	tween.parallel().tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleLeftArmBlend/blend_amount", 0.0, 0.7)
+
 	
 	animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmBlend/blend_amount", 0.0)
 	animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmBlend/blend_amount", 0.0)
-	tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount", 0.0, 0.7)
 
 func left_cast_anim(_in_animation: Animation, in_miss: bool = false) -> void:
 	# Note: Later replace greatsword test with the animation library
@@ -276,15 +392,37 @@ func left_cast_anim(_in_animation: Animation, in_miss: bool = false) -> void:
 	return
 	# Always add call method tracks for resolving the damage
 	
-func play_animation_by_name(animation_name: String, blend_time: float = 0.2, use_root_motion: bool = false) -> void:
-	# Get the AnimationTree's state machine root
-	var root: AnimationNodeStateMachine = animator_tree.tree_root as AnimationNodeStateMachine
-	if root == null:
-		push_error("AnimationTree does not have a valid StateMachine root.")
-		return
-	
-	var main: AnimationNodeBlendTree = root.get_node("Main")
-	
+func play_animation_by_name(
+	animation_name: String, blend_time: float = 0.2, \
+	use_root_motion: bool = false, animation_mask: int = AnimationMask.NONE, \
+	abort_self: bool = true) -> void:
+
+	var equipped_weapons: Array[Weapon] = unit.equipment.get_equipped_weapons()
+	var right_w: Weapon = null
+	var left_w:  Weapon = null
+
+	for w in equipped_weapons:
+		if w.hands == 2 or w.tags.has("both"):
+			right_w = null#w
+			left_w  = null#w
+		elif w.tags.has("right"):
+			right_w = w
+		elif w.tags.has("left"):
+			left_w = w
+
+	# 2) Prime the idle-blend on just the masked arm(s)
+	match animation_mask:
+		AnimationMask.LEFT:
+			right_w = null
+			one_shot_blend_mask_setup(right_w, left_w)
+		AnimationMask.RIGHT:
+			left_w = null
+			one_shot_blend_mask_setup(right_w, left_w)
+		_:
+			# NONE == do nothing
+			pass
+
+
 	var one_shot: AnimationNodeAnimation = main.get_node("OneShotAnimation")
 	
 	var one_shot_blend: AnimationNodeOneShot = main.get_node("OneShotBlend")
@@ -306,23 +444,70 @@ func play_animation_by_name(animation_name: String, blend_time: float = 0.2, use
 	
 	await get_tree().create_timer(anim.length / timescale_multiplier).timeout
 	
+	if abort_self:
+	
+		animator_tree.set("parameters/Main/OneShotBlend/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FADE_OUT)
+	
+		one_shot_blend_mask_setup() # clears any blends
+	
 	is_root_motion = false
 	print("done")
 	return
 
+func one_shot_blend_mask_setup(right_weapon: Weapon = null, left_weapon: Weapon = null) -> void:
+	var right_shot_anim: AnimationNodeAnimation = main.get_node("OneShotRightArmAnimation")
+	var left_shot_anim: AnimationNodeAnimation = main.get_node("OneShotLeftArmAnimation")
+	
+	var tween: Tween = get_tree().create_tween()
+	
+	var right_weapon_anim_path: String = ("HumanoidAnimLib01/" + right_weapon.idle_animation.resource_name)if right_weapon else ""
+	var left_weapon_anim_path: String = ("HumanoidAnimLib01/" + left_weapon.idle_animation.resource_name) if left_weapon else ""
+	
+	if !right_weapon or !left_weapon:
+		# If only the right hand has a weapon equipped set the idle and run arm blends
+		if right_weapon and !left_weapon:
+			right_shot_anim.set_animation(right_weapon_anim_path)
+			animator_tree.set("parameters/Main/OneShotRightArmAnimation/animation", right_weapon_anim_path)
+
+			#animator_tree.set("parameters/Main/OneShotRightArmBlend/blend_amount", 1.0)
+
+			#animator_tree.set("parameters/Main/OneShotLeftArmBlend/blend_amount", 0.0)
+			
+			tween.tween_property(animator_tree, "parameters/Main/OneShotRightArmBlend/blend_amount", 1.0, 0.25)
+			tween.parallel().tween_property(animator_tree, "parameters/Main/OneShotLeftArmBlend/blend_amount", 0.0, 0.25)
+			
+			
+			return
+			
+		# If only the left hand has a weapon equipped set the idle and run arm blends
+		elif left_weapon and !right_weapon:
+			left_shot_anim.set_animation(left_weapon_anim_path)
+			animator_tree.set("parameters/Main/OneShotLeftArmAnimation/animation", left_weapon_anim_path)
+	
+			animator_tree.set("parameters/Main/OneShotRightArmBlend/blend_amount", 0.0)
+
+			animator_tree.set("parameters/Main/OneShotLeftArmBlend/blend_amount", 1.0)
+			
+			
+			return
+	
+
+	tween.tween_property(animator_tree, "parameters/Main/OneShotRightArmBlend/blend_amount", 0.0, 1.0)
+	tween.parallel().tween_property(animator_tree, "parameters/Main/OneShotLeftArmBlend/blend_amount", 0.0, 1.0)
+	#animator_tree.set("parameters/Main/OneShotRightArmBlend/blend_amount", 0.0)
+	#animator_tree.set("parameters/Main/OneShotLeftArmBlend/blend_amount", 0.0)
 
 
 
 	# NOTE: Always add call method tracks for resolving the damage
 func attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 # Note: Later replace greatsword test with the animation library
-	#look_at_toggle()
+
 
 	miss = in_miss
-	var root: AnimationNodeStateMachine = animator_tree.tree_root
-	var main: AnimationNodeBlendTree = root.get_node("Main")
-	var state_mach: AnimationNodeStateMachine = main.get_node("AnimationNodeStateMachine")
-	var attack: AnimationNodeBlendTree = state_mach.get_node("Attack")
+
+
+	var attack: AnimationNodeBlendTree = state_machine.get_node("Attack")
 	var att_anim: AnimationNodeAnimation = attack.get_node("AttackAnimation")
 	var animation: StringName = att_anim.get_animation()
 	print_debug("Old Animation: ", animation)

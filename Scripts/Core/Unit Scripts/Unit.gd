@@ -34,7 +34,7 @@ var action_system: UnitActionSystem
 
 
 @export_category("")
-@export var weapon_equip_combat_start: Weapon
+@export var weapons_equip_combat_start: Array[Weapon] = []
 
 
 var ability_container: AbilityContainer
@@ -112,7 +112,7 @@ func _ready() -> void:
 	
 	attribute_map.attribute_changed.connect(on_attribute_changed)
 	
-	animator.weapon_setup(holding_weapon)
+	animator.weapon_idle_blend_setup(holding_weapon)
 	
 	SignalBus.on_round_changed.connect(on_round_changed)
 	SignalBus.on_cycle_changed.connect(on_reset_distance_moved)
@@ -141,7 +141,7 @@ func update_grid_position() -> void:
 		
 
 func update_weapon_anims() -> void:
-	animator.weapon_setup(holding_weapon)
+	animator.weapon_idle_blend_setup(holding_weapon)
 
 
 func try_spend_ability_points_to_use_ability(ability: Ability) -> bool:
@@ -327,6 +327,13 @@ func get_combat_skill() -> float:
 
 func get_equipped_weapon() -> Weapon:
 	return equipment.get_equipped_weapon()
+
+func get_equipped_weapons() -> Array[Weapon]:
+	return equipment.get_equipped_weapons()
+
+func get_inventory_items() -> Array[Item]:
+	return inventory.items
+
 
 #func get_all_equipped_weapons() -> Array[Weapon]:
 	

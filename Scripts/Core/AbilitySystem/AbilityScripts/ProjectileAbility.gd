@@ -69,7 +69,7 @@ func try_activate(_event: ActivationEvent) -> void:
 		end_ability(event)
 	
 	# Reset the positionings of the user and target
-	await unit.get_tree().create_timer(2.0).timeout
+	#await unit.get_tree().create_timer(2.0).timeout
 	unit.animator.rotate_unit_towards_facing()
 	call_deferred("target_unit_reset")
 

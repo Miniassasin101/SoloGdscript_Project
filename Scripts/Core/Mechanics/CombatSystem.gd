@@ -251,7 +251,7 @@ func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
 		if relative == Utilities.RelativePosition.FRONT:
 			return
 		elif (relative == Utilities.RelativePosition.RIGHT_SIDE):
-			if event.weapon.tags.has("left_hand"):
+			if event.weapon.tags.has("left"):
 				
 				penalty_cond.situational_modifier = 3 # Hard
 				event.unit.conditions_manager.add_condition(penalty_cond) 
@@ -260,7 +260,7 @@ func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
 			return
 		
 		elif (relative == Utilities.RelativePosition.LEFT_SIDE):
-			if event.weapon.tags.has("right_hand"):
+			if event.weapon.tags.has("right"):
 				
 				penalty_cond.situational_modifier = 3 # Hard
 				event.unit.conditions_manager.add_condition(penalty_cond) 
@@ -307,7 +307,7 @@ func determine_defender_facing_penalty(event: ActivationEvent = current_event) -
 			return
 		
 		elif relative == Utilities.RelativePosition.RIGHT_SIDE:
-			if event.weapon.tags.has("left_hand"):
+			if event.weapon.tags.has("left"):
 				penalty_cond.situational_modifier = 3 # Hard
 				event.target_unit.conditions_manager.add_condition(penalty_cond) 
 				Utilities.spawn_text_line(event.target_unit, "Side Reaction", Color.YELLOW)
@@ -315,7 +315,7 @@ func determine_defender_facing_penalty(event: ActivationEvent = current_event) -
 			return
 		
 		elif (relative == Utilities.RelativePosition.LEFT_SIDE):
-			if event.weapon.tags.has("right_hand"):
+			if event.weapon.tags.has("right"):
 				
 				penalty_cond.situational_modifier = 3 # Hard
 				event.target_unit.conditions_manager.add_condition(penalty_cond) 
@@ -353,12 +353,12 @@ func compute_attacker_facing_penalty(attacker: Unit, target: Unit, weapon: Weapo
 		if relative == Utilities.RelativePosition.FRONT:
 			return null
 		elif relative == Utilities.RelativePosition.RIGHT_SIDE:
-			if weapon.tags.has("left_hand"):
+			if weapon.tags.has("left"):
 				penalty_cond.situational_modifier = 3
 				return penalty_cond
 			return null
 		elif relative == Utilities.RelativePosition.LEFT_SIDE:
-			if weapon.tags.has("right_hand"):
+			if weapon.tags.has("right"):
 				penalty_cond.situational_modifier = 3
 				return penalty_cond
 			return null
@@ -387,12 +387,12 @@ func compute_defender_facing_penalty(attacker: Unit, target: Unit, weapon: Weapo
 		if relative == Utilities.RelativePosition.FRONT:
 			return null
 		elif relative == Utilities.RelativePosition.RIGHT_SIDE:
-			if weapon.tags.has("left_hand"):
+			if weapon.tags.has("left"):
 				penalty_cond.situational_modifier = 3
 				return penalty_cond
 			return null
 		elif relative == Utilities.RelativePosition.LEFT_SIDE:
-			if weapon.tags.has("right_hand"):
+			if weapon.tags.has("right"):
 				penalty_cond.situational_modifier = 3
 				return penalty_cond
 			return null

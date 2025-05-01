@@ -1,4 +1,4 @@
-[gd_scene load_steps=93 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=94 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" uid="uid://dswgp2a8up16v" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" uid="uid://b268e884ur2c8" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -27,16 +27,17 @@
 [ext_resource type="PackedScene" uid="uid://3p3xt0lymqsd" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBar.tscn" id="18_cp12p"]
 [ext_resource type="Script" uid="uid://cwsem2fnkteke" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffect.gd" id="18_hnk25"]
 [ext_resource type="Resource" uid="uid://cjxj1gnefr71c" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/AccidentalInjuryEffectResource.tres" id="19_xdtf5"]
+[ext_resource type="Resource" uid="uid://c067blseq1f27" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/ShieldTest.tres" id="20_5kywy"]
 [ext_resource type="Resource" uid="uid://b6eu0ekmy47qr" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/BowTest.tres" id="20_b4xfl"]
 [ext_resource type="Script" uid="uid://baxluukdrdjhd" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
+[ext_resource type="Script" uid="uid://bkx8m1e0lkceq" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponScripts/Weapon.gd" id="20_w3lo6"]
 [ext_resource type="Script" uid="uid://dqx7stk06etai" path="res://Hero_Game/Scenes/UILayer.gd" id="21_3ffgk"]
-[ext_resource type="Resource" uid="uid://cxk0rx8ecss31" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/SwordTest.tres" id="21_5kywy"]
+[ext_resource type="Resource" uid="uid://cxk0rx8ecss31" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/SwordTest.tres" id="21_658qe"]
 [ext_resource type="Script" uid="uid://bd0s3lywx8lk3" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="21_dna0q"]
 [ext_resource type="Resource" uid="uid://bytek5m52blwh" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BleedEffectResource.tres" id="21_kkt7y"]
 [ext_resource type="Script" uid="uid://dhballfce82fs" path="res://Hero_Game/Scenes/BookKeepingSystem.gd" id="21_ktx83"]
 [ext_resource type="Resource" uid="uid://dst4i0rqw46ng" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BlindOpponentEffectResource.tres" id="22_6ytw6"]
 [ext_resource type="PackedScene" uid="uid://bs8kc22xgwd2d" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.tscn" id="22_67ysf"]
-[ext_resource type="Resource" uid="uid://y031lwsbeedg" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/SmallSwordTest.tres" id="22_w3lo6"]
 [ext_resource type="Resource" uid="uid://bo28spn03mllg" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BypassArmorEffectResource.tres" id="23_xra60"]
 [ext_resource type="Resource" uid="uid://bhs3peayb8jf2" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ChooseLocationEffectResource.tres" id="24_h0tua"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
@@ -176,6 +177,8 @@ size = Vector2(2, 2)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
+attacker_success_debug = true
+parry_success_debug = true
 auto_equip_debug = true
 grid_dimensions = Vector2(13, 15)
 
@@ -297,23 +300,23 @@ unit_action_system = NodePath("../UnitActionSystem")
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 2, 0, 14)
 ui_name = "Blue"
-weapon_equip_combat_start = ExtResource("20_b4xfl")
+weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("21_658qe"), ExtResource("20_5kywy")])
 
 [node name="DawnUnit4" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(-0.999999, -0.000203222, 5.87095e-05, -0.000203206, 1, 0.000299339, -5.87634e-05, 0.000299329, -1, 6, 0, 16)
 ui_name = "Red"
-weapon_equip_combat_start = ExtResource("21_5kywy")
+weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("20_b4xfl")])
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4)
 ui_name = "Green"
-weapon_equip_combat_start = ExtResource("20_b4xfl")
+weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("20_b4xfl")])
 is_enemy = true
 
 [node name="DawnUnit3" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 8)
 ui_name = "Yellow"
-weapon_equip_combat_start = ExtResource("22_w3lo6")
+weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("21_658qe"), ExtResource("20_5kywy")])
 is_enemy = true
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
