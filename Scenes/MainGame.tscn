@@ -298,25 +298,13 @@ script = ExtResource("10_iw061")
 unit_action_system = NodePath("../UnitActionSystem")
 
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 2, 0, 14)
+transform = Transform3D(3.05979e-07, 0, -1, 0, 1, 0, 1, 0, 3.05979e-07, 4, 0, 8)
 ui_name = "Blue"
-weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("21_658qe"), ExtResource("20_5kywy")])
-
-[node name="DawnUnit4" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-0.999999, -0.000203222, 5.87095e-05, -0.000203206, 1, 0.000299339, -5.87634e-05, 0.000299329, -1, 6, 0, 16)
-ui_name = "Red"
-weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("20_b4xfl")])
+weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("20_5kywy"), ExtResource("21_658qe")])
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4)
-ui_name = "Green"
+transform = Transform3D(-4.37113e-08, 0, 1, 0, 1, 0, -0.999999, 0, -4.37114e-08, 0, 0, 10)
 weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("20_b4xfl")])
-is_enemy = true
-
-[node name="DawnUnit3" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 8)
-ui_name = "Yellow"
-weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("21_658qe"), ExtResource("20_5kywy")])
 is_enemy = true
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]

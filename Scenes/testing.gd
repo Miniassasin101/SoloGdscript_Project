@@ -199,8 +199,11 @@ func console_unequip_weapon(unit_name: String) -> void:
 	if unit == null:
 		Console.print_error("Unit not found: " + unit_name)
 		return
-
-	unit.equipment.unequip_all(true)
+	
+	for weapon in unit.get_equipped_weapons():
+		unit.equipment.unequip(weapon)
+		#await get_tree().process_frame
+	#unit.equipment.unequip_all(true)
 
 	Console.print_info("Unequipped all weapons from unit '%s'" % unit_name)
 

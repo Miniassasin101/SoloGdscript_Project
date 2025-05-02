@@ -25,6 +25,7 @@ extends Node
 var items: Array[Item] = []
 
 var is_dropping: bool = false
+var recursion_cap: int = 0
 
 static var instance: ObjectManager = null
 
@@ -40,16 +41,20 @@ func drop_item_in_world(unit: Unit, in_item: Item = null) -> void:
 	#if !unit.equipment.has_equipped_weapon():
 	#	return
 	# Choose the item to drop
-	if is_dropping:
-		return
-	is_dropping = true
+	#if is_dropping:
+	#	await get_tree().create_timer(0.5)
+	#	drop_item_in_world(unit: Unit, in_item: Item = null
+	#is_dropping = true
 	var item = in_item if in_item else unit.get_equipped_weapon()
+	if items.has(in_item):
+		return
+		
 	items.append(item)
 
 	var item_visual: ItemVisual = item.get_item_visual()
 	item_visual.reparent(self)
-	unit.equipment.unequip(item)
-	is_dropping = false
+	#unit.equipment.unequip(item)
+	#is_dropping = false
 	# Find all possible adjacent drop spots
 	var adjacent_pos: Array[GridPosition] = Utilities.get_adjacent_tiles_with_diagonal(unit)
 	var actual_pos: Array[GridPosition] = []
@@ -114,7 +119,7 @@ func drop_item_in_world(unit: Unit, in_item: Item = null) -> void:
 	tween.tween_property(
 		item_visual.root,
 		"position",
-		Vector3(0.0, 0.0, 0.5),
+		Vector3(randf_range(-0.5, 0.5), 0.0, randf_range(-0.5, 0.5)),
 		arc_segment_2_duration
 	)
 
@@ -122,7 +127,7 @@ func drop_item_in_world(unit: Unit, in_item: Item = null) -> void:
 	tween.tween_property(
 		item_visual,
 		"rotation",
-		Vector3(0.0, 0.5, 0.0),
+		Vector3(0.0, randf_range(0.2, 3.7), 0.0),
 		rotation_tween_time
 	).set_delay(rotation_tween_delay)
 

@@ -34,28 +34,44 @@ func try_activate(_event: ActivationEvent) -> void:
 			return
 	
 	var animator: UnitAnimator = unit.animator
-
-	await rotate_unit_towards_target_enemy(event)
-	animator.toggle_slowdown(1.3)
+	
+	var current_event: ActivationEvent = CombatSystem.instance.current_event
+	
 	var weapon: Weapon = unit.equipment.get_equipped_weapon()
 	if weapon != null:
 		parry_animation_part_1 = weapon.parry_animation_part_1
 		parry_animation_reset = weapon.parry_animation_part_2
 		parry_animation_idle = weapon.parry_animation_idle
 	
+	
+	
+	var animation_mask: int = -1
+
+	if unit.get_equipped_weapons().size() >= 2:
+		if weapon.tags.has("right"):
+			animation_mask = animator.AnimationMask.LEFT
+		elif weapon.tags.has("left"):
+			animation_mask = animator.AnimationMask.RIGHT
+	else:
+		animation_mask = animator.AnimationMask.NONE
+
+	await rotate_unit_towards_target_enemy(event)
+	#animator.toggle_slowdown(1.3)
+
+	
 	#var mask: int = -1
 	#if !unit.get_equipped_weapons().is_empty():
 	#	if unit.get_equipped_weapon()
 	
-	await animator.play_animation_by_name(parry_animation_part_1.resource_name, 0.0, false, animator.AnimationMask.RIGHT, false) # Always be careful to wait for the animation to complete
-	animator.toggle_slowdown()
-	animator.play_animation_by_name(parry_animation_idle.resource_name, 0.2, false, animator.AnimationMask.RIGHT, false)
+	await animator.play_animation_by_name(parry_animation_part_1.resource_name, 0.2, false, animation_mask, false) # Always be careful to wait for the animation to complete
+	#animator.toggle_slowdown()
+	animator.play_animation_by_name(parry_animation_idle.resource_name, 0.2, false, animation_mask, false)
 	
 	CombatSystem.instance.determine_defender_facing_penalty()
 	var defend_skill_value: int = unit.get_attribute_after_sit_mod("combat_skill")
 	var defending_roll: int = Utilities.roll(100)
 	
-	var current_event: ActivationEvent = CombatSystem.instance.current_event
+
 	current_event.defender_roll = defending_roll
 	print_debug("Defend Skill Value: ", defend_skill_value)
 	print_debug("Defend Roll: ", defending_roll)
@@ -73,7 +89,12 @@ func try_activate(_event: ActivationEvent) -> void:
 		end_ability(event)
 	
 	await animator.parry_reset
-	animator.play_animation_by_name(parry_animation_reset.resource_name, 0.2, false, animator.AnimationMask.RIGHT)
+	
+
+	
+
+	
+	animator.play_animation_by_name(parry_animation_reset.resource_name, 0.2, false, animation_mask)
 	
 
 
