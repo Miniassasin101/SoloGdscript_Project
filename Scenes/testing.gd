@@ -213,7 +213,7 @@ func console_weapon_animation_update(unit_name: String) -> void:
 		Console.print_error("Unit not found: " + unit_name)
 		return
 	
-	unit.animator.weapon_idle_blend_setup(true, unit.get_equipped_weapon())
+	unit.update_weapon_anims()
 
 func console_remove_all_dropped_items() -> void:
 	if ObjectManager.instance:

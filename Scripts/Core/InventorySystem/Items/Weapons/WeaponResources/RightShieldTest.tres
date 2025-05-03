@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=7 format=3 uid="uid://b8rdd6tbh317k"]
+
+[ext_resource type="Animation" uid="uid://s5j5f28bh8pj" path="res://Hero_Game/Animations/AnimationImports_1/ArmShieldIdle_001.res" id="1_k288j"]
+[ext_resource type="Animation" uid="uid://vkgxtb6nsvht" path="res://Hero_Game/Animations/AnimationImports_1/ArmShieldParry_Idle_001.res" id="2_6ck8e"]
+[ext_resource type="Animation" uid="uid://b362fcne5vsja" path="res://Hero_Game/Animations/AnimationImports_1/ArmShieldParry_First_Half_001.res" id="3_uv46m"]
+[ext_resource type="Animation" uid="uid://hp4mwhr6xxb4" path="res://Hero_Game/Animations/AnimationImports_1/ArmShieldParry_Second_Half_001.res" id="4_qbrbf"]
+[ext_resource type="PackedScene" uid="uid://b2qw3637gjjtv" path="res://Hero_Game/Prefabs/Items/Weapons/TestHeaterShield.tscn" id="5_r00r5"]
+[ext_resource type="Script" uid="uid://bkx8m1e0lkceq" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponScripts/Weapon.gd" id="6_4ucef"]
+
+[resource]
+script = ExtResource("6_4ucef")
+category = &"shield"
+die_type = 4
+die_number = 1
+flat_damage = 0
+idle_animation = ExtResource("1_k288j")
+parry_animation_part_1 = ExtResource("3_uv46m")
+parry_animation_part_2 = ExtResource("4_qbrbf")
+parry_animation_idle = ExtResource("2_6ck8e")
+size = 2
+reach = 1
+combat_effects = Array[StringName]([])
+encumberance = 3
+armor_points = 6
+hit_points = 12
+max_hit_points = 12
+traits = Array[StringName]([])
+hands = 1
+is_broken = false
+is_loaded = false
+name = &"Shield"
+can_stack = false
+decrease_stack_on_use = false
+scene = ExtResource("5_r00r5")
+tags = Array[String](["right", "forearm"])
+quantity_current = 1
+quantity_max = 1
+tags_added_on_activation = Array[String]([])
+tags_added_on_add = Array[String]([])
+tags_added_on_equip = Array[String]([])
+tags_added_on_remove = Array[String]([])
+tags_added_on_unequip = Array[String]([])
+tags_required_to_activate = Array[String]([])
+tags_required_to_add = Array[String]([])
+tags_required_to_equip = Array[String]([])
+tags_required_to_remove = Array[String]([])
+tags_required_to_unequip = Array[String]([])
+tags_removed_on_activation = Array[String]([])
+tags_removed_on_add = Array[String]([])
+tags_removed_on_equip = Array[String]([])
+tags_removed_on_remove = Array[String]([])
+tags_removed_on_unequip = Array[String]([])

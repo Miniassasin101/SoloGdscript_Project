@@ -112,7 +112,7 @@ func _ready() -> void:
 	
 	attribute_map.attribute_changed.connect(on_attribute_changed)
 	
-	animator.weapon_idle_blend_setup(holding_weapon)
+	update_weapon_anims()
 	
 	SignalBus.on_round_changed.connect(on_round_changed)
 	SignalBus.on_cycle_changed.connect(on_reset_distance_moved)
@@ -141,7 +141,8 @@ func update_grid_position() -> void:
 		
 
 func update_weapon_anims() -> void:
-	animator.weapon_idle_blend_setup(holding_weapon)
+	animator.on_equipment_changed(self)
+	pass
 
 
 func try_spend_ability_points_to_use_ability(ability: Ability) -> bool:

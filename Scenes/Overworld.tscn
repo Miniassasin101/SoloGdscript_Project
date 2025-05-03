@@ -14,10 +14,10 @@ size = Vector2(30, 30)
 
 [sub_resource type="Curve3D" id="Curve3D_hcqog"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0.438941, 0, -0.187695, 0, 0, 0, -0.370013, 0, 0.301643, 0.394835, 0, -0.321878, 1.75576, 0, -0.75078, -0.444461, 0, 0.248907, 0.460884, 0, -0.258104, 2.94797, 0, -2.40325, -0.460884, 0, 0.258104, 0.444461, 0, -0.248907, 5.05203, 0, -2.59675, -0.394835, 0, 0.321878, 0.370013, 0, -0.301643, 6.24424, 0, -4.24922, 0.438941, 0, -0.187695, 0, 0, 0, 8, 0, -5),
-"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0)
+"points": PackedVector3Array(0, 0, 0, 0.371427, 0, -0.147383, 0, 0, 0, -0.301565, 0, 0.26218, 0.331602, 0, -0.288294, 1.48571, 0, -0.589534, -0.392267, 0, 0.197991, 0.424838, 0, -0.21443, 2.40275, 0, -2.08894, -0.40355, 0, 0.252219, 0.40355, 0, -0.252219, 4.30475, 0, -2.0124, -0.378911, 0, 0.287913, 0.349861, 0, -0.265839, 5.06941, 0, -3.75561, -0.40445, 0, 0.171738, 0.367814, 0, -0.156182, 6.81904, 0, -3.92287, 0.29524, 0, -0.269283, 0, 0, 0, 8, 0, -5),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)
 }
-point_count = 6
+point_count = 7
 
 [sub_resource type="Curve3D" id="Curve3D_dsyxg"]
 _data = {
@@ -71,9 +71,10 @@ node_visual_color = Color(0.75, 0.24, 0.24, 1)
 script = ExtResource("5_plp45")
 overworld_node_1 = NodePath("../OverworldNode")
 overworld_node_2 = NodePath("../OverworldNode2")
-number_of_twists = 4
-twist_scale = 0.5
+number_of_twists = 5
+twist_scale = 0.575
 path_curve = SubResource("Curve3D_hcqog")
+offset_from_ground = 4.49
 
 [node name="OverworldNodePath2" type="Node" parent="OverworldManager" node_paths=PackedStringArray("overworld_node_1", "overworld_node_2")]
 script = ExtResource("5_plp45")

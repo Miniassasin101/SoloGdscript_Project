@@ -106,13 +106,15 @@ var runblend: AnimationNodeBlendTree = null
 
 var base_idle: AnimationNodeAnimation = null
 
-var left_weapon_anim: AnimationNodeAnimation = null
+var buffer_idle: AnimationNodeAnimation = null
 
-var right_weapon_anim: AnimationNodeAnimation = null
+var left_idle_anim: AnimationNodeAnimation = null
 
-var left_arm_anim: AnimationNodeAnimation = null
+var right_idle_anim: AnimationNodeAnimation = null
 
-var right_arm_anim: AnimationNodeAnimation = null
+var left_run_anim: AnimationNodeAnimation = null
+
+var right_run_anim: AnimationNodeAnimation = null
 
 
 
@@ -124,6 +126,16 @@ var weapon_trail_is_active: bool = false
 var idle_blend_tween: Tween = null
 var is_blending: bool = false
 var check_queued: bool = false
+
+# ——— Cache all the property paths & their current values ———
+var P_IDLE: String = "parameters/Main/AnimationNodeStateMachine/IdleBlend/BaseIdleBlend/blend_amount"
+var P_IDLE_B: String = "parameters/Main/AnimationNodeStateMachine/IdleBlend/BufferIdleBlend/blend_amount"
+var P_IDLE_R: String = "parameters/Main/AnimationNodeStateMachine/IdleBlend/RightArmIdleBlend/blend_amount"
+var P_IDLE_L: String = "parameters/Main/AnimationNodeStateMachine/IdleBlend/LeftArmIdleBlend/blend_amount"
+var P_RUN_R: String = "parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmBlend/blend_amount"
+var P_RUN_L: String = "parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmBlend/blend_amount"
+
+
 
 # Ready Function - Called when the node enters the scene tree for the first time
 func _ready() -> void:
@@ -246,10 +258,12 @@ func queue_equipment_check() -> void:
 
 
 func equipment_anim_check(in_unit: Unit) -> void:
-	
 	if in_unit != unit:
 		return
-	if idle_blend_tween.is_running():
+	
+
+	
+	if idle_blend_tween and idle_blend_tween.is_running():
 		return
 	
 	if get_tree().process_frame.is_connected(equipment_anim_check):
@@ -259,39 +273,54 @@ func equipment_anim_check(in_unit: Unit) -> void:
 	
 	
 	if !unit.equipment.equipped_items.is_empty():
-		var active_weapons: Array[Weapon] = unit.equipment.get_equipped_weapons()
-		
-		if active_weapons.is_empty():
-			return
-		
-		var right_weapon: Weapon = null
-		var left_weapon: Weapon = null
-		
-		
-		if active_weapons.size() == 1 and active_weapons[0] != null:
-			var active_weapon: Weapon = active_weapons[0]
-			if active_weapon.tags.has("both") or active_weapon.hands == 2: # If is two handed weapon
-				right_weapon = active_weapon
-				left_weapon = active_weapon
-			elif active_weapon.tags.has("right"):
-				right_weapon = active_weapon
-				left_weapon = active_weapon
-			elif active_weapon.tags.has("left"):
-				right_weapon = active_weapon
-				left_weapon = active_weapon
-
-
-		else:
-			if active_weapons[0].tags.has("right"):
-				right_weapon = active_weapons[0]
-				left_weapon = active_weapons[1]
-			else:
-				right_weapon = active_weapons[1]
-				left_weapon = active_weapons[0]
+		var idle_request: IdleBlendChangeRequest = create_idle_blend_request()
 			
-		weapon_idle_blend_setup(false, right_weapon, left_weapon)
+		weapon_idle_blend_setup(idle_request)
 		return
-	weapon_idle_blend_setup(true)
+	weapon_idle_blend_setup(null) # resets
+
+func create_idle_blend_request() -> IdleBlendChangeRequest:
+	var active_weapons: Array[Weapon] = unit.equipment.get_equipped_weapons()
+	
+	#if active_weapons.is_empty():
+	#	return
+
+	var right_weapon: Weapon = null
+	var left_weapon: Weapon = null
+	
+	var iteration_num: int = 0
+	for weapon in active_weapons:
+		var active_weapon: Weapon = active_weapons[iteration_num]
+		if active_weapon.tags.has("both") or active_weapon.hands == 2: # If is two handed weapon
+			right_weapon = active_weapon
+			left_weapon = active_weapon
+			continue
+		elif active_weapon.tags.has("right"):
+			right_weapon = active_weapon
+			#left_weapon = active_weapon
+		elif active_weapon.tags.has("left"):
+			#right_weapon = active_weapon
+			left_weapon = active_weapon
+		iteration_num += 1
+	
+
+	
+	
+	
+	var idle_request: IdleBlendChangeRequest = IdleBlendChangeRequest.new(null
+		,right_weapon.idle_animation if right_weapon else null
+		,left_weapon.idle_animation if left_weapon else null
+		,left_weapon != null
+		,right_weapon != null
+		,IdleBlendChangeRequest.BaseAnimBackup.Left)
+	
+	
+	if !left_weapon and !right_weapon:
+		idle_request.clear_all = true
+	
+	return idle_request
+	
+
 
 # This prevents any animation changes like weapon equips duplicating across instances
 func make_tree_root_unique() -> void:
@@ -302,7 +331,7 @@ func animator_tree_setup() -> void:
 	
 	set_animator_tree_properties()
 
-func set_animator_tree_properties() -> void:
+func set_animator_tree_properties_dep() -> void:
 	root = animator_tree.tree_root as AnimationNodeStateMachine
 	
 	if root == null:
@@ -317,115 +346,300 @@ func set_animator_tree_properties() -> void:
 	
 	runblend = state_machine.get_node("RunCycleBlend")
 	
-	base_idle = idleblend.get_node("WeaponIdle")
+	base_idle = idleblend.get_node("BaseIdleAnimation")
 	
-	right_weapon_anim = idleblend.get_node("WeaponIdleRightArmAnimation")
+	buffer_idle = idleblend.get_node("BufferIdleAnimation")
 	
-	left_weapon_anim = idleblend.get_node("WeaponIdleLeftArmAnimation")
+	right_idle_anim = idleblend.get_node("RightArmIdleAnimation")
 	
-	left_arm_anim = runblend.get_node("LeftArmAnimation")
+	left_idle_anim = idleblend.get_node("LeftArmIdleAnimation")
 	
-	right_arm_anim = runblend.get_node("RightArmAnimation")
+	left_run_anim = runblend.get_node("LeftArmAnimation")
+	
+	right_run_anim = runblend.get_node("RightArmAnimation")
 
 
-func weapon_idle_blend_setup(clear_weapons: bool, right_weapon: Weapon = null, left_weapon: Weapon = null) -> void:
+# ------------------------------------------------------------
+# Cache all the AnimationTree nodes we need for blending
+# ------------------------------------------------------------
+func set_animator_tree_properties() -> void:
+	# Root of the state machine
+	root = animator_tree.tree_root as AnimationNodeStateMachine
+	if root == null:
+		push_error("AnimationTree does not have a valid StateMachine root.")
+		return
+
+	# Main sub–state machine
+	main = root.get_node("Main")
+	state_machine = main.get_node("AnimationNodeStateMachine")
+
+	# Blend nodes
+	idleblend = state_machine.get_node("IdleBlend")
+	runblend  = state_machine.get_node("RunCycleBlend")
+
+	# Individual animation nodes
+	base_idle       = idleblend.get_node("BaseIdleAnimation")
+	buffer_idle     = idleblend.get_node("BufferIdleAnimation")
+	right_idle_anim = idleblend.get_node("RightArmIdleAnimation")
+	left_idle_anim  = idleblend.get_node("LeftArmIdleAnimation")
+
+	left_run_anim  = runblend.get_node("LeftArmAnimation")
+	right_run_anim = runblend.get_node("RightArmAnimation")
+
+
+# ------------------------------------------------------------
+# Tween between idle/run blends when equipping or unequipping
+# ------------------------------------------------------------
+func weapon_idle_blend_setup(blend_request: IdleBlendChangeRequest) -> void:
+	# Ensure we have a request object
+	if blend_request == null:
+		blend_request = IdleBlendChangeRequest.new()
+		blend_request.clear_all = true
+	var b: IdleBlendChangeRequest = blend_request
+
+	# Kill any running tween
+	if idle_blend_tween and idle_blend_tween.is_running():
+		idle_blend_tween.kill()
+
+	# Start a fresh parallel tween
+	idle_blend_tween = get_tree().create_tween()
+	idle_blend_tween.set_parallel(true)
+
+	# Read current blend parameters
+	var cur_idle: float   = animator_tree.get(P_IDLE)
+	var cur_idle_b: float = animator_tree.get(P_IDLE_B)
+	var cur_idle_r: float = animator_tree.get(P_IDLE_R)
+	var cur_idle_l: float = animator_tree.get(P_IDLE_L)
+	var cur_run_r: float  = animator_tree.get(P_RUN_R)
+	var cur_run_l: float  = animator_tree.get(P_RUN_L)
+
+	# “Lock in” those values before tweening
+	animator_tree.set(P_IDLE,   cur_idle)
+	animator_tree.set(P_IDLE_B, cur_idle_b)
+	animator_tree.set(P_IDLE_R, cur_idle_r)
+	animator_tree.set(P_IDLE_L, cur_idle_l)
+	animator_tree.set(P_RUN_R,  cur_run_r)
+	animator_tree.set(P_RUN_L,  cur_run_l)
+
+	# If we’re blending rather than clearing…
+	if not b.clear_all and (b.blend_left or b.blend_right):
+		var base_idle_path: String  = base_idle.get_animation()
+		var active_idle_blend: String = P_IDLE
+		var cur_idle_active: float      = cur_idle
+		var blend_back_to_base: bool    = false
+
+		# Decide if we need to swap into the buffer slot
+		if base_idle_path != b.base_idle_animation_path and cur_idle == 1.0:
+			active_idle_blend = P_IDLE_B
+			blend_back_to_base = true
+			cur_idle_active = cur_idle_b
+			buffer_idle.set_animation(b.base_idle_animation_path)
+		elif cur_idle == 0.0:
+			base_idle.set_animation(b.base_idle_animation_path)
+
+		# Pre-set any run animations
+		if b.blend_left:
+			left_run_anim.set_animation(b.left_idle_animation_path)
+		if b.blend_right:
+			right_run_anim.set_animation(b.right_idle_animation_path)
+
+		# — Only one hand —
+		if not b.blend_left or not b.blend_right:
+			# Right hand only
+			if b.blend_right and not b.blend_left:
+				right_idle_anim.set_animation(b.right_idle_animation_path)
+				right_run_anim.set_animation(b.right_idle_animation_path)
+
+				idle_blend_tween.tween_property(animator_tree, active_idle_blend, 1.0, 0.7).from(cur_idle_active)
+				idle_blend_tween.tween_property(animator_tree, P_IDLE_R,        1.0, 0.7).from(cur_idle_r)
+				idle_blend_tween.tween_property(animator_tree, P_IDLE_L,        0.0, 0.7).from(cur_idle_l)
+
+				animator_tree.set(P_RUN_R, 1.0)
+				animator_tree.set(P_RUN_L, 0.0)
+				await idle_blend_tween.finished
+
+				if blend_back_to_base:
+					base_idle.set_animation(b.base_idle_animation_path)
+					idle_blend_tween.kill()
+					idle_blend_tween = get_tree().create_tween()
+					idle_blend_tween.tween_property(animator_tree, active_idle_blend, 0.0, 1.5)
+					await idle_blend_tween.finished
+					Console.print_line("Custom blend successful on: " + b.base_idle_animation_path)
+				return
+
+			# Left hand only
+			elif not b.blend_right and b.blend_left:
+				left_idle_anim.set_animation(b.left_idle_animation_path)
+				left_run_anim.set_animation(b.left_idle_animation_path)
+
+				idle_blend_tween.tween_property(animator_tree, active_idle_blend, 1.0, 0.7).from(cur_idle_active)
+				idle_blend_tween.tween_property(animator_tree, P_IDLE_R,        0.0, 0.7).from(cur_idle_r)
+				idle_blend_tween.tween_property(animator_tree, P_IDLE_L,        1.0, 0.7).from(cur_idle_l)
+
+				animator_tree.set(P_RUN_R, 0.0)
+				animator_tree.set(P_RUN_L, 1.0)
+				await idle_blend_tween.finished
+
+				if blend_back_to_base:
+					base_idle.set_animation(b.base_idle_animation_path)
+					idle_blend_tween.kill()
+					idle_blend_tween = get_tree().create_tween()
+					idle_blend_tween.tween_property(animator_tree, active_idle_blend, 0.0, 1.5)
+					await idle_blend_tween.finished
+					Console.print_line("Custom blend successful on: " + b.base_idle_animation_path)
+				return
+
+		# — Both hands —
+		elif b.blend_left and b.blend_right:
+			right_idle_anim.set_animation(b.right_idle_animation_path)
+			left_idle_anim.set_animation(b.left_idle_animation_path)
+			right_run_anim.set_animation(b.right_idle_animation_path)
+			left_run_anim.set_animation(b.left_idle_animation_path)
+
+			idle_blend_tween.tween_property(animator_tree, active_idle_blend, 1.0, 0.7).from(cur_idle_active)
+			idle_blend_tween.tween_property(animator_tree, P_IDLE_R,        1.0, 0.7).from(cur_idle_r)
+			idle_blend_tween.tween_property(animator_tree, P_IDLE_L,        1.0, 0.7).from(cur_idle_l)
+
+			animator_tree.set(P_RUN_R, 1.0)
+			animator_tree.set(P_RUN_L, 1.0)
+			await idle_blend_tween.finished
+
+			if blend_back_to_base:
+				base_idle.set_animation(b.base_idle_animation_path)
+				idle_blend_tween.kill()
+				idle_blend_tween = get_tree().create_tween()
+				idle_blend_tween.tween_property(animator_tree, active_idle_blend, 0.0, 1.5)
+				await idle_blend_tween.finished
+				Console.print_line("Custom blend successful on: " + b.base_idle_animation_path)
+			return
+
+	# --------------------------------------------------------
+	# Default: clear all blends back to zero
+	# --------------------------------------------------------
+	idle_blend_tween.tween_property(animator_tree, P_IDLE,   0.0, 0.7).from(cur_idle)
+	idle_blend_tween.tween_property(animator_tree, P_IDLE_R, 0.0, 0.7).from(cur_idle_r)
+	idle_blend_tween.tween_property(animator_tree, P_IDLE_L, 0.0, 0.7).from(cur_idle_l)
+
+	animator_tree.set(P_RUN_R, 0.0)
+	animator_tree.set(P_RUN_L, 0.0)
+
+	await idle_blend_tween.finished
+
+
+
+func weapon_idle_blend_setup_dep(blend_request: IdleBlendChangeRequest) -> void:
+	if blend_request == null:
+		blend_request = IdleBlendChangeRequest.new()
+		blend_request.clear_all = true
+	var b: IdleBlendChangeRequest = blend_request
 	
 	if idle_blend_tween and idle_blend_tween.is_running():
 		idle_blend_tween.kill()
 	
 	idle_blend_tween = get_tree().create_tween()
 	idle_blend_tween.set_parallel(true)
-	# FIXME: Add functionality (base and actual positions?) to smoothly 
-	# blend equipping and unequipping when a weapon is already equipped:
-	# EX: there is snapping when a unit with a sword and shield unequips one
-	
-	
-		# ——— Cache all the property paths & their current values ———
-	var P_IDLE: String = "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount"
-	var P_IDLE_R: String = "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleRightArmBlend/blend_amount"
-	var P_IDLE_L: String = "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleLeftArmBlend/blend_amount"
-	var P_RUN_R: String = "parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmBlend/blend_amount"
-	var P_RUN_L: String = "parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmBlend/blend_amount"
+
 
 	var cur_idle: float = animator_tree.get(P_IDLE)
+	var cur_idle_b: float = animator_tree.get(P_IDLE_B) # Buffer
 	var cur_idle_r: float = animator_tree.get(P_IDLE_R)
 	var cur_idle_l: float = animator_tree.get(P_IDLE_L)
 	var cur_run_r: float = animator_tree.get(P_RUN_R)
 	var cur_run_l: float = animator_tree.get(P_RUN_L)
 	
 	animator_tree.set(P_IDLE, cur_idle)
+	animator_tree.set(P_IDLE_B, cur_idle_b)
 	animator_tree.set(P_IDLE_R, cur_idle_r)
 	animator_tree.set(P_IDLE_L, cur_idle_l)
 	animator_tree.set(P_RUN_R, cur_run_r)
 	animator_tree.set(P_RUN_L, cur_run_l)
 
 
-	if !clear_weapons and (right_weapon or left_weapon):
-
+	if !b.clear_all and (b.blend_left or b.blend_right):
 		
-		var right_weapon_anim_path: String = ("HumanoidAnimLib01/" + right_weapon.idle_animation.resource_name)if right_weapon else ""
-		var left_weapon_anim_path: String = ("HumanoidAnimLib01/" + left_weapon.idle_animation.resource_name) if left_weapon else ""
+		var base_idle_curr_anim_path: StringName = base_idle.get_animation()
 		
-		"""
-		if right_weapon:
-			base_idle.set_animation(right_weapon_anim_path)
-		elif left_weapon:
-			base_idle.set_animation(left_weapon_anim_path)
-		"""
-
-
+		var active_idle_blend: String = P_IDLE
 		
-		if left_weapon:
-			base_idle.set_animation(left_weapon_anim_path)
-		elif right_weapon:
-			base_idle.set_animation(right_weapon_anim_path)
+		var cur_idle_active: float = cur_idle
 		
-		if left_weapon:
-			left_arm_anim.set_animation(left_weapon_anim_path)
-		if right_weapon:
-			right_arm_anim.set_animation(right_weapon_anim_path)
+		var blend_back_to_base: bool = false
 		
-		# If only ONE hand has a weapon equipped, blend in that weapon and blend out the other hand
-		if !right_weapon or !left_weapon:
+		if base_idle_curr_anim_path != b.base_idle_animation_path and cur_idle == 1.0:
+			active_idle_blend = P_IDLE_B
+			blend_back_to_base = true
+			cur_idle_active = cur_idle_b
+			buffer_idle.set_animation(b.base_idle_animation_path)
+		elif cur_idle == 0.0:
+			base_idle.set_animation(b.base_idle_animation_path)
+		
+		
+		if b.blend_left:
+			left_run_anim.set_animation(b.left_idle_animation_path)
+		if b.blend_right:
+			right_run_anim.set_animation(b.right_idle_animation_path)
+		
+		# If only ONE hand has a blend set, blend in that animation and blend out the other arm for the base to takeover
+		if !b.blend_left or !b.blend_right:
 			# If only the right hand has a weapon equipped set the idle and run arm blends
-			if right_weapon and !left_weapon:
-				right_weapon_anim.set_animation(right_weapon_anim_path)
-				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmAnimation/animation", right_weapon_anim_path)
+			if b.blend_right and !b.blend_left:
+				right_idle_anim.set_animation(b.right_idle_animation_path)
+				right_run_anim.set_animation(b.right_idle_animation_path)
 
-				idle_blend_tween.tween_property(animator_tree, P_IDLE, 1.0, 0.7).from(cur_idle)
+				idle_blend_tween.tween_property(animator_tree, active_idle_blend, 1.0, 0.7).from(cur_idle_active)
 				idle_blend_tween.tween_property(animator_tree, P_IDLE_R, 1.0, 0.7).from(cur_idle_r)
 				idle_blend_tween.tween_property(animator_tree, P_IDLE_L, 0.0, 0.7).from(cur_idle_l)
 		
 				animator_tree.set(P_RUN_R, 1.0)
 				animator_tree.set(P_RUN_L, 0.0)
 				await idle_blend_tween.finished
+				if blend_back_to_base:
+					# NOTE: Might have to set values again
+					base_idle.set_animation(b.base_idle_animation_path)
+					idle_blend_tween.kill()
+					idle_blend_tween = get_tree().create_tween()
+					idle_blend_tween.tween_property(animator_tree, active_idle_blend, 0.0, 1.5)
+					await idle_blend_tween.finished
+					Console.print_line("Custom blend successful on: " + b.base_idle_animation_path)
+					
 				return
 		
 			# If only the left hand has a weapon equipped set the idle and run arm blends
-			elif left_weapon and !right_weapon:
-				left_weapon_anim.set_animation(left_weapon_anim_path)
-				animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmAnimation/animation", left_weapon_anim_path)
+			elif !b.blend_right and b.blend_left:
+				left_idle_anim.set_animation(b.left_idle_animation_path)
+				
+				left_run_anim.set_animation(b.left_idle_animation_path)
 
-				idle_blend_tween.tween_property(animator_tree, P_IDLE, 1.0, 0.7).from(cur_idle)
+				idle_blend_tween.tween_property(animator_tree, active_idle_blend, 1.0, 0.7).from(cur_idle_active)
 				idle_blend_tween.tween_property(animator_tree, P_IDLE_R, 0.0, 0.7).from(cur_idle_r)
 				idle_blend_tween.tween_property(animator_tree, P_IDLE_L, 1.0, 0.7).from(cur_idle_l)
 
 				animator_tree.set(P_RUN_R, 0.0)
 				animator_tree.set(P_RUN_L, 1.0)
 				await idle_blend_tween.finished
+				
+				
+				if blend_back_to_base:
+					# NOTE: Might have to set values again
+					base_idle.set_animation(b.base_idle_animation_path)
+					idle_blend_tween.kill()
+					idle_blend_tween = get_tree().create_tween()
+					idle_blend_tween.tween_property(animator_tree, active_idle_blend, 0.0, 1.5)
+					await idle_blend_tween.finished
+					Console.print_line("Custom blend successful on: " + b.base_idle_animation_path)
 				return
 		
 		# If BOTH hands have a weapon equipped, blend in both weapons. This also works with two handed weapons like bows.
-		elif left_weapon and right_weapon:
-			right_weapon_anim.set_animation(right_weapon_anim_path)
-			left_weapon_anim.set_animation(left_weapon_anim_path)
+		elif b.blend_right and b.blend_left:
+			right_idle_anim.set_animation(b.right_idle_animation_path)
+			left_idle_anim.set_animation(b.left_idle_animation_path)
 			
-			animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/RightArmAnimation/animation", right_weapon_anim_path)
-			animator_tree.set("parameters/Main/AnimationNodeStateMachine/RunCycleBlend/LeftArmAnimation/animation", left_weapon_anim_path)
+			right_run_anim.set_animation(b.right_idle_animation_path)
+			left_run_anim.set_animation(b.left_idle_animation_path)
 			
 
 			#idle_blend_tween.tween_property(animator_tree, "parameters/Main/AnimationNodeStateMachine/IdleBlend/WeaponIdleBlend/blend_amount", 1.0, 0.7)
-			idle_blend_tween.tween_property(animator_tree, P_IDLE, 1.0, 0.7).from(cur_idle)
+			idle_blend_tween.tween_property(animator_tree, active_idle_blend, 1.0, 0.7).from(cur_idle_active)
 			idle_blend_tween.tween_property(animator_tree, P_IDLE_R, 1.0, 0.7).from(cur_idle_r)
 			idle_blend_tween.tween_property(animator_tree, P_IDLE_L, 1.0, 0.7).from(cur_idle_l)
 
@@ -433,6 +647,14 @@ func weapon_idle_blend_setup(clear_weapons: bool, right_weapon: Weapon = null, l
 			animator_tree.set(P_RUN_R, 1.0)
 			animator_tree.set(P_RUN_L, 1.0)
 			await idle_blend_tween.finished
+			if blend_back_to_base:
+				# NOTE: Might have to set values again
+				base_idle.set_animation(b.base_idle_animation_path)
+				idle_blend_tween.kill()
+				idle_blend_tween = get_tree().create_tween()
+				idle_blend_tween.tween_property(animator_tree, active_idle_blend, 0.0, 1.5)
+				await idle_blend_tween.finished
+				Console.print_line("Custom blend successful on: " + b.base_idle_animation_path)
 			return
 	
 	
@@ -442,8 +664,12 @@ func weapon_idle_blend_setup(clear_weapons: bool, right_weapon: Weapon = null, l
 	
 	animator_tree.set(P_RUN_R, 0.0)
 	animator_tree.set(P_RUN_L, 0.0)
+	
+	
+	
 	await idle_blend_tween.finished
 	return
+
 
 
 func left_cast_anim(_in_animation: Animation, in_miss: bool = false) -> void:
@@ -457,7 +683,8 @@ func left_cast_anim(_in_animation: Animation, in_miss: bool = false) -> void:
 
 	return
 	# Always add call method tracks for resolving the damage
-	
+
+
 func play_animation_by_name(
 	animation_name: String, blend_time: float = 0.2, \
 	use_root_motion: bool = false, animation_mask: int = AnimationMask.NONE, \
@@ -547,18 +774,18 @@ func one_shot_blend_mask_setup(right_weapon: Weapon = null, left_weapon: Weapon 
 	if !right_weapon or !left_weapon:
 		if right_weapon and !left_weapon:
 			right_shot_anim.set_animation(right_weapon_anim_path)
-			animator_tree.set(P_ANIM_R, right_weapon_anim_path)
+			#animator_tree.set(P_ANIM_R, right_weapon_anim_path)
 
-			tween.tween_property(animator_tree, P_BLEND_R, 1.0, 0.25).from(cur_blend_r)
-			tween.parallel().tween_property(animator_tree, P_BLEND_L, 0.0, 0.25).from(cur_blend_l)
+			#tween.tween_property(animator_tree, P_BLEND_R, 1.0, 0.25).from(cur_blend_r)
+			#tween.parallel().tween_property(animator_tree, P_BLEND_L, 0.0, 0.25).from(cur_blend_l)
 			return
 
 		elif left_weapon and !right_weapon:
 			left_shot_anim.set_animation(left_weapon_anim_path)
-			animator_tree.set(P_ANIM_L, left_weapon_anim_path)
+			#animator_tree.set(P_ANIM_L, left_weapon_anim_path)
 
-			tween.tween_property(animator_tree, P_BLEND_R, 0.0, 0.25).from(cur_blend_r)
-			tween.parallel().tween_property(animator_tree, P_BLEND_L, 1.0, 0.25).from(cur_blend_l)
+			#tween.tween_property(animator_tree, P_BLEND_R, 0.0, 0.25).from(cur_blend_r)
+			#tween.parallel().tween_property(animator_tree, P_BLEND_L, 1.0, 0.25).from(cur_blend_l)
 			return
 
 	# ——— If both weapons are missing or present, fade both out (default) ———
@@ -626,21 +853,14 @@ func attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 	miss = in_miss
 
 
-	var attack: AnimationNodeBlendTree = state_machine.get_node("Attack")
-	var att_anim: AnimationNodeAnimation = attack.get_node("AttackAnimation")
-	var animation: StringName = att_anim.get_animation()
-	print_debug("Old Animation: ", animation)
-	var anim_path: String = ("HumanoidAnimLib01/" + in_animation.resource_name)
-	att_anim.set_animation(anim_path)
+
+	play_animation_by_name(in_animation.resource_name)
+
 	#HumanoidAnimLib01/Greatsword_Swing_001
 
-	#var is_attacking: bool = animator_tree.get("parameters/conditions/IsAttacking")
-	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsAttacking", true)
-	# Animation stand-in
 
-	await attack_completed#timer.timeout
-	animator_tree.set("parameters/Main/AnimationNodeStateMachine/conditions/IsAttacking", false)
-	#look_at_toggle(look_target)
+	await attack_completed
+
 
 	return
 
