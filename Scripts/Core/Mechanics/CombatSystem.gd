@@ -383,6 +383,9 @@ func compute_defender_facing_penalty(attacker: Unit, target: Unit, weapon: Weapo
 		elif relative == Utilities.RelativePosition.BACK:
 			penalty_cond.situational_modifier = 4  # Formidable penalty
 			return penalty_cond
+		else:
+			push_warning("No relative position on ", relative)
+	
 	elif weapon.hands == 1:
 		if relative == Utilities.RelativePosition.FRONT:
 			return null

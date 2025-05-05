@@ -516,7 +516,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MouseEventDroppableSlotController" type="Control" parent="UILayer/UnitActionSystemUI" node_paths=PackedStringArray("hand_droppable_container", "active_droppable_container")]
-visible = false
 anchors_preset = 0
 offset_left = 23.0
 offset_top = -4.0
@@ -822,6 +821,7 @@ metadata/_edit_use_anchors_ = true
 visible = false
 
 [node name="UnitUIManager" type="Control" parent="UILayer" node_paths=PackedStringArray("main_camera")]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0

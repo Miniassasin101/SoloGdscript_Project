@@ -30,7 +30,6 @@ func get_first_free_slot() -> MouseEventDroppableSlot:
 	return null
 
 
-
 func get_special_effects() -> Array[SpecialEffect]:
 	var ret_effects: Array[SpecialEffect] = []
 	for slot: MouseEventDroppableSlot in self_slot_list:

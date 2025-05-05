@@ -852,7 +852,7 @@ func _process(_delta: float) -> void:
 	#handle_right_mouse_click()
 	test_n()
 	test_c()
-	#test_v()
+	test_v()
 
 
 
@@ -924,16 +924,27 @@ func test_n() -> void:
 	if Input.is_action_just_pressed("testkey_n"):
 		TurnSystem.instance.start_combat()
 
+var ite: int = 1
 
 func test_v() -> void:
 	if Input.is_action_just_pressed("testkey_v"):
 
-		pass
+		var skeleton: Skeleton3D = UnitManager.instance.units[0].skeleton
+		
+		#var bones: PackedInt32Array = skeleton.get_bone_children(ite)
+		
+		var bones: Array[String] = UnitManager.instance.units[0].animator.set_filter_path(true, "DEF_shoulder.R.001")
+		
+		for bone in bones:
+			print("Bone: " + bone)
+		
+		
+		#ite += 1
 
 
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
-		open_character_sheet()
+		#open_character_sheet()
 
 		pass
 
@@ -944,7 +955,7 @@ func test_c() -> void:
 
 func test_shift_c() -> void:
 	if Input.is_action_just_pressed("testkey_shift_c"):
-		#open_character_sheet()
+		open_character_sheet()
 		pass
 
 

@@ -329,6 +329,8 @@ func get_combat_skill() -> float:
 func get_equipped_weapon() -> Weapon:
 	return equipment.get_equipped_weapon()
 
+
+
 func get_equipped_weapons() -> Array[Weapon]:
 	return equipment.get_equipped_weapons()
 

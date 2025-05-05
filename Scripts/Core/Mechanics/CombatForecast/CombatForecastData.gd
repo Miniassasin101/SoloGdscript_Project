@@ -69,7 +69,17 @@ func construct_forecast(_attacker: Unit, _defender: Unit) -> void:
 	# Set attacker/defender and their weapons.
 	attacker = _attacker
 	defender = _defender
-	attacker_weapon = _attacker.equipment.get_equipped_weapon()
+	
+	var selected_ability: Ability = UnitActionSystem.instance.selected_ability
+	
+	#var attacker_weapon: Weapon
+	
+	if selected_ability is MeleeAbility:
+		attacker_weapon = selected_ability.get_weapon_from_ability(attacker)
+	else:
+		attacker_weapon = _attacker.equipment.get_equipped_weapon()
+	
+	#attacker_weapon = _attacker.equipment.get_equipped_weapon()
 	defender_weapon = _defender.equipment.get_equipped_weapon()
 	
 	var atk_reach: int = attacker_weapon.reach

@@ -2,6 +2,9 @@
 class_name MeleeAbility
 extends Ability
 
+
+enum WeaponHand {None, Left, Right, Both}
+
 ################################################
 #             EXPORTED PROPERTIES
 ################################################
@@ -20,6 +23,8 @@ extends Ability
 @export var attack_range: int = 1
 ## Action Points cost. 1 means it costs 1 AP to use this ability.
 @export var ap_cost: int = 1
+## Which hand is using the melee attack
+@export_enum("None", "Left", "Right", "Both") var melee_side: int = WeaponHand.None
 
 
 ################################################
@@ -111,6 +116,21 @@ func can_activate(_event: ActivationEvent) -> bool:
 
 	# We get all valid target squares in range, then check if the event target is among them.
 	var valid_positions = get_valid_ability_target_grid_position_list(_event)
+	
+	if melee_side != WeaponHand.None:
+		var unit_weapons: Array[Weapon] = _event.unit.get_equipped_weapons()
+		var is_valid: bool = false
+		for wp in unit_weapons:
+			if ((wp.tags.has("left") and melee_side == WeaponHand.Left)):
+				is_valid = true
+			if ((wp.tags.has("right") and melee_side == WeaponHand.Right)):
+				is_valid = true
+			if ((wp.hands == 2 and melee_side == WeaponHand.Both)):
+				is_valid = true
+		if !is_valid:
+			return false
+				
+	
 	for pos in valid_positions:
 		if pos._equals(_event.target_grid_position):
 			return true
@@ -196,15 +216,36 @@ func get_enemy_ai_ability(_event: ActivationEvent) -> EnemyAIAction:
 #             HELPER METHODS
 ################################################
 
-# FIXME: Add a prompt if there is more than one weapon equipped
+
 func add_weapon_to_event() -> void:
 	
-	event.weapon = unit.get_equipped_weapon()
-	""" Depreciated add weapon loop
-	for item: Item in unit.equipment.equipped_items:
-		event.weapon = item
-		return
-	"""
+	match melee_side:
+		WeaponHand.None:
+			pass
+
+		WeaponHand.Left:
+			event.weapon = unit.equipment.get_left_equipped_weapon()
+		WeaponHand.Right:
+			event.weapon = unit.equipment.get_right_equipped_weapon()
+		WeaponHand.Both:
+			event.weapon = unit.equipment.get_equipped_weapon()
+		
+	#event.weapon = unit.get_equipped_weapon()
+
+func get_weapon_from_ability(in_unit: Unit) -> Weapon:
+	match melee_side:
+		WeaponHand.None:
+			return null
+
+		WeaponHand.Left:
+			return in_unit.equipment.get_left_equipped_weapon()
+		WeaponHand.Right:
+			return in_unit.equipment.get_right_equipped_weapon()
+		WeaponHand.Both:
+			return in_unit.equipment.get_equipped_weapon()
+		_:
+			return null
+
 
 
 ##

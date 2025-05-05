@@ -97,7 +97,7 @@ func shoot_projectile() -> void:
 	event.weapon.item_visual.play_animation_on_weapon("WeaponAnimations/BowFire_001")
 	event.weapon.item_visual.play_animation_on_projectile("WeaponAnimationLibrary/ArrowDrawback")
 	var weapon_projectile: Node3D = event.weapon.item_visual.projectile
-	await unit.animator.attack_anim(animation, event.miss)#unit.animator.left_cast_anim(null, event.miss)
+	await unit.animator.attack_anim(animation, event.miss)
 	var projectile_instance: Projectile = projectile.instantiate()
 
 	var hit_position: Vector3
