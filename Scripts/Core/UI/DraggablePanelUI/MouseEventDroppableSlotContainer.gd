@@ -16,6 +16,8 @@ enum MouseEventsCardSlotContainerType {Hand, Active}
 @export var droppable_panel_prefab: PackedScene
 @export var mouse_event_droppable_slot: PackedScene
 
+@export var extra_slots: int = 0
+
 var self_slot_list: Array[MouseEventDroppableSlot] = []
 
 # Called when the node enters the scene tree for the first time.
@@ -67,7 +69,7 @@ func setup_special_effect_slots(special_effects: Array[SpecialEffect], abs_dif: 
 				new_slot.add_panel(new_panel)
 		
 		MouseEventsCardSlotContainerType.Active:
-			for i in range(abs_dif + 1):
+			for i in range(abs_dif + extra_slots):
 				var new_slot: MouseEventDroppableSlot = mouse_event_droppable_slot.instantiate() as MouseEventDroppableSlot
 				new_slot.slot_type = MouseEventDroppableSlot.MouseEventsCardSlotType.Active
 				slot_hbox_container.add_child(new_slot)

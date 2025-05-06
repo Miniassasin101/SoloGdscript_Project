@@ -82,14 +82,18 @@ func try_activate(_event: ActivationEvent) -> void:
 				var opponent_success: int = Utilities.check_success_level(opponent_evade, opponent_roll)
 				print_debug("Outmaneuver: " + unit.ui_name + " rolled " + str(user_roll) + " vs. " + opponent.ui_name + " rolled " + str(opponent_roll))
 				
+				print_debug("User Success: " + str(user_success))
+				print_debug("Opponent Success: " + str(opponent_success))
 				# If opponent’s roll is greater than or equal to the outmaneuverer’s roll, block succeeds.
 				if opponent_success > user_success:
 					Utilities.spawn_text_line(opponent, "Block Successful", Color.AQUA)
+					print_debug("Opponent Success Was Greater")
 					success = true
 					continue
 					
-				if opponent_roll >= user_roll:
+				if opponent_roll < user_roll:
 					Utilities.spawn_text_line(opponent, "Block Successful", Color.AQUA)
+					print_debug("Opponent Roll Was Lower")
 					success = true
 				else:
 					Utilities.spawn_text_line(opponent, "Block Failed", Color.ORANGE)

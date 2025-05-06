@@ -8,12 +8,12 @@ shadow_size = 3
 shadow_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cbngh"]
-bg_color = Color(0.1554, 0.37, 0.280583, 1)
+bg_color = Color(0.0518503, 0.512106, 0.661431, 1)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.527701, 0.905525, 0.528717, 0.513726)
+border_color = Color(0, 0, 0, 0.513726)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3

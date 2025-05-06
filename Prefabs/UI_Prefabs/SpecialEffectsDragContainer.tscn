@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://4oeb7dptn08v" path="res://Hero_Game/Prefabs/UI_Prefabs/MouseEventDroppableSlot.tscn" id="3_c1mim"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qr5px"]
-bg_color = Color(0.0847337, 0.652103, 0.871968, 1)
+bg_color = Color(0.393085, 0.393086, 0.393085, 1)
 border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 2
 corner_radius_top_right = 2
