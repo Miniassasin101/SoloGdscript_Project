@@ -28,7 +28,6 @@
 [ext_resource type="Script" uid="uid://cwsem2fnkteke" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffect.gd" id="18_hnk25"]
 [ext_resource type="Resource" uid="uid://cjxj1gnefr71c" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/AccidentalInjuryEffectResource.tres" id="19_xdtf5"]
 [ext_resource type="Resource" uid="uid://c067blseq1f27" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/ShieldTest.tres" id="20_5kywy"]
-[ext_resource type="Resource" uid="uid://b6eu0ekmy47qr" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/BowTest.tres" id="20_b4xfl"]
 [ext_resource type="Script" uid="uid://baxluukdrdjhd" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="20_lbku0"]
 [ext_resource type="Script" uid="uid://bkx8m1e0lkceq" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponScripts/Weapon.gd" id="20_w3lo6"]
 [ext_resource type="Script" uid="uid://dqx7stk06etai" path="res://Hero_Game/Scenes/UILayer.gd" id="21_3ffgk"]
@@ -38,6 +37,7 @@
 [ext_resource type="Script" uid="uid://dhballfce82fs" path="res://Hero_Game/Scenes/BookKeepingSystem.gd" id="21_ktx83"]
 [ext_resource type="Resource" uid="uid://dst4i0rqw46ng" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BlindOpponentEffectResource.tres" id="22_6ytw6"]
 [ext_resource type="PackedScene" uid="uid://bs8kc22xgwd2d" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.tscn" id="22_67ysf"]
+[ext_resource type="Resource" uid="uid://b8p5w7g4dvcy3" path="res://Hero_Game/Scripts/Core/InventorySystem/Items/Weapons/WeaponResources/ShortSwordTest.tres" id="22_w3lo6"]
 [ext_resource type="Resource" uid="uid://bo28spn03mllg" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BypassArmorEffectResource.tres" id="23_xra60"]
 [ext_resource type="Resource" uid="uid://bhs3peayb8jf2" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ChooseLocationEffectResource.tres" id="24_h0tua"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
@@ -177,7 +177,6 @@ size = Vector2(2, 2)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
-attacker_success_debug = true
 auto_equip_debug = true
 grid_dimensions = Vector2(13, 15)
 
@@ -299,23 +298,12 @@ unit_action_system = NodePath("../UnitActionSystem")
 [node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(1, 0, 3.4969e-07, 0, 1, 0, -3.4969e-07, 0, 1, 4, 0, 8)
 ui_name = "Blue"
-weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("20_5kywy"), ExtResource("21_658qe")])
+weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("21_658qe")])
 
 [node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-0.999999, 0, -8.74228e-08, 0, 1, 0, 8.74226e-08, 0, -1, 4, 0, 14)
+transform = Transform3D(-0.999999, 0, -8.74228e-08, 0, 1, 0, 8.74226e-08, 0, -1, 4, 0, 10)
 ui_name = "Red"
-weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("21_658qe"), ExtResource("20_5kywy")])
-is_enemy = true
-
-[node name="DawnUnit3" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
-ui_name = "Green"
-weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("20_b4xfl")])
-
-[node name="DawnUnit4" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(-0.999999, 0, 8.74228e-08, 0, 1, 0, -8.74227e-08, 0, -1, 0, 0, 14)
-ui_name = "Yellow"
-weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("20_b4xfl")])
+weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("22_w3lo6"), ExtResource("20_5kywy")])
 is_enemy = true
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
@@ -817,8 +805,10 @@ grow_horizontal = 0
 script = ExtResource("21_dna0q")
 metadata/_edit_use_anchors_ = true
 
-[node name="UnitCharacterSheetUI" parent="UILayer" instance=ExtResource("26_7hc4r")]
+[node name="UnitCharacterSheetUI" parent="UILayer" node_paths=PackedStringArray("mouse_world", "pathfinding") instance=ExtResource("26_7hc4r")]
 visible = false
+mouse_world = NodePath("../../MouseWorld")
+pathfinding = NodePath("../../Pathfinding")
 
 [node name="UnitUIManager" type="Control" parent="UILayer" node_paths=PackedStringArray("main_camera")]
 visible = false

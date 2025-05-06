@@ -1,6 +1,11 @@
 class_name UnitCharacterSheetUI
 extends Control
 
+
+@export_category("References")
+@export var mouse_world: MouseWorld = null
+@export var pathfinding: Pathfinding = null
+
 @export_category("Scenes")
 @export var character_sheet_part_panel_scene: PackedScene  # (Not used for body parts anymore)
 @export var weapon_details_popup_scene: PackedScene = null
@@ -41,30 +46,59 @@ func _ready() -> void:
 	SignalBus.open_character_sheet.connect(_on_open_character_sheet)
 	close_button.pressed.connect(_on_close_button_pressed)
 
+func _process(delta: float) -> void:
+	open_character_sheet_key()
+
+
+func open_character_sheet_key() -> void:
+	if Input.is_action_just_pressed("testkey_c"):
+		open_character_sheet()
+
+		pass
+
+
+
+
+
+func open_character_sheet() -> void:
+	# Grab the unit under the mouse or whichever unit you want
+	var result := mouse_world.current_hovered_grid#mouse_world.get_mouse_raycast_result("position")
+	if !result:
+		return
+	var hovered_unit: Unit = LevelGrid.get_unit_at_grid_position(result)
+		#pathfinding.pathfinding_grid_system.get_grid_position(result)
+	if hovered_unit:
+		# Emit your signal passing in the unit reference
+		SignalBus.emit_signal("open_character_sheet", hovered_unit)
+
+
 func _on_open_character_sheet(unit: Unit) -> void:
 	if not is_instance_valid(unit):
 		hide()
 		is_open = false
+		last_unit = null
 		return
 
 	if unit != last_unit:
-		show()
-		is_open = true
+		# Show and populate for a new unit
 		last_unit = unit
 		_populate_from_unit(unit)
 		populate_weapons_from_unit(unit)
+		show()
+		is_open = true
 		return
 
-	if is_open:
-		hide()
-		is_open = false
+	if not visible:
+		# Re-show the UI for the same unit
+		show()
+		is_open = true
 		return
 
-	show()
-	is_open = true
-	last_unit = unit
-	_populate_from_unit(unit)
-	populate_weapons_from_unit(unit)
+	# Same unit and already visible → toggle off
+	hide()
+	is_open = false
+	last_unit = null
+
 
 func _on_close_button_pressed() -> void:
 	hide()

@@ -851,7 +851,7 @@ func _process(_delta: float) -> void:
 	#test_pathfinding()
 	#handle_right_mouse_click()
 	test_n()
-	test_c()
+	#test_c()
 	test_v()
 
 
@@ -944,7 +944,7 @@ func test_v() -> void:
 
 func test_c() -> void:
 	if Input.is_action_just_pressed("testkey_c"):
-		#open_character_sheet()
+		open_character_sheet()
 
 		pass
 
@@ -955,7 +955,7 @@ func test_c() -> void:
 
 func test_shift_c() -> void:
 	if Input.is_action_just_pressed("testkey_shift_c"):
-		open_character_sheet()
+		#open_character_sheet()
 		pass
 
 
@@ -974,6 +974,7 @@ func open_character_sheet() -> void:
 	if hovered_unit:
 		# Emit your signal passing in the unit reference
 		SignalBus.emit_signal("open_character_sheet", hovered_unit)
+
 
 func console_add_unit(unit_name: String, spawn_with_weapon: String, pos_x: String, pos_z: String) -> void:
 	# Load and instance the unit scene.

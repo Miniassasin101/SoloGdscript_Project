@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_s8va1")
-knockback_distance = 2
+knockback_distance = 1
 staggered_condition = ExtResource("2_qxg25")
 ui_name = "knockback"
 condition_level = 0

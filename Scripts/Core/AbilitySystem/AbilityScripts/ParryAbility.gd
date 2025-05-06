@@ -3,14 +3,16 @@ class_name ParryAbility extends Ability
 
 ## Example tooltip comment, put directly above the line(s) they reference
 
+enum WeaponHand {None, Left, Right, Both}
+
 @export_category("Animations")
 @export var parry_animation_part_1: Animation
 @export var parry_animation_idle: Animation
 @export var parry_animation_reset: Animation
 @export_category("Attributes")
 @export var ap_cost: int = 1
+@export_enum("None", "Left", "Right", "Both") var parry_side: int = WeaponHand.None
 @export_group("")
-
 
 
 var start_timer: float = 0.1
@@ -37,13 +39,14 @@ func try_activate(_event: ActivationEvent) -> void:
 	
 	var current_event: ActivationEvent = CombatSystem.instance.current_event
 	
-	var weapon: Weapon = unit.equipment.get_equipped_weapon()
+	var weapon: Weapon = get_weapon_from_ability(unit)
+	
 	if weapon != null:
 		parry_animation_part_1 = weapon.parry_animation_part_1
 		parry_animation_reset = weapon.parry_animation_part_2
 		parry_animation_idle = weapon.parry_animation_idle
 	
-	
+	Utilities.spawn_text_line(unit, "Parrying with: " + weapon.name)
 	
 	var animation_mask: int = -1
 
@@ -63,9 +66,9 @@ func try_activate(_event: ActivationEvent) -> void:
 	#if !unit.get_equipped_weapons().is_empty():
 	#	if unit.get_equipped_weapon()
 	
-	await animator.play_animation_by_name(parry_animation_part_1.resource_name, 0.2, false, animation_mask, false) # Always be careful to wait for the animation to complete
+	await animator.play_animation_by_name(parry_animation_part_1.resource_name, 0.0, false, animation_mask, false) # Always be careful to wait for the animation to complete
 	#animator.toggle_slowdown()
-	animator.play_animation_by_name(parry_animation_idle.resource_name, 0.2, false, animation_mask, false)
+	animator.play_animation_by_name(parry_animation_idle.resource_name, 0.0, false, animation_mask, false)
 	
 	CombatSystem.instance.determine_defender_facing_penalty()
 	var defend_skill_value: int = unit.get_attribute_after_sit_mod("combat_skill")
@@ -96,6 +99,43 @@ func try_activate(_event: ActivationEvent) -> void:
 	
 	animator.play_animation_by_name(parry_animation_reset.resource_name, 0.2, false, animation_mask)
 	
+
+
+func get_weapon_from_ability(in_unit: Unit) -> Weapon:
+	var eq: Equipment = in_unit.equipment
+
+	match parry_side:
+		WeaponHand.Left:
+			# try left, then 2-hand
+			if eq.get_left_equipped_weapon():
+				return eq.get_left_equipped_weapon()
+			if eq.get_equipped_weapon() and eq.get_equipped_weapon().hands == 2:
+				return eq.get_equipped_weapon()
+			return null
+
+		WeaponHand.Right:
+			# try right, then 2-hand
+			if eq.get_right_equipped_weapon():
+				return eq.get_right_equipped_weapon()
+			if eq.get_equipped_weapon() and eq.get_equipped_weapon().hands == 2:
+				return eq.get_equipped_weapon()
+			return null
+
+		WeaponHand.Both:
+			# here “Both” just means “any weapon”:
+			# prefer a 2-hand, otherwise fall back to left or right
+			var two: Weapon = eq.get_equipped_weapon()
+			if two and two.hands == 2:
+				return two
+			if eq.get_left_equipped_weapon():
+				return eq.get_left_equipped_weapon()
+			if eq.get_right_equipped_weapon():
+				return eq.get_right_equipped_weapon()
+			return null
+
+		_:
+			return null
+
 
 
 
@@ -129,7 +169,14 @@ func can_activate(_event: ActivationEvent) -> bool:
 	if !can_activate_given_current_event():
 		return false
 	
+
+	
 	if !(_event.target_grid_position in get_valid_ability_target_grid_position_list(_event)):
+		return false
+	
+		# **new**: make sure we actually have a weapon we can parry with
+	var parry_weapon: Weapon = get_weapon_from_ability(_event.unit)
+	if parry_weapon == null:
 		return false
 
 	return true

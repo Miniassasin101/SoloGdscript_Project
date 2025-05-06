@@ -11,6 +11,7 @@ parry_animation_part_1 = ExtResource("2_d8feb")
 parry_animation_idle = ExtResource("1_y3b7e")
 parry_animation_reset = ExtResource("3_86ccc")
 ap_cost = 1
+parry_side = 0
 ui_name = "Parry"
 movement_gait = 1
 cooldown_duration = 0.0

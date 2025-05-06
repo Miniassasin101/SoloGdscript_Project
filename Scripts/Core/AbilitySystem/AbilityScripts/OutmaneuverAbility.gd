@@ -49,6 +49,9 @@ func try_activate(_event: ActivationEvent) -> void:
 
 	# Perform opposed rolls against each engaged opponent.
 	var user_roll = Utilities.roll(100)
+	var user_evade: int = unit.get_attribute_after_sit_mod("evade_skill")
+	var user_success: int = Utilities.check_success_level(user_evade, user_roll)
+	
 	var success = false
 
 	# Loop through each engaged opponent.
@@ -74,10 +77,17 @@ func try_activate(_event: ActivationEvent) -> void:
 			# Opponent has opted to block; they must spend 1 AP.
 			if opponent.can_spend_ability_points_to_use_ability(self):
 				opponent.spend_ability_points(1)
-				var opponent_roll = Utilities.roll(100)
+				var opponent_roll: int = Utilities.roll(100)
+				var opponent_evade: int = opponent.get_attribute_after_sit_mod("evade_skill")
+				var opponent_success: int = Utilities.check_success_level(opponent_evade, opponent_roll)
 				print_debug("Outmaneuver: " + unit.ui_name + " rolled " + str(user_roll) + " vs. " + opponent.ui_name + " rolled " + str(opponent_roll))
 				
 				# If opponent’s roll is greater than or equal to the outmaneuverer’s roll, block succeeds.
+				if opponent_success > user_success:
+					Utilities.spawn_text_line(opponent, "Block Successful", Color.AQUA)
+					success = true
+					continue
+					
 				if opponent_roll >= user_roll:
 					Utilities.spawn_text_line(opponent, "Block Successful", Color.AQUA)
 					success = true

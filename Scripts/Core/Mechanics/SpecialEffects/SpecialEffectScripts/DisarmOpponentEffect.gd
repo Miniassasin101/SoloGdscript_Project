@@ -67,10 +67,9 @@ func apply(event: ActivationEvent) -> void:
 		Utilities.spawn_text_line(event.losing_unit, "Disarm Saved", Color.AQUA)
 		return
 		
-	ObjectManager.instance.drop_item_in_world(event.losing_unit)
+	#ObjectManager.instance.drop_item_in_world(event.losing_unit)
+	
+	event.losing_unit.equipment.unequip(event.defender_weapon)
 
 	
-	Utilities.spawn_text_line(event.losing_unit, 
-		"Disarmed",
-		Color.AQUA
-		)
+	Utilities.spawn_text_line(event.losing_unit, "Disarmed", Color.FIREBRICK)

@@ -1,0 +1,47 @@
+[gd_scene load_steps=11 format=3 uid="uid://covvy1wym03y5"]
+
+[ext_resource type="ArrayMesh" uid="uid://csn3wbci5lspc" path="res://Hero_Game/Art/SelfAssets/WeaponAssets/WeaponMeshes/WeaponMeshArrayMeshes/Greatsword_FixedNormals_001.res" id="1_8tvpg"]
+[ext_resource type="Material" uid="uid://d18flcxrogort" path="res://Hero_Game/Art/Materials/CelShadedMats/GrayscaleCelShadedMat.tres" id="2_320vk"]
+[ext_resource type="Shader" uid="uid://c8yn8n8vk1kvl" path="res://addons/GPUTrail-main/shaders/trail.gdshader" id="3_85ca8"]
+[ext_resource type="Shader" uid="uid://d05n4cg3f5xxd" path="res://addons/GPUTrail-main/shaders/trail_draw_pass.gdshader" id="4_1e0kf"]
+[ext_resource type="Texture2D" uid="uid://crk6pkb7e5rwc" path="res://addons/GPUTrail-main/defaults/texture.tres" id="5_heqb6"]
+[ext_resource type="Texture2D" uid="uid://ct31fhxvcragr" path="res://addons/GPUTrail-main/defaults/curve.tres" id="6_rrshi"]
+[ext_resource type="Script" uid="uid://6verqlnoptuj" path="res://addons/GPUTrail-main/GPUTrail3D.gd" id="7_a1xdn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_auytw"]
+shader = ExtResource("3_85ca8")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yknik"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("4_1e0kf")
+shader_parameter/tex = ExtResource("5_heqb6")
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/color_ramp = ExtResource("5_heqb6")
+shader_parameter/curve = ExtResource("6_rrshi")
+shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/flags = 40
+
+[sub_resource type="QuadMesh" id="QuadMesh_e5p4i"]
+material = SubResource("ShaderMaterial_yknik")
+
+[node name="Greatsword" type="MeshInstance3D"]
+transform = Transform3D(0.725, 1.95037e-15, -3.92053e-08, 0, 0.965, 4.90066e-08, 2.91526e-08, -4.8504e-08, 0.975, 0, 0, 0)
+mesh = ExtResource("1_8tvpg")
+surface_material_override/0 = ExtResource("2_320vk")
+
+[node name="GPUTrail3D2" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.596289, -2.39771e-08, -2.39771e-08, 2.39771e-08, -2.60646e-08, 0.596289, -2.39771e-08, -0.596289, -2.60646e-08, -3.26579e-08, 4.08225e-08, -0.812174)
+visible = false
+amount = 90
+lifetime = 90.0
+explosiveness = 1.0
+fixed_fps = 180
+process_material = SubResource("ShaderMaterial_auytw")
+draw_pass_1 = SubResource("QuadMesh_e5p4i")
+script = ExtResource("7_a1xdn")
+length = 90
+length_seconds = 0.5
+color_ramp = ExtResource("5_heqb6")
+curve = ExtResource("6_rrshi")
+_defaults_have_been_set = true

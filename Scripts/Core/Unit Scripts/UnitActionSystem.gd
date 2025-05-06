@@ -244,7 +244,7 @@ func create_combat_forecast() -> void:
 		combat_forecast_ui.set_visible(false)
 		return
 	
-	if !selected_ability.tags_type.has("attack"):
+	if !selected_ability.tags_type.has("attack") and !selected_ability.tags_type.has("parry"):
 		var combat_forecast_ui: CombatForecastUI = CombatForecastUI.instance
 		combat_forecast_ui.set_visible(false)
 		return

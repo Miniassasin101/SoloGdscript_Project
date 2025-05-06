@@ -384,7 +384,8 @@ func compute_defender_facing_penalty(attacker: Unit, target: Unit, weapon: Weapo
 			penalty_cond.situational_modifier = 4  # Formidable penalty
 			return penalty_cond
 		else:
-			push_warning("No relative position on ", relative)
+			#push_warning("No relative position on ", relative)
+			return null
 	
 	elif weapon.hands == 1:
 		if relative == Utilities.RelativePosition.FRONT:
@@ -403,7 +404,8 @@ func compute_defender_facing_penalty(attacker: Unit, target: Unit, weapon: Weapo
 			penalty_cond.situational_modifier = 4
 			return penalty_cond
 		else:
-			push_warning("No relative position on ", relative)
+			#push_warning("No relative position on ", relative)
+			return null
 	return null
 #endregion
 
@@ -618,7 +620,7 @@ func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit,
 	if event.parry_successful:
 		if effective_parry_size >= effective_attack_size or event.enhance_parry:
 			print_debug("Parry successful - Full damage blocked (effective sizes).")
-			return 0
+			damage_total = 0
 		elif effective_parry_size == effective_attack_size - 1:
 			damage_total = ceili(damage_total / 2.0)
 			print_debug("Parry successful - Half damage taken (effective sizes).")

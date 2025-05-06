@@ -76,11 +76,28 @@ func construct_forecast(_attacker: Unit, _defender: Unit) -> void:
 	
 	if selected_ability is MeleeAbility:
 		attacker_weapon = selected_ability.get_weapon_from_ability(attacker)
+	
 	else:
-		attacker_weapon = _attacker.equipment.get_equipped_weapon()
+		if CombatSystem.instance.current_event:
+			attacker_weapon = CombatSystem.instance.current_event.weapon
+		
+		else:
+			attacker_weapon = _attacker.equipment.get_equipped_weapon()
+	
+	
+	var left_weapon: bool = CombatForecastUI.instance.showing_left_parry
 	
 	#attacker_weapon = _attacker.equipment.get_equipped_weapon()
-	defender_weapon = _defender.equipment.get_equipped_weapon()
+	if left_weapon:
+		defender_weapon = _defender.equipment.get_left_equipped_weapon()
+	else:
+		defender_weapon = _defender.equipment.get_right_equipped_weapon()
+	
+	if !defender_weapon:
+		defender_weapon = defender.get_equipped_weapon()
+	
+	if !attacker_weapon:
+		attacker_weapon = attacker.get_equipped_weapon()
 	
 	var atk_reach: int = attacker_weapon.reach
 	var def_reach: int = defender_weapon.reach

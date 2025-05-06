@@ -563,6 +563,7 @@ func play_animation_by_name(
 	# 3) Set the root motion and wait for the length of the animation
 	var anim: Animation = animator.get_animation(anim_path)
 	is_root_motion = use_root_motion
+	print_debug("Currently Playing: " + animation_name)
 	await get_tree().create_timer(anim.length / timescale_multiplier).timeout
 
 	# 4) AFTER the one shot time runs out, fade the blend back out.
@@ -681,6 +682,8 @@ func attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 
 	miss = in_miss
 
+	if in_animation == null:
+		push_error("Null attack animation")
 
 
 	play_animation_by_name(in_animation.resource_name)

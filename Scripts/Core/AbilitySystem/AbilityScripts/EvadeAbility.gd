@@ -105,7 +105,7 @@ func determine_roll_result() -> void:
 	print_debug("Evade Success Level: ", defender_success_level)
 	if current_event.defender_success_level > current_event.attacker_success_level:
 		current_event.miss = true
-	elif current_event.attacker_roll > evading_roll:
+	elif current_event.attacker_roll > current_event.defender_roll and (current_event.defender_success_level == current_event.attacker_success_level):
 		current_event.miss = true
 
 

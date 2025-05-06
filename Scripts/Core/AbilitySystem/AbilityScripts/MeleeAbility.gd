@@ -38,7 +38,7 @@ var target_position: GridPosition = null
 var unit: Unit
 
 var target_unit: Unit = null
-## Cached damage roll result, if you do dice logic. 
+## Cached damage roll result, if you do dice logic.
 var rolled_damage: int = 0
 
 
@@ -54,7 +54,7 @@ var rolled_damage: int = 0
 func try_activate(_event: ActivationEvent) -> void:
 	# Call base logic (handles AP cost checks, etc.).
 	super.try_activate(_event)
-	
+
 	# Store relevant data from the event.
 	event = _event
 	target_position = event.target_grid_position
@@ -62,8 +62,9 @@ func try_activate(_event: ActivationEvent) -> void:
 
 	# Verify we have a valid Unit and a valid target position.
 	if not unit or not target_position:
+		push_error("Invalid MeleeAbility")
 		return
-	
+
 	target_unit = LevelGrid.get_unit_at_grid_position(target_position)
 
 	event.set_target_unit(target_unit)
@@ -77,27 +78,27 @@ func try_activate(_event: ActivationEvent) -> void:
 		return
 
 	add_weapon_to_event()
-	
+
 	# Rotate the Unit to face the target, then continue the action (attack).
 	await rotate_unit_towards_target_enemy(event)
-	
-	
+
+
 	event = await CombatSystem.instance.attack_unit(self, event)
-	
+
 	# Perform the actual swing animation.
 	await melee_attack_anim()
-	
-	
+
+
 	resolve_special_effects()
 	# Now that the animation is presumably done or at the hit frame, apply damage.
 	apply_effect()
-	
+
 	# Optionally end the ability if everything is done.
 	if can_end(event):
 		event.successful = true
 		CombatSystem.instance.on_attack_ended(event)
 		end_ability(event)
-	
+
 	#await unit.get_tree().create_timer(2.0).timeout
 	if target_unit != null:
 		target_unit.animator.parry_reset.emit()
@@ -114,23 +115,14 @@ func can_activate(_event: ActivationEvent) -> bool:
 	if not super.can_activate(_event):
 		return false
 
+	# 1) Weapon‐side check (left/right/both)
+	var weapon = get_weapon_from_ability(_event.unit)
+	if weapon == null:
+		return false
+
 	# We get all valid target squares in range, then check if the event target is among them.
 	var valid_positions = get_valid_ability_target_grid_position_list(_event)
-	
-	if melee_side != WeaponHand.None:
-		var unit_weapons: Array[Weapon] = _event.unit.get_equipped_weapons()
-		var is_valid: bool = false
-		for wp in unit_weapons:
-			if ((wp.tags.has("left") and melee_side == WeaponHand.Left)):
-				is_valid = true
-			if ((wp.tags.has("right") and melee_side == WeaponHand.Right)):
-				is_valid = true
-			if ((wp.hands == 2 and melee_side == WeaponHand.Both)):
-				is_valid = true
-		if !is_valid:
-			return false
-				
-	
+
 	for pos in valid_positions:
 		if pos._equals(_event.target_grid_position):
 			return true
@@ -159,16 +151,16 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 			# We only care if there's an enemy unit there (or some valid target).
 			if not LevelGrid.has_any_unit_on_grid_position(candidate_position):
 				continue
-			
+
 			var targ_unit: Unit = LevelGrid.get_unit_at_grid_position(candidate_position)
-			
+
 			# Check if the occupant is an enemy (or at least not on the same 'team').
 			if targ_unit.is_enemy == _event.unit.is_enemy:
 				# If they're on the same team, skip.
 				continue
-			
+
 			_event.set_target_unit(targ_unit)
-			
+
 			if is_blocked_by_condition(_event):
 				continue
 
@@ -218,33 +210,45 @@ func get_enemy_ai_ability(_event: ActivationEvent) -> EnemyAIAction:
 
 
 func add_weapon_to_event() -> void:
-	
-	match melee_side:
-		WeaponHand.None:
-			pass
+	# Automatically grab the same weapon we just validated
+	event.weapon = get_weapon_from_ability(unit)
 
-		WeaponHand.Left:
-			event.weapon = unit.equipment.get_left_equipped_weapon()
-		WeaponHand.Right:
-			event.weapon = unit.equipment.get_right_equipped_weapon()
-		WeaponHand.Both:
-			event.weapon = unit.equipment.get_equipped_weapon()
-		
+
 	#event.weapon = unit.get_equipped_weapon()
 
 func get_weapon_from_ability(in_unit: Unit) -> Weapon:
+	var eq = in_unit.equipment
 	match melee_side:
-		WeaponHand.None:
+		WeaponHand.Left:
+			# First look for a true left-hand weapon,
+			# otherwise accept a two-hander.
+			if eq.get_left_equipped_weapon():
+				return eq.get_left_equipped_weapon()
+			if eq.get_equipped_weapon() and eq.get_equipped_weapon().hands == 2:
+				return eq.get_equipped_weapon()
 			return null
 
-		WeaponHand.Left:
-			return in_unit.equipment.get_left_equipped_weapon()
 		WeaponHand.Right:
-			return in_unit.equipment.get_right_equipped_weapon()
+			if eq.get_right_equipped_weapon():
+				return eq.get_right_equipped_weapon()
+			if eq.get_equipped_weapon() and eq.get_equipped_weapon().hands == 2:
+				return eq.get_equipped_weapon()
+			return null
+
 		WeaponHand.Both:
-			return in_unit.equipment.get_equipped_weapon()
+			# “Both” = any weapon: prefer 2H, then left, then right
+			var two = eq.get_equipped_weapon()
+			if two and two.hands == 2:
+				return two
+			if eq.get_left_equipped_weapon():
+				return eq.get_left_equipped_weapon()
+			if eq.get_right_equipped_weapon():
+				return eq.get_right_equipped_weapon()
+			return null
+
 		_:
 			return null
+
 
 
 
@@ -259,8 +263,8 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 
 	# Wait for rotation to complete, then proceed with the melee animation.
 	await animator.rotation_completed
-	
-	
+
+
 
 
 
@@ -269,7 +273,7 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 
 ##
 # Triggers the melee attack animation on UnitAnimator.
-# Once the animation "hits," we apply effect/damage. 
+# Once the animation "hits," we apply effect/damage.
 # This function is the heart of the melee sequence.
 ##
 func melee_attack_anim() -> void:
@@ -277,13 +281,18 @@ func melee_attack_anim() -> void:
 
 	# 1) If your animator signals when the attack hits or finishes,
 	#    you can "await" that signal here. For example:
+	
+	print_debug("Playing melee attack animation on: " + unit.ui_name)
+	
 	await unit.animator.attack_anim(animation, event.miss)
 	
+	print_debug("Melee animation finished on: " + unit.ui_name)
+
 
 	# 2) Here you can trigger any hit fx on the ability by passing it to the target unit's animator:
 	if !event.miss:
 		event.target_unit.animator.trigger_hit_fx(hit_vfx, unit.get_global_rotation())
-		
+
 		if event.rolled_damage == 0:
 			event.target_unit.animator.flash_white()
 		else:
@@ -325,9 +334,9 @@ func apply_effect() -> void:
 	# Get the target unit from the grid and attach the effect
 	if target_unit:
 		target_unit.add_child(effect)
-	
+
 	target_unit.body.apply_wound_from_event(event)
-	
+
 	if event.rolled_damage == 0:
 		Utilities.spawn_text_line(target_unit, "Blocked", Color.BLUE)
 		Utilities.spawn_damage_label(target_unit, event.rolled_damage, Color.AQUA, 0.2)

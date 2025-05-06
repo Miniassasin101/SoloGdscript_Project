@@ -58,6 +58,8 @@ func reset_reach() -> void:
 	reevaluate_reach()
 
 func initialize_reach() -> void:
+	var u_weapons
+	
 	var w1: Weapon = unit_1.equipment.get_equipped_weapon()
 	var w2: Weapon = unit_2.equipment.get_equipped_weapon()
 	if not (w1 and w2):
