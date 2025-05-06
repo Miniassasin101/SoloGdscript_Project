@@ -107,6 +107,8 @@ var idleblend: AnimationNodeBlendTree = null
 
 var runblend: AnimationNodeBlendTree = null
 
+var one_shot: AnimationNodeAnimation = null
+
 var base_idle: AnimationNodeAnimation = null
 
 var buffer_idle: AnimationNodeAnimation = null
@@ -298,11 +300,16 @@ func set_animator_tree_properties() -> void:
 
 	# Blend nodes
 	idleblend = state_machine.get_node("IdleBlend")
+	idleblend.set_filter_path("UnitAnimator", true)
 	runblend  = state_machine.get_node("RunCycleBlend")
+	runblend.set_filter_path("UnitAnimator", true)
+	
 
 	# Individual animation nodes
 	# Play Animation animations
+	one_shot       = main.get_node("OneShotAnimation")
 	one_shot_blend = main.get_node("OneShotBlend")
+	one_shot_blend.set_filter_path("UnitAnimator", true)
 
 
 	# Idle Animations
@@ -550,14 +557,17 @@ func play_animation_by_name(
 
 	set_one_shot_arm_masks(animation_mask)
 
-	var one_shot: AnimationNodeAnimation = main.get_node("OneShotAnimation")
+
 
 	var anim_path: String = (animation_library + animation_name)
 
 	# 2) Set up the one-shot fade in/out, as well as the animation
 	one_shot_blend.set_fadein_time(blend_time)
 	one_shot_blend.set_fadeout_time(blend_time)
-	one_shot.set_animation(animation_library + animation_name)
+	var current_anim_name: String = one_shot.get_animation()
+	if current_anim_name != animation_name:
+
+		one_shot.set_animation(animation_library + animation_name)
 	animator_tree.set(P_ONE_SHOT_REQUEST, AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 
 	# 3) Set the root motion and wait for the length of the animation
@@ -570,6 +580,7 @@ func play_animation_by_name(
 	if abort_self:
 
 		animator_tree.set("P_ONE_SHOT_REQUEST", AnimationNodeOneShot.ONE_SHOT_REQUEST_FADE_OUT)
+		print_debug("Animation Aborted: " + animation_name)
 
 	is_root_motion = false
 	return
@@ -635,14 +646,16 @@ func set_filter_path(enabled: bool = true, in_bone: String = "DEF_shoulder.L.001
 		# Also add it to the persistent filter tracking list if it's not already there
 		if !filtered_one_shot_bones.has(bone_name):
 			filtered_one_shot_bones.append(bone_name)
-
+	
+	
+	
 	# Return the list of filtered bone names (for debugging or external use)
 	return filtered_bone_names
 
 
 ## Masks out the specified arms from the animation
 func set_one_shot_arm_masks(anim_mask: int = AnimationMask.NONE) -> void:
-	var bone_names: Array[String]
+	var bone_names: Array[String] = []
 	match anim_mask:
 		AnimationMask.NONE:
 			pass
@@ -686,7 +699,7 @@ func attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 		push_error("Null attack animation")
 
 
-	play_animation_by_name(in_animation.resource_name)
+	play_animation_by_name(in_animation.resource_name, 0.2, false, 2, false)
 
 
 
