@@ -657,8 +657,8 @@ func set_filter_path(enabled: bool = true, in_bone: String = "DEF_shoulder.L.001
 func set_one_shot_arm_masks(anim_mask: int = AnimationMask.NONE) -> void:
 	var bone_names: Array[String] = []
 	match anim_mask:
-		AnimationMask.NONE:
-			pass
+		#AnimationMask.NONE:
+			#bone_names.append
 		AnimationMask.LEFT:
 			bone_names.append(left_shoulder_bone_name)
 		AnimationMask.RIGHT:
@@ -666,8 +666,8 @@ func set_one_shot_arm_masks(anim_mask: int = AnimationMask.NONE) -> void:
 		AnimationMask.BOTH:
 			bone_names.append(left_shoulder_bone_name)
 			bone_names.append(right_shoulder_bone_name)
-		_:
-			pass
+		#_:
+		#	pass
 
 	for bn in bone_names:
 		set_filter_path(true, bn)
@@ -708,8 +708,8 @@ func attack_anim(in_animation: Animation, in_miss: bool = false) -> void:
 
 	return
 
-func weapon_trail_toggle() -> void:
-	var weapon: Weapon = unit.get_equipped_weapon()
+func weapon_trail_toggle(weapon: Weapon = null) -> void:
+	#var weapon: Weapon = unit.get_equipped_weapon()
 	if !weapon or !unit.equipment.has_equipped_weapon():
 		return
 	var weapon_visual: ItemVisual = weapon.get_item_visual()
@@ -938,21 +938,14 @@ func rotate_unit_towards_target_position_process(delta: float):
 func flash_color(color: Color = Color.DEEP_SKY_BLUE, flash_time: float = hit_flash_time, flash_weapon: bool = true) -> void:
 	var unit_meshes: Array[MeshInstance3D] = get_character_mesh()
 	if flash_weapon:
-		var weapon_mesh: MeshInstance3D = unit.get_equipped_weapon().get_object() as MeshInstance3D
-		if weapon_mesh:
-			unit_meshes.append(weapon_mesh)
-	"""
-	for mesh in unit_meshes:
-		var mesh_mat: StandardMaterial3D = general_hit_flash_mat.duplicate(true)
-		mesh_mat.set_albedo(color)
-		mesh.set_material_overlay(mesh_mat)
+		var weapons: Array[Weapon] = unit.get_equipped_weapons()
+		for weapon in weapons:
+			if not weapon.category == "unarmed" and weapon.object:
+				var weapon_mesh: MeshInstance3D = weapon.get_object()
+				if weapon_mesh:
+					unit_meshes.append(weapon_mesh)
 
-	await get_tree().create_timer(flash_time).timeout
-
-	for mesh in unit_meshes:
-		mesh.set_material_overlay(null)
-	"""
-	Utilities.flash_color_on_meshes(unit_meshes, color, flash_time,)
+	Utilities.flash_color_on_meshes(unit_meshes, color, flash_time)
 
 
 func flash_white(flash_time: float = hit_flash_time) -> void:

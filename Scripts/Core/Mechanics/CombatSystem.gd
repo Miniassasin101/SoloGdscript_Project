@@ -38,15 +38,15 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
-	
-	
+
+
 
 
 # Tracks and handles any over time effects or spells
 func book_keeping() -> void:
 	# Apply poison, bleed, persistent effects, etc.
 	book_keeping_system.run_book_keeping_check()
-	
+
 
 	SignalBus.on_book_keeping_ended.emit()
 
@@ -55,9 +55,9 @@ func book_keeping() -> void:
 func start_turn(unit: Unit) -> void:
 	print_debug("CombatSystem Turn Started: ", unit)
 	current_phase = TurnPhase.ACTION_PHASE  # Start with the Action Phase
-	
+
 	unit.conditions_manager.apply_conditions_turn_interval()
-	
+
 	SignalBus.on_ui_update.emit()
 	handle_phase(unit)
 
@@ -135,29 +135,32 @@ func declare_action(action: Ability, event: ActivationEvent) -> void:
 	# —— Weapon Reach Debuffs/Effects —— #
 	var engagement: Engagement = engagement_system.get_engagement(attacker, defender)
 	if engagement:
-		# fetch raw reach values
-		var atk_w: Weapon = attacker.equipment.get_equipped_weapon()
-		var def_w: Weapon = defender.equipment.get_equipped_weapon()
-		var atk_reach: int = atk_w.reach if atk_w else -1
-		var def_reach: int = def_w.reach if def_w else -1
+		var atk_w: Weapon = null #attacker.equipment.get_equipped_weapon()
+		#var def_w: Weapon = defender.equipment.get_equipped_weapon()
+		if action.has_method("get_weapon_from_ability"):
+			atk_w = action.get_weapon_from_ability(attacker)
+		else:
+			atk_w = attacker.equipment.get_equipped_weapon()
+		if not atk_w:
+			atk_w = attacker.equipment.get_equipped_weapon()
+		
+		if not atk_w:
+			push_error("No weapon in declare action on unit: " + attacker.ui_name + " " + attacker.name)
+			return
 
-		# 1) Fighting at the Longer Reach
-		if engagement.is_fighting_at_longer_range():
-			# a) attacker has the shorter weapon
-			if atk_reach < def_reach:
-				current_event.special_effects.\
-				append(special_effect_system.find_special_effect_by_name("Damage Weapon"))
-			# b) attacker has the longer weapon → no penalty here
+		# 1) Is attacking with a too-short weapon at long reach (only attacks weapon)
+		if engagement.is_fighting_at_shorter_range(atk_w):
+			current_event.special_effects.append(
+				special_effect_system.find_special_effect_by_name("Damage Weapon")
+			)
 
-		# 2) Fighting at the Shorter Reach
-		elif engagement.is_fighting_at_shorter_range():
-			# a) attacker has the longer weapon
-			if atk_reach > def_reach:
-				event.attacker_long_reach_at_short = true
+		# 2) Is attacking with a too-long weapon at short reach (damage penalty)
+		if engagement.is_fighting_at_longer_range(atk_w):
+			event.attacker_long_reach_at_short = true
 
-			# b) defender has the longer weapon
-			if def_reach > atk_reach:
-				event.defender_long_reach_at_short = true
+		# 3) Is defending with a long weapon at long reach (not possible)
+		#if engagement.is_fighting_at_longer_range(def_w):
+		#	event.defender_long_reach_at_short = true
 
 	# —— end Weapon Reach logic —— #
 
@@ -168,8 +171,10 @@ func declare_action(action: Ability, event: ActivationEvent) -> void:
 
 
 
+
+
 func check_declaration_reaction_queue(_action: Ability, _event: ActivationEvent) -> void:
-	# This is where you could prompt units who have "hold actions" or special abilities 
+	# This is where you could prompt units who have "hold actions" or special abilities
 	# triggered upon declarations. For now, we assume minimal logic.
 	for unit: Unit in declaration_reaction_queue:
 		if unit.is_holding:
@@ -180,18 +185,18 @@ func check_declaration_reaction_queue(_action: Ability, _event: ActivationEvent)
 
 
 func reaction(reacting_unit: Unit, _attacking_unit: Unit, _ret_event: ActivationEvent):
-	
+
 	# Prompt UI or AI to choose a reaction ability (e.g., a parry, an evade).
 	SignalBus.on_player_reaction.emit(reacting_unit)
 	UnitActionSystem.instance.set_is_reacting()
 
 	var ability: Ability = await SignalBus.ability_complete#await SignalBus.reaction_selected
-	
+
 	if ability == null:
 		# No valid reaction chosen, treat as no reaction (auto fail)
 		push_error("Invalid Reaction Ability on", reacting_unit.ui_name)
-		return 
-	
+		return
+
 
 
 	# After activation, we assume reaction is a skill roll. In Mythras:
@@ -219,7 +224,7 @@ func prompt_special_effect_choice(event: ActivationEvent, abs_dif: int) -> Activ
 			@warning_ignore("redundant_await")
 			await effect.apply(event)
 	return event
-	
+
 
 
 #region Attacker and Defender positional penalties
@@ -234,16 +239,16 @@ func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
 		elif (relative == Utilities.RelativePosition.RIGHT_SIDE) or\
 		(relative == Utilities.RelativePosition.LEFT_SIDE):
 			penalty_cond.situational_modifier = 3 # Hard
-			event.unit.conditions_manager.add_condition(penalty_cond) 
+			event.unit.conditions_manager.add_condition(penalty_cond)
 			Utilities.spawn_text_line(event.unit, "Side Attack", Color.YELLOW)
 			return
 		elif relative == Utilities.RelativePosition.BACK:
 			# FIXME: Make it change based off if attacker or defender
 			penalty_cond.situational_modifier = 5 # Herculean
-			event.unit.conditions_manager.add_condition(penalty_cond) 
+			event.unit.conditions_manager.add_condition(penalty_cond)
 			Utilities.spawn_text_line(event.unit, "Back Attack", Color.CRIMSON)
 			return
-	
+
 
 	elif event.weapon.hands == 1: # Logic for all one handed weapons
 
@@ -252,26 +257,26 @@ func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
 			return
 		elif (relative == Utilities.RelativePosition.RIGHT_SIDE):
 			if event.weapon.tags.has("left"):
-				
+
 				penalty_cond.situational_modifier = 3 # Hard
-				event.unit.conditions_manager.add_condition(penalty_cond) 
+				event.unit.conditions_manager.add_condition(penalty_cond)
 				Utilities.spawn_text_line(event.unit, "Side Attack", Color.YELLOW)
 				return
 			return
-		
+
 		elif (relative == Utilities.RelativePosition.LEFT_SIDE):
 			if event.weapon.tags.has("right"):
-				
+
 				penalty_cond.situational_modifier = 3 # Hard
-				event.unit.conditions_manager.add_condition(penalty_cond) 
+				event.unit.conditions_manager.add_condition(penalty_cond)
 				Utilities.spawn_text_line(event.unit, "Side Attack", Color.YELLOW)
 				return
 			return
-		
+
 		elif relative == Utilities.RelativePosition.BACK:
 			# FIXME: Make it change based off if attacker or defender
 			penalty_cond.situational_modifier = 5 # Herculean
-			event.unit.conditions_manager.add_condition(penalty_cond) 
+			event.unit.conditions_manager.add_condition(penalty_cond)
 			Utilities.spawn_text_line(event.unit, "Back Attack", Color.CRIMSON)
 			return
 
@@ -279,56 +284,56 @@ func determine_attacker_facing_penalty(event: ActivationEvent) -> void:
 func determine_defender_facing_penalty(event: ActivationEvent = current_event) -> void:
 	if !event.weapon:
 		return
-	
+
 	var penalty_cond: FacingPenaltyCondition = facing_penalty_condition.duplicate()
 	if event.weapon.hands == 2: # Logic for all two handed weapons
 		var relative: int = Utilities.get_unit_relative_position(event.target_unit, event.unit)
 		if relative == Utilities.RelativePosition.FRONT:
 			return
-		
+
 		elif (relative == Utilities.RelativePosition.RIGHT_SIDE) or\
 		(relative == Utilities.RelativePosition.LEFT_SIDE):
 			penalty_cond.situational_modifier = 3 # Hard
-			event.target_unit.conditions_manager.add_condition(penalty_cond) 
+			event.target_unit.conditions_manager.add_condition(penalty_cond)
 			Utilities.spawn_text_line(event.target_unit, "Side Reaction", Color.YELLOW)
 			return
-		
+
 		elif relative == Utilities.RelativePosition.BACK:
 			# FIXME: Make it change based off if attacker or defender
 			penalty_cond.situational_modifier = 4 # Formidable
 			event.target_unit.conditions_manager.add_condition(penalty_cond)
 			Utilities.spawn_text_line(event.unit, "Back Reaction", Color.ORANGE)
 			return
-	
+
 	# FIXME: Make it so that it checks to see which hand the weapon is equipped in
 	elif event.weapon.hands == 1: # Logic for all one handed weapons
 		var relative: int = Utilities.get_unit_relative_position(event.target_unit, event.unit)
 		if relative == Utilities.RelativePosition.FRONT:
 			return
-		
+
 		elif relative == Utilities.RelativePosition.RIGHT_SIDE:
 			if event.weapon.tags.has("left"):
 				penalty_cond.situational_modifier = 3 # Hard
-				event.target_unit.conditions_manager.add_condition(penalty_cond) 
+				event.target_unit.conditions_manager.add_condition(penalty_cond)
 				Utilities.spawn_text_line(event.target_unit, "Side Reaction", Color.YELLOW)
 				return
 			return
-		
+
 		elif (relative == Utilities.RelativePosition.LEFT_SIDE):
 			if event.weapon.tags.has("right"):
-				
+
 				penalty_cond.situational_modifier = 3 # Hard
-				event.target_unit.conditions_manager.add_condition(penalty_cond) 
+				event.target_unit.conditions_manager.add_condition(penalty_cond)
 				Utilities.spawn_text_line(event.target_unit, "Side Reaction", Color.YELLOW)
 				return
 			return
-			
+
 		elif relative == Utilities.RelativePosition.BACK:
 			penalty_cond.situational_modifier = 4 # Formidable
-			event.target_unit.conditions_manager.add_condition(penalty_cond) 
+			event.target_unit.conditions_manager.add_condition(penalty_cond)
 			Utilities.spawn_text_line(event.target_unit, "Back Reaction", Color.ORANGE)
 			return
-		
+
 		else:
 			push_warning("No relative position on ", relative)
 #endregion
@@ -339,7 +344,7 @@ func compute_attacker_facing_penalty(attacker: Unit, target: Unit, weapon: Weapo
 		return null
 	var penalty_cond: FacingPenaltyCondition = facing_penalty_condition.duplicate()
 	var relative: int = Utilities.get_unit_relative_position(attacker, target)
-	
+
 	if weapon.hands == 2:
 		if relative == Utilities.RelativePosition.FRONT:
 			return null
@@ -373,7 +378,7 @@ func compute_defender_facing_penalty(attacker: Unit, target: Unit, weapon: Weapo
 	var penalty_cond: FacingPenaltyCondition = facing_penalty_condition.duplicate()
 	# For the defender the relative position is determined with the target (defender) first
 	var relative: int = Utilities.get_unit_relative_position(target, attacker)
-	
+
 	if weapon.hands == 2:
 		if relative == Utilities.RelativePosition.FRONT:
 			return null
@@ -386,7 +391,7 @@ func compute_defender_facing_penalty(attacker: Unit, target: Unit, weapon: Weapo
 		else:
 			#push_warning("No relative position on ", relative)
 			return null
-	
+
 	elif weapon.hands == 1:
 		if relative == Utilities.RelativePosition.FRONT:
 			return null
@@ -427,24 +432,24 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 		print_debug("Attacker missed.")
 		event.miss = true
 	show_success(attacking_unit, attacker_success_level)
-	   
+
 	# Step 2: Handle defender reaction and capture reaction data
 	var reaction_data = await _handle_defender_reaction(target_unit, attacking_unit, event)
 	var defender_success_level: int = reaction_data["defender_success_level"]
 	var parrying_weapon_size: int = reaction_data["parrying_weapon_size"]
 	var attack_weapon_size: int = reaction_data["attack_weapon_size"]
-	
+
 	# Early exit if conditions require it (for example, if no reaction was triggered)
 	if event.miss and event.parry_successful == false:
 		hide_all_success_level()
 		UILayer.instance.unit_action_system_ui.toggle_containers_visibility_off_except()
 		current_event = null
 		return event
-	
+
 	# Step 3: Resolve combat outcome based on success differential
 	event = await _resolve_combat(action, event, attacker_success_level, defender_success_level,
 								  attacking_unit, target_unit, parrying_weapon_size, attack_weapon_size)
-	
+
 	hide_all_success_level()
 	UILayer.instance.unit_action_system_ui.toggle_containers_visibility_off_except()
 	current_event = null
@@ -454,24 +459,24 @@ func attack_unit(action: Ability, event: ActivationEvent) -> ActivationEvent:
 # Helper: Calculate attacker roll and success level, update event and show marker.
 func _calculate_attacker_success(attacking_unit: Unit, event: ActivationEvent) -> int:
 	determine_attacker_facing_penalty(event)
-	
+
 	var attacker_combat_skill: int = attacking_unit.get_attribute_after_sit_mod("combat_skill")
 	var attacker_roll: int = Utilities.roll(100)
 	print_debug("Attacker Combat Skill: ", attacker_combat_skill)
 	print_debug("Attacker Roll: ", attacker_roll)
 	event.attacker_roll = attacker_roll
-	
+
 	var success_level: int = Utilities.check_success_level(attacker_combat_skill, attacker_roll)
 	print_debug("Attacker Success Level (pre-debug): ", success_level)
-	
+
 	# — Debug overrides — #
 	if LevelDebug.instance.attacker_fail_debug:
 		success_level = 0
 	elif LevelDebug.instance.attacker_success_debug:
 		success_level = 1
-	
+
 	print_debug("Attacker Success Level (post-debug): ", success_level)
-	
+
 	event.attacker_success_level = success_level
 	if success_level == 2:
 		event.attacker_critical = true
@@ -479,13 +484,13 @@ func _calculate_attacker_success(attacking_unit: Unit, event: ActivationEvent) -
 	elif success_level == -1:
 		event.attacker_fumble = true
 		Utilities.spawn_text_line(attacking_unit, "Fumble!", Color.FIREBRICK)
-		
+
 	show_success(attacking_unit, success_level)
 	return success_level
 
 
 
-# Helper: Handle the defender's reaction.  
+# Helper: Handle the defender's reaction.
 # Returns a Dictionary with:
 # - defender_success_level (int)
 # - parrying_weapon_size (int)
@@ -494,31 +499,33 @@ func _handle_defender_reaction(target_unit: Unit, attacking_unit: Unit, event: A
 	var defender_success_level: int = 0
 	var parrying_weapon_size: int = 0
 	var attack_weapon_size: int = event.weapon.size if event.weapon else 0
-	
+
 	# Normally prompt for a parry/evade...
 	await reaction(target_unit, attacking_unit, event)
 	defender_success_level = event.defender_success_level
-	
+
 	print_debug("Defender Success Level (pre-debug): ", defender_success_level)
-	
+
 	# — Debug overrides — #
 	if LevelDebug.instance.parry_fail_debug:
 		defender_success_level = 0
 	elif LevelDebug.instance.parry_success_debug:
 		defender_success_level = 1
-	
+
 	print_debug("Defender Success Level (post-debug): ", defender_success_level)
-	
+
 	# Mark whether a parry actually succeeded
 	event.parry_successful = defender_success_level > 0
-	
+
 	# Show feedback
 	show_success(target_unit, defender_success_level)
 	if not target_unit.equipment.equipped_items.is_empty():
-		var defender_weapon: Weapon = target_unit.equipment.get_equipped_weapon()
-		parrying_weapon_size = defender_weapon.size
-		event.defender_weapon = defender_weapon
-		
+		var defender_weapon: Weapon = current_event.defender_weapon
+		if !defender_weapon:
+			current_event.defender_weapon = target_unit.get_equipped_weapon()
+		parrying_weapon_size = current_event.defender_weapon.size
+
+
 
 	event.defender_success_level = defender_success_level
 	if defender_success_level == 2:
@@ -542,7 +549,7 @@ func _resolve_combat(action: Ability, event: ActivationEvent, attacker_success_l
 					   attacking_unit: Unit, target_unit: Unit, parrying_weapon_size: int, attack_weapon_size: int) -> ActivationEvent:
 	var differential: int = attacker_success_level - defender_success_level
 	var abs_dif: int = abs(differential)
-	
+
 	if differential > 0:
 		print_debug("Attacker wins. Applying damage. Also prompt special effects")
 		event.set_winning_unit(attacking_unit)
@@ -551,13 +558,13 @@ func _resolve_combat(action: Ability, event: ActivationEvent, attacker_success_l
 		if not event.bypass_attack:
 			setup_hit_location(event)
 			event.rolled_damage = roll_damage(action, event, target_unit, parrying_weapon_size, attack_weapon_size)
-			
+
 	elif differential == 0:
 		print_debug("It's a tie - no special effects.")
 		if not event.bypass_attack:
 			setup_hit_location(event)
 			event.rolled_damage = roll_damage(action, event, target_unit, parrying_weapon_size, attack_weapon_size)
-			
+
 	else:
 		print_debug("Defender wins. Prompt Special Effects")
 		event.set_winning_unit(target_unit)
@@ -567,7 +574,7 @@ func _resolve_combat(action: Ability, event: ActivationEvent, attacker_success_l
 		if not event.bypass_attack:
 			setup_hit_location(event)
 			event.rolled_damage = roll_damage(action, event, target_unit, parrying_weapon_size, attack_weapon_size)
-	
+
 	return event
 
 
@@ -581,7 +588,7 @@ func get_hit_location(target_unit: Unit) -> BodyPart:
 	return ret
 
 
-func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit, 
+func roll_damage(ability: Ability, event: ActivationEvent, _target_unit: Unit,
 	parrying_weapon_size: int, attack_weapon_size: int) -> int:
 	# 1. Roll base damage
 	var weapon: Weapon = event.weapon

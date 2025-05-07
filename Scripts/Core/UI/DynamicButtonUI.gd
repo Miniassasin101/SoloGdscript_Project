@@ -19,5 +19,5 @@ func setup(in_text: String) -> void:
 
 func _on_button_pressed() -> void:
 	# Emit a signal with the button's text (or label text)
-	var final_text = button_text.get_text()
+	var final_text: String = button_text.get_text()
 	button_clicked.emit(final_text)

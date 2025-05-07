@@ -39,12 +39,23 @@ func try_activate(_event: ActivationEvent) -> void:
 	
 	var current_event: ActivationEvent = CombatSystem.instance.current_event
 	
+	var engagement_system: EngagementSystem = CombatSystem.instance.engagement_system
+	
 	var weapon: Weapon = get_weapon_from_ability(unit)
+	
+	var engagement: Engagement = engagement_system.get_engagement(current_event.unit, unit)
+	
+	# If defender’s weapon outranges the engagement by ≥2 steps, mark defender_long_reach_at_short
+	if engagement.is_fighting_at_shorter_range(weapon):
+			event.defender_long_reach_at_short = true
+	
 	
 	if weapon != null:
 		parry_animation_part_1 = weapon.parry_animation_part_1
 		parry_animation_reset = weapon.parry_animation_part_2
 		parry_animation_idle = weapon.parry_animation_idle
+		
+		current_event.defender_weapon = weapon
 	
 	Utilities.spawn_text_line(unit, "Parrying with: " + weapon.name)
 	
@@ -188,10 +199,31 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 
 
 func can_activate_given_current_event() -> bool:
+	
 	var current_event: ActivationEvent = CombatSystem.instance.current_event
-	if current_event:
-		if current_event.defender_long_reach_at_short:
-			return false
+	if not current_event:
+		return false
+	
+	var parrying_unit: Unit = current_event.target_unit
+	
+	if not current_event:
+		return false
+	var parry_weapon: Weapon = get_weapon_from_ability(parrying_unit)
+	if not parry_weapon:
+		return false
+	
+	var engagement_system: EngagementSystem = CombatSystem.instance.engagement_system
+	
+	var weapon: Weapon = get_weapon_from_ability(parrying_unit)
+	
+	var engagement: Engagement = engagement_system.get_engagement(current_event.unit, parrying_unit)
+	
+	if engagement and engagement.is_fighting_at_longer_range(weapon):
+		return false
+	
+	if !weapon.category == "shield" and current_event.weapon.tags.has("ranged"):
+		return false
+	
 	return true
 
 

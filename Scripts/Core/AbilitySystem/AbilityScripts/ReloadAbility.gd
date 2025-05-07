@@ -16,13 +16,13 @@ func try_activate(_event: ActivationEvent) -> void:
 	event = _event
 	unit = event.unit
 	if not unit or not event.target_grid_position:
-		push_error("BraceAbility: Missing unit or target grid position.")
+		push_error("ReloadAbility: Missing unit or target grid position.")
 		end_ability(event)
 		return
 	
 	# Validate the chosen target position.
 	if not can_activate(event):
-		push_error("BraceAbility: Target grid position is invalid.")
+		push_error("ReloadAbility: Target grid position is invalid.")
 		end_ability(event)
 		return
 	
@@ -45,7 +45,6 @@ func reload() -> void:
 	unit.animator.play_animation_by_name(animation.resource_name)
 	
 	await unit.animator.event_occured
-	#Engine.set_time_scale(0.1)
 	var unit_weapon: Weapon = unit.get_equipped_weapon()
 	
 	var reload_projectile: Node3D = unit_weapon.projectile.instantiate()
@@ -68,7 +67,6 @@ func reload() -> void:
 	
 	unit_weapon.load_projectile()
 	
-	#Engine.set_time_scale(1.0)
 
 
 

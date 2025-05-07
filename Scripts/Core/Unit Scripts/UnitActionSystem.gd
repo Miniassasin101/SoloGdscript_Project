@@ -350,7 +350,7 @@ func set_is_reacting(val: bool = true) -> void:
 	is_reacting = val
 	GridSystemVisual.instance.hide_all_grid_positions()
 
-func clear_busy(_ability: Ability) -> void:
+func clear_busy(_ability: Ability = null) -> void:
 	#print("clearbusy")
 	SignalBus.update_grid_visual.emit()
 	is_busy = false

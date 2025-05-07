@@ -150,7 +150,9 @@ func next_turn() -> void:
 	if is_player_turn or LevelDebug.instance.control_enemy_debug:
 		UnitActionSystem.instance.set_selected_unit(current_unit_turn)
 		UnitActionSystem.instance.set_selected_ability(null)
-		
+	
+	UnitActionSystem.instance.clear_busy()
+	
 	start_turn()
 
 

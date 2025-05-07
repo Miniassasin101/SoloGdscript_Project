@@ -49,9 +49,13 @@ func drop_item_in_world(unit: Unit, in_item: Item = null) -> void:
 	if items.has(in_item):
 		return
 		
+	var item_visual: ItemVisual = item.get_item_visual()
+	if not item_visual:
+		return
+	
 	items.append(item)
 
-	var item_visual: ItemVisual = item.get_item_visual()
+	
 	item_visual.reparent(self)
 	#unit.equipment.unequip(item)
 	#is_dropping = false
@@ -158,7 +162,7 @@ func remove_all_dropped_items() -> void:
 
 
 func equip_item(unit: Unit, in_item: Item) -> void:
-	var item = in_item if in_item else unit.get_equipped_weapon()
+	var item: Item = in_item if in_item else unit.get_equipped_weapon()
 	items.erase(item)
 
 

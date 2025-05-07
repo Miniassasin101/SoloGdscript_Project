@@ -6,6 +6,9 @@
 transparency = 2
 alpha_scissor_threshold = 0.837
 alpha_antialiasing_mode = 0
-albedo_color = Color(0.683333, 0.82, 0, 0.843137)
+shading_mode = 0
+specular_mode = 1
+disable_ambient_light = true
+albedo_color = Color(0.0192, 0.45376, 0.64, 0.839216)
 albedo_texture = ExtResource("1_88wmj")
 texture_filter = 0

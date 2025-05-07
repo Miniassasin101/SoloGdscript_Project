@@ -65,8 +65,8 @@ func apply(event: ActivationEvent) -> void:
 
 func roll_damage_on_weapon(event: ActivationEvent) -> int:
 	# Roll base damage
-	var attacking_weapon: Weapon = event.winning_unit.equipment.get_equipped_weapon()
-	var defending_weapon: Weapon = event.losing_unit.equipment.get_equipped_weapon()
+	var attacking_weapon: Weapon = event.get_winning_unit_weapon()
+	var defending_weapon: Weapon = event.get_losing_unit_weapon()
 	var damage_total: int = 0
 
 	damage_total = attacking_weapon.roll_damage()
@@ -98,7 +98,7 @@ func _get_opponents_weapon(event: ActivationEvent) -> Weapon:
 		# In Mythras, the “parrying weapon” might be the front() item or 
 		# you might store it in the event. This is just an example:
 		if opponent_unit.equipment.equipped_items.size() > 0:
-			return opponent_unit.equipment.get_equipped_weapon()
+			return event.defender_weapon
 
 	# If defender is the "user," the opponent is the attacker:
 	if user_is_defender:
@@ -107,6 +107,6 @@ func _get_opponents_weapon(event: ActivationEvent) -> Weapon:
 			return null
 
 		if opponent_unit.equipment.equipped_items.size() > 0:
-			return opponent_unit.equipment.get_equipped_weapon()
+			return event.weapon
 
 	return null

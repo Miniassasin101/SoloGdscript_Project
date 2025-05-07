@@ -18,8 +18,8 @@ func can_activate(event: ActivationEvent) -> bool:
 	if !event.parry_successful:
 		return false
 	
-	var defender_weapon: Weapon = event.target_unit.get_equipped_weapon()
-	var attacker_weapon: Weapon = event.unit.get_equipped_weapon()
+	var defender_weapon: Weapon = event.defender_weapon
+	var attacker_weapon: Weapon = event.weapon
 	
 	if defender_weapon.size >= attacker_weapon.size:
 		return false

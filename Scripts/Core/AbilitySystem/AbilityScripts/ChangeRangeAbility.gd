@@ -25,8 +25,14 @@ func try_activate(_event: ActivationEvent) -> void:
 	
 	target_unit = LevelGrid.get_unit_at_grid_position(event.target_grid_position)
 	
-	if !target_unit:
+	if not target_unit:
 		push_error("ChangeRangeAbility: Missing target unit.")
+		end_ability(event)
+		return
+
+	var engagement = CombatSystem.instance.engagement_system.get_engagement(unit, target_unit)
+	if not engagement:
+		push_error("ChangeRangeAbility: No engagement found.")
 		end_ability(event)
 		return
 
@@ -36,13 +42,49 @@ func try_activate(_event: ActivationEvent) -> void:
 		end_ability(event)
 		return
 
+	# 2) Build list of alternate reaches
+	var alt_reaches: Array[int] = []
+	for w in unit.get_equipped_weapons():
+		if w and w.reach != engagement.reach:
+			alt_reaches.append(w.reach)
+
+	if alt_reaches.is_empty():
+		# no weapon at a different reach → can't use
+		Utilities.spawn_text_line(unit, "No alternate reach", Color.GRAY)
+		end_ability(event)
+		return
+
+	# 3) Spend AP up front (you could alternatively charge after choice)
+	if not unit.can_spend_ability_points_to_use_ability(self):
+		Utilities.spawn_text_line(unit, "No AP", Color.GOLD)
+		return end_ability(event)
+	unit.spend_ability_points(ap_cost)
+
 	# Fetch an existing DynamicButtonPicker in the scene tree.
 	var dynamic_picker: DynamicButtonPicker = UILayer.instance.unit_action_system_ui.dynamic_button_picker
 	if dynamic_picker == null:
 		push_error("No DynamicButtonPicker in scene. Please instance or reference it properly.")
 		return
 
-	# Perform opposed rolls against each engaged opponent.
+
+	# 4) If more than one choice, pop up
+	var chosen_reach: int
+	if alt_reaches.size() > 1:
+		var labels: Array[String] = []
+		for r in alt_reaches:
+			labels.append(_reach_label(r))
+		var picker: DynamicButtonPicker = UILayer.instance.unit_action_system_ui.dynamic_button_picker
+		picker.pick_options(labels)
+		var picked: String = await picker.option_selected
+		if picked == "":
+			# canceled
+			return end_ability(event)
+		chosen_reach = alt_reaches[ labels.find(picked) ]
+	else:
+		chosen_reach = alt_reaches[0]
+
+
+	# Perform an opposed evade roll against the opponent
 	var user_roll = Utilities.roll(100)
 	var success = false
 
@@ -50,18 +92,20 @@ func try_activate(_event: ActivationEvent) -> void:
 	var opponent: Unit = target_unit
 
 		# ----- NEW: Check if the opponent has 0 AP. Automatically fail if so.
-	if opponent.get_ability_points() <= 0:
-
+	if opponent.get_ability_points() <= 0: # Skip dynamic picker prompt if AP is insufficient.
 		Utilities.spawn_text_line(opponent, "Block Failed", Color.ORANGE)
-		
-		on_block_fail()
-		# Skip dynamic picker prompt if AP is insufficient.
+		engagement.force_reach(chosen_reach)
+		Utilities.spawn_text_line(unit, "Swapped to " + _reach_label(chosen_reach))
+		Utilities.spawn_text_line(opponent, "Swapped to " + _reach_label(chosen_reach), Color.FIREBRICK)
+
 		force_end()
 		return
-
+	# Small delay to prevent double clicks
+	await unit.get_tree().create_timer(0.3).timeout
+	
 	# Prompt the opponent for block decision.
 	dynamic_picker.pick_options(["Block", "Don't Block"])
-	GridSystemVisual.instance.hide_all_grid_positions() 
+	GridSystemVisual.instance.hide_all_grid_positions()
 	GridSystemVisual.instance.show_grid_positions([opponent.get_grid_position()])
 	var choice: String = await dynamic_picker.option_selected
 
@@ -72,25 +116,30 @@ func try_activate(_event: ActivationEvent) -> void:
 			var opponent_roll = Utilities.roll(100)
 			print_debug("Change Range: " + unit.ui_name + " rolled " + str(user_roll) + " vs. " + opponent.ui_name + " rolled " + str(opponent_roll))
 			
-			# If opponent’s roll is greater than or equal to the user’s roll, block succeeds.
+			# If opponent’s roll is less than than or equal to the user’s roll, block succeeds.
 			if opponent_roll <= user_roll:
 				Utilities.spawn_text_line(opponent, "Block Successful", Color.AQUA)
 				success = true
 
 			else:
 				Utilities.spawn_text_line(opponent, "Block Failed", Color.ORANGE)
-				
-				on_block_fail()
+				engagement.force_reach(chosen_reach)
+				Utilities.spawn_text_line(unit, "Swapped to " + _reach_label(chosen_reach))
+				Utilities.spawn_text_line(opponent, "Swapped to " + _reach_label(chosen_reach), Color.FIREBRICK)
 
 		else:
 			# Not enough AP to block; automatically fail the block.
 			Utilities.spawn_text_line(opponent, "Block Failed", Color.ORANGE)
-			on_block_fail()
+			Utilities.spawn_text_line(opponent, "Block Failed", Color.ORANGE)
+			engagement.force_reach(chosen_reach)
+			Utilities.spawn_text_line(unit, "Swapped to " + _reach_label(chosen_reach))
+			Utilities.spawn_text_line(opponent, "Swapped to " + _reach_label(chosen_reach), Color.FIREBRICK)
 
 	else:  # Opponent chooses "Don't Block"
 		# Automatically treat as block failure.
-		on_block_fail()
-
+		engagement.force_reach(chosen_reach)
+		Utilities.spawn_text_line(unit, "Swapped to " + _reach_label(chosen_reach))
+		Utilities.spawn_text_line(opponent, "Swapped to " + _reach_label(chosen_reach), Color.FIREBRICK)
 
 	event.successful = true
 	if can_end(event):
@@ -105,38 +154,36 @@ func force_end() -> void:
 		end_ability(event)
 
 
-func on_block_fail() -> void:
-	var engagement: Engagement = CombatSystem.instance.engagement_system.get_engagement(unit, target_unit)
-	if engagement.reach_state == Engagement.ReachState.LONG:
-		engagement.force_shorter_reach()
-	elif engagement.reach_state == Engagement.ReachState.SHORT:
-		engagement.force_longer_reach()
-	else:
-		push_error("Reach is neither long or short")
 
+		
 
+# Helper to map a Reach enum to display text
+func _reach_label(r: int) -> String:
+	match r:
+		Engagement.Reach.TOUCH:     return "Touch"
+		Engagement.Reach.SHORT:     return "Short"
+		Engagement.Reach.MEDIUM:    return "Medium"
+		Engagement.Reach.LONG:      return "Long"
+		Engagement.Reach.VERY_LONG: return "Very Long"
+	return "Unknown"
 
 
 
 func can_activate(_event: ActivationEvent) -> bool:
 	if not super.can_activate(_event):
 		return false
-	
-	var engagement_system: EngagementSystem = CombatSystem.instance.engagement_system
-	
-	if !engagement_system.is_unit_engaged(_event.unit):
+	# must be engaged
+	var es = CombatSystem.instance.engagement_system
+	if not es.is_unit_engaged(_event.unit):
 		return false
-	
-	if !any_engagement_at_different_range(_event, engagement_system):
-		return false
-	
-
-	
-	var valid_positions = get_valid_ability_target_grid_position_list(_event)
-	for pos in valid_positions:
-		if pos._equals(_event.target_grid_position):
+	# must have at least one weapon whose reach differs
+	for w in _event.unit.get_equipped_weapons():
+		var eng = es.get_engagement(_event.unit, LevelGrid.get_unit_at_grid_position(_event.target_grid_position))
+		if w and eng and w.reach != eng.reach:
 			return true
 	return false
+
+
 
 func any_engagement_at_different_range(_event: ActivationEvent, engagement_system: EngagementSystem) -> bool:
 	for engagement in engagement_system.get_engagements(_event.unit):

@@ -1,7 +1,7 @@
 class_name DynamicButtonPicker
 extends Window  # or WindowDialog/Popup in Godot 4
 
-signal option_selected(chosen_value)
+signal option_selected(chosen_value: String)
 
 @export var dynamic_button_ui_scene: PackedScene
 @export var button_container: HBoxContainer
@@ -33,6 +33,6 @@ func pick_options(options: Array[String]) -> void:
 	visible = true
 	popup_centered_ratio(0.5)
 
-func _on_button_clicked(chosen_value):
+func _on_button_clicked(chosen_value: String):
 	emit_signal("option_selected", chosen_value)
 	visible = false

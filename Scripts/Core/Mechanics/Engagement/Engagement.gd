@@ -1,16 +1,6 @@
 extends RefCounted
 class_name Engagement
 
-## Possible reach states for this engagement.
-enum ReachState {
-	## No advantage.
-	NONE,
-	## Long-range advantage (longer-weapon holder).
-	LONG,
-	## Short-range advantage (shorter-weapon holder).
-	SHORT,
-	
-}
 
 enum Reach {
 	TOUCH, # Fists, Gauntlets, Spells that require direct contact
@@ -27,8 +17,7 @@ var unit_2: Unit = null
 ## Visual line effect between units.
 var line_fx: EngagementLineFX = null
 
-## Current reach state (NONE by default).
-var reach_state: int = ReachState.NONE
+
 
 ## Current reach state (MEDIUM by default).
 var reach: int = Reach.MEDIUM
@@ -36,121 +25,96 @@ var reach: int = Reach.MEDIUM
 ## Color of the engagement line.
 var line_color: Color = Color.RED
 
+
+# A simple warm→cool palette so each band is visually distinct
+const REACH_COLORS = {
+	Reach.TOUCH:     Color(1.0, 0.0, 0.0),   # red
+	Reach.SHORT:     Color(1.0, 0.5, 0.0),   # orange
+	Reach.MEDIUM:    Color(1.0, 1.0, 0.0),   # yellow
+	Reach.LONG:      Color(0.0, 1.0, 0.0),   # green
+	Reach.VERY_LONG: Color(0.0, 0.0, 1.0),   # blue
+}
+
+
 ## Initialize engagement and set initial reach based on weapon difference.
 func _init(_unit1: Unit, _unit2: Unit) -> void:
 	unit_1 = _unit1
 	unit_2 = _unit2
-	reevaluate_reach()
+	initialize_reach()
 
-## Manually force long-range state.
-func force_longer_reach() -> void:
-	reach_state = ReachState.LONG
-	reevaluate_reach()
 
-## Manually force short-range state.
-func force_shorter_reach() -> void:
-	reach_state = ReachState.SHORT
-	reevaluate_reach()
 
-## Reset to no advantage (NONE).
-func reset_reach() -> void:
-	reach_state = ReachState.NONE
-	reevaluate_reach()
-
+# Pick the longest reach among *all* weapons both units have
 func initialize_reach() -> void:
-	var u_weapons
-	
-	var w1: Weapon = unit_1.equipment.get_equipped_weapon()
-	var w2: Weapon = unit_2.equipment.get_equipped_weapon()
-	if not (w1 and w2):
-		return
+	var reaches1: Array = unit_1.get_equipped_weapons().map(func(weapon) -> int: return weapon.reach)
+	var reaches2: Array = unit_2.get_equipped_weapons().map(func(weapon) -> int: return weapon.reach)
 
-	var diff: int = absi(w1.reach - w2.reach)
-	
-	if diff < 2:
-		reach_state
-	
-	
-	
+	if reaches1.is_empty() or reaches2.is_empty():
+		reach = Reach.TOUCH
+	else:
+		reach = maxi(reaches1.max(), reaches2.max())
+	_update_visuals()
+
+
+# Force to a specific reach value
+func force_reach(to_reach: int) -> void:
+	reach = to_reach
+	_update_visuals()
+
+# Force to whatever reach a single weapon has
+func force_reach_with_weapon(w: Weapon) -> void:
+	reach = w.reach
+	_update_visuals()
+
+# Common redraw + text label
+func _update_visuals() -> void:
+	var col: Color = REACH_COLORS.get(reach, Color(1,1,1))
+	if line_fx:
+		line_fx.set_color(col)
+	var label_text: String = ""
+	match reach:
+		Reach.TOUCH:     label_text = "Touch-Reach"
+		Reach.SHORT:     label_text = "Short-Reach"
+		Reach.MEDIUM:    label_text = "Medium-Reach"
+		Reach.LONG:      label_text = "Long-Reach"
+		Reach.VERY_LONG: label_text = "Very-Long-Reach"
+		_:               label_text = ""
+	Utilities.spawn_text_line(unit_1, label_text)
+	Utilities.spawn_text_line(unit_2, label_text)
 
 #func get_unit_with_longer_reach() -> Unit:
 #	var w1: Weapon = unit_1.get_equipped_weapon()
 #	var w2: Weapon = unit_2.get_equipped_weapon()
 
+# General query: are they fighting at this exact reach band?
+func is_fighting_at_range(r: int) -> bool:
+	return reach == r
 
-## Recalculate reach: initial or forced, update visuals and text.
-func reevaluate_reach() -> void:
-	var w1: Weapon = unit_1.equipment.get_equipped_weapon()
-	var w2: Weapon = unit_2.equipment.get_equipped_weapon()
-	if not (w1 and w2):
-		return
-
-	var diff: int = absi(w1.reach - w2.reach)
+# Convenience sugar:
+func is_fighting_at_touch()       -> bool: return is_fighting_at_range(Reach.TOUCH)
+func is_fighting_at_short()       -> bool: return is_fighting_at_range(Reach.SHORT)
+func is_fighting_at_medium()      -> bool: return is_fighting_at_range(Reach.MEDIUM)
+func is_fighting_at_long()        -> bool: return is_fighting_at_range(Reach.LONG)
+func is_fighting_at_very_long()   -> bool: return is_fighting_at_range(Reach.VERY_LONG)
 
 
-	if diff < 2:
-		# Weapons too similar: no advantage
-		reach_state = ReachState.NONE
-		line_color = Color.RED
-	elif reach_state == ReachState.SHORT:
-		# Explicit short-range override
-		line_color = Color.FOREST_GREEN
-		if _base_shorter_reach(unit_1):
-			Utilities.spawn_text_line(unit_1, "Close‑Range")
-		else:
-			Utilities.spawn_text_line(unit_2, "Close‑Range")
-	else:
-		# Either initial diff>=2 or forced long-range
-		reach_state = ReachState.LONG
-		line_color = Color.BLUE
-		if _base_longer_reach(unit_1):
-			Utilities.spawn_text_line(unit_1, "Long Reach")
-		else:
-			Utilities.spawn_text_line(unit_2, "Long Reach")
 
-	# Apply line color
-	if line_fx:
-		line_fx.set_color(line_color)
 
-## Query helpers
-func is_at_longer_reach(unit: Unit) -> bool:
-	return reach_state == ReachState.LONG and _base_longer_reach(unit)
 
-func is_at_shorter_reach(unit: Unit) -> bool:
-	return reach_state == ReachState.SHORT and _base_shorter_reach(unit)
 
-func is_fighting_at_longer_range() -> bool:
-	var w1: Weapon = unit_1.equipment.get_equipped_weapon()
-	var w2: Weapon = unit_2.equipment.get_equipped_weapon()
-	if not (w1 and w2) or absi(w1.reach - w2.reach) < 2:
+# “Is this weapon wielded at too long of a range?”
+func is_fighting_at_longer_range(w: Weapon) -> bool:
+	if not w:
 		return false
-	return reach_state == ReachState.LONG
+	return (w.reach - reach) >= 2
 
-func is_fighting_at_shorter_range() -> bool:
-	var w1: Weapon = unit_1.equipment.get_equipped_weapon()
-	var w2: Weapon = unit_2.equipment.get_equipped_weapon()
-	if not (w1 and w2) or absi(w1.reach - w2.reach) < 2:
+# “Is this weapon wielded at too short of a range?”
+func is_fighting_at_shorter_range(w: Weapon) -> bool:
+	if not w:
 		return false
-	return reach_state == ReachState.SHORT
+	return (reach - w.reach) >= 2
 
-## Internal base comparisons ignoring state.
-func _base_longer_reach(unit: Unit) -> bool:
-	var w1 = unit_1.equipment.get_equipped_weapon()
-	var w2 = unit_2.equipment.get_equipped_weapon()
-	if not (w1 and w2) or absi(w1.reach - w2.reach) < 2:
-		return false
-	if unit == unit_1:
-		return w1.reach > w2.reach
-	return w2.reach > w1.reach
 
-func _base_shorter_reach(unit: Unit) -> bool:
-	var w1 = unit_1.equipment.get_equipped_weapon()
-	var w2 = unit_2.equipment.get_equipped_weapon()
-	if not (w1 and w2) or absi(w1.reach - w2.reach) < 2:
-		return false
-	if unit == unit_1:
-		return w1.reach < w2.reach
-	return w2.reach < w1.reach
 
 ## Visual setup/cleanup
 func initialize_line(engagement_system: Node) -> void:
@@ -158,7 +122,9 @@ func initialize_line(engagement_system: Node) -> void:
 	engagement_system.add_child(line_fx)
 	line_fx.attach_to()
 	line_fx.is_active = true
-	reevaluate_reach()
+	var col: Color = REACH_COLORS.get(reach, Color(1,1,1))
+	line_fx.set_color(col)
+	#reevaluate_reach()
 
 func remove_engagement() -> void:
 	line_fx.is_active = false
