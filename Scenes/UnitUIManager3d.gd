@@ -136,3 +136,25 @@ func reset_unit_colors(unit: Unit) -> void:
 		silhouette.reset_all_parts_color()
 	else:
 		push_warning("Unit not found in UI manager: " + str(unit))
+
+
+# Fade in the shield icon for a given unit & body‐part
+func show_unit_shield_icon(unit: Unit, part_name: String) -> void:
+	if unit_ui_instances.has(unit):
+		unit_ui_instances[unit].show_shield_icon(part_name)
+	else:
+		push_warning("show_unit_shield_icon: unit not found: " + str(unit))
+
+# Fade out the shield icon for a given unit & body‐part
+func hide_unit_shield_icon(unit: Unit, part_name: String) -> void:
+	if unit_ui_instances.has(unit):
+		unit_ui_instances[unit].hide_shield_icon(part_name)
+	else:
+		push_warning("hide_unit_shield_icon: unit not found: " + str(unit))
+
+# Toggle the shield icon for a given unit & body‐part
+func toggle_unit_shield_icon(unit: Unit, part_name: String) -> void:
+	if unit_ui_instances.has(unit):
+		unit_ui_instances[unit].toggle_shield_icon(part_name)
+	else:
+		push_warning("toggle_unit_shield_icon: unit not found: " + str(unit))

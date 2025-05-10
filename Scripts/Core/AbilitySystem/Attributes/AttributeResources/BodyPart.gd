@@ -24,13 +24,23 @@ extends Node
 # Array of conditions (Resources) that represent scars, injuries, etc. 
 @export var wounds: Array[Wound] = []
 
+var warding_weapon: Weapon = null
+
 var is_impaled: bool = false
 
 var body: Body = null
 
 
+
+
 func set_armor(val: int) -> void:
 	armor = maxi(val, 0)
+
+func is_warded() -> bool:
+	return warding_weapon != null
+
+func set_ward(_warding_weapon: Weapon = null) -> void:
+	warding_weapon = _warding_weapon
 
 func get_adjacent_parts() -> Array[BodyPart]:
 	return adjacent_body_parts

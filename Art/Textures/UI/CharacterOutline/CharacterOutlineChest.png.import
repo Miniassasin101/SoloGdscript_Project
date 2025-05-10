@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bk21f17rsxdqm"
-path.s3tc="res://.godot/imported/CharacterOutlineChest.png-72ea3ef5b29cba5cdd6bfa92488f52f4.s3tc.ctex"
+path.s3tc="res://.godot/imported/CharacterOutlineChest.png-f5a0f8b18b8d0685a614dfd412175175.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Hero_Game/Art/Textures/UI/CharacterOutlineChest.png"
-dest_files=["res://.godot/imported/CharacterOutlineChest.png-72ea3ef5b29cba5cdd6bfa92488f52f4.s3tc.ctex"]
+source_file="res://Hero_Game/Art/Textures/UI/CharacterOutline/CharacterOutlineChest.png"
+dest_files=["res://.godot/imported/CharacterOutlineChest.png-f5a0f8b18b8d0685a614dfd412175175.s3tc.ctex"]
 
 [params]
 

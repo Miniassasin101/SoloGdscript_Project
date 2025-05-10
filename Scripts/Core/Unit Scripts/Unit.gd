@@ -52,7 +52,11 @@ var is_holding: bool = false
 var target_unit: Unit
 
 
-@export var is_enemy: bool = false
+@export var is_enemy: bool = false:
+	set(variable):
+		is_enemy = variable
+		if CombatSystem.instance:
+			CombatSystem.instance.engagement_system.update_engagements_for_unit(self)
 
 # Replace with string of weapon group later or a check if holding weapon to determine what anim to use
 @export var holding_weapon: bool = true

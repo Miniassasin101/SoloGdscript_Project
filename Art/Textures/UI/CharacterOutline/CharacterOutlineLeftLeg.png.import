@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfq6nm323d1t1"
-path.s3tc="res://.godot/imported/CharacterOutlineLeftArm.png-bbec3b84675a76b34db181231b6d1ecd.s3tc.ctex"
+uid="uid://ddibl2acy5nbj"
+path.s3tc="res://.godot/imported/CharacterOutlineLeftLeg.png-2cbc7fdfab1358e2c281fccbd1722be9.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Hero_Game/Art/Textures/UI/CharacterOutlineLeftArm.png"
-dest_files=["res://.godot/imported/CharacterOutlineLeftArm.png-bbec3b84675a76b34db181231b6d1ecd.s3tc.ctex"]
+source_file="res://Hero_Game/Art/Textures/UI/CharacterOutline/CharacterOutlineLeftLeg.png"
+dest_files=["res://.godot/imported/CharacterOutlineLeftLeg.png-2cbc7fdfab1358e2c281fccbd1722be9.s3tc.ctex"]
 
 [params]
 

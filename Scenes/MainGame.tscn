@@ -176,6 +176,7 @@ size = Vector2(2, 2)
 [node name="Debug" type="Node" parent="."]
 script = ExtResource("1_7xwui")
 control_enemy_debug = true
+attacker_success_debug = true
 auto_equip_debug = true
 grid_dimensions = Vector2(13, 15)
 
@@ -342,7 +343,7 @@ collision_mask = 2
 shape = SubResource("ConcavePolygonShape3D_vv6bh")
 
 [node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.06028, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.06028, 8)
 script = ExtResource("9_rt187")
 Zoom_Speed = 2.0
 
@@ -357,6 +358,7 @@ collision_mask = 2
 spring_length = 20.0
 
 [node name="fCamera" type="Camera3D" parent="Player/CamOrigin/SpringArm3D"]
+transform = Transform3D(1, 5.96046e-08, 5.96046e-08, -2.47364e-08, 1, -4.76837e-07, 6.68832e-08, 0, 1, -4, -1.41421, 1.41421)
 
 [node name="CameraShake" type="Node" parent="Player"]
 script = ExtResource("20_lbku0")

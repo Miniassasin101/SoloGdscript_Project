@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://o1fg3hpqocyq"
-path.s3tc="res://.godot/imported/CharacterOutlineHead.png-a22a7b25fd9d2f6405dd0898b4112e6c.s3tc.ctex"
+uid="uid://bx6vk0o6yaggo"
+path.s3tc="res://.godot/imported/WhiteSHieldIcon.png-34429168f9d2c17258c7e8848807634f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Hero_Game/Art/Textures/UI/CharacterOutlineHead.png"
-dest_files=["res://.godot/imported/CharacterOutlineHead.png-a22a7b25fd9d2f6405dd0898b4112e6c.s3tc.ctex"]
+source_file="res://Hero_Game/Art/Textures/UI/Icons/WhiteSHieldIcon.png"
+dest_files=["res://.godot/imported/WhiteSHieldIcon.png-34429168f9d2c17258c7e8848807634f.s3tc.ctex"]
 
 [params]
 

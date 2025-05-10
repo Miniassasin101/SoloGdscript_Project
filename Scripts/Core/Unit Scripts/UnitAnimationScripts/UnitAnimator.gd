@@ -682,6 +682,8 @@ func clear_filter_path(bone_names: Array[String]) -> void:
 func clear_all_filters() -> void:
 	for b_name in filtered_one_shot_bones:
 		one_shot_blend.set_filter_path(skeleton_node_path + ":" + b_name, false)
+	
+	one_shot_blend.set_filter_enabled(false)
 
 	filtered_one_shot_bones.clear()
 

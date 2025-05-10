@@ -65,7 +65,20 @@ func update_body_ui_for_part(part: BodyPart) -> void:
 		if UnitUIManager3D.instance:
 			UnitUIManager3D.instance.set_unit_part_red(unit, part.part_ui_name.to_pascal_case())
 
+func update_body_warded_ui_for_part(part: BodyPart) -> void:
+	if !UnitUIManager3D.instance:
+		return
+		
+	if part.is_warded():
+		UnitUIManager3D.instance.show_unit_shield_icon(unit, part.part_ui_name.to_pascal_case())
+		print_debug(part.part_ui_name.to_pascal_case() + " is warded by " + part.warding_weapon.name)
+	else:
+		UnitUIManager3D.instance.hide_unit_shield_icon(unit, part.part_ui_name.to_pascal_case())
 
+func ward_body_parts_with_weapon(weapon: Weapon, parts: Array[BodyPart]) -> void:
+	for part in body_parts:
+		if parts.has(part):
+			part.set_ward(weapon)
 
 # Updates all body parts (kept for initial setup or complete refresh).
 func update_body_ui() -> void:
@@ -74,6 +87,8 @@ func update_body_ui() -> void:
 	
 	for part in body_parts:
 		update_body_ui_for_part(part)
+		update_body_warded_ui_for_part(part)
+
 
 
 func apply_wound_from_event(event: ActivationEvent) -> void:
@@ -218,6 +233,15 @@ func get_all_wounds() -> Array[Wound]:
 	var ret_array: Array[Wound] = []
 	for part: BodyPart in body_parts:
 		ret_array.append_array(part.wounds)
+	
+	return ret_array
+
+
+func get_warded_parts() -> Array[BodyPart]:
+	var ret_array: Array[BodyPart] = []
+	for part: BodyPart in body_parts:
+		if part.is_warded():
+			ret_array.append_array(part.wounds)
 	
 	return ret_array
 

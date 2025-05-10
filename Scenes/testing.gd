@@ -70,7 +70,9 @@ func _ready() -> void:
 	Console.add_command("add_to_inventory", console_add_to_inventory, ["unit_name", "weapon_name"], 2, "Loads a weapon resource and adds it to the unit's inventory.")
 	Console.add_command("equip_from_inventory", console_equip_from_inventory, ["unit_name", "item_name"], 2, "Equips an item already in the unit's inventory.")
 	Console.add_command("unequip_to_inventory", console_unequip_to_inventory, ["unit_name", "item_name"], 2, "Unequips an item and returns it to the unit's inventory.")
-
+	Console.add_command("show_shield", console_show_shield, ["unit_name","body_part"], 2, "Fade in the shield icon on a body part. Usage: show_shield Bob Head")
+	Console.add_command("hide_shield", console_hide_shield, ["unit_name","body_part"], 2, "Fade out the shield icon on a body part. Usage: hide_shield Bob Head")
+	Console.add_command("toggle_shield", console_toggle_shield, ["unit_name","body_part"], 2, "Toggle the shield icon on a body part. Usage: toggle_shield Bob Head")
 
 
 
@@ -827,6 +829,31 @@ func console_unequip_to_inventory(unit_name: String, item_name: String) -> void:
 	unit.equipment.unequip(item)
 	unit.inventory.add_item(item)
 	Console.print_info("Unequipped '%s' and returned to inventory of '%s'." % [item_name, unit_name])
+
+
+func console_show_shield(unit_name: String, part_name: String) -> void:
+	var u = UnitManager.instance.get_unit_by_name(unit_name)
+	if u:
+		UnitUIManager3D.instance.show_unit_shield_icon(u, part_name)
+		Console.print_info("Showing shield on " + unit_name + " → " + part_name)
+	else:
+		Console.print_error("console_show_shield: unit not found: " + unit_name)
+
+func console_hide_shield(unit_name: String, part_name: String) -> void:
+	var u = UnitManager.instance.get_unit_by_name(unit_name)
+	if u:
+		UnitUIManager3D.instance.hide_unit_shield_icon(u, part_name)
+		Console.print_info("Hiding shield on " + unit_name + " → " + part_name)
+	else:
+		Console.print_error("console_hide_shield: unit not found: " + unit_name)
+
+func console_toggle_shield(unit_name: String, part_name: String) -> void:
+	var u = UnitManager.instance.get_unit_by_name(unit_name)
+	if u:
+		UnitUIManager3D.instance.toggle_unit_shield_icon(u, part_name)
+		Console.print_info("Toggling shield on " + unit_name + " → " + part_name)
+	else:
+		Console.print_error("console_toggle_shield: unit not found: " + unit_name)
 
 
 
