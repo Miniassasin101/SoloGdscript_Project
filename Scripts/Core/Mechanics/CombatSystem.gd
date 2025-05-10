@@ -1,6 +1,10 @@
 class_name CombatSystem
 extends Node
 
+# Signals for abilities to listen to
+signal on_turn_started(unit: Unit)
+
+
 signal on_action_phase_start
 signal on_movement_phase_start
 

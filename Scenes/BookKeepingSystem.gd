@@ -9,8 +9,7 @@ class_name BookKeepingSystem extends Node
 
 func run_book_keeping_check() -> void:
 	
-	combat_fatigue_check()
-	
+	# FIXME: Apply Conditions Turn Interval
 	applicable_conditions_check()
 
 

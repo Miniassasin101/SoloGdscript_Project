@@ -47,7 +47,7 @@ func _ready() -> void:
 	instance = self
 	SignalBus.end_turn.connect(next_turn)
 	SignalBus.on_book_keeping_ended.connect(on_book_keeping_ended)
-	setup_initiative()
+	#setup_initiative()
 
 
 ## Initiative Functions
@@ -79,6 +79,7 @@ func setup_initiative() -> void:
 	for entry in initiatives:
 		initiative_order.append(entry["unit"])
 	prints("Unit Initiative", initiatives)
+	
 	
 
 
@@ -125,6 +126,7 @@ func on_book_keeping_ended() -> void:
 
 func start_turn() -> void:
 	CombatSystem.instance.start_turn(current_unit_turn)
+
 
 func next_turn() -> void:
 	turn_number += 1

@@ -949,7 +949,8 @@ func toggle_difficult_terrain() -> void:
 
 func test_n() -> void:
 	if Input.is_action_just_pressed("testkey_n"):
-		TurnSystem.instance.start_combat()
+		#TurnSystem.instance.start_combat()
+		FocusTurnSystem.instance.start_combat()
 
 var ite: int = 1
 

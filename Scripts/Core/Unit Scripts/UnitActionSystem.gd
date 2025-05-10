@@ -6,15 +6,19 @@ signal grid_position_selected(gridpos: GridPosition)
 # Reference to the currently selected unit
 @export var selected_unit: Unit
 
-@onready var selected_action: Action
+
 @onready var selected_ability: Ability
+
+@onready var selected_move: Ability
 
 # Reference to the MouseWorld instance (set in the editor)
 @export var mouse_world: MouseWorld
 
 
+
 # Self-reference for signal emission
 @onready var unit_action_system: UnitActionSystem = self
+
 
 # Reference to the active Camera3D
 @onready var camera: Camera3D = get_viewport().get_camera_3d()
@@ -24,8 +28,10 @@ signal grid_position_selected(gridpos: GridPosition)
 
 
 var is_busy: bool = false
+
 # This is true to allow selection of a grid square during a sub ability choice
 var sub_ability_choice: bool = false
+
 var is_reacting: bool = false
 
 var proactive_action_taken: bool = false

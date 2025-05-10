@@ -47,6 +47,10 @@ var grid_position: GridPosition:
 			return
 		#print_debug("New Grid Position: ", val.to_str())
 		grid_position = val
+
+var turn_started: bool = false
+
+
 var is_holding: bool = false
 # Reference to the action array node attached to this unit.
 var target_unit: Unit

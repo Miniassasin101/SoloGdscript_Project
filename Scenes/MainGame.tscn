@@ -1,4 +1,4 @@
-[gd_scene load_steps=93 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=95 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" uid="uid://dswgp2a8up16v" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" uid="uid://b268e884ur2c8" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -37,6 +37,8 @@
 [ext_resource type="PackedScene" uid="uid://bs8kc22xgwd2d" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.tscn" id="22_67ysf"]
 [ext_resource type="Resource" uid="uid://bo28spn03mllg" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/BypassArmorEffectResource.tres" id="23_xra60"]
 [ext_resource type="Resource" uid="uid://bhs3peayb8jf2" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/ChooseLocationEffectResource.tres" id="24_h0tua"]
+[ext_resource type="Script" uid="uid://c2q7s86augabm" path="res://Hero_Game/Scripts/Core/Mechanics/FocusTurnSystem.gd" id="24_w3lo6"]
+[ext_resource type="Script" uid="uid://dhgolog5fi4q2" path="res://Hero_Game/Scenes/FocusCombatSystem.gd" id="25_658qe"]
 [ext_resource type="PackedScene" uid="uid://cqqsm2gpif3dw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitCharacterSheet.tscn" id="26_7hc4r"]
 [ext_resource type="Resource" uid="uid://cb2opgmh0nqyu" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/CircumventParryEffectResource.tres" id="26_c6h62"]
 [ext_resource type="Resource" uid="uid://cjw50deqfhini" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectResources/DamageWeaponEffectResource.tres" id="27_ivlyn"]
@@ -295,20 +297,39 @@ script = ExtResource("8_kmwtl")
 script = ExtResource("10_iw061")
 unit_action_system = NodePath("../UnitActionSystem")
 
+[node name="DawnUnit4" parent="UnitManager" instance=ExtResource("52_cckm4")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
+ui_name = "Green"
+weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("79_d64mq")])
+
+[node name="DawnUnit" parent="UnitManager" instance=ExtResource("52_cckm4")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 8)
+ui_name = "Red"
+
 [node name="DawnUnit3" parent="UnitManager" instance=ExtResource("52_cckm4")]
 transform = Transform3D(-0.999999, 0, 8.74228e-08, 0, 1, 0, -8.74227e-08, 0, -1, 2, 0, 14)
 ui_name = "Yellow"
 weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("78_658qe")])
 is_enemy = true
 
-[node name="DawnUnit4" parent="UnitManager" instance=ExtResource("52_cckm4")]
-transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
-ui_name = "Green"
-weapons_equip_combat_start = Array[ExtResource("20_w3lo6")]([ExtResource("79_d64mq")])
+[node name="DawnUnit2" parent="UnitManager" instance=ExtResource("52_cckm4")]
+transform = Transform3D(-4.37113e-08, 0, -1, 0, 1, 0, 0.999999, 0, -4.37114e-08, 6, 0, 14)
+ui_name = "Blue"
 
 [node name="TurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
 script = ExtResource("6_rwbm0")
 unit_manager = NodePath("../UnitManager")
+
+[node name="FocusTurnSystem" type="Node" parent="." node_paths=PackedStringArray("unit_manager")]
+script = ExtResource("24_w3lo6")
+unit_manager = NodePath("../UnitManager")
+
+[node name="FocusCombatSystem" type="Node" parent="."]
+script = ExtResource("25_658qe")
+
+[node name="BookKeepingSystem" type="Node" parent="FocusCombatSystem" node_paths=PackedStringArray("combat_system")]
+script = ExtResource("21_ktx83")
+combat_system = NodePath("../../CombatSystem")
 
 [node name="CombatSystem" type="Node" parent="." node_paths=PackedStringArray("unit_action_system_ui", "book_keeping_system", "engagement_system", "special_effect_system")]
 script = ExtResource("16_f3oa4")
