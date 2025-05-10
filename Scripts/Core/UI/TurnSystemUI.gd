@@ -33,9 +33,9 @@ func _ready() -> void:
 func on_ui_update() -> void:
 	update_enemy_turn_visual()
 	update_turn_label()
-	update_phase_label()
-	update_cycle_label()
-	update_gait_label()
+	#update_phase_label()
+	#update_cycle_label()
+	#update_gait_label()
 
 func _on_end_turn_button_pressed() -> void:
 	SignalBus.end_turn.emit()

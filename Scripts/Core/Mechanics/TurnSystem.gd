@@ -45,8 +45,8 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
-	SignalBus.end_turn.connect(next_turn)
-	SignalBus.on_book_keeping_ended.connect(on_book_keeping_ended)
+	#SignalBus.end_turn.connect(next_turn)
+	#SignalBus.on_book_keeping_ended.connect(on_book_keeping_ended)
 	#setup_initiative()
 
 
@@ -66,7 +66,6 @@ func setup_initiative() -> void:
 		var bonus = u.attribute_map.get_attribute_by_name("initiative_bonus").current_buffed_value
 		var initiative_penalty = u.conditions_manager.get_total_penalty("initiative_penalty")
 
-
 		var total_initiative = roll_value + bonus + initiative_penalty
 
 		# Stores dictionaries in the array
@@ -79,8 +78,7 @@ func setup_initiative() -> void:
 	for entry in initiatives:
 		initiative_order.append(entry["unit"])
 	prints("Unit Initiative", initiatives)
-	
-	
+
 
 
 ## Custom compare function for sorting initiatives descending by initiative value.

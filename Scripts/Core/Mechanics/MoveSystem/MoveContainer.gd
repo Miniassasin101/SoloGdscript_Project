@@ -6,7 +6,8 @@
 
 @icon("res://addons/godot_gameplay_systems/attributes_and_moves/assets/MoveContainer.svg")
 
-class_name MoveContainer extends Node
+class_name MoveContainer
+extends Node
 
 
 

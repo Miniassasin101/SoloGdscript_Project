@@ -113,6 +113,8 @@ func has_line_of_sight(start_position: Vector3, end_position: Vector3) -> bool:
 	return not result.has("position")
 
 
+func get_hovered_grid_position() -> GridPosition:
+	return current_hovered_grid
 
 
 # Returns the mouse position in world space as a Dictionary

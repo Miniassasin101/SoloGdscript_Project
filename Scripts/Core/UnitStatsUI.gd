@@ -32,9 +32,9 @@ func instantiate_stats_bars(_unit: Unit = null) -> void:
 			units_to_create_for = unit_manager.get_player_units()
 
 		# If the TurnSystem has an initiative order, order the units accordingly.
-		if TurnSystem.instance != null and TurnSystem.instance.initiative_order.size() > 0:
+		if FocusTurnSystem.instance != null and FocusTurnSystem.instance.initiative_queue.size() > 0:
 			var ordered_units: Array = []
-			for unit in TurnSystem.instance.initiative_order:
+			for unit in FocusTurnSystem.instance.initiative_queue:
 				if unit in units_to_create_for:
 					ordered_units.append(unit)
 			units_to_create_for = ordered_units
@@ -52,7 +52,7 @@ func _on_update_stats_bars() -> void:
 		if is_instance_valid(unit):
 			var stats_bar = unit_stats_bars[unit]
 			stats_bar.update_stats(unit)
-			if unit == TurnSystem.instance.current_unit_turn:
+			if unit in FocusTurnSystem.instance.current_group: #unit == TurnSystem.instance.current_unit_turn:
 				stats_bar.start_drift()
 			else:
 				stats_bar.stop_drift()

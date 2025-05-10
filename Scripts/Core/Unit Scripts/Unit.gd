@@ -6,7 +6,12 @@ extends Node3D
 signal facing_changed(new_facing: int)
 signal gait_changed(new_gait: int)
 
-
+enum TurnState {
+	OUTSIDE_COMBAT,
+	IN_QUEUE,
+	TURN_STARTED,
+	TURN_ENDED
+}
 
 # Variables
 var action_system: UnitActionSystem
@@ -37,7 +42,7 @@ var action_system: UnitActionSystem
 @export var weapons_equip_combat_start: Array[Weapon] = []
 
 
-var ability_container: AbilityContainer
+var move_container: MoveContainer
 var attribute_map: GameplayAttributeMap
 var unit_manager: UnitManager = get_parent()
 # The grid position of this unit.
@@ -49,6 +54,7 @@ var grid_position: GridPosition:
 		grid_position = val
 
 var turn_started: bool = false
+
 
 
 var is_holding: bool = false
@@ -68,7 +74,11 @@ var target_unit: Unit
 @export var shoulder_height: float = 1.7
 
 
-
+var moves_made: int = 0:
+	set(variable):
+		if variable < 0 or variable > 5:
+			return false
+		moves_made = variable
 
 
 var facing: int = 2:
@@ -105,8 +115,8 @@ func _ready() -> void:
 	set_facing()
 
 	for child in get_children():
-		if child is AbilityContainer:
-			ability_container = child
+		if child is MoveContainer:
+			move_container = child
 			continue
 		if child is GameplayAttributeMap:
 			attribute_map = child
@@ -238,9 +248,9 @@ func _to_string() -> String:
 	return self.name
 
 
-func has_ability(ability_name: StringName) -> bool:
-	for ability: Ability in ability_container.granted_abilities:
-		if ability.ui_name == ability_name:
+func has_move(move_name: StringName) -> bool:
+	for move: Move in move_container.granted_moves:
+		if move.ui_name == move_name:
 			return true
 	return false
 

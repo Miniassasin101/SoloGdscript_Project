@@ -9,7 +9,7 @@ var grid_visuals: Array = []  # Array of Arrays of Node3D instances.
 
 var highlighted_path: Array[GridSystemVisualSingle]
 
-var selected_ability: Ability
+var selected_move: Move
 # Singleton instance of GridSystemVisual.
 static var instance: GridSystemVisual = null
 
@@ -84,11 +84,11 @@ func set_hovered_cell(grid_position: GridPosition) -> void:
 	if cell:
 		var grid_object: GridObject = LevelGrid.get_grid_object(grid_position)
 		var unit: Unit = grid_object.get_unit()
-		var current_unit_turn: Unit = TurnSystem.instance.current_unit_turn
+		var current_unit_turn: Unit = FocusTurnSystem.instance.current_unit_turn
 		if unit and current_unit_turn:
 			if unit.is_enemy != current_unit_turn.is_enemy:
 				cell._on_mouse_enter(Color.FIREBRICK)
-			elif unit == TurnSystem.instance.current_unit_turn:
+			elif unit == FocusTurnSystem.instance.current_unit_turn:
 				cell._on_mouse_enter(Color.FOREST_GREEN)
 			else:
 				cell._on_mouse_enter(Color.AQUA)
@@ -124,7 +124,7 @@ func highlight_path(grid_positions: Array[GridPosition]) -> void:
 	
 	var enemy_engagement_positions: Array[GridPosition] = (
 		UnitManager.instance.get_enemy_adjacent_positions
-		(TurnSystem.instance.current_unit_turn))
+		(FocusTurnSystem.instance.current_unit_turn))
 	
 	var encounters_engagement: bool = false
 	for grid_position in grid_positions:
@@ -221,12 +221,12 @@ func update_grid_visual() -> void:
 	
 	var unit: Unit
 
-	selected_ability = UnitActionSystem.instance.get_selected_ability()
-	if selected_ability != null:
+	selected_move = UnitActionSystem.instance.get_selected_move()
+	if selected_move != null:
 		"""
-		if selected_ability.tags_type.has("reaction"):
+		if selected_move.tags_type.has("reaction"):
 			unit = CombatSystem.instance.current_event.target_unit
-			#show_grid_positions(selected_ability.get_valid_ability_target_grid_position_list())
+			#show_grid_positions(selected_move.get_valid_move_target_grid_position_list())
 		else:
 			unit = UnitActionSystem.instance.selected_unit
 		"""
@@ -236,5 +236,5 @@ func update_grid_visual() -> void:
 			unit = UnitActionSystem.instance.selected_unit
 
 		if unit != null:
-			show_grid_positions(unit.ability_container.
-			get_valid_ability_target_grid_position_list(selected_ability))
+			show_grid_positions(unit.move_container.
+			get_valid_move_target_grid_position_list(selected_move))

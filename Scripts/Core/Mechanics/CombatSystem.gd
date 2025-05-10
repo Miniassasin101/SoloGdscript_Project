@@ -194,7 +194,7 @@ func reaction(reacting_unit: Unit, _attacking_unit: Unit, _ret_event: Activation
 	SignalBus.on_player_reaction.emit(reacting_unit)
 	UnitActionSystem.instance.set_is_reacting()
 
-	var ability: Ability = await SignalBus.ability_complete#await SignalBus.reaction_selected
+	var ability: Ability = await SignalBus.move_complete#await SignalBus.reaction_selected
 
 	if ability == null:
 		# No valid reaction chosen, treat as no reaction (auto fail)

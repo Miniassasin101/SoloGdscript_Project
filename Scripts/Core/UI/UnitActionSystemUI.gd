@@ -17,7 +17,7 @@ signal continue_turn
 @export var special_effect_container: MouseEventDroppableSlotContainer
 @export var selected_special_effect_container: MouseEventDroppableSlotContainer
 @export var mouse_event_droppable_controller: MouseEventDroppableSlotController
-@export var ability_points_text: Label
+@export var move_points_text: Label
 
 @export_category("")
 var selected_unit: Unit
@@ -29,7 +29,7 @@ var slot_list: Array[MouseEventDroppableSlot] = []
 
 func _ready() -> void:
 	SignalBus.selected_unit_changed.connect(on_selected_unit_changed)
-	SignalBus.action_points_changed.connect(_update_ability_points)
+	SignalBus.action_points_changed.connect(_update_move_points)
 	SignalBus.on_turn_changed.connect(on_turn_changed)
 	SignalBus.on_player_reaction.connect(on_player_reaction)
 	SignalBus.on_player_special_effect.connect(on_player_special_effect)
@@ -41,13 +41,13 @@ func _ready() -> void:
 	selected_unit = UnitActionSystem.instance.get_selected_unit()
 	create_unit_action_buttons()
 	create_unit_reaction_buttons()
-	_update_ability_points()
+	_update_move_points()
 	toggle_containers_visibility_off_except([action_button_container])
 
 
 func on_ui_update() -> void:
 	create_unit_action_buttons()
-	_update_ability_points()
+	_update_move_points()
 
 
 func movement_handler() -> void:
@@ -63,21 +63,21 @@ func create_unit_action_buttons() -> void:
 	for action_button in action_button_container.get_children():
 		action_button.queue_free()
 	
-	var granted_abilities = selected_unit.ability_container.granted_abilities
+	var granted_moves = selected_unit.move_container.granted_moves
 	
-	for ability: Ability in granted_abilities:
-		if ability.tags_type.has("reaction") or ability.tags_type.has("move") or ability.tags_type.has("free"):
+	for move: Move in granted_moves:
+		if move.tags_type.has("reaction") or move.tags_type.has("move") or move.tags_type.has("free"):
 			continue # FIXME: Replace with actual Tag logic later
-		if !verify_gait_allowed(selected_unit.current_gait, ability):
+		if !verify_gait_allowed(selected_unit.current_gait, move):
 			continue
-		if !selected_unit.conditions_manager.can_use_ability_given_conditions(ability):
+		if !selected_unit.conditions_manager.can_use_move_given_conditions(move):
 			continue
-		var ability_button_ui = action_button_prefab.instantiate()
-		ability_button_ui.set_base_ability(ability)
-		action_button_container.add_child(ability_button_ui)
+		var move_button_ui = action_button_prefab.instantiate()
+		move_button_ui.set_base_move(move)
+		action_button_container.add_child(move_button_ui)
 	
 	# This is put at the end so free actions are placed in the back
-	create_unit_free_action_buttons(granted_abilities)
+	create_unit_free_action_buttons(granted_moves)
 	
 	# adds a next phase button at the very end 
 	create_next_phase_button()
@@ -88,50 +88,50 @@ func create_unit_action_buttons_move_phase() -> void:
 		return
 	for action_button in action_button_container.get_children():
 		action_button.queue_free()
-	var granted_abilities = selected_unit.ability_container.granted_abilities
+	var granted_moves = selected_unit.move_container.granted_moves
 	
-	for ability: Ability in granted_abilities:
-		if ability.tags_type.has("reaction") or ability.tags_type.has("action") or ability.tags_type.has("free"):
+	for move: Move in granted_moves:
+		if move.tags_type.has("reaction") or move.tags_type.has("action") or move.tags_type.has("free"):
 			continue
-		if selected_unit.current_gait == Utilities.MovementGait.HOLD_GROUND and ability.tags_type.has("move"):
+		if selected_unit.current_gait == Utilities.MovementGait.HOLD_GROUND and move.tags_type.has("move"):
 			continue
-		if verify_gait_allowed(selected_unit.current_gait, ability) == false:
+		if verify_gait_allowed(selected_unit.current_gait, move) == false:
 			continue
-		if TurnSystem.instance.current_cycle >= 3 and ability.tags_type.has("move"):
+		if FocusTurnSystem.instance.current_cycle >= 3 and move.tags_type.has("move"):
 			continue
-		if CombatSystem.instance.engagement_system.is_unit_engaged(selected_unit) and ability.tags_type.has("move"):
+		if CombatSystem.instance.engagement_system.is_unit_engaged(selected_unit) and move.tags_type.has("move"):
 			continue
-		var ability_button_ui: ActionButtonUI = action_button_prefab.instantiate()
-		ability_button_ui.set_base_ability(ability) # Always call a setup function on the button when adding.
-		action_button_container.add_child(ability_button_ui)
+		var move_button_ui: ActionButtonUI = action_button_prefab.instantiate()
+		move_button_ui.set_base_move(move) # Always call a setup function on the button when adding.
+		action_button_container.add_child(move_button_ui)
 	
 	# This is put at the end so free actions are placed in the back
-	create_unit_free_action_buttons(granted_abilities)
+	create_unit_free_action_buttons(granted_moves)
 	
 	# adds a next phase button at the very end 
 	#create_next_phase_button()
 
 
-func create_unit_free_action_buttons(granted_abilities: Array[Ability]) -> void:
-	for ability: Ability in granted_abilities:
-		if ability.tags_type.has("free"):
-			var ability_button_ui: ActionButtonUI = action_button_prefab.instantiate()
-			ability_button_ui.set_base_ability(ability)
-			action_button_container.add_child(ability_button_ui)
+func create_unit_free_action_buttons(granted_moves: Array[Move]) -> void:
+	for move: Move in granted_moves:
+		if move.tags_type.has("free"):
+			var move_button_ui: ActionButtonUI = action_button_prefab.instantiate()
+			move_button_ui.set_base_move(move)
+			action_button_container.add_child(move_button_ui)
 
 
 ## Determines if a next_phase button needs to be made.
 func create_next_phase_button() -> void:
-	if TurnSystem.instance.get_current_unit().attribute_map.get_attribute_by_name("action_points").current_buffed_value <= 0:
-		if TurnSystem.instance.current_cycle >= 3:
+	if FocusTurnSystem.instance.get_current_unit().attribute_map.get_attribute_by_name("action_points").current_buffed_value <= 0:
+		if FocusTurnSystem.instance.current_cycle >= 3:
 			return
 		
-		var ability_button_ui: ActionButtonUI = action_button_prefab.instantiate()
-		ability_button_ui.set_no_ap()
-		action_button_container.add_child(ability_button_ui)
+		var move_button_ui: ActionButtonUI = action_button_prefab.instantiate()
+		move_button_ui.set_no_ap()
+		action_button_container.add_child(move_button_ui)
 
-func verify_gait_allowed(current_gait: int, in_ability: Ability) -> bool:
-	if current_gait > in_ability.movement_gait:
+func verify_gait_allowed(current_gait: int, in_move: Move) -> bool:
+	if current_gait > in_move.movement_gait:
 		return false
 	return true
 
@@ -142,22 +142,22 @@ func create_unit_reaction_buttons() -> void:
 	for action_button in reaction_button_container.get_children():
 		action_button.queue_free()
 	
-	for ability: Ability in selected_unit.ability_container.granted_abilities:
-		if ability.tags_type.has("reaction"):
-			if !verify_gait_allowed(reacting_unit.current_gait, ability):
+	for move: Move in selected_unit.move_container.granted_moves:
+		if move.tags_type.has("reaction"):
+			if !verify_gait_allowed(reacting_unit.current_gait, move):
 				continue
 			
 			var can_activate: bool = false
-			for gridpos in reacting_unit.ability_container.get_valid_ability_target_grid_position_list(ability):
-				if reacting_unit.ability_container.can_activate_at_position(ability, gridpos):
+			for gridpos in reacting_unit.move_container.get_valid_move_target_grid_position_list(move):
+				if reacting_unit.move_container.can_activate_at_position(move, gridpos):
 					can_activate = true
 					continue
 			if !can_activate:
 				continue
 			
-			var ability_button_ui = action_button_prefab.instantiate()
-			ability_button_ui.set_base_ability(ability)
-			reaction_button_container.add_child(ability_button_ui)
+			var move_button_ui = action_button_prefab.instantiate()
+			move_button_ui.set_base_move(move)
+			reaction_button_container.add_child(move_button_ui)
 
 
 func create_unit_special_effect_buttons(abs_dif: int) -> void:
@@ -171,7 +171,7 @@ func on_selected_unit_changed(unit: Unit) -> void:
 	selected_unit = unit
 	create_unit_action_buttons()
 	create_unit_reaction_buttons()
-	_update_ability_points()
+	_update_move_points()
 
 
 
@@ -202,10 +202,10 @@ func on_player_special_effect(unit: Unit, in_special_effects: Array[SpecialEffec
 func on_movement_phase_start() -> void:
 	#await get_tree().create_timer(0.2).timeout
 	toggle_containers_visibility_off_except([gait_button_container])
-	var cycle_num: int = TurnSystem.instance.current_cycle
+	var cycle_num: int = FocusTurnSystem.instance.current_cycle
 	if cycle_num >= 3: 
 		movement_phase_late_cycle() # NOTE: make await later.
-	elif (cycle_num == 1) or ((TurnSystem.instance.current_unit_turn.current_gait == Utilities.MovementGait.HOLD_GROUND) and cycle_num == 2):
+	elif (cycle_num == 1) or ((FocusTurnSystem.instance.current_unit_turn.current_gait == Utilities.MovementGait.HOLD_GROUND) and cycle_num == 2):
 		await movement_phase_first_two_cycles()
 	toggle_containers_visibility_off_except([action_button_container])
 	return
@@ -232,8 +232,8 @@ func movement_phase_late_cycle() -> void:
 func movement_phase_first_two_cycles() -> void:
 	#prompt gait based on previous action
 	var allowed_gait: int = (
-TurnSystem.instance.current_unit_turn.previous_ability.movement_gait if 
-TurnSystem.instance.current_unit_turn.previous_ability else 0
+FocusTurnSystem.instance.current_unit_turn.previous_move.movement_gait if 
+FocusTurnSystem.instance.current_unit_turn.previous_move else 0
 )
 	
 	create_unit_gait_buttons(allowed_gait + 1)
@@ -254,14 +254,16 @@ func create_unit_gait_buttons(gaits: int) -> void:
 
 func on_gait_selected(in_gait: int) -> void:
 	print_debug("Gait Selected: ", in_gait)
-	TurnSystem.instance.current_unit_turn.set_gait(in_gait)
+	FocusTurnSystem.instance.current_unit_turn.set_gait(in_gait)
 	turn_system_ui.update_gait_label()
 	continue_turn.emit()
 
 
-func _update_ability_points() -> void:
+func _update_move_points() -> void:
+	if !move_points_text:
+		return
 	if selected_unit != null:
-		ability_points_text.text = ("Ability Points: " + str(int(selected_unit.attribute_map.
+		move_points_text.set_text("Move Points: " + str(int(selected_unit.attribute_map.
 		get_attribute_by_name("action_points").current_buffed_value)))
 
 
@@ -270,7 +272,7 @@ func on_turn_changed() -> void:
 	if sel_unit == null:
 		return
 	on_selected_unit_changed(sel_unit)
-	#self.visible = TurnSystem.instance.is_player_turn
+	#self.visible = FocusTurnSystem.instance.is_player_turn
 	# FIXME: Revert back later
 
 

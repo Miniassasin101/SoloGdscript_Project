@@ -20,7 +20,7 @@ var disable: bool = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SignalBus.on_turn_changed.connect(on_turn_changed)
-	SignalBus.ability_complete.connect(on_ability_complete)
+	SignalBus.move_complete.connect(on_ability_complete)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -115,7 +115,7 @@ func try_use_enemy_ability(enemy_unit: Unit) -> bool:
 		print_debug("No valid ability for enemy unit: ", enemy_unit)
 		return false
 
-func get_best_enemy_ai_ability(ability_container: AbilityContainer, ability: Ability):
+func get_best_enemy_ai_ability(ability_container: MoveContainer, ability: Ability):
 	var enemy_ai_ability_list: Array[EnemyAIAction] = []
 	var valid_ability_grid_position_list: Array[GridPosition] = ability_container.get_valid_ability_target_grid_position_list(ability)
 	

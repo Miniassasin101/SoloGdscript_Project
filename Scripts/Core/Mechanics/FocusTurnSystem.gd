@@ -60,6 +60,8 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
+	
+	SignalBus.end_turn.connect(next_turn)
 
 
 ## This is the first function that is called when combat begins. Will return with an error if initiative hasnt been rolled
@@ -105,6 +107,8 @@ func start_turn(unit: Unit = current_unit_turn) -> void:
 	FocusCombatSystem.instance.start_turn(current_unit_turn)
 
 
+func next_turn() -> void:
+	pass
 
 
 
@@ -135,3 +139,10 @@ func _prepare_next_group() -> void:
 	
 	# Now these units can act in any order
 	#SignalBus.start_simultaneous_turn.emit(current_group)
+
+
+func set_current_unit(unit) -> void:
+	current_unit_turn = unit
+
+func get_current_unit() -> Unit:
+	return current_unit_turn

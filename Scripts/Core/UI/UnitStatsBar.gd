@@ -2,7 +2,7 @@ class_name UnitStatsBar
 extends PanelContainer
 
 @export var unit_name_label: Label
-@export var action_points_label: Label
+@export var moves_made_label: Label
 @export var movement_points_label: Label
 @export var health_text_label: Label
 @export var health_bar: TextureProgressBar
@@ -27,21 +27,22 @@ func _ready() -> void:
 
 # Update the stats bar with the given unit's stats.
 func update_stats(unit: Unit) -> void:
-	var move_rate = unit.attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
-	var speed_multiplier = Utilities.GAIT_SPEED_MULTIPLIER.get(unit.current_gait)
+	#var move_rate = unit.attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
+	#var speed_multiplier = Utilities.GAIT_SPEED_MULTIPLIER.get(unit.current_gait)
 	unit_name_label.text = unit.ui_name
 	
-	action_points_label.text = str(int(unit.attribute_map.get_attribute_by_name("action_points").current_value))
-	movement_points_label.text = "MOV: " + str(int(((move_rate * speed_multiplier) / 2) - unit.distance_moved_this_turn))
+	# Shows the number of moves taken. Resets at the start of the unit's turn (could change to end)
+	moves_made_label.text = "Moves Made: " + str(unit.moves_made) #str(int(unit.attribute_map.get_attribute_by_name("action_points").current_value))
+	#movement_points_label.text = "MOV: " + str(int(((move_rate * speed_multiplier) / 2) - unit.distance_moved_this_turn))
 	health_text_label.text = "Health: %d / %d" % [
 		unit.attribute_map.get_attribute_by_name("health").current_value, 
 		unit.attribute_map.get_attribute_by_name("health").maximum_value
 	]
 	
 	# Animate the health bar value.
-	var target_health_percentage = (float(unit.attribute_map.get_attribute_by_name("health").current_value) /
+	var target_health_percentage := (float(unit.attribute_map.get_attribute_by_name("health").current_value) /
 		unit.attribute_map.get_attribute_by_name("health").maximum_value * 100)
-	var tween = create_tween()
+	var tween := create_tween()
 	tween.tween_property(health_bar, "value", target_health_percentage, 0.4) \
 		 .set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 	

@@ -397,7 +397,7 @@ text_controller_scene = ExtResource("27_khu5d")
 character_log_queue_scene = ExtResource("28_6i1gy")
 unit_action_system_ui = NodePath("UnitActionSystemUI")
 
-[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system_ui", "action_button_container", "reaction_button_container", "gait_button_container", "dynamic_button_picker", "dynamic_button_container", "special_effect_container", "selected_special_effect_container", "mouse_event_droppable_controller", "ability_points_text")]
+[node name="UnitActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("turn_system_ui", "action_button_container", "reaction_button_container", "gait_button_container", "dynamic_button_picker", "dynamic_button_container", "special_effect_container", "selected_special_effect_container", "mouse_event_droppable_controller")]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -423,7 +423,6 @@ dynamic_button_container = NodePath("DynamicButtonsContainer")
 special_effect_container = NodePath("MouseEventDroppableSlotController/SpecialEffectContainer")
 selected_special_effect_container = NodePath("MouseEventDroppableSlotController/SelectedSpecialEffectContainer")
 mouse_event_droppable_controller = NodePath("MouseEventDroppableSlotController")
-ability_points_text = NodePath("AbilityPointsLabel")
 metadata/_edit_use_anchors_ = true
 
 [node name="ActionButtonsContainer" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]
