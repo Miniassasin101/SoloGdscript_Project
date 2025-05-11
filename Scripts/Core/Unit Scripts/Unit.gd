@@ -55,6 +55,10 @@ var grid_position: GridPosition:
 
 var turn_started: bool = false
 
+var turn_state: TurnState = TurnState.OUTSIDE_COMBAT:
+	set(value):
+		turn_state = value
+		_on_turn_state_changed()
 
 
 var is_holding: bool = false
@@ -204,6 +208,20 @@ func reset_ability_points() -> void:
 
 
 
+func _on_turn_state_changed() -> void:
+	match turn_state:
+		TurnState.OUTSIDE_COMBAT:
+			# Handle exit from combat state
+			pass
+		TurnState.IN_QUEUE:
+			# Ready to act soon
+			pass
+		TurnState.TURN_STARTED:
+			# Begin turn logic
+			pass
+		TurnState.TURN_ENDED:
+			# Used turn, wait to be re-added to queue
+			pass
 
 
 

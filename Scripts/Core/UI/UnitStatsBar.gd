@@ -1,5 +1,7 @@
 class_name UnitStatsBar
-extends PanelContainer
+extends MarginContainer
+
+@export var unit_stats_bar_content: PanelContainer
 
 @export var unit_name_label: Label
 @export var moves_made_label: Label
@@ -8,7 +10,11 @@ extends PanelContainer
 @export var health_bar: TextureProgressBar
 
 @export var shadowed_stylebox: StyleBoxFlat
-@export var flat_stylebox: StyleBoxFlat
+
+@export var red_shadowed_stylebox: StyleBoxFlat
+@export var blue_shadowed_stylebox: StyleBoxFlat
+@export var red_flat_stylebox: StyleBoxFlat
+@export var blue_flat_stylebox: StyleBoxFlat
 
 # Drift tweakable properties:
 @export var drift_amount: float = 20.0   # Pixels to drift right.
@@ -21,9 +27,9 @@ var base_position: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	# Set initial stylebox override.
-	add_theme_stylebox_override("panel", shadowed_stylebox)
+	unit_stats_bar_content.add_theme_stylebox_override("panel", shadowed_stylebox)
 	# Store the initial position so we can reset later.
-	base_position = get_position()
+	base_position = unit_stats_bar_content.get_position()
 
 # Update the stats bar with the given unit's stats.
 func update_stats(unit: Unit) -> void:
@@ -31,8 +37,10 @@ func update_stats(unit: Unit) -> void:
 	#var speed_multiplier = Utilities.GAIT_SPEED_MULTIPLIER.get(unit.current_gait)
 	unit_name_label.text = unit.ui_name
 	
+	var lowest_score: int = FocusTurnSystem.instance.lowest_initiative_score
+	
 	# Shows the number of moves taken. Resets at the start of the unit's turn (could change to end)
-	moves_made_label.text = "Moves Made: " + str(unit.moves_made) #str(int(unit.attribute_map.get_attribute_by_name("action_points").current_value))
+	moves_made_label.text = "Initiative Score: " + str(FocusTurnSystem.instance.initiative_scores[unit] - lowest_score)#unit.moves_made) #str(int(unit.attribute_map.get_attribute_by_name("action_points").current_value))
 	#movement_points_label.text = "MOV: " + str(int(((move_rate * speed_multiplier) / 2) - unit.distance_moved_this_turn))
 	health_text_label.text = "Health: %d / %d" % [
 		unit.attribute_map.get_attribute_by_name("health").current_value, 
@@ -47,28 +55,39 @@ func update_stats(unit: Unit) -> void:
 		 .set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 	
 	# Change the stylebox based on whether this unit has already acted.
-	if TurnSystem.instance and TurnSystem.instance.has_taken_proactive_action_this_cycle(unit):
-		add_theme_stylebox_override("panel", flat_stylebox)
+	if unit.turn_state == unit.TurnState.TURN_ENDED:
+		if unit.is_enemy:
+			unit_stats_bar_content.add_theme_stylebox_override("panel", red_flat_stylebox)
+		else:
+			unit_stats_bar_content.add_theme_stylebox_override("panel", blue_flat_stylebox)
 	else:
-		add_theme_stylebox_override("panel", shadowed_stylebox)
+		if unit.is_enemy:
+			unit_stats_bar_content.add_theme_stylebox_override("panel", red_shadowed_stylebox)
+		else:
+			unit_stats_bar_content.add_theme_stylebox_override("panel", blue_shadowed_stylebox)
 
 # Call this function to start the drift animation.
 func start_drift() -> void:
 	# If already drifting, do nothing.
 	if drift_tween:
 		return
-	base_position = position
+	base_position = unit_stats_bar_content.get_position()
 	var final_position: Vector2 = Vector2(base_position.x + drift_amount, base_position.y)
 	drift_tween = get_tree().create_tween()
 	drift_tween.set_loops(50)  # Loop indefinitely.
-	drift_tween.tween_property(self, "position", final_position, drift_duration) \
+	drift_tween.tween_property(unit_stats_bar_content, "position", final_position, drift_duration) \
 			   .set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	drift_tween.tween_property(self, "position", base_position, drift_duration) \
+	drift_tween.tween_property(unit_stats_bar_content, "position", base_position, drift_duration) \
 			   .set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 # Call this function to stop the drift and reset the position.
 func stop_drift() -> void:
+	if abort_tween():
+		unit_stats_bar_content.set_position(base_position)
+
+func abort_tween() -> bool:
 	if drift_tween:
 		drift_tween.kill()
 		drift_tween = null
-		position = base_position
+		return true
+	return false

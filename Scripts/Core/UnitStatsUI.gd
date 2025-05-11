@@ -10,18 +10,27 @@ extends Control
 var unit_stats_bars: Dictionary = {}
 var units_to_create_for: Array
 
+
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	instantiate_stats_bars()
+	#instantiate_stats_bars()
 	SignalBus.update_stat_bars.connect(_on_update_stats_bars)
 	SignalBus.on_ui_update.connect(_on_update_stats_bars)
 	SignalBus.on_unit_added.connect(instantiate_stats_bars)
 	SignalBus.on_unit_removed.connect(instantiate_stats_bars)
+	
+	UIBus.instantiate_stats_bars.connect(instantiate_stats_bars)
+	UIBus.update_stat_bars.connect(_on_update_stats_bars)
+
+
 
 func instantiate_stats_bars(_unit: Unit = null) -> void:
 	if unit_manager:
 		# Remove all current children from the container.
-		for child in unit_stats_container.get_children():
+		for child: UnitStatsBar in unit_stats_container.get_children():
+			child.abort_tween()
 			child.queue_free()
 		unit_stats_bars.clear()
 
@@ -45,14 +54,15 @@ func instantiate_stats_bars(_unit: Unit = null) -> void:
 			stats_bar.update_stats(unit)  # Initialize with current values.
 			unit_stats_container.add_child(stats_bar)
 			unit_stats_bars[unit] = stats_bar
+		
 
 
 func _on_update_stats_bars() -> void:
-	for unit in unit_stats_bars.keys():
+	for unit: Unit in unit_stats_bars.keys():
 		if is_instance_valid(unit):
-			var stats_bar = unit_stats_bars[unit]
+			var stats_bar: UnitStatsBar = unit_stats_bars[unit]
 			stats_bar.update_stats(unit)
-			if unit in FocusTurnSystem.instance.current_group: #unit == TurnSystem.instance.current_unit_turn:
+			if unit.turn_state == Unit.TurnState.TURN_STARTED: #unit == TurnSystem.instance.current_unit_turn:
 				stats_bar.start_drift()
 			else:
 				stats_bar.stop_drift()

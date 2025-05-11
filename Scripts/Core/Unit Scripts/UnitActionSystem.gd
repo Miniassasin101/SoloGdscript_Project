@@ -247,6 +247,9 @@ func try_handle_unit_selection() -> bool:
 	if !unit:
 		return false
 	
+	if unit.turn_state != Unit.TurnState.TURN_STARTED:
+		return false
+		
 	if !FocusTurnSystem.instance.current_group.has(unit):
 		return false
 	
@@ -255,7 +258,7 @@ func try_handle_unit_selection() -> bool:
 		return false
 	
 	set_selected_unit(unit)
-	FocusTurnSystem.instance.set_current_unit_turn(unit)
+	#FocusTurnSystem.instance.set_current_unit(unit)
 	
 	return true
 
@@ -380,6 +383,9 @@ func clear_busy(_move: Move = null) -> void:
 	is_busy = false
 
 func set_selected_unit(unit: Unit) -> void:
+	if unit == null:
+		return
+	
 	selected_unit = unit
 	#var aco = unit.move_container.abilities
 	if !unit.move_container.granted_moves.is_empty():

@@ -1,8 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://3p3xt0lymqsd"]
+[gd_scene load_steps=13 format=3 uid="uid://3p3xt0lymqsd"]
 
 [ext_resource type="Script" uid="uid://chd2i3l86bu6y" path="res://Hero_Game/Scripts/Core/UI/UnitStatsBar.gd" id="1_73dlo"]
 [ext_resource type="StyleBox" uid="uid://dxf8kqkw1goiw" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBarShadowedStyleBox.tres" id="1_cydlx"]
-[ext_resource type="StyleBox" uid="uid://n31yek6n5pbc" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBarFlatStyleBox.tres" id="3_2merk"]
+[ext_resource type="StyleBox" uid="uid://cea8p7q7fcxjn" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBarBlueFlatStyleBox.tres" id="3_cydlx"]
+[ext_resource type="StyleBox" uid="uid://ctfdrvgj0jmvy" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBarRedShadowedStyleBox.tres" id="3_ee32f"]
+[ext_resource type="StyleBox" uid="uid://dchax7jq33003" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBarBlueShadowedStyleBox.tres" id="4_mx6qg"]
+[ext_resource type="StyleBox" uid="uid://cb4hx8gm801ov" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBarRedFlatStyleBox.tres" id="5_afvsy"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bwm3i"]
 font_size = 21
@@ -27,64 +30,74 @@ colors = PackedColorArray(0.774322, 0.559134, 0.910283, 1, 1, 1, 1, 1)
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_hmxcl"]
 gradient = SubResource("Gradient_2merk")
 
-[node name="UnitStatsBar" type="PanelContainer" node_paths=PackedStringArray("unit_name_label", "moves_made_label", "movement_points_label", "health_text_label", "health_bar")]
-theme_override_styles/panel = ExtResource("1_cydlx")
+[node name="UnitStatsBar" type="MarginContainer" node_paths=PackedStringArray("unit_stats_bar_content", "unit_name_label", "moves_made_label", "movement_points_label", "health_text_label", "health_bar")]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 153.0
+offset_bottom = 122.0
 script = ExtResource("1_73dlo")
-unit_name_label = NodePath("MarginContainer/VBoxContainer/UnitNameLabel")
-moves_made_label = NodePath("MarginContainer/VBoxContainer/MovesMadeLabel")
-movement_points_label = NodePath("MarginContainer/VBoxContainer/MovementPointsLabel")
-health_text_label = NodePath("MarginContainer/VBoxContainer/HealthTextLabel")
-health_bar = NodePath("MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HealthBar")
+unit_stats_bar_content = NodePath("UnitStatsBarContent")
+unit_name_label = NodePath("UnitStatsBarContent/MarginContainer/VBoxContainer/UnitNameLabel")
+moves_made_label = NodePath("UnitStatsBarContent/MarginContainer/VBoxContainer/MovesMadeLabel")
+movement_points_label = NodePath("UnitStatsBarContent/MarginContainer/VBoxContainer/MovementPointsLabel")
+health_text_label = NodePath("UnitStatsBarContent/MarginContainer/VBoxContainer/HealthTextLabel")
+health_bar = NodePath("UnitStatsBarContent/MarginContainer/VBoxContainer/PanelContainer/MarginContainer/HealthBar")
 shadowed_stylebox = ExtResource("1_cydlx")
-flat_stylebox = ExtResource("3_2merk")
-drift_duration = 1.5
+red_shadowed_stylebox = ExtResource("3_ee32f")
+blue_shadowed_stylebox = ExtResource("4_mx6qg")
+red_flat_stylebox = ExtResource("5_afvsy")
+blue_flat_stylebox = ExtResource("3_cydlx")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="UnitStatsBarContent" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_cydlx")
+
+[node name="MarginContainer" type="MarginContainer" parent="UnitStatsBarContent"]
 layout_mode = 2
 theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UnitStatsBarContent/MarginContainer"]
 layout_mode = 2
 
-[node name="UnitNameLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="UnitNameLabel" type="Label" parent="UnitStatsBarContent/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Unit Name"
 label_settings = SubResource("LabelSettings_bwm3i")
 horizontal_alignment = 1
 
-[node name="MovesMadeLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="MovesMadeLabel" type="Label" parent="UnitStatsBarContent/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "# of Moves Made"
 horizontal_alignment = 1
 
-[node name="MovementPointsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="MovementPointsLabel" type="Label" parent="UnitStatsBarContent/MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 text = "Move points
 Remaining"
 horizontal_alignment = 1
 
-[node name="HealthTextLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="HealthTextLabel" type="Label" parent="UnitStatsBarContent/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Health/Max health"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="UnitStatsBarContent/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_xrvcs")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UnitStatsBarContent/MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="HealthBar" type="TextureProgressBar" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="HealthBar" type="TextureProgressBar" parent="UnitStatsBarContent/MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 value = 50.0

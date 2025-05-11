@@ -9,7 +9,8 @@ extends Node
 var attribute_map: GameplayAttributeMap = null
 @onready var unit: Unit = get_parent()
 func _ready() -> void:
-	SignalBus.connect("form_body", _on_setup_body)
+	#SignalBus.connect("form_body", _on_setup_body)
+	pass
 
 func _on_setup_body() -> void:
 	if unit != null:

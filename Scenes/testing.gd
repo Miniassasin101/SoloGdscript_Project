@@ -73,7 +73,7 @@ func _ready() -> void:
 	Console.add_command("show_shield", console_show_shield, ["unit_name","body_part"], 2, "Fade in the shield icon on a body part. Usage: show_shield Bob Head")
 	Console.add_command("hide_shield", console_hide_shield, ["unit_name","body_part"], 2, "Fade out the shield icon on a body part. Usage: hide_shield Bob Head")
 	Console.add_command("toggle_shield", console_toggle_shield, ["unit_name","body_part"], 2, "Toggle the shield icon on a body part. Usage: toggle_shield Bob Head")
-
+	Console.add_command("add_initiative", console_add_initiative, ["unit_name", "amount"], 2, "Adds initiative points to the specified unit. Usage: add_initiative Bob 100")
 
 
 
@@ -854,6 +854,32 @@ func console_toggle_shield(unit_name: String, part_name: String) -> void:
 		Console.print_info("Toggling shield on " + unit_name + " → " + part_name)
 	else:
 		Console.print_error("console_toggle_shield: unit not found: " + unit_name)
+
+
+func console_add_initiative(unit_name: String, amount_str: String) -> void:
+	var unit = UnitManager.instance.get_unit_by_name(unit_name)
+	if unit == null:
+		Console.print_error("Unit not found: " + unit_name)
+		return
+
+	var amount = int(amount_str)
+	if amount == 0:
+		Console.print_error("Initiative amount must be non-zero.")
+		return
+
+	if !FocusTurnSystem.instance.initiative_scores.has(unit):
+		Console.print_error("Unit " + unit_name + " is not in the initiative system.")
+		return
+
+	FocusTurnSystem.instance.add_initiative_score(unit, amount)
+	Console.print_info("Added " + str(amount) + " initiative to " + unit_name)
+
+
+
+
+
+
+
 
 
 

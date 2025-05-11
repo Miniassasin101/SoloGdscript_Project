@@ -84,11 +84,11 @@ func set_hovered_cell(grid_position: GridPosition) -> void:
 	if cell:
 		var grid_object: GridObject = LevelGrid.get_grid_object(grid_position)
 		var unit: Unit = grid_object.get_unit()
-		var current_unit_turn: Unit = FocusTurnSystem.instance.current_unit_turn
-		if unit and current_unit_turn:
-			if unit.is_enemy != current_unit_turn.is_enemy:
+		var current_unit: Unit = FocusTurnSystem.instance.current_unit
+		if unit and current_unit:
+			if unit.is_enemy != current_unit.is_enemy:
 				cell._on_mouse_enter(Color.FIREBRICK)
-			elif unit == FocusTurnSystem.instance.current_unit_turn:
+			elif unit == FocusTurnSystem.instance.current_unit:
 				cell._on_mouse_enter(Color.FOREST_GREEN)
 			else:
 				cell._on_mouse_enter(Color.AQUA)
@@ -124,7 +124,7 @@ func highlight_path(grid_positions: Array[GridPosition]) -> void:
 	
 	var enemy_engagement_positions: Array[GridPosition] = (
 		UnitManager.instance.get_enemy_adjacent_positions
-		(FocusTurnSystem.instance.current_unit_turn))
+		(FocusTurnSystem.instance.current_unit))
 	
 	var encounters_engagement: bool = false
 	for grid_position in grid_positions:

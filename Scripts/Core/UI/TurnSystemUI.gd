@@ -25,6 +25,7 @@ func _ready() -> void:
 	SignalBus.on_cycle_changed.connect(on_cycle_changed)
 	SignalBus.on_phase_changed.connect(on_phase_changed)
 	SignalBus.on_ui_update.connect(on_ui_update)
+	UIBus.on_ui_update.connect(on_ui_update)
 	
 
 	on_ui_update()
