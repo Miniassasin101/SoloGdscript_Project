@@ -277,7 +277,7 @@ func get_attribute_by_name(attribute_name: String) -> AttributeSpec:
 	return attribute_map.get_attribute_by_name(attribute_name)
 
 func get_attribute_buffed_value_by_name(attribute_name: String) -> float:
-	return attribute_map.get_attribute_by_name(attribute_name).current_buffed_value
+	return attribute_map.get_attribute_by_name(attribute_name).current_modified_value
 
 
 ## Gets the current buffed value of the attribute after applying the situational modifier
@@ -286,7 +286,7 @@ func get_attribute_after_sit_mod(attribute_name: String, sit_mod_change: int = 0
 	if attribute == null:
 		push_error("Cannot find attribute ", attribute_name)
 		return 0
-	var base_value: float = attribute.current_buffed_value
+	var base_value: float = attribute.current_modified_value
 	
 	# Get the highest situational modifier multiplier from conditions
 	# FIXME: The sit mod change can bring outside the bounds of the multiplier dictionary
@@ -333,7 +333,7 @@ func get_target_position_with_offset(height_offset: float) -> Vector3:
 	return target_position
 
 func get_movement_rate() -> float:
-	return attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
+	return attribute_map.get_attribute_by_name("movement_rate").current_modified_value
 
 
 func get_max_move_left() -> float:
@@ -360,7 +360,7 @@ func get_random_hit_location() -> BodyPart:
 
 
 func get_combat_skill() -> float:
-	return int(attribute_map.get_attribute_by_name("combat_skill").current_buffed_value)
+	return int(attribute_map.get_attribute_by_name("combat_skill").current_modified_value)
 
 func get_equipped_weapon() -> Weapon:
 	return equipment.get_equipped_weapon()
@@ -437,7 +437,7 @@ func set_facing() -> void:
 
 
 func setup_fatigue_left() -> void:
-	var endurance: float = attribute_map.get_attribute_by_name("endurance").current_buffed_value
+	var endurance: float = attribute_map.get_attribute_by_name("endurance").current_modified_value
 	# FIXME: Add a check to see how many times the unit has passed the check to increase the difficulty of the roll and halve time
 	var max_rounds: int = ceili(endurance/5) #maximum rounds before combat fatigue needs to be rolled against
 	fatigue_left = max_rounds

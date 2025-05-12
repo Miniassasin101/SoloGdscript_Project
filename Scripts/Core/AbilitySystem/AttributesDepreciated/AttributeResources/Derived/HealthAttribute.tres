@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="AttributeResource" load_steps=2 format=3 uid="uid://dhycuxfmfj34a"]
+
+[ext_resource type="Script" uid="uid://bvoxi6hq3h2y7" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Attribute.gd" id="1_p44ra"]
+
+[resource]
+script = ExtResource("1_p44ra")
+attribute_name = "health"
+minimum_value = 0
+maximum_value = 0
+current_value = 0
+base_value = 0
+modifier = 0
+derived_from = Array[String](["size", "endurance"])
+calculation_type = 1
+is_skill = false
+skill_type = 0

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AttributeResource" load_steps=2 format=3 uid="uid://cy0eels13gsmh"]
+
+[ext_resource type="Script" uid="uid://bvoxi6hq3h2y7" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Attribute.gd" id="1_oobiy"]
+
+[resource]
+script = ExtResource("1_oobiy")
+attribute_name = "healing_rate"
+minimum_value = 1.0
+maximum_value = 4.0
+current_value = 4.0
+derived_from = Array[String](["will"])
+calculation_type = 2
+is_skill = false
+skill_base_value = 0.0
+skill_value = 0.0
+table_mod = 0
+table_step = 6

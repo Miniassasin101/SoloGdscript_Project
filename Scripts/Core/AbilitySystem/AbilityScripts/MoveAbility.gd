@@ -282,7 +282,7 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 
 func get_max_move_from_gait(_event: ActivationEvent) -> float:
 	var in_unit: Unit = _event.unit
-	var move_rate: float = in_unit.attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
+	var move_rate: float = in_unit.attribute_map.get_attribute_by_name("movement_rate").current_modified_value
 	var gait: int = in_unit.current_gait
 	var ret_move: float = 0.0
 	match gait:

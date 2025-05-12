@@ -37,6 +37,7 @@ func apply_special_effect_by_name(name: StringName, event: ActivationEvent) -> b
 		event.special_effects.append(inst)
 		special_effect_applied.emit(inst, event)
 
+		@warning_ignore("redundant_await")
 		await inst.apply(event)
 		return true
 

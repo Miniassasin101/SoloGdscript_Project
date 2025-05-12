@@ -101,12 +101,12 @@ func add_unit(unit: Unit) -> void:
 
 
 func unit_setup(unit: Unit) -> void:
-		TurnSystem.instance.setup_initiative()
+		#TurnSystem.instance.setup_initiative()
 		
 		SignalBus.on_unit_added.emit(unit)
 		
 		
-		unit.body.update_body_ui()
+		#unit.body.update_body_ui()
 
 
 # Removes a unit from the manager (e.g., when it is destroyed).

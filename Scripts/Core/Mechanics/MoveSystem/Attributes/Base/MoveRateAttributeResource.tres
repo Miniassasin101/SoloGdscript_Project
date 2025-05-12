@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="AttributeResource" load_steps=2 format=3 uid="uid://bfaw4j4csbb3x"]
+
+[ext_resource type="Script" uid="uid://bvoxi6hq3h2y7" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Attribute.gd" id="1_pbhd3"]
+
+[resource]
+script = ExtResource("1_pbhd3")
+attribute_name = "move_rate"
+minimum_value = 0
+maximum_value = 4
+maximum_potential = 0
+current_value = 4
+base_value = 0
+modifier = 0
+derived_from = Array[String]([])
+calculation_type = 0
+is_skill = false
+skill_type = 0
+metadata/_custom_type_script = "uid://bvoxi6hq3h2y7"

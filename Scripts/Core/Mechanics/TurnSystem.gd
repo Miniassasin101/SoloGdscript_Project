@@ -63,7 +63,7 @@ func setup_initiative() -> void:
 		return
 	for u in units:
 		var roll_value = Utilities.roll(10)
-		var bonus = u.attribute_map.get_attribute_by_name("initiative_bonus").current_buffed_value
+		var bonus = u.attribute_map.get_attribute_by_name("initiative_bonus").current_modified_value
 		var initiative_penalty = u.conditions_manager.get_total_penalty("initiative_penalty")
 
 		var total_initiative = roll_value + bonus + initiative_penalty
@@ -175,7 +175,7 @@ func end_turn() -> void:
 
 func any_unit_has_ap_left() -> bool:
 	for u in initiative_order:
-		if u.attribute_map.get_attribute_by_name("action_points").current_buffed_value > 0:
+		if u.attribute_map.get_attribute_by_name("action_points").current_modified_value > 0:
 			return true
 	return false
 

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="AttributeResource" load_steps=2 format=3 uid="uid://s7n10t0v1a7v"]
+
+[ext_resource type="Script" uid="uid://bvoxi6hq3h2y7" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Attribute.gd" id="1_tuej8"]
+
+[resource]
+script = ExtResource("1_tuej8")
+attribute_name = "allure"
+minimum_value = 0
+maximum_value = 1
+maximum_potential = 1
+current_value = 0
+base_value = 0
+modifier = 0
+derived_from = Array[String]([])
+calculation_type = 0
+is_skill = true
+skill_type = 2
+metadata/_custom_type_script = "uid://bvoxi6hq3h2y7"

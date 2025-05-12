@@ -213,7 +213,7 @@ func get_valid_ability_target_grid_position_list(_event: ActivationEvent) -> Arr
 	var self_unit_pos: GridPosition = in_unit.get_grid_position()
 	if self_unit_pos == null:
 		return []
-	var move_rate: float = in_unit.attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
+	var move_rate: float = in_unit.attribute_map.get_attribute_by_name("movement_rate").current_modified_value
 
 	# Use half of the unit's remaining movement range.
 	var max_range: float = move_rate / 2.0

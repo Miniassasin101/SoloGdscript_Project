@@ -561,7 +561,9 @@ func calculate(derived_from: Array[String], calculation_type: int, specs: Dictio
 			var total = 0
 			for key in derived_from:
 				if specs.has(key):
-					total += int(specs[key])
+					var spec = specs[key]
+					if spec is AttributeSpec:
+						total += spec.current_modified_value
 				else:
 					push_error("Key '%s' in derived_from not found in specs dictionary." % key)
 			return total

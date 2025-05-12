@@ -33,7 +33,7 @@ func _ready() -> void:
 
 # Update the stats bar with the given unit's stats.
 func update_stats(unit: Unit) -> void:
-	#var move_rate = unit.attribute_map.get_attribute_by_name("movement_rate").current_buffed_value
+	#var move_rate = unit.attribute_map.get_attribute_by_name("movement_rate").current_modified_value
 	#var speed_multiplier = Utilities.GAIT_SPEED_MULTIPLIER.get(unit.current_gait)
 	unit_name_label.text = unit.ui_name
 	

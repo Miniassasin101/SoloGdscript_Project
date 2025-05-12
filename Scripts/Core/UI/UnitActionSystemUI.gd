@@ -80,7 +80,7 @@ func create_unit_action_buttons() -> void:
 	create_unit_free_action_buttons(granted_moves)
 	
 	# adds a next phase button at the very end 
-	create_next_phase_button()
+	#create_next_phase_button()
 
 
 func create_unit_action_buttons_move_phase() -> void:
@@ -122,7 +122,7 @@ func create_unit_free_action_buttons(granted_moves: Array[Move]) -> void:
 
 ## Determines if a next_phase button needs to be made.
 func create_next_phase_button() -> void:
-	if FocusTurnSystem.instance.get_current_unit().attribute_map.get_attribute_by_name("action_points").current_buffed_value <= 0:
+	if FocusTurnSystem.instance.get_current_unit().attribute_map.get_attribute_by_name("action_points").current_modified_value <= 0:
 		if FocusTurnSystem.instance.current_cycle >= 3:
 			return
 		
@@ -263,8 +263,7 @@ func _update_move_points() -> void:
 	if !move_points_text:
 		return
 	if selected_unit != null:
-		move_points_text.set_text("Move Points: " + str(int(selected_unit.attribute_map.
-		get_attribute_by_name("action_points").current_buffed_value)))
+		move_points_text.set_text("Moves Left: " + str(5 - selected_unit.moves_made))
 
 
 func on_turn_changed() -> void:
