@@ -221,6 +221,8 @@ func get_back_tiles(unit: Unit) -> Array[GridPosition]:
 	var facing: int = unit.facing
 	var back_tiles: Array[GridPosition] = []
 	var grid_position: GridPosition = unit.grid_position
+	if !grid_position:
+		return []
 
 	# Get the grid positions of the three back tiles based on the facing direction
 	match facing:
@@ -563,7 +565,9 @@ func calculate(derived_from: Array[String], calculation_type: int, specs: Dictio
 				if specs.has(key):
 					var spec = specs[key]
 					if spec is AttributeSpec:
-						total += spec.current_modified_value
+						total += spec.maximum_value
+					elif spec is int:
+						total += spec
 				else:
 					push_error("Key '%s' in derived_from not found in specs dictionary." % key)
 			return total

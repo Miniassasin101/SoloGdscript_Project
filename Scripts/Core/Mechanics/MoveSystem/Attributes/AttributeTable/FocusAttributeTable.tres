@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AttributesTable" load_steps=29 format=3 uid="uid://dmrkxt5tfi2s7"]
+[gd_resource type="Resource" script_class="AttributesTable" load_steps=30 format=3 uid="uid://dmrkxt5tfi2s7"]
 
 [ext_resource type="Script" uid="uid://bvoxi6hq3h2y7" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Attribute.gd" id="1_jc4t2"]
 [ext_resource type="Resource" uid="uid://bxfta2yxt4ywc" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Base/MightAttributeResource.tres" id="2_7v4we"]
@@ -8,9 +8,10 @@
 [ext_resource type="Resource" uid="uid://b401kaqjdsckn" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Base/DexterityAttributeResource.tres" id="6_2uyyl"]
 [ext_resource type="Resource" uid="uid://dvtykm3kcbcww" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Derived/HealthAttributeResource.tres" id="7_5eaud"]
 [ext_resource type="Resource" uid="uid://dygdaaeolnax6" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Skill/FightSkill/MartialSkillAttributeResource.tres" id="7_fdxhw"]
+[ext_resource type="Resource" uid="uid://pkx1qa0fv8kc" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Derived/WillAttributeResource.tres" id="7_mx33h"]
 [ext_resource type="Resource" uid="uid://dlr6x0xhoqlss" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Derived/DefenseAttributeResource.tres" id="8_mx33h"]
 [ext_resource type="Resource" uid="uid://ctvefpqlqf158" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Skill/FightSkill/ChannelSkillAttributeResource.tres" id="8_wm6by"]
-[ext_resource type="Resource" uid="uid://bfaw4j4csbb3x" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Base/MoveRateAttributeResource.tres" id="9_2uyyl"]
+[ext_resource type="Resource" uid="uid://bfaw4j4csbb3x" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Extra/MoveRateAttributeResource.tres" id="9_2uyyl"]
 [ext_resource type="Resource" uid="uid://ykdobtvxkvht" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Skill/FightSkill/ClashSkillAttributeResource.tres" id="9_lrogt"]
 [ext_resource type="Resource" uid="uid://2ul4ytvtfsf5" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Skill/FightSkill/EvasionSkillAttributeResource.tres" id="10_a5ori"]
 [ext_resource type="Resource" uid="uid://d4hmv7eop1a40" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/Attributes/Skill/SurvivalSkill/AlertSkillAttributeResource.tres" id="11_ght87"]
@@ -31,5 +32,5 @@
 
 [resource]
 script = ExtResource("25_e6i7d")
-attributes = Array[ExtResource("1_jc4t2")]([ExtResource("2_7v4we"), ExtResource("3_u37rh"), ExtResource("4_5eaud"), ExtResource("5_mx33h"), ExtResource("6_2uyyl"), ExtResource("7_5eaud"), ExtResource("8_mx33h"), ExtResource("9_2uyyl"), ExtResource("7_fdxhw"), ExtResource("8_wm6by"), ExtResource("9_lrogt"), ExtResource("10_a5ori"), ExtResource("11_ght87"), ExtResource("12_10cir"), ExtResource("13_lhncq"), ExtResource("14_oo4r8"), ExtResource("15_qujk0"), ExtResource("16_j5aet"), ExtResource("17_u3vlq"), ExtResource("18_7pxcs"), ExtResource("19_ognet"), ExtResource("20_v2akh"), ExtResource("21_jq0y4"), ExtResource("22_q3g6l"), ExtResource("23_yu8lo"), ExtResource("24_02nsb")])
+attributes = Array[ExtResource("1_jc4t2")]([ExtResource("2_7v4we"), ExtResource("3_u37rh"), ExtResource("4_5eaud"), ExtResource("5_mx33h"), ExtResource("6_2uyyl"), ExtResource("7_mx33h"), ExtResource("7_5eaud"), ExtResource("8_mx33h"), ExtResource("9_2uyyl"), ExtResource("7_fdxhw"), ExtResource("8_wm6by"), ExtResource("9_lrogt"), ExtResource("10_a5ori"), ExtResource("11_ght87"), ExtResource("12_10cir"), ExtResource("13_lhncq"), ExtResource("14_oo4r8"), ExtResource("15_qujk0"), ExtResource("16_j5aet"), ExtResource("17_u3vlq"), ExtResource("18_7pxcs"), ExtResource("19_ognet"), ExtResource("20_v2akh"), ExtResource("21_jq0y4"), ExtResource("22_q3g6l"), ExtResource("23_yu8lo"), ExtResource("24_02nsb")])
 metadata/_custom_type_script = "uid://dfv2ddkwom1fb"
