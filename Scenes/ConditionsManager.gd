@@ -104,12 +104,12 @@ func book_keeping_check() -> void:
 	pass
 
 
-func can_use_ability_given_conditions(ability: Ability) -> bool:
-	var blocked_ability_types: Array[StringName] = []
+func can_use_move_given_conditions(move: Move) -> bool:
+	var blocked_move_types: Array[StringName] = []
 	for condition in conditions:
-		blocked_ability_types.append_array(condition.blocking_tags)
-	for block in blocked_ability_types:
-		if ability.tags_type.has(block):
+		blocked_move_types.append_array(condition.blocking_tags)
+	for block in blocked_move_types:
+		if move.tags_type.has(block):
 			return false
 	return true
 

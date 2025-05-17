@@ -18,10 +18,11 @@ shadow_size = 4
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -34.0
-offset_right = 34.0
-offset_bottom = 68.0
+offset_left = -69.0
+offset_right = -19.0
+offset_bottom = 48.0
 grow_horizontal = 2
+scale = Vector2(0.997403, 1)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qr5px")
 script = ExtResource("1_nas4y")
@@ -43,14 +44,11 @@ mouse_filter = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="MouseEventDroppableSlot" parent="MarginContainer/MouseEventDroppableSlotHContainer" instance=ExtResource("3_c1mim")]
+[node name="MouseEventDroppableSlot3" parent="MarginContainer/MouseEventDroppableSlotHContainer" instance=ExtResource("3_c1mim")]
 layout_mode = 2
 
-[node name="DroppablePanelUI" parent="MarginContainer/MouseEventDroppableSlotHContainer/MouseEventDroppableSlot" instance=ExtResource("2_n1fnh")]
+[node name="DroppablePanelUI" parent="MarginContainer/MouseEventDroppableSlotHContainer/MouseEventDroppableSlot3" instance=ExtResource("2_n1fnh")]
 layout_mode = 2
 
-[node name="MouseEventDroppableSlot2" parent="MarginContainer/MouseEventDroppableSlotHContainer" instance=ExtResource("3_c1mim")]
-layout_mode = 2
-
-[node name="DroppablePanelUI" parent="MarginContainer/MouseEventDroppableSlotHContainer/MouseEventDroppableSlot2" instance=ExtResource("2_n1fnh")]
+[node name="MouseEventDroppableSlot4" parent="MarginContainer/MouseEventDroppableSlotHContainer" instance=ExtResource("3_c1mim")]
 layout_mode = 2

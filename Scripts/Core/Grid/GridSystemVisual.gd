@@ -122,14 +122,18 @@ func highlight_path(grid_positions: Array[GridPosition]) -> void:
 	# First, clear any previous highlight.
 	clear_highlights()
 	
+	var current_unit: Unit = FocusTurnSystem.instance.current_unit
+	
 	var enemy_engagement_positions: Array[GridPosition] = (
-		UnitManager.instance.get_enemy_adjacent_positions
-		(FocusTurnSystem.instance.current_unit))
+		UnitManager.instance.get_enemy_adjacent_positions(current_unit))
+	
+
+	
 	
 	var encounters_engagement: bool = false
 	for grid_position in grid_positions:
 		if !encounters_engagement:
-			if enemy_engagement_positions.has(grid_position):
+			if enemy_engagement_positions.has(grid_position) and !grid_position.equals(FocusTurnSystem.instance.current_unit.get_grid_position()):
 				encounters_engagement = true
 		var x: int = grid_position.x
 		var z: int = grid_position.z
@@ -146,6 +150,7 @@ func highlight_path(grid_positions: Array[GridPosition]) -> void:
 				else:
 					cell.highlight()
 					highlighted_path.append(cell)
+
 
 func clear_highlights() -> void:
 	for visual in highlighted_path:
@@ -236,5 +241,5 @@ func update_grid_visual() -> void:
 			unit = UnitActionSystem.instance.selected_unit
 
 		if unit != null:
-			show_grid_positions(unit.move_container.
+			show_grid_positions(await unit.move_container.
 			get_valid_move_target_grid_position_list(selected_move))

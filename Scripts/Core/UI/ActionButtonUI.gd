@@ -3,7 +3,7 @@ extends Button
 
 @export var button_text: Label
 @export var button: Button
-var ability: Ability
+var move: Move
 var is_gait: bool = false
 var gait: int = 0
 
@@ -24,11 +24,11 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 
-func set_base_ability(_ability: Ability) -> void:
-	button_text.set_text(_ability.ui_name.to_upper())
-	if _ability.tags_type.has("reaction"):
+func set_base_move(_move: Move) -> void:
+	button_text.set_text(_move.ui_name.to_upper())
+	if _move.tags_type.has("reaction"):
 		special_case = SpecialCase.REACTION
-	ability = _ability
+	move = _move
 
 
 func set_gait(in_gait: int) -> void:
@@ -62,7 +62,7 @@ func handle_special_case() -> void:
 	match special_case:
 
 		SpecialCase.NONE:
-			SignalBus.selected_ability_changed.emit(ability)
+			SignalBus.selected_move_changed.emit(move)
 		
 		SpecialCase.GAIT:
 			SignalBus.gait_selected.emit(gait)
@@ -71,5 +71,4 @@ func handle_special_case() -> void:
 			SignalBus.next_phase.emit()
 		
 		SpecialCase.REACTION:
-			#SignalBus.reaction_selected.emit(ability)
-			SignalBus.selected_ability_changed.emit(ability)
+			SignalBus.selected_move_changed.emit(move)

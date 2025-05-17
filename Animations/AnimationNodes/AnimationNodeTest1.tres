@@ -1,4 +1,4 @@
-[gd_resource type="AnimationNodeStateMachine" load_steps=27 format=3 uid="uid://bwus84v6qro73"]
+[gd_resource type="AnimationNodeStateMachine" load_steps=28 format=3 uid="uid://bwus84v6qro73"]
 
 [ext_resource type="Curve" uid="uid://ds3cwr48a54i0" path="res://Hero_Game/Animations/Curves/AnimationBLendCurve.tres" id="1_5ep7p"]
 
@@ -97,8 +97,10 @@ animation = &"HumanoidAnimLib01/Idle_Greatsword_shoulder"
 filter_enabled = true
 filters = ["Rig_001/Skeleton3D:CTRL_index.R.001", "Rig_001/Skeleton3D:CTRL_index.R.002", "Rig_001/Skeleton3D:CTRL_index.R.003", "Rig_001/Skeleton3D:CTRL_thumb.R.001", "Rig_001/Skeleton3D:CTRL_thumb.R.002", "Rig_001/Skeleton3D:CTRL_thumb.R.003", "Rig_001/Skeleton3D:CTRL_thumb_base.R.001", "Rig_001/Skeleton3D:DEF_bicep.R.001", "Rig_001/Skeleton3D:DEF_bicep.R.002", "Rig_001/Skeleton3D:DEF_forearm.R.001", "Rig_001/Skeleton3D:DEF_forearm.R.002", "Rig_001/Skeleton3D:DEF_hand.R.001", "Rig_001/Skeleton3D:DEF_index.R.001", "Rig_001/Skeleton3D:DEF_index.R.002", "Rig_001/Skeleton3D:DEF_index.R.003", "Rig_001/Skeleton3D:DEF_shoulder.R.001", "Rig_001/Skeleton3D:DEF_thumb.R.001", "Rig_001/Skeleton3D:DEF_thumb.R.002", "Rig_001/Skeleton3D:DEF_thumb.R.003", "Rig_001/Skeleton3D:DEF_thumb_base.R.001"]
 
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_2k84o"]
+
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3mqw0"]
-graph_offset = Vector2(-463.776, 39.386)
+graph_offset = Vector2(-249.776, 147.386)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_qbpsd")
 "nodes/Animation 2/position" = Vector2(-80, 60)
 nodes/LeftArmAnimation/node = SubResource("AnimationNodeAnimation_v8q68")
@@ -109,20 +111,22 @@ nodes/RightArmAnimation/node = SubResource("AnimationNodeAnimation_tk8fg")
 nodes/RightArmAnimation/position = Vector2(-180, 260)
 nodes/RightArmBlend/node = SubResource("AnimationNodeBlend2_a3c5v")
 nodes/RightArmBlend/position = Vector2(320, 120)
-nodes/output/position = Vector2(680, 380)
-node_connections = [&"LeftArmBlend", 0, &"RightArmBlend", &"LeftArmBlend", 1, &"LeftArmAnimation", &"RightArmBlend", 0, &"Animation 2", &"RightArmBlend", 1, &"RightArmAnimation", &"output", 0, &"LeftArmBlend"]
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_2k84o")
+nodes/TimeScale/position = Vector2(680, 420)
+nodes/output/position = Vector2(860, 340)
+node_connections = [&"LeftArmBlend", 0, &"RightArmBlend", &"LeftArmBlend", 1, &"LeftArmAnimation", &"RightArmBlend", 0, &"Animation 2", &"RightArmBlend", 1, &"RightArmAnimation", &"TimeScale", 0, &"LeftArmBlend", &"output", 0, &"TimeScale"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c24eu"]
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t3jc8"]
-xfade_time = 0.25
+xfade_time = 0.5
 xfade_curve = ExtResource("1_5ep7p")
 advance_mode = 2
 advance_condition = &"IsWalking"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e5md4"]
-xfade_time = 0.25
+xfade_time = 0.5
 xfade_curve = ExtResource("1_5ep7p")
 advance_mode = 2
 advance_expression = "get(\"parameters/Main/AnimationNodeStateMachine/conditions/IsWalking\") == false"
@@ -137,4 +141,4 @@ states/RunCycleBlend/node = SubResource("AnimationNodeBlendTree_3mqw0")
 states/RunCycleBlend/position = Vector2(286, 469)
 states/Start/position = Vector2(-29, 307)
 transitions = ["Start", "IdleBlend", SubResource("AnimationNodeStateMachineTransition_c24eu"), "IdleBlend", "RunCycleBlend", SubResource("AnimationNodeStateMachineTransition_t3jc8"), "RunCycleBlend", "IdleBlend", SubResource("AnimationNodeStateMachineTransition_e5md4")]
-graph_offset = Vector2(-288, 182)
+graph_offset = Vector2(-263, 318)

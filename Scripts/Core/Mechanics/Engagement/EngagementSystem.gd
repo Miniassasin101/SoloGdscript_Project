@@ -108,6 +108,7 @@ func is_unit_engaged(unit: Unit) -> bool:
 
 ## Re-evaluate adjacency for a single unit and add/remove engagements.
 func update_engagements_for_unit(changed_unit: Unit) -> void:
+	return
 	var opponents = UnitManager.instance.get_player_units()\
 		if changed_unit.is_enemy\
 		else UnitManager.instance.get_enemy_units()

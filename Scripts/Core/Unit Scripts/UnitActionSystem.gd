@@ -94,19 +94,11 @@ func _process(_delta: float) -> void:
 
 func handle_selected_move() -> void:
 	if selected_unit and selected_move:
-		# Check if it's a proactive action (assuming selected_move is always proactive if used during player's turn)
-		if FocusTurnSystem.instance.is_player_turn or LevelDebug.instance.control_enemy_debug:
-			# Check if we've already taken a proactive action this cycle
-			if FocusTurnSystem.instance.has_taken_proactive_action_this_cycle(selected_unit) and check_move_type_invalid(selected_move):
-				print_debug("You have already taken a proactive action this cycle!")
-				return
-			
-
 			
 		var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
 		if mouse_grid_position:
 			var grid_position: GridPosition = LevelGrid.get_grid_position(mouse_grid_position)
-			if selected_unit.move_container.can_activate_at_position(selected_move, grid_position):
+			if await selected_unit.move_container.can_activate_at_position(selected_move, grid_position):
 				# Attempt to spend AP
 				if selected_unit.try_spend_move_points_to_use_move(selected_move):
 					# Activate move
@@ -128,7 +120,7 @@ func use_move(unit: Unit, move: Move, target_pos: GridPosition) -> void:
 			return
 			
 		if target_pos:
-			if unit.move_container.can_activate_at_position(move, target_pos):
+			if await unit.move_container.can_activate_at_position(move, target_pos):
 				# Attempt to spend AP
 				if unit.try_spend_move_points_to_use_move(move):
 					# Activate move
@@ -150,7 +142,7 @@ func handle_selected_reaction() -> void:
 		var mouse_grid_position = mouse_world.get_mouse_raycast_result("position")
 		if mouse_grid_position:
 			var grid_position: GridPosition = LevelGrid.get_grid_position(mouse_grid_position)
-			if reacting_unit.move_container.can_activate_at_position(selected_move, grid_position):
+			if await reacting_unit.move_container.can_activate_at_position(selected_move, grid_position):
 				if reacting_unit.try_spend_move_points_to_use_move(selected_move):
 					reacting_unit.move_container.activate_one(selected_move, grid_position)
 					SignalBus.emit_signal("reaction_started")
@@ -322,7 +314,7 @@ func on_selected_move_changed(move: Move) -> void:
 			#return
 
 		if unit != null:
-			var gridpositions: Array[GridPosition] = unit.move_container.get_valid_move_target_grid_position_list(move)
+			var gridpositions: Array[GridPosition] = await unit.move_container.get_valid_move_target_grid_position_list(move)
 			if gridpositions.size() == 1:
 				use_move(unit, move, gridpositions[0])
 				
@@ -340,8 +332,11 @@ func update_move_path() -> void:
 				return
 			var start_grid: GridPosition = selected_unit.get_grid_position()
 			if start_grid:
+				var enemy_positions: Array[GridPosition] = UnitManager.instance.get_enemy_positions(selected_unit)
+				var disabled_pos: Array[GridPosition] = Pathfinding.instance.temporarily_disable(enemy_positions)
 				# Compute the path from start to hovered grid cell.
 				var path: Array[GridPosition] = Pathfinding.instance.find_path(start_grid, hovered_grid)
+				Pathfinding.instance.reenable_positions(disabled_pos)
 				if path.size() > 0:
 					# Highlight the path cells: they will rise and be light blue.
 					GridSystemVisual.instance.highlight_path(path)

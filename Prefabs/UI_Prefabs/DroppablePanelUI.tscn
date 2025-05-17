@@ -23,26 +23,32 @@ shadow_size = 2
 shadow_offset = Vector2(1, 1)
 
 [node name="DroppablePanelUI" type="Control" node_paths=PackedStringArray("panel_text")]
-custom_minimum_size = Vector2(60, 60)
 layout_mode = 3
-anchors_preset = 0
-offset_right = 60.0
-offset_bottom = 60.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1117.0
+offset_bottom = -613.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_ymojw")
 panel_text = NodePath("Text")
 
 [node name="Text" type="Label" parent="."]
-layout_mode = 0
-offset_left = -1.0
-offset_top = 21.0
-offset_right = 59.0
-offset_bottom = 70.0
-rotation = -0.380482
-scale = Vector2(0.831165, 0.775444)
-text = "EFFECT
-"
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 9.0
+offset_right = 8.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.53246, 0.496764)
+text = "EFFECT"
 label_settings = SubResource("LabelSettings_5oc4l")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -50,10 +56,12 @@ autowrap_mode = 2
 
 [node name="Panel" type="Panel" parent="."]
 show_behind_parent = true
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-scale = Vector2(1.49073, 1.50475)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_cbngh")
 

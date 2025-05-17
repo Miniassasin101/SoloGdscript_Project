@@ -22,7 +22,14 @@ shadow_size = 3
 shadow_color = Color(0, 0, 0, 1)
 
 [node name="DynamicButtonUI" type="Button" node_paths=PackedStringArray("button_text", "button")]
-custom_minimum_size = Vector2(60, 60)
+custom_minimum_size = Vector2(40, 40)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1112.0
+offset_bottom = -608.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 action_mode = 0
@@ -32,22 +39,29 @@ button = NodePath(".")
 
 [node name="Panel" type="Panel" parent="."]
 show_behind_parent = true
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-scale = Vector2(1.49073, 1.50475)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_cbngh")
 
 [node name="Text2" type="Label" parent="."]
-layout_mode = 0
-offset_top = 21.0
-offset_right = 60.0
-offset_bottom = 70.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 14.0
+offset_right = 4.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
 rotation = -0.380482
-scale = Vector2(0.831165, 0.775444)
-text = "Text
-"
+scale = Vector2(0.659537, 0.615322)
+text = "Text"
 label_settings = SubResource("LabelSettings_i8vne")
 horizontal_alignment = 1
 vertical_alignment = 1

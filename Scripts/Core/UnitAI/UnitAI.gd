@@ -19,8 +19,9 @@ var disable: bool = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	SignalBus.on_turn_changed.connect(on_turn_changed)
-	SignalBus.move_complete.connect(on_ability_complete)
+	#SignalBus.on_turn_changed.connect(on_turn_changed)
+	#SignalBus.move_complete.connect(on_ability_complete)
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

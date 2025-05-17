@@ -5,12 +5,11 @@ class_name SelectedUnitIndicator
 extends MeshInstance3D
 
 # Reference to the unit that this indicator is associated with.
-var current_unit: Unit
+@export var current_unit: Unit
 # Reference to the UnitActionSystem (adjust the path as necessary).
 var action_system: UnitActionSystem
 
 func _ready() -> void:
-	current_unit = get_parent()
 	# Get the UnitActionSystem node (assuming it's at the root).
 	action_system = current_unit.get_action_system()
 	# Connect the 'selected_unit_changed' signal from SignalBus to the local function.

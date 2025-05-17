@@ -115,7 +115,10 @@ func _is_eligible_for_operation(activation_event: ActivationEvent) -> bool:
 
 ## The [method Node._ready] override
 func _ready() -> void:
-	moves = moves.duplicate()
+	var new_moves: Array[Move] = []
+	for move in moves:
+		new_moves.append(move.duplicate(true))
+	moves = new_moves
 	gameplay_attribute_map = get_node(gameplay_attribute_map_path)
 	grant_all_moves()
 
@@ -126,7 +129,7 @@ func can_activate_at_position(_move: Move, _target_grid_position: GridPosition) 
 	elif granted_moves.has(_move):
 		var event: ActivationEvent = ActivationEvent.new(self)
 		event.target_grid_position = _target_grid_position
-		return _move.can_activate(event)
+		return await _move.can_activate(event)
 	return false
 
 
@@ -137,7 +140,7 @@ func get_valid_move_target_grid_position_list(_move: Move) -> Array[GridPosition
 		var event = ActivationEvent.new(self)
 		event.target_grid_position = get_parent().get_grid_position()
 		if _move.has_method("get_valid_move_target_grid_position_list"):
-			return _move.get_valid_move_target_grid_position_list(event)
+			return await _move.get_valid_move_target_grid_position_list(event)
 	return[]
 
 

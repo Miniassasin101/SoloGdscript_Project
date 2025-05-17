@@ -14,6 +14,10 @@ signal ended(Move, ActivationEvent)
 ## Emitted upon move completion for phase handling.
 signal move_complete(Move, ActivationEvent)
 
+
+enum ActionSpeed {SLOW = 3, STANDARD = 2, SWIFT = 1, FREE = 0}
+
+
 @export_group("User interface", "ui_")
 ## Is the icon shown in your user interface.
 @export var ui_icon: Texture2D = null
@@ -24,8 +28,7 @@ signal move_complete(Move, ActivationEvent)
 @export_group("Move Data", "move_data_")
 
 ## What type of action this move is. Affects how far back unit is pushed in initiative.
-@export_enum("Slow", "Standard", "Swift", "Free")\
-var action_type: int = 1
+@export_enum("Slow:3", "Standard:2", "Swift:1", "Free:0") var action_speed: int = ActionSpeed.STANDARD
 
 ## Damage type of the ability. Determines critical extra effects, as well as is affected by weakness/resistance.
 @export_enum("Blunt", "Spike", "Keen", "Hewing", "Toxin", "Volt", "Frost", "Flame", "Acid")\
@@ -42,11 +45,11 @@ var damage_type: int = 0
 
 
 ## Damage attribute is added with power and modifiers for damage pool.
-@export var attribute: String = ""
+@export var damage_attribute: String = "might"
 
 
 ## Array of added effects like "Ranged" or "Roll three chance dice to poison the foe"
-@export var effects: Array[String] = ["attribute", "skill"]
+@export var effects: Array[String] = []
 
 
 ## Ability Description
@@ -73,13 +76,13 @@ var damage_type: int = 0
 @export var grant_tags_required: Array[String] = []
 
 
-@export_group("Tags", "tags_")
+@export_group("")
 ## Tags to determine what type of move this is
 ## Ex: attack, reaction, defensive, ect.
 @export var tags_type: Array[String] = []
 
 
-@export_group("Other Tags", "other_tags_")
+@export_group("Other Tags")
 ## Tags added once move has been activated.
 ## [br]Use [member Move.tags_to_remove_on_activation] to remove some of these tags after the activation.
 @export var tags_activation: Array[String] = []
@@ -114,6 +117,8 @@ var damage_type: int = 0
 @export var tags_to_remove_on_end: Array[String] = []
 #endregion
 
+
+var owner: Unit = null
 
 
 
@@ -216,7 +221,7 @@ func try_activate(activation_event: ActivationEvent) -> void:
 		blocked.emit(self, activation_event)
 		return
 
-	if can_activate(activation_event):
+	if await can_activate(activation_event):
 		activate(activation_event)
 
 func get_enemy_ai_move(_event: ActivationEvent) -> EnemyAIAction:

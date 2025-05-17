@@ -45,20 +45,14 @@ var is_open: bool = false
 var last_unit: Unit = null
 
 func _ready() -> void:
-	visible = true
+	visible = false
 	SignalBus.open_character_sheet.connect(_on_open_character_sheet)
 	close_button.pressed.connect(_on_close_button_pressed)
 
-func _process(_delta: float) -> void:
-	open_character_sheet_key()
 
-
-func open_character_sheet_key() -> void:
+func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("testkey_c"):
 		open_character_sheet()
-
-		pass
-
 
 
 

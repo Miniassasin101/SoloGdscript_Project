@@ -3,6 +3,11 @@ extends Node3D
 
 
 # Signals
+signal on_turn_started
+signal on_turn_ended
+
+
+
 signal facing_changed(new_facing: int)
 signal gait_changed(new_gait: int)
 
@@ -33,7 +38,6 @@ var action_system: UnitActionSystem
 @export_category("Sockets")
 @export var left_hand_socket: Node3D
 @export var right_hand_socket: Node3D
-@export var shoot_point: Node3D
 
 
 
@@ -98,6 +102,8 @@ var current_gait: int = Utilities.MovementGait.HOLD_GROUND
 var distance_moved_this_turn: float = 0.0
 var movement_done_in_first_cycle: bool = false
 var movement_done_in_second_cycle: bool = false
+
+var movement_left: float = 0.0
 
 # Ability Variables
 ## Is the first ability used in the round. Determines possible movement gaits for the rest of the round
@@ -174,6 +180,25 @@ func try_spend_ability_points_to_use_ability(ability: Ability) -> bool:
 	Utilities.spawn_text_line(self, "No AP", Color.GOLD, 0.9)
 	return false
 
+func increase_initiative_score(by_amount: int = 1) -> void:
+	FocusTurnSystem.instance.add_initiative_score(self, by_amount)
+
+
+func try_spend_move_points_to_use_move(move: Move) -> bool:
+	if can_spend_move_points_to_use_move(move):
+		spend_move_points(1)
+		return true
+	Utilities.spawn_text_line(self, "No AP", Color.GOLD, 0.9)
+	return false
+
+
+# NOTE: Maybe have the cap be the initiative score? if above a certain amount cant use move.
+func can_spend_move_points_to_use_move(move: Move) -> bool:
+	# Replace action points with move points later
+	if moves_made >= 5:
+		return false
+	else:
+		return true
 
 func can_spend_ability_points_to_use_ability(ability: Ability) -> bool:
 	var ap_remain: int = int(attribute_map.get_attribute_by_name("action_points").current_value)
@@ -192,13 +217,25 @@ func spend_ability_points(amount: int) -> void:
 	SignalBus.emit_signal("action_points_changed")
 	SignalBus.emit_signal("update_stat_bars")
 
+func spend_move_points(amount: int) -> void:
+	moves_made += amount
+	# Note: Change to ability points later
+	SignalBus.emit_signal("action_points_changed")
+	SignalBus.emit_signal("update_stat_bars")
+
+func reset_move_points() -> void:
+	moves_made = 0
+	# Note: Change to ability points later
+	SignalBus.emit_signal("action_points_changed")
+	SignalBus.emit_signal("update_stat_bars")
+
 
 func spend_all_ability_points() -> void:
 	spend_ability_points(int(attribute_map.get_attribute_by_name("action_points").current_value))
 
 
 func reset_ability_points() -> void:
-	var new_ap_value: float = attribute_map.get_attribute_by_name("action_points").maximum_value
+	var new_ap_value: int = attribute_map.get_attribute_by_name("action_points").maximum_value
 	
 	# Get the action points penalty
 	var ap_penalty = conditions_manager.get_total_penalty("action_points_penalty")
@@ -218,10 +255,11 @@ func _on_turn_state_changed() -> void:
 			pass
 		TurnState.TURN_STARTED:
 			# Begin turn logic
-			pass
+			on_turn_started.emit()
+			moves_made = 0
 		TurnState.TURN_ENDED:
 			# Used turn, wait to be re-added to queue
-			pass
+			on_turn_ended.emit()
 
 
 
@@ -337,23 +375,10 @@ func get_movement_rate() -> float:
 
 
 func get_max_move_left() -> float:
-	var move_rate = get_movement_rate()
-	var speed_multiplier = Utilities.GAIT_SPEED_MULTIPLIER.get(current_gait)
+	return 0.0
 
-	# Get the movement penalty from conditions
-	var movement_penalty = conditions_manager.get_total_penalty("movement_penalty")
-
-	# Apply the movement penalty (e.g., reduce movement by penalty percentage)
-	if movement_penalty == -1.0:
-		return 0.0  # "Immobile" condition
-	elif movement_penalty == -0.5:
-		move_rate *= 0.5  # Halve the movement rate
-		return ((move_rate * speed_multiplier) / 2) - distance_moved_this_turn
-	else:
-		move_rate -= movement_penalty  # Subtract numeric penalties
-	
-	return max(((move_rate * speed_multiplier) / 2) - distance_moved_this_turn - movement_penalty, 0)
-
+func get_remaining_movement() -> float:
+	return movement_left
 
 func get_random_hit_location() -> BodyPart:
 	return body.roll_hit_location()

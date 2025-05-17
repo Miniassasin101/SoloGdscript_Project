@@ -93,7 +93,7 @@ func rotate_unit_towards_target_enemy(_event: ActivationEvent) -> void:
 
 
 func shoot_projectile() -> void:
-	assert(unit.shoot_point != null)
+
 	event.weapon.item_visual.play_animation_on_weapon("WeaponAnimations/BowFire_001")
 	event.weapon.item_visual.play_animation_on_projectile("WeaponAnimationLibrary/ArrowDrawback")
 	var weapon_projectile: Node3D = event.weapon.item_visual.projectile

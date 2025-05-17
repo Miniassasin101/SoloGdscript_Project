@@ -9,7 +9,7 @@ signal continue_turn
 
 @export var action_button_prefab: PackedScene
 @export var special_effect_button_prefab: PackedScene
-@export var action_button_container: BoxContainer
+@export var action_button_container: HBoxContainer
 @export var reaction_button_container: BoxContainer
 @export var gait_button_container: BoxContainer
 @export var dynamic_button_picker: DynamicButtonPicker
@@ -55,9 +55,6 @@ func movement_handler() -> void:
 
 
 func create_unit_action_buttons() -> void:
-	if CombatSystem.instance.current_phase == 1: # 1 is the movement phase
-		create_unit_action_buttons_move_phase()
-		return
 	if !selected_unit:
 		return
 	for action_button in action_button_container.get_children():
@@ -68,16 +65,14 @@ func create_unit_action_buttons() -> void:
 	for move: Move in granted_moves:
 		if move.tags_type.has("reaction") or move.tags_type.has("move") or move.tags_type.has("free"):
 			continue # FIXME: Replace with actual Tag logic later
-		if !verify_gait_allowed(selected_unit.current_gait, move):
-			continue
 		if !selected_unit.conditions_manager.can_use_move_given_conditions(move):
 			continue
-		var move_button_ui = action_button_prefab.instantiate()
+		var move_button_ui: ActionButtonUI = action_button_prefab.instantiate()
 		move_button_ui.set_base_move(move)
 		action_button_container.add_child(move_button_ui)
 	
 	# This is put at the end so free actions are placed in the back
-	create_unit_free_action_buttons(granted_moves)
+	#create_unit_free_action_buttons(granted_moves)
 	
 	# adds a next phase button at the very end 
 	#create_next_phase_button()
@@ -148,8 +143,8 @@ func create_unit_reaction_buttons() -> void:
 				continue
 			
 			var can_activate: bool = false
-			for gridpos in reacting_unit.move_container.get_valid_move_target_grid_position_list(move):
-				if reacting_unit.move_container.can_activate_at_position(move, gridpos):
+			for gridpos in await reacting_unit.move_container.get_valid_move_target_grid_position_list(move):
+				if await reacting_unit.move_container.can_activate_at_position(move, gridpos):
 					can_activate = true
 					continue
 			if !can_activate:
@@ -170,7 +165,7 @@ func create_unit_special_effect_buttons(abs_dif: int) -> void:
 func on_selected_unit_changed(unit: Unit) -> void:
 	selected_unit = unit
 	create_unit_action_buttons()
-	create_unit_reaction_buttons()
+	#create_unit_reaction_buttons()
 	_update_move_points()
 
 

@@ -431,25 +431,24 @@ mouse_event_droppable_controller = NodePath("MouseEventDroppableSlotController")
 move_points_text = NodePath("AbilityPointsLabel")
 metadata/_edit_use_anchors_ = true
 
-[node name="ActionButtonsContainer" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]
+[node name="ActionButtonsContainer" type="HBoxContainer" parent="UILayer/UnitActionSystemUI"]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -28.0
-offset_right = 32.0
-offset_bottom = 60.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 12
 alignment = 1
 
 [node name="ActionButtonUI" parent="UILayer/UnitActionSystemUI/ActionButtonsContainer" instance=ExtResource("11_jk6uv")]
-visible = false
 layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="ActionButtonUI2" parent="UILayer/UnitActionSystemUI/ActionButtonsContainer" instance=ExtResource("11_jk6uv")]
+layout_mode = 2
+size_flags_horizontal = 6
 
 [node name="ReactionButtonsContainer" type="BoxContainer" parent="UILayer/UnitActionSystemUI"]
 visible = false
@@ -518,12 +517,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -29.0
+offset_left = -114.0
 offset_top = -53.0
-offset_right = 31.0
+offset_right = 193.0
 offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 0
+scale = Vector2(0.766019, 0.766019)
 size_flags_vertical = 1
 text = "Press \"N\" to start combat"
 label_settings = SubResource("LabelSettings_sh5a7")
@@ -531,6 +531,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MouseEventDroppableSlotController" type="Control" parent="UILayer/UnitActionSystemUI" node_paths=PackedStringArray("hand_droppable_container", "active_droppable_container")]
+visible = false
 anchors_preset = 0
 offset_left = 23.0
 offset_top = -4.0
@@ -549,10 +550,9 @@ droppable_controller = NodePath("..")
 
 [node name="SelectedSpecialEffectContainer" parent="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController" node_paths=PackedStringArray("unit_action_system_ui", "droppable_controller") instance=ExtResource("29_725ge")]
 layout_mode = 1
-offset_left = -54.0
-offset_top = -127.0
-offset_right = 14.0
-offset_bottom = -59.0
+offset_top = -116.0
+offset_right = 29.0
+offset_bottom = -68.0
 unit_action_system_ui = NodePath("../..")
 droppable_controller = NodePath("..")
 slot_container_type = 1
@@ -560,10 +560,11 @@ slot_container_type = 1
 [node name="ConfirmEffectButton" type="Button" parent="UILayer/UnitActionSystemUI/MouseEventDroppableSlotController"]
 custom_minimum_size = Vector2(80, 60)
 layout_mode = 2
-offset_left = -60.0
-offset_top = -207.0
-offset_right = 20.0
-offset_bottom = -147.0
+offset_left = -46.0
+offset_top = -172.0
+offset_right = 34.0
+offset_bottom = -112.0
+scale = Vector2(0.661178, 0.661178)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 action_mode = 0
@@ -591,7 +592,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_cbngh")
 
 [node name="DynamicButtonPicker" parent="UILayer/UnitActionSystemUI" instance=ExtResource("39_yrlso")]
 transparent_bg = true
-position = Vector2i(513, 356)
+initial_position = 4
 size = Vector2i(124, 100)
 visible = false
 borderless = true
@@ -735,6 +736,7 @@ offset_right = 264.0
 offset_bottom = -129.0
 grow_horizontal = 2
 grow_vertical = 0
+scale = Vector2(0.676827, 0.676827)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_o5ega")
