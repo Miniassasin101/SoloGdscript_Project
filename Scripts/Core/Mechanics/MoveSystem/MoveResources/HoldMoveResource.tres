@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="HoldMove" load_steps=2 format=3 uid="uid://c68acarbupqo4"]
+
+[ext_resource type="Script" uid="uid://br7k7kib2mqci" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/MoveScripts/HoldMove.gd" id="1_2d1oa"]
+
+[resource]
+script = ExtResource("1_2d1oa")
+ui_name = "Hold"
+action_speed = 2
+damage_type = 0
+base_power = 0
+range = 0
+accuracy = Array[String](["attribute", "skill"])
+damage_attribute = "none"
+effects = Array[String]([])
+description = "User does nothing, holding their action."
+grant_automatic = true
+grant_tags = Array[String]([])
+grant_tags_required = Array[String]([])
+tags_type = Array[String]([])
+tags_activation = Array[String]([])
+tags_activation_required = Array[String]([])
+tags_block = Array[String]([])
+tags_cancellation_required = Array[String]([])
+tags_end_blocking = Array[String]([])
+tags_to_remove_on_activation = Array[String]([])
+tags_to_remove_on_block = Array[String]([])
+tags_to_remove_on_cancellation = Array[String]([])
+tags_to_remove_on_end = Array[String]([])
+metadata/_custom_type_script = "uid://br7k7kib2mqci"

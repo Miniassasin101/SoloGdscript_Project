@@ -128,7 +128,7 @@ func try_activate(_event: ActivationEvent) -> void:
 	
 	#if unit.current_gait >= Utilities.MovementGait.RUN or became_engaged:
 		#unit.animator.rotate_unit_towards_facing(unit.facing)
-	unit.animator.rotate_unit_towards_facing(unit.facing)
+	unit.set_facing_then_rotate()
 	
 	if can_end(event):
 		event.successful = true

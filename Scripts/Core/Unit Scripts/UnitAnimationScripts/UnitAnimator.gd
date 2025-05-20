@@ -903,7 +903,7 @@ Facing values:
 - 3: -90 degrees (facing West(right))
 """
 
-func rotate_unit_towards_facing(in_facing: int = -1) -> void:
+func rotate_unit_towards_facing(in_facing: int = -1, rot_speed: float = 4.0) -> void:
 	var gridpos: GridPosition = unit.get_grid_position()
 	var new_gridpos: GridPosition = GridPosition.new(gridpos.x, gridpos.z)
 	var facing = in_facing if (in_facing >= 0) else unit.facing
@@ -911,19 +911,19 @@ func rotate_unit_towards_facing(in_facing: int = -1) -> void:
 	match facing:
 		0:
 			new_gridpos.z -= 1
-			rotate_unit_towards_target_position(new_gridpos)
+			rotate_unit_towards_target_position(new_gridpos, rot_speed)
 
 		1:
 			new_gridpos.x += 1
-			rotate_unit_towards_target_position(new_gridpos)
+			rotate_unit_towards_target_position(new_gridpos, rot_speed)
 
 		2:
 			new_gridpos.z += 1
-			rotate_unit_towards_target_position(new_gridpos)
+			rotate_unit_towards_target_position(new_gridpos, rot_speed)
 
 		3:
 			new_gridpos.x -= 1
-			rotate_unit_towards_target_position(new_gridpos)
+			rotate_unit_towards_target_position(new_gridpos, rot_speed)
 
 func rotate_unit_towards_target_position_process(delta: float):
 	var tar_rot = Basis.looking_at(facing_direction, Vector3.UP, true)

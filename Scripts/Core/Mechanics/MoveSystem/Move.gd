@@ -17,6 +17,8 @@ signal move_complete(Move, ActivationEvent)
 
 enum ActionSpeed {SLOW = 3, STANDARD = 2, SWIFT = 1, FREE = 0}
 
+enum WeaponHand {None, Left, Right, Both}
+
 
 @export_group("User interface", "ui_")
 ## Is the icon shown in your user interface.
@@ -126,6 +128,7 @@ var owner: Unit = null
 ## Activates the effect. This will forcefully activate it even if some criteria do not match.
 ## You should use [method Move.try_activate] instead for a proper (and safer) flow.
 func activate(activation_event: ActivationEvent) -> void:
+	activation_event.move = self
 	activated.emit(self, activation_event)
 
 

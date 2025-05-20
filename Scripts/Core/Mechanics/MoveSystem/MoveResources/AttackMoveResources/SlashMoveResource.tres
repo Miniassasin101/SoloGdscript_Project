@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="SlashMove" load_steps=2 format=3 uid="uid://5jmy4ajo458u"]
+
+[ext_resource type="Script" uid="uid://bok71xtkpb50g" path="res://Hero_Game/Scripts/Core/Mechanics/MoveSystem/MoveScripts/WeaponAttackMoveScripts/SlashMove.gd" id="1_d4i08"]
+
+[resource]
+script = ExtResource("1_d4i08")
+attack_range = 1
+melee_side = 2
+ui_name = "Slash"
+action_speed = 2
+damage_type = 2
+base_power = 1
+range = 1
+accuracy = Array[String](["dexterity", "martial"])
+damage_attribute = "might"
+effects = Array[String]([])
+description = ""
+grant_automatic = true
+grant_tags = Array[String]([])
+grant_tags_required = Array[String]([])
+tags_type = Array[String]([])
+tags_activation = Array[String]([])
+tags_activation_required = Array[String]([])
+tags_block = Array[String]([])
+tags_cancellation_required = Array[String]([])
+tags_end_blocking = Array[String]([])
+tags_to_remove_on_activation = Array[String]([])
+tags_to_remove_on_block = Array[String]([])
+tags_to_remove_on_cancellation = Array[String]([])
+tags_to_remove_on_end = Array[String]([])
+metadata/_custom_type_script = "uid://bok71xtkpb50g"

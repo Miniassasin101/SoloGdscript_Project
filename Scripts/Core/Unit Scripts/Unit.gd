@@ -429,9 +429,12 @@ func set_color_marker(color: StringName) -> void:
 func set_color_marker_visible(is_vis: bool) -> void:
 	color_marker.set_visibility(is_vis)
 
-func set_facing_then_rotate(in_facing: int) -> void:
-	facing = in_facing
-	animator.rotate_unit_towards_facing(in_facing)
+func set_facing_then_rotate(in_facing: int = -1) -> void:
+	if in_facing == -1:
+		set_facing()
+	else:
+		facing = in_facing
+	animator.rotate_unit_towards_facing(facing)
 
 
 func set_facing() -> void:

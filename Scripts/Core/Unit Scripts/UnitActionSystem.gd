@@ -114,11 +114,6 @@ func use_move(unit: Unit, move: Move, target_pos: GridPosition) -> void:
 	if is_busy and !sub_move_choice and !is_reacting:
 		return
 	if FocusTurnSystem.instance.is_player_turn or LevelDebug.instance.control_enemy_debug:
-		# Check if we've already taken a proactive action this cycle
-		if FocusTurnSystem.instance.has_taken_proactive_action_this_cycle(unit) and check_move_type_invalid(selected_move) and !is_reacting:
-			print_debug("You have already taken a proactive action this cycle!")
-			return
-			
 		if target_pos:
 			if await unit.move_container.can_activate_at_position(move, target_pos):
 				# Attempt to spend AP

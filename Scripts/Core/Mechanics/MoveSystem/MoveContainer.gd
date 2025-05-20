@@ -119,6 +119,7 @@ func _ready() -> void:
 	for move in moves:
 		new_moves.append(move.duplicate(true))
 	moves = new_moves
+	moves.reverse()
 	gameplay_attribute_map = get_node(gameplay_attribute_map_path)
 	grant_all_moves()
 

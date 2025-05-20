@@ -542,6 +542,10 @@ func get_crit_value_of_skill(skill: int) -> int:
 	return ceili(skill * 0.1)
 
 
+
+
+
+
 ## This function recieves a die type (Ex: 20 for a d20) and the number that need to be rolled, returns the sum of the results.
 func roll(die_type: int = 100, count: int = 1) -> int:
 	var rng = RandomNumberGenerator.new()
