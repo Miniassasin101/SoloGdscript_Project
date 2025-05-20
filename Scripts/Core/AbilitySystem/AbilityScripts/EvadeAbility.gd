@@ -30,9 +30,7 @@ func try_activate(_event: ActivationEvent) -> void:
 		return
 	
 
-	
 
-	#push_error("Have not yet implemented evade roll check")
 	determine_roll_result()
 
 

@@ -5,8 +5,10 @@
 
 [sub_resource type="QuadMesh" id="QuadMesh_e581j"]
 
-[node name="ColorMarker" type="Node3D"]
+[node name="ColorMarker" type="Node3D" node_paths=PackedStringArray("mesh_instance", "number_label")]
 script = ExtResource("1_fjlpv")
+mesh_instance = NodePath("MeshInstance3D")
+number_label = NodePath("NumberLabel3D")
 scale_speed = 3.0
 target_scale = 0.7
 
@@ -14,3 +16,11 @@ target_scale = 0.7
 transform = Transform3D(0.682737, 0, 0, 0, 0.682737, 0, 0, 0, 0.682737, 0, 0, 0)
 mesh = SubResource("QuadMesh_e581j")
 surface_material_override/0 = ExtResource("2_sk483")
+
+[node name="NumberLabel3D" type="Label3D" parent="."]
+sorting_offset = 0.805
+billboard = 1
+modulate = Color(0.41, 0.41, 0.41, 1)
+outline_modulate = Color(0.79, 0.79, 0.79, 1)
+text = "7"
+font_size = 80

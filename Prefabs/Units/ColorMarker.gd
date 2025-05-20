@@ -18,7 +18,9 @@ var color_to_material = {
 }
 
 # Reference to the child MeshInstance3D
-@onready var mesh_instance: MeshInstance3D = $MeshInstance3D
+@export var mesh_instance: MeshInstance3D
+
+@export var number_label: Label3D
 
 # Animation properties
 @export var scale_speed: float = 5.0
@@ -31,7 +33,12 @@ func _ready() -> void:
 	if mesh_instance == null:
 		push_error("No MeshInstance3D found as a child. Please ensure the node has a child MeshInstance3D.")
 		return
+	if not number_label:
+		push_error("Missing Label3D child.")
+		return
 	mesh_instance.scale = Vector3.ZERO  # Start with scale 0
+	number_label.scale  = Vector3.ZERO
+
 	SignalBus.hide_success.connect(disappear)
 
 # Method to set the material color based on the color name
@@ -43,16 +50,25 @@ func set_color(color_name: StringName) -> void:
 	else:
 		push_error("Invalid color name: '%s'. Valid colors are: %s" % [color_name, color_to_material.keys()])
 
+func set_number(num: int = 1) -> void:
+	number_label.set_text(str(num))
+
 # Method to make the marker grow (appear)
 func appear() -> void:
-	growing = true
+	growing  = true
 	shrinking = false
-	mesh_instance.visible = true  # Make sure the marker is visible
 
-# Method to make the marker shrink (disappear)
+	mesh_instance.visible = true
+	number_label.visible = true
+
+	# reset scales so we always lerp from zero
+	mesh_instance.scale  = Vector3.ZERO
+	number_label.scale   = Vector3.ZERO
+
+
 func disappear() -> void:
 	shrinking = true
-	growing = false
+	growing   = false
 
 # Method to set visibility of the marker
 func set_visibility(is_vis: bool) -> void:
@@ -63,15 +79,27 @@ func set_visibility(is_vis: bool) -> void:
 
 # Called every frame to handle the scaling animation
 func _process(delta: float) -> void:
+	var goal = Vector3.ONE * target_scale
+
 	if growing:
-		mesh_instance.scale = mesh_instance.scale.lerp(Vector3.ONE * target_scale, scale_speed * delta)
-		if mesh_instance.scale.distance_to(Vector3.ONE * target_scale) < 0.01:
-			mesh_instance.scale = Vector3.ONE * target_scale
+		# lerp both mesh and label up
+		mesh_instance.scale = mesh_instance.scale.lerp(goal, scale_speed * delta)
+		number_label.scale  = number_label.scale.lerp( goal, scale_speed * delta)
+
+		if mesh_instance.scale.distance_to(goal) < 0.01:
+			mesh_instance.scale = goal
+			number_label.scale  = goal
 			growing = false
 
 	if shrinking:
+		# lerp both mesh and label down
 		mesh_instance.scale = mesh_instance.scale.lerp(Vector3.ZERO, scale_speed * delta)
+		number_label.scale  = number_label.scale.lerp( Vector3.ZERO, scale_speed * delta)
+
 		if mesh_instance.scale.distance_to(Vector3.ZERO) < 0.01:
-			mesh_instance.scale = Vector3.ZERO
+			mesh_instance.scale   = Vector3.ZERO
+			number_label.scale    = Vector3.ZERO
 			shrinking = false
-			mesh_instance.visible = false  # Make the marker invisible once fully shrunk
+
+			mesh_instance.visible = false
+			number_label.visible  = false
