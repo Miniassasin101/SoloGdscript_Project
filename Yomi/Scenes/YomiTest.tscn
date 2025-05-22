@@ -1,0 +1,125 @@
+[gd_scene load_steps=19 format=3 uid="uid://dj6owrpn8qlp6"]
+
+[ext_resource type="Environment" uid="uid://c7cx2thxig2w6" path="res://Hero_Game/Scenes/TestEnvironment1.tres" id="2_cy1d2"]
+[ext_resource type="Script" uid="uid://dbdubs66hwsrq" path="res://Hero_Game/Yomi/Scripts/CharManager.gd" id="3_img6i"]
+[ext_resource type="PackedScene" uid="uid://cuiovtqwnhmel" path="res://Hero_Game/Yomi/Prefabs/Units/BaseChar.tscn" id="3_nvpyg"]
+[ext_resource type="Material" uid="uid://dgm3et2m5t82g" path="res://Hero_Game/Art/Materials/MouseVisual.tres" id="5_cagge"]
+[ext_resource type="Shader" uid="uid://bsom40l4vw4gh" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="42_a3h6g"]
+[ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_Grid_08.png" id="43_tc454"]
+[ext_resource type="Script" uid="uid://d272os1ql1suo" path="res://Hero_Game/Scripts/Core/player.gd" id="44_tri2a"]
+[ext_resource type="Script" uid="uid://baxluukdrdjhd" path="res://addons/godot_gameplay_systems/camera_shake/nodes/camera_shake.gd" id="45_elonc"]
+[ext_resource type="Script" uid="uid://dqx7stk06etai" path="res://Hero_Game/Scenes/UILayer.gd" id="48_py4em"]
+[ext_resource type="PackedScene" uid="uid://bs8kc22xgwd2d" path="res://Hero_Game/Prefabs/UI_Prefabs/DamageNumber.tscn" id="49_2363y"]
+[ext_resource type="PackedScene" uid="uid://bf575s2vrxvov" path="res://Hero_Game/Prefabs/UI_Prefabs/TextController.tscn" id="50_qplst"]
+[ext_resource type="PackedScene" uid="uid://8oord2o1icck" path="res://Hero_Game/Prefabs/UI_Prefabs/CharacterLogQueue.tscn" id="51_hoq5t"]
+[ext_resource type="Script" uid="uid://bd0s3lywx8lk3" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="62_qneip"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_owyi7"]
+material = ExtResource("5_cagge")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pcwnq"]
+render_priority = 0
+shader = ExtResource("42_a3h6g")
+shader_parameter/grid_texture = ExtResource("43_tc454")
+shader_parameter/base_color = Color(0.45, 0.45, 0.45, 1)
+shader_parameter/grid_scale = 2.0
+shader_parameter/grid_opacity = 1.0
+shader_parameter/metallic = 0.0
+shader_parameter/specular = 0.2
+shader_parameter/roughness = 0.8
+shader_parameter/emissive_strength = 0.0
+shader_parameter/world_offset = Vector2(1, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fnkdd"]
+material = SubResource("ShaderMaterial_pcwnq")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_vv6bh"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pqthu"]
+
+[node name="Level" type="Node3D"]
+
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting"]
+environment = ExtResource("2_cy1d2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(0.624316, -0.517834, 0.584874, -0.358336, 0.475453, 0.803455, -0.694136, -0.711191, 0.111274, -5.04075, 2.35, -0.618277)
+light_energy = 0.634
+shadow_enabled = true
+shadow_bias = 0.4
+directional_shadow_mode = 1
+directional_shadow_split_1 = 0.505
+directional_shadow_max_distance = 27.1
+
+[node name="MouseWorld" type="Node3D" parent="."]
+
+[node name="MouseVisual" type="MeshInstance3D" parent="MouseWorld"]
+transform = Transform3D(0.332613, 0, 0, 0, 0.332613, 0, 0, 0, 0.332613, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_owyi7")
+
+[node name="UnitActionRay" type="RayCast3D" parent="MouseWorld"]
+collision_mask = 0
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="CharManager" type="Node" parent="."]
+script = ExtResource("3_img6i")
+
+[node name="BaseChar" parent="CharManager" instance=ExtResource("3_nvpyg")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(32.7711, -2.64261e-05, 0.046329, 2.63892e-05, 32.7711, 2.57785e-05, -0.046329, -2.57406e-05, 32.7711, 24.867, 0, 26.089)
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("PlaneMesh_fnkdd")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_vv6bh")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.06028, 8)
+script = ExtResource("44_tri2a")
+Zoom_Speed = 2.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("BoxShape3D_pqthu")
+
+[node name="CamOrigin" type="Node3D" parent="Player"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Player/CamOrigin"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+collision_mask = 2
+spring_length = 20.0
+
+[node name="fCamera" type="Camera3D" parent="Player/CamOrigin/SpringArm3D"]
+transform = Transform3D(1, 5.96046e-08, 5.96046e-08, -2.47364e-08, 1, -4.76837e-07, 6.68832e-08, 0, 1, -4, -1.41421, 1.41421)
+
+[node name="CameraShake" type="Node" parent="Player"]
+script = ExtResource("45_elonc")
+camera_path = NodePath("../CamOrigin/SpringArm3D/fCamera")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+script = ExtResource("48_py4em")
+damage_number_scene = ExtResource("49_2363y")
+text_controller_scene = ExtResource("50_qplst")
+character_log_queue_scene = ExtResource("51_hoq5t")
+
+[node name="FPSLabel" type="Label" parent="UILayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -88.0
+offset_top = 153.0
+offset_right = -48.0
+offset_bottom = 176.0
+grow_horizontal = 0
+script = ExtResource("62_qneip")
+metadata/_edit_use_anchors_ = true

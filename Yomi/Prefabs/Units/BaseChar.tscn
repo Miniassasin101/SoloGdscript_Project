@@ -1,0 +1,118 @@
+[gd_scene load_steps=17 format=3 uid="uid://cuiovtqwnhmel"]
+
+[ext_resource type="Script" uid="uid://cr7c6ncxu7b5l" path="res://Hero_Game/Yomi/Prefabs/Units/BaseChar.gd" id="1_adj2e"]
+[ext_resource type="Material" uid="uid://d18flcxrogort" path="res://Hero_Game/Art/Materials/CelShadedMats/GrayscaleCelShadedMat.tres" id="2_rhs33"]
+[ext_resource type="Script" uid="uid://dqdt36e4o25in" path="res://Hero_Game/Yomi/Scripts/StateMachine.gd" id="2_uwckn"]
+[ext_resource type="Script" uid="uid://raw8vqphuwkk" path="res://Hero_Game/Yomi/Prefabs/Units/State.gd" id="4_rifwl"]
+[ext_resource type="Script" uid="uid://d1j8sjq3fk2ud" path="res://Hero_Game/Yomi/Scripts/AnimationManager.gd" id="5_qbhei"]
+[ext_resource type="ArrayMesh" uid="uid://xx66bmhi8byu" path="res://Hero_Game/Prefabs/BasicShapes/Arrow_Plane.res" id="5_ysxmr"]
+[ext_resource type="Material" uid="uid://twj10ibx8l" path="res://Hero_Game/Art/Materials/FacingArrowMaterials/BlueArrowMat.tres" id="6_qbhei"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_adj2e"]
+
+[sub_resource type="Animation" id="Animation_rhs33"]
+resource_name = "IdleAnimation"
+length = 3.0
+loop_mode = 1
+markers = [{
+"color": Color(6.44952e-06, 0.788693, 0.45548, 1),
+"name": &"StartupEnd",
+"time": 0.566667
+}]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Rig/MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.53, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.988805, 0), Vector3(0, 1.04839, 0), Vector3(0, 0.988805, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_rifwl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Rig/MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.988805, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ysxmr"]
+_data = {
+&"IdleAnimation": SubResource("Animation_rhs33"),
+&"RESET": SubResource("Animation_rifwl")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qbhei"]
+animation = &"IdleAnimation"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_efpvj"]
+graph_offset = Vector2(246.229, 34.5526)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_qbhei")
+nodes/Animation/position = Vector2(600, 100)
+nodes/output/position = Vector2(1020, 120)
+node_connections = [&"output", 0, &"Animation"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_878n1"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4cc3n"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_i04t5"]
+states/BlendTree/node = SubResource("AnimationNodeBlendTree_efpvj")
+states/BlendTree/position = Vector2(476, 115)
+transitions = ["Start", "BlendTree", SubResource("AnimationNodeStateMachineTransition_878n1"), "BlendTree", "End", SubResource("AnimationNodeStateMachineTransition_4cc3n")]
+
+[node name="BaseChar" type="Node3D" node_paths=PackedStringArray("above_marker")]
+script = ExtResource("1_adj2e")
+above_marker = NodePath("AboveMarker")
+
+[node name="Rig" type="Node3D" parent="."]
+transform = Transform3D(0.852131, 0, 0, 0, 0.852131, 0, 0, 0, 0.852131, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rig"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.988805, 0)
+mesh = SubResource("CapsuleMesh_adj2e")
+surface_material_override/0 = ExtResource("2_rhs33")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("idle_state")]
+script = ExtResource("2_uwckn")
+ui_name = "Idle"
+idle_state = NodePath("")
+
+[node name="IdleState3" type="Node" parent="StateMachine"]
+script = ExtResource("4_rifwl")
+
+[node name="AnimationManager" type="Node" parent="." node_paths=PackedStringArray("animator", "animator_tree", "skeleton")]
+script = ExtResource("5_qbhei")
+animator = NodePath("../AnimationPlayer")
+animator_tree = NodePath("../AnimationTree")
+skeleton = NodePath("../Rig")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ysxmr")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_i04t5")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="FacingArrowMeshInstance" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1.9389e-08, 0, -0.443567, 0, 0.443567, 0, 0.443567, 0, -1.9389e-08, 0, 0.001, 0.435181)
+mesh = ExtResource("5_ysxmr")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("6_qbhei")
+
+[node name="AboveMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15476, 0)

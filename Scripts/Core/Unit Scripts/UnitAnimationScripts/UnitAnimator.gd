@@ -50,8 +50,7 @@ enum AnimationMask {
 # Variables
 @onready var unit: Unit = get_parent()
 var fireball_instance: Projectile
-var move_action: MoveAction
-var shoot_action: ShootAction
+
 var target_unit: Unit
 var stored_damage: int
 var projectile: Projectile

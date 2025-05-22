@@ -12,6 +12,7 @@ var event: ActivationEvent = null
 var target_position: GridPosition = null
 var unit: Unit = null
 
+var attacker_event: ActivationEvent = null
 
 
 
@@ -29,15 +30,33 @@ func try_activate(_event: ActivationEvent) -> void:
 			push_error("EvadeMove: Missing unit or target grid position.")
 			end_move(event)
 			return
-
-
-	unit.animator.rotate_unit_towards_facing(unit.facing)
+	
+	attacker_event = FocusCombatSystem.instance.current_event
+	
+	
+	
+	determine_roll_result()
 	
 	if can_end(event):
 		event.successful = true
 		unit.increase_initiative_score(action_speed)
 		end_move(event)
+
+
+	#unit.animator.rotate_unit_towards_facing(unit.facing)
 	
+	await SignalBus.prompt_dodge
+
+	if attacker_event.miss:
+		#unit.animator.toggle_slowdown(0.4)
+		slowdown()
+		#unit.animator.toggle_slowdown(1.0)
+	
+	
+	if attacker_event.miss:
+		Utilities.spawn_text_line(unit, "Evaded", Color.AQUA, 1.2)
+	await unit.animator.play_animation_by_name(determine_dodge_anim().resource_name, 0.2)
+	unit.animator.move_and_slide(unit.get_grid_position())
 
 
 
@@ -60,19 +79,20 @@ func determine_roll_result() -> void:
 	
 	var total_dice: int = dexterity_dice_pool + evasion_dice_pool
 	
+	var dice_pool: DicePool = DicePool.new(total_dice)
 	
-	var current_event: ActivationEvent = CombatSystem.instance.current_event
-	#current_event.defender_roll = evading_roll
-	#print_debug("Evade Skill Value: ", evade_skill_value)
-	#print_debug("Evade Roll: ", evading_roll)
 
-	#var defender_success_level: int = Utilities.check_success_level(evade_skill_value, evading_roll)
-	#current_event.defender_success_level = defender_success_level
+
+	var defender_success_level: int = dice_pool.success_level
+	attacker_event.defender_success_level = defender_success_level
+	attacker_event.defender_pool = dice_pool
 	#print_debug("Evade Success Level: ", defender_success_level)
-	if current_event.defender_success_level > current_event.attacker_success_level:
-		current_event.miss = true
-	elif current_event.attacker_roll > current_event.defender_roll and (current_event.defender_success_level == current_event.attacker_success_level):
-		current_event.miss = true
+	if defender_success_level <= 0:
+		Utilities.spawn_text_line(unit, "Evade Failed")
+	elif attacker_event.defender_success_level > attacker_event.attacker_success_level:
+		attacker_event.miss = true
+	elif dice_pool.get_success_count() > attacker_event.attacker_pool.get_success_count():
+		attacker_event.miss = true
 
 func determine_dodge_anim() -> Animation:
 	# Determine which adjacent tile was selected
