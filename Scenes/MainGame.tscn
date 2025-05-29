@@ -272,12 +272,12 @@ script = ExtResource("12_qi25r")
 
 [node name="MouseWorld" type="Node3D" parent="." node_paths=PackedStringArray("raycast", "mouse_visual")]
 script = ExtResource("4_8yks7")
+mouse_debug_sphere = true
 raycast = NodePath("UnitActionRay")
 mouse_visual = NodePath("MouseVisual")
 
 [node name="MouseVisual" type="MeshInstance3D" parent="MouseWorld"]
 transform = Transform3D(0.332613, 0, 0, 0, 0.332613, 0, 0, 0, 0.332613, 0, 0, 0)
-visible = false
 mesh = SubResource("SphereMesh_owyi7")
 
 [node name="UnitActionRay" type="RayCast3D" parent="MouseWorld"]

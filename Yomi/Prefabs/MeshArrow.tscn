@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bs1l02vwohelu"]
+
+[ext_resource type="ArrayMesh" uid="uid://xx66bmhi8byu" path="res://Hero_Game/Prefabs/BasicShapes/Arrow_Plane.res" id="1_fjvtg"]
+[ext_resource type="Material" uid="uid://twj10ibx8l" path="res://Hero_Game/Art/Materials/FacingArrowMaterials/BlueArrowMat.tres" id="2_lfyut"]
+
+[node name="FacingArrowMeshInstance" type="MeshInstance3D"]
+transform = Transform3D(-1.9389e-08, 0, -0.443567, 0, 0.443567, 0, 0.443567, 0, -1.9389e-08, 0, 0, 0)
+mesh = ExtResource("1_fjvtg")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("2_lfyut")

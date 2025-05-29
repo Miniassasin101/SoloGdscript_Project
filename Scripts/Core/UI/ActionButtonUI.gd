@@ -4,6 +4,7 @@ extends Button
 @export var button_text: Label
 @export var button: Button
 var move: Move
+var action: State
 var is_gait: bool = false
 var gait: int = 0
 
@@ -29,6 +30,10 @@ func set_base_move(_move: Move) -> void:
 	if _move.tags_type.has("reaction"):
 		special_case = SpecialCase.REACTION
 	move = _move
+
+func set_base_action(_action: State) -> void:
+	button_text.set_text(_action.state_name)
+	action = _action
 
 
 func set_gait(in_gait: int) -> void:
@@ -62,7 +67,8 @@ func handle_special_case() -> void:
 	match special_case:
 
 		SpecialCase.NONE:
-			SignalBus.selected_move_changed.emit(move)
+			#SignalBus.selected_move_changed.emit(move)
+			EventBus.selected_action_changed.emit(action)
 		
 		SpecialCase.GAIT:
 			SignalBus.gait_selected.emit(gait)

@@ -3,10 +3,18 @@ extends Node
 
 var is_started: bool = false
 
-var units: Array[Unit] = []
+var units: Array[BaseChar] = []
+
+static var instance: CharManager = null
+
+
 
 func _ready() -> void:
-	pass
+	if instance != null:
+		push_error("There's more than one CharManager! - " + str(instance))
+		queue_free()
+		return
+	instance = self
 
 
 func _process(delta: float) -> void:
@@ -15,6 +23,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("testkey_n"):
 		initialize_units()
 		is_started = true
+		EventBus.combat_started.emit()
 
 
 func initialize_units() -> void:
@@ -24,3 +33,9 @@ func initialize_units() -> void:
 			units.append(child)
 			
 			BeatUtils.spawn_text_line(child, "Added")
+
+func get_unit_by_index(index: int = 0) -> BaseChar:
+	if units.is_empty():
+		return null
+	
+	return units[index]
