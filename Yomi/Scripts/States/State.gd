@@ -168,3 +168,8 @@ func on_action_focused() -> void:
 func on_action_unfocused() -> void:
 	print_debug("unfocused")
 	pass
+
+
+func on_action_locked_in() -> void:
+	print_debug(state_name + "locked in")
+	pass

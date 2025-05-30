@@ -983,7 +983,7 @@ var ite: int = 1
 func test_v() -> void:
 	if Input.is_action_just_pressed("testkey_v"):
 
-		var skeleton: Skeleton3D = UnitManager.instance.units[0].skeleton
+		#var skeleton: Skeleton3D = UnitManager.instance.units[0].skeleton
 		
 		#var bones: PackedInt32Array = skeleton.get_bone_children(ite)
 		

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cuiovtqwnhmel"]
+[gd_scene load_steps=29 format=3 uid="uid://cuiovtqwnhmel"]
 
 [ext_resource type="Script" uid="uid://cr7c6ncxu7b5l" path="res://Hero_Game/Yomi/Scripts/BaseChar.gd" id="1_adj2e"]
 [ext_resource type="Material" uid="uid://d18flcxrogort" path="res://Hero_Game/Art/Materials/CelShadedMats/GrayscaleCelShadedMat.tres" id="2_rhs33"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" uid="uid://dvefrmkjmdwf7" path="res://Hero_Game/Yomi/Scripts/BeatEvents/BeatEvent.gd" id="8_4cc3n"]
 [ext_resource type="PackedScene" uid="uid://bs1l02vwohelu" path="res://Hero_Game/Yomi/Prefabs/MeshArrow.tscn" id="8_efpvj"]
 [ext_resource type="Script" uid="uid://7nr116ys1yk7" path="res://Hero_Game/Yomi/Scripts/BeatEvents/BeatEventScripts/PrintBeatEvent.gd" id="8_i04t5"]
+[ext_resource type="Material" uid="uid://d4fik23wejn2h" path="res://Hero_Game/Art/Materials/FacingArrowMaterials/GhostBlueArrowMat.tres" id="11_b5hwp"]
+[ext_resource type="Script" uid="uid://f7c8rqam7rre" path="res://Hero_Game/Yomi/Scripts/BeatEvents/BeatEventScripts/RotateBeatEvent.gd" id="12_svkvj"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_adj2e"]
 
@@ -37,6 +39,14 @@ event_start_beat = 100
 event_end_beat = 100
 is_per_beat = false
 metadata/_custom_type_script = "uid://7nr116ys1yk7"
+
+[sub_resource type="Resource" id="Resource_043wo"]
+script = ExtResource("12_svkvj")
+target_rotation = Vector3(0, 0, 0)
+event_start_beat = 1
+event_end_beat = 1
+is_per_beat = false
+metadata/_custom_type_script = "uid://f7c8rqam7rre"
 
 [sub_resource type="Animation" id="Animation_rifwl"]
 length = 0.001
@@ -113,14 +123,14 @@ states/Main/node = SubResource("AnimationNodeBlendTree_efpvj")
 states/Main/position = Vector2(476, 115)
 transitions = ["Start", "Main", SubResource("AnimationNodeStateMachineTransition_878n1"), "Main", "End", SubResource("AnimationNodeStateMachineTransition_4cc3n")]
 
-[node name="BaseChar" type="CharacterBody3D" node_paths=PackedStringArray("state_machine", "animation_manager", "rig", "above_marker")]
+[node name="BaseChar" type="CharacterBody3D" node_paths=PackedStringArray("state_machine", "animation_manager", "rig", "world_rotation_root", "above_marker")]
 script = ExtResource("1_adj2e")
 state_machine = NodePath("StateMachine")
 animation_manager = NodePath("AnimationManager")
 rig = NodePath("Rig")
+world_rotation_root = NodePath("WorldRotationRoot")
 above_marker = NodePath("AboveMarker")
 move_speed = 100.0
-is_rotating = true
 test_euler = Vector3(0, 2.735, 0)
 
 [node name="Rig" type="Node3D" parent="."]
@@ -148,6 +158,7 @@ script = ExtResource("4_rifwl")
 state_machine = NodePath("..")
 state_name = "Idle"
 is_loop = true
+actionable_at = 1
 startup_animation = ExtResource("5_efpvj")
 startup_beats = 30
 active_animation = ExtResource("6_878n1")
@@ -176,9 +187,13 @@ beat_events = Array[ExtResource("8_4cc3n")]([SubResource("Resource_b5hwp"), SubR
 
 [node name="SpinState" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_machine")]
 script = ExtResource("7_878n1")
+rotation_arrow_scene = ExtResource("8_efpvj")
+ghost_arrow_mat = ExtResource("11_b5hwp")
 state_machine = NodePath("..")
 state_name = "Spin"
-beat_events = Array[ExtResource("8_4cc3n")]([null])
+actionable_at = 1
+startup_beats = 95
+beat_events = Array[ExtResource("8_4cc3n")]([SubResource("Resource_043wo")])
 metadata/_custom_type_script = "uid://dmkvvw7da135p"
 
 [node name="AnimationManager" type="Node" parent="." node_paths=PackedStringArray("animator", "animator_tree", "skeleton")]
@@ -201,12 +216,16 @@ parameters/Main/Transition/transition_request = ""
 parameters/Main/Transition/current_index = -1
 
 [node name="FacingArrowMeshInstance" parent="." instance=ExtResource("8_efpvj")]
-transform = Transform3D(-1.93889e-08, 0, -0.443567, 0, 0.443567, 0, 0.443567, 0, -1.93889e-08, 0, 0.001, 0.435181)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
 
 [node name="AboveMarker" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15476, 0)
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="."]
-remote_path = NodePath("../Node3D")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+remote_path = NodePath("../WorldRotationRoot")
+update_rotation = false
 
-[node name="Node3D" type="Node3D" parent="."]
+[node name="WorldRotationRoot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+top_level = true

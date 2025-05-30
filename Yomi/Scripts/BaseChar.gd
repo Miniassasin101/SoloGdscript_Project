@@ -9,6 +9,8 @@ extends CharacterBody3D
 @export var state_machine: StateMachine
 @export var animation_manager: AnimationManager
 @export var rig: Node3D
+@export var world_rotation_root: Node3D
+
 @export_group("Markers")
 @export var above_marker: Marker3D
 @export_category("Parameters")
@@ -106,6 +108,54 @@ func setup_mesh_mats_unique() -> void:
 		var mat: ShaderMaterial = mesh.get_surface_override_material(0) as ShaderMaterial
 		mesh.set_surface_override_material(0, mat.duplicate(true))
 
+
+
+func get_rotation_beats() -> int:
+	var delta: float = get_physics_process_delta_time()
+	# 1. current vs target quaternion
+	var current_q: Quaternion = global_transform.basis.get_rotation_quaternion()
+	var target_b: Basis    = desired_rotation_basis.orthonormalized()
+	var target_q: Quaternion = target_b.get_rotation_quaternion()
+
+	# 2. how many radians left to turn
+	var angle_diff: float = current_q.angle_to(target_q)
+
+	# 3. how many radians we turn per physics frame
+	var turn_per_frame: float = rotation_speed * delta
+	if turn_per_frame <= 0.0:
+		return INF   # or 0, or however you want to signal “never”
+	
+	
+	# 4. beats = ceil( total_angle / angle_per_beat )
+	return int(ceil(angle_diff / turn_per_frame))
+
+
+func get_potential_rotation_beats(rotation_basis: Basis) -> int:
+	var delta: float = get_physics_process_delta_time()
+	# 1. current vs target quaternion
+	var current_q: Quaternion = global_transform.basis.get_rotation_quaternion()
+	var target_b: Basis    = rotation_basis.orthonormalized()
+	var target_q: Quaternion = target_b.get_rotation_quaternion()
+
+	# 2. how many radians left to turn
+	var angle_diff: float = current_q.angle_to(target_q)
+
+	# 3. how many radians we turn per physics frame
+	var turn_per_frame: float = rotation_speed * delta
+	if turn_per_frame <= 0.0:
+		return INF   # or 0, or however you want to signal “never”
+	
+	
+	# 4. beats = ceil( total_angle / angle_per_beat )
+	return int(ceil(angle_diff / turn_per_frame))
+
+
+func set_desired_rot_basis(in_basis: Basis) -> void:
+	desired_rotation_basis = in_basis.orthonormalized()
+
+func clear_rotation() -> void:
+	is_rotating = false
+	set_desired_rot_basis(global_basis)
 
 func set_self_color(color: Color = Color.WHITE) -> void:
 	if meshes.is_empty():

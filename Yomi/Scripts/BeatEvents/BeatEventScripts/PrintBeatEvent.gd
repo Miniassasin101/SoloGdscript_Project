@@ -9,3 +9,4 @@ extends BeatEvent
 func on_beat_event(state: State) -> void:
 	BeatUtils.spawn_text_line(state.state_machine.unit, spawn_text + " " + str(state.beat_counter), text_color, scale)
 	
+	

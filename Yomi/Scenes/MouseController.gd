@@ -25,6 +25,8 @@ var camera: Camera3D
 # Mouse position in screen coordinates
 var mouse_position: Vector2
 
+var current_hovered_position: Vector3
+
 # The currently hovered grid position if any
 var current_hovered_grid: GridPosition = null
 
@@ -56,7 +58,7 @@ func _physics_process(_delta: float) -> void:
 	# Update mouse position
 	adjust_mouse_position()
 	
-	#adjust_hovered_grid_position()
+	adjust_hovered_position()
 	# Perform the raycast and move the node if a hit is detected
 	if mouse_debug_sphere:
 		_adjust_mouse_debug_position()
@@ -107,7 +109,10 @@ func get_mouse_raycast_result(result_type: String) -> Variant:
 
 
 
-
+func adjust_hovered_position() -> void:
+	var pos_result = get_mouse_raycast_result("position")
+	if pos_result:
+		current_hovered_position = pos_result
 
 
 # Updates the mouse position variable
@@ -139,5 +144,5 @@ func _adjust_mouse_debug_position() -> void:
 			if mouse_visual.visible == false:
 				mouse_visual.visible = true
 			# Update the node's position to the raycast hit position
-			global_transform.origin = hit_position
+			mouse_visual.global_transform.origin = hit_position
 			

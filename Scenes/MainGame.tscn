@@ -1,4 +1,4 @@
-[gd_scene load_steps=95 format=3 uid="uid://dl3he0bj1hlla"]
+[gd_scene load_steps=94 format=3 uid="uid://dl3he0bj1hlla"]
 
 [ext_resource type="Script" uid="uid://dswgp2a8up16v" path="res://Hero_Game/Scenes/Debug.gd" id="1_7xwui"]
 [ext_resource type="Script" uid="uid://b268e884ur2c8" path="res://Hero_Game/Scripts/Core/Grid/GridSystemVisual.gd" id="1_fqt43"]
@@ -15,7 +15,6 @@
 [ext_resource type="Animation" uid="uid://dpukk54akum8q" path="res://Hero_Game/Animations/AnimationImports_1/BowIdle_Loaded_001.res" id="7_68vw7"]
 [ext_resource type="PackedScene" uid="uid://b37juamn5pbrv" path="res://WallTestInst.tscn" id="7_snusx"]
 [ext_resource type="Script" uid="uid://bijriqmby0ojr" path="res://Hero_Game/Scripts/Core/Mechanics/SpecialEffects/SpecialEffectScripts/AccidentalInjuryEffect.gd" id="8_3ubv2"]
-[ext_resource type="Script" uid="uid://c7n55vjiaihq6" path="res://Hero_Game/Scripts/Core/UnitAI/UnitAI.gd" id="8_kmwtl"]
 [ext_resource type="Script" uid="uid://d272os1ql1suo" path="res://Hero_Game/Scripts/Core/player.gd" id="9_rt187"]
 [ext_resource type="Script" uid="uid://b86pgqibregag" path="res://Hero_Game/Scripts/Core/Unit Scripts/UnitManager.gd" id="10_iw061"]
 [ext_resource type="Script" uid="uid://cre4if3nuycdg" path="res://Hero_Game/Scripts/Core/UI/UnitActionSystemUI.gd" id="10_nqefp"]
@@ -288,9 +287,6 @@ collide_with_areas = true
 [node name="UnitActionSystem" type="Node" parent="." node_paths=PackedStringArray("mouse_world")]
 script = ExtResource("2_td6d6")
 mouse_world = NodePath("../MouseWorld")
-
-[node name="UnitAI" type="Node" parent="."]
-script = ExtResource("8_kmwtl")
 
 [node name="UnitManager" type="Node" parent="." node_paths=PackedStringArray("unit_action_system")]
 script = ExtResource("10_iw061")
