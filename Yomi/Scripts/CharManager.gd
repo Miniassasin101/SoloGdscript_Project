@@ -1,6 +1,11 @@
 class_name CharManager
 extends Node
 
+
+@export var actionability_tracker: ActionabilityTracker = null
+
+
+
 var is_started: bool = false
 
 var units: Array[BaseChar] = []
@@ -15,11 +20,14 @@ func _ready() -> void:
 		queue_free()
 		return
 	instance = self
+	
+
 
 
 func _process(delta: float) -> void:
 	if is_started:
 		return
+		
 	if Input.is_action_just_pressed("testkey_n"):
 		initialize_units()
 		is_started = true
@@ -30,7 +38,11 @@ func initialize_units() -> void:
 	# Iterate through all children and add those of type Unit to the units array
 	for child in get_children():
 		if child is BaseChar:
+			if child in units:
+				continue
 			units.append(child)
+			actionability_tracker.units_pool.append(child)
+			child.state_machine.start_machine()
 			
 			BeatUtils.spawn_text_line(child, "Added")
 

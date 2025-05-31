@@ -6,6 +6,7 @@ static var instance: UILayer = null
 @export var character_log_queue_scene: PackedScene
 
 @export var unit_action_system_ui: UnitActionSystemUI
+@export var action_system_ui: ActionSystemUI
 
 var character_log_queue: CharacterLogQueue
 

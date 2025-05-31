@@ -9,6 +9,8 @@ extends State
 
 var target_rotation: Vector3 = Vector3.ZERO
 
+var target_basis: Basis
+
 @export var rotation_arrow_scene: PackedScene = null
 
 @export var ghost_arrow_mat: StandardMaterial3D
@@ -44,12 +46,15 @@ func setup_arrow() -> void:
 	
 	rotation_arrow_mesh = arrow.get_child(0) as MeshInstance3D
 	
+	arrow.global_basis = target_basis
+	
 	is_stopped = true
 	ghost_arrow_mat.albedo_color.a = 1.0
 
 func clear_arrow() -> void:
 	for child in state_machine.unit.world_rotation_root.get_children():
-		child.queue_free()
+		if child.name == "FacingArrowRoot":
+			child.queue_free()
 
 
 func _physics_process(delta: float) -> void:
@@ -57,6 +62,10 @@ func _physics_process(delta: float) -> void:
 		return
 	
 	if Input.is_action_just_pressed("left_mouse"):
+		var hovered_control = get_viewport().gui_get_hovered_control()
+		if hovered_control != null:
+			return
+		
 		if is_stopped:
 			is_stopped = false
 			ghost_arrow_mat.albedo_color.a = 7.0
@@ -71,8 +80,13 @@ func _physics_process(delta: float) -> void:
 	
 	if mouse_pos:
 		rotation_arrow.look_at(mouse_pos, Vector3.UP, true)
+		rotation_arrow.global_rotation.x = 0
+		rotation_arrow.global_rotation.z = 0
 	
 	target_rotation.y = rotation_arrow.get_global_rotation().y
+	
+	target_basis = rotation_arrow.global_basis
+
 	
 	return
 	
@@ -85,6 +99,7 @@ func _physics_process(delta: float) -> void:
 func on_action_unfocused() -> void:
 	super.on_action_unfocused()
 	is_active = false
+	is_stopped = true
 	
 	if rotation_arrow:
 		clear_arrow()
@@ -94,9 +109,14 @@ func on_action_unfocused() -> void:
 
 func on_action_locked_in() -> void:
 	super.on_action_locked_in()
-	var event: RotateBeatEvent = beat_events[0] as RotateBeatEvent
-	event.set_target_rotation(target_rotation)
-	var potential_beats: int = state_machine.unit.get_potential_rotation_beats(Basis.from_euler(target_rotation))
+	var original_event: BeatEvent = beat_events[0]
+	var new_event: RotateBeatEvent = original_event.duplicate(true) as RotateBeatEvent
+	beat_events.clear()
+	beat_events.append(new_event)
+	new_event.set_target_rotation(target_rotation)
+	new_event.target_basis = target_basis
+	var potential_beats: int = state_machine.unit.get_potential_rotation_beats(target_basis)#Basis.from_euler(target_rotation))
 	print_debug("Potential Beats: " + str(potential_beats))
-	event.set_end_beat(state_machine.unit.get_potential_rotation_beats(Basis.from_euler(target_rotation)))
-	startup_beats = potential_beats + 1
+	startup_beats = potential_beats
+	new_event.set_end_beat(startup_beats)
+	

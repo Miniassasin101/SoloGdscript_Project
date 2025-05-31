@@ -90,7 +90,7 @@ func flash_color_on_mesh(mesh: MeshInstance3D, color: Color = Color.DEEP_SKY_BLU
 
 func _show() -> void:
 	grid_system_visual.visible = true
-	grid_system_visual_red.visible = true
+	grid_system_visual_red.visible = false
 
 func hide_self() -> void:
 	grid_system_visual.visible = false

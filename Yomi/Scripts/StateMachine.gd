@@ -22,6 +22,8 @@ enum StatePhase {
 
 @export var anim_scale: float = 1.0
 
+var granted_states: Array[Node] = []
+
 var is_paused: bool = true
 
 var is_actionable: bool = false
@@ -33,7 +35,25 @@ var current_state: State = null
 var beats_until_actionable: int = 1
 
 func _ready() -> void:
+	EventBus.pause.connect(pause_animation)
 	EventBus.resume.connect(unpause_animation)
+	
+	var old_children: Array = get_children()
+	
+	for child in old_children:
+		if child is State:
+			if child == idle_state:
+				var new_state: State = child.duplicate()
+				granted_states.append(new_state)
+				idle_state = new_state
+			else:
+				granted_states.append(child.duplicate())
+	
+	for child in get_children(true):
+		child.queue_free()
+	for state in granted_states:
+		add_child(state)
+	
 
 func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint():
@@ -64,7 +84,8 @@ func queue_state(state: State) -> void:
 
 # called by State when it’s actionable
 func on_state_actionable() -> void:
-	EventBus.unit_actionable.emit()
+	is_actionable = true
+	EventBus.unit_actionable.emit(unit)
 	print_debug("StateMachine: state is now actionable")
 	pause_animation()
 

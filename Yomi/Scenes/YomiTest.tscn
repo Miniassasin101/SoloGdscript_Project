@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dj6owrpn8qlp6"]
+[gd_scene load_steps=34 format=3 uid="uid://dj6owrpn8qlp6"]
 
 [ext_resource type="Script" uid="uid://dt7eq2klp1kwn" path="res://Hero_Game/Yomi/Scripts/TestDebug.gd" id="2_5o2a6"]
 [ext_resource type="Environment" uid="uid://c7cx2thxig2w6" path="res://Hero_Game/Scenes/TestEnvironment1.tres" id="2_cy1d2"]
@@ -23,6 +23,15 @@
 [ext_resource type="PackedScene" uid="uid://bf575s2vrxvov" path="res://Hero_Game/Prefabs/UI_Prefabs/TextController.tscn" id="50_qplst"]
 [ext_resource type="PackedScene" uid="uid://8oord2o1icck" path="res://Hero_Game/Prefabs/UI_Prefabs/CharacterLogQueue.tscn" id="51_hoq5t"]
 [ext_resource type="Script" uid="uid://bd0s3lywx8lk3" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="62_qneip"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_0mg2m"]
+size = Vector3(10, 1.235, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rj6qj"]
+size = Vector3(9.97693, 1.21387, 9.99719)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0mg2m"]
+friction = 0.58
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pcwnq"]
 render_priority = 0
@@ -100,19 +109,98 @@ collision_mask = 0
 hit_from_inside = true
 collide_with_areas = true
 
-[node name="CharManager" type="Node" parent="."]
+[node name="CharManager" type="Node" parent="." node_paths=PackedStringArray("actionability_tracker")]
 script = ExtResource("3_img6i")
+actionability_tracker = NodePath("../ActionabilityTracker")
 
 [node name="BaseChar" parent="CharManager" node_paths=PackedStringArray("move_target") instance=ExtResource("3_nvpyg")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 37, 21, 12)
 ui_name = "Ruby"
 move_target = NodePath("../../Marker3D")
 
-[node name="ActionabilityTracker" type="Node" parent="."]
+[node name="ActionabilityTracker" type="Node" parent="." node_paths=PackedStringArray("action_system", "char_manager")]
 script = ExtResource("6_v8a8r")
+action_system = NodePath("../ActionSystem")
+char_manager = NodePath("../CharManager")
 
-[node name="ActionSystem" type="Node" parent="." node_paths=PackedStringArray("unit")]
+[node name="ActionSystem" type="Node" parent="." node_paths=PackedStringArray("unit", "action_system_ui", "actionability_tracker")]
 script = ExtResource("7_fk20m")
 unit = NodePath("../CharManager/BaseChar")
+action_system_ui = NodePath("../UILayer/ActionSystemUI")
+actionability_tracker = NodePath("../ActionabilityTracker")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.4964, 3.79927, 11.8287)
+mesh = SubResource("BoxMesh_0mg2m")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
+shape = SubResource("BoxShape3D_rj6qj")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 3.19368, 0, 0, 0, 0.372195, 38.4964, 5.13659, 18.4818)
+mesh = SubResource("BoxMesh_0mg2m")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D4"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D4/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
+shape = SubResource("BoxShape3D_rj6qj")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 3.19368, 0, 0, 0, 0.372195, 38.4964, 8.93659, 22.041)
+mesh = SubResource("BoxMesh_0mg2m")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D5"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D5/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
+shape = SubResource("BoxShape3D_rj6qj")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 3.19368, 0, 0, 0, 0.85773, 38.4964, 8.93659, 28.1046)
+mesh = SubResource("BoxMesh_0mg2m")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D6"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D6/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
+shape = SubResource("BoxShape3D_rj6qj")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 10.5315, 0, 0, 0, 0.85773, 38.4964, 8.93659, 35.1046)
+mesh = SubResource("BoxMesh_0mg2m")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D7"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D7/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
+shape = SubResource("BoxShape3D_rj6qj")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.888569, -0.458743, 0, 0.458743, 0.888569, 0, 0, 0, 1, 29.3427, 1.59897, 11.8196)
+mesh = SubResource("BoxMesh_0mg2m")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D3"]
+collision_layer = 2
+collision_mask = 2
+physics_material_override = SubResource("PhysicsMaterial_0mg2m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D3/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
+shape = SubResource("BoxShape3D_rj6qj")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(32.7711, -2.64261e-05, 0.046329, 2.63892e-05, 32.7711, 2.57785e-05, -0.046329, -2.57406e-05, 32.7711, 24.867, 0, 26.089)
@@ -139,7 +227,7 @@ shape = SubResource("BoxShape3D_pqthu")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Player/CamOrigin"]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
-collision_mask = 2
+collision_mask = 0
 spring_length = 20.0
 
 [node name="fCamera" type="Camera3D" parent="Player/CamOrigin/SpringArm3D"]
@@ -149,12 +237,13 @@ transform = Transform3D(1, 5.96046e-08, 5.96046e-08, -2.47364e-08, 1, -4.76837e-
 script = ExtResource("45_elonc")
 camera_path = NodePath("../CamOrigin/SpringArm3D/fCamera")
 
-[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("unit_action_system_ui")]
+[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("unit_action_system_ui", "action_system_ui")]
 script = ExtResource("48_py4em")
 damage_number_scene = ExtResource("49_2363y")
 text_controller_scene = ExtResource("50_qplst")
 character_log_queue_scene = ExtResource("51_hoq5t")
 unit_action_system_ui = NodePath("ActionSystemUI")
+action_system_ui = NodePath("ActionSystemUI")
 
 [node name="FPSLabel" type="Label" parent="UILayer"]
 anchors_preset = 1

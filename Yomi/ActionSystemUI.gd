@@ -67,7 +67,14 @@ func on_selected_action_changed(action: State) -> void:
 
 
 func on_selected_unit_changed(unit: BaseChar) -> void:
+	if selected_unit and selected_unit.selection_visual:
+		selected_unit.selection_visual.hide_self()
+	if selected_action:
+		selected_action.on_action_unfocused()
 	selected_unit = unit
+	var selection_visual: GridSystemVisualSingle = selected_unit.selection_visual
+	selection_visual.set_color(Color.BLUE)
+	selection_visual._show()
 	create_unit_action_buttons()
 
 
@@ -92,4 +99,4 @@ func get_dynamic_button_picker() -> DynamicButtonPicker:
 func _on_lock_in_button_pressed() -> void:
 	if selected_action:
 		EventBus.selection_locked_in.emit(selected_action)
-		toggle_containers_visibility_off_except()
+		#toggle_containers_visibility_off_except()

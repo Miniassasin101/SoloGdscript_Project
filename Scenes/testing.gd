@@ -6,7 +6,6 @@ extends Node3D
 @export var unit_2: Unit
 @export var camerashake: CameraShake
 @onready var unit_action_system: UnitActionSystem = $"../UnitActionSystem"
-@onready var unit_ai: UnitAI = $"../UnitAI"
 @onready var pathfinding: Pathfinding = $"../Pathfinding"
 @onready var camera = unit_action_system.camera
 @onready var mouse_world: MouseWorld = $"../MouseWorld"
