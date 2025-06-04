@@ -53,7 +53,7 @@ func setup_arrow() -> void:
 
 func clear_arrow() -> void:
 	for child in state_machine.unit.world_rotation_root.get_children():
-		if child.name == "FacingArrowRoot":
+		if child is MeshArrow:
 			child.queue_free()
 
 

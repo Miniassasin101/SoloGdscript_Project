@@ -81,7 +81,7 @@ func get_mouse_raycast_result(result_type: String) -> Variant:
 
 	# Update RayCast3D's position and target
 	raycast.global_transform.origin = ray_origin
-	raycast.target_position = ray_origin + ray_direction * 1000  # Extend ray
+	raycast.target_position = ray_origin + ray_direction * 6000  # Extend ray
 
 	# Force raycast update
 	raycast.force_raycast_update()

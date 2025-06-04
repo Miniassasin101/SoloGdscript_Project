@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dj6owrpn8qlp6"]
+[gd_scene load_steps=35 format=3 uid="uid://dj6owrpn8qlp6"]
 
 [ext_resource type="Script" uid="uid://dt7eq2klp1kwn" path="res://Hero_Game/Yomi/Scripts/TestDebug.gd" id="2_5o2a6"]
 [ext_resource type="Environment" uid="uid://c7cx2thxig2w6" path="res://Hero_Game/Scenes/TestEnvironment1.tres" id="2_cy1d2"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cvuecvfamgpwe" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonUI.tscn" id="19_rj6qj"]
 [ext_resource type="Script" uid="uid://d35gfk2fl3xde" path="res://Hero_Game/Scripts/Core/UI/DraggablePanelUI/MouseEventDroppableSlotController.gd" id="20_881sg"]
 [ext_resource type="PackedScene" uid="uid://4uwpx7r25fdg" path="res://Hero_Game/Prefabs/UI_Prefabs/SpecialEffectsDragContainer.tscn" id="21_nyim1"]
+[ext_resource type="PackedScene" uid="uid://d27utdss0bp12" path="res://Hero_Game/Yomi/Prefabs/UI/DynamicSliderContainer.tscn" id="21_rj6qj"]
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="22_avtag"]
 [ext_resource type="Shader" uid="uid://bsom40l4vw4gh" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="42_a3h6g"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_Grid_08.png" id="43_tc454"]
@@ -92,9 +93,8 @@ directional_shadow_mode = 1
 directional_shadow_split_1 = 0.505
 directional_shadow_max_distance = 27.1
 
-[node name="TestDebug" type="Node" parent="." node_paths=PackedStringArray("current_character")]
+[node name="TestDebug" type="Node" parent="."]
 script = ExtResource("2_5o2a6")
-current_character = NodePath("../CharManager/BaseChar")
 
 [node name="MouseController" type="Node3D" parent="." node_paths=PackedStringArray("raycast", "mouse_visual")]
 script = ExtResource("3_0mg2m")
@@ -108,24 +108,23 @@ mouse_visual = NodePath("MouseVisual")
 collision_mask = 0
 hit_from_inside = true
 collide_with_areas = true
+debug_shape_thickness = 3
 
 [node name="CharManager" type="Node" parent="." node_paths=PackedStringArray("actionability_tracker")]
 script = ExtResource("3_img6i")
 actionability_tracker = NodePath("../ActionabilityTracker")
 
-[node name="BaseChar" parent="CharManager" node_paths=PackedStringArray("move_target") instance=ExtResource("3_nvpyg")]
-transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 37, 21, 12)
-ui_name = "Ruby"
-move_target = NodePath("../../Marker3D")
+[node name="BaseChar2" parent="CharManager" instance=ExtResource("3_nvpyg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5, 17)
+ui_name = "Sapphire"
 
 [node name="ActionabilityTracker" type="Node" parent="." node_paths=PackedStringArray("action_system", "char_manager")]
 script = ExtResource("6_v8a8r")
 action_system = NodePath("../ActionSystem")
 char_manager = NodePath("../CharManager")
 
-[node name="ActionSystem" type="Node" parent="." node_paths=PackedStringArray("unit", "action_system_ui", "actionability_tracker")]
+[node name="ActionSystem" type="Node" parent="." node_paths=PackedStringArray("action_system_ui", "actionability_tracker")]
 script = ExtResource("7_fk20m")
-unit = NodePath("../CharManager/BaseChar")
 action_system_ui = NodePath("../UILayer/ActionSystemUI")
 actionability_tracker = NodePath("../ActionabilityTracker")
 
@@ -257,7 +256,7 @@ grow_horizontal = 0
 script = ExtResource("62_qneip")
 metadata/_edit_use_anchors_ = true
 
-[node name="ActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("action_button_container", "dynamic_button_picker", "dynamic_button_container", "mouse_event_droppable_controller", "selected_unit")]
+[node name="ActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("action_button_container", "dynamic_button_picker", "dynamic_button_container", "mouse_event_droppable_controller")]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -277,7 +276,6 @@ action_button_container = NodePath("ActionButtonsContainer")
 dynamic_button_picker = NodePath("DynamicButtonPicker")
 dynamic_button_container = NodePath("DynamicButtonsContainer")
 mouse_event_droppable_controller = NodePath("MouseEventDroppableSlotController")
-selected_unit = NodePath("../../CharManager/BaseChar")
 metadata/_edit_use_anchors_ = true
 
 [node name="LockInButton" type="Button" parent="UILayer/ActionSystemUI"]
@@ -369,6 +367,15 @@ text = "Press \"N\" to start combat"
 label_settings = SubResource("LabelSettings_k0msr")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="DynamicSliderContainer" parent="UILayer/ActionSystemUI" instance=ExtResource("21_rj6qj")]
+layout_mode = 1
+offset_left = -100.0
+offset_top = -81.0
+offset_right = -2.00002
+offset_bottom = 2.0
+grow_horizontal = 1
+scale = Vector2(0.610297, 0.610297)
 
 [node name="MouseEventDroppableSlotController" type="Control" parent="UILayer/ActionSystemUI" node_paths=PackedStringArray("hand_droppable_container", "active_droppable_container")]
 visible = false

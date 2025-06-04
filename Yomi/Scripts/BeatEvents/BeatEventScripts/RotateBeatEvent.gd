@@ -6,15 +6,15 @@ extends BeatEvent
 
 var target_basis: Basis
 
-var activated: bool = false
+var active: bool = false
 
-var unit: BaseChar = null
+
 
 func on_beat_event(state: State) -> void:
-		
-	if !activated:
-		unit = state.state_machine.unit
-		activated = true
+	super.on_beat_event(state)
+	
+	if !active:
+		active = true
 		BeatUtils.spawn_text_line(state.state_machine.unit, "Rotating: " + str(target_rotation))
 		var potential_rot_beats: int = unit.get_potential_rotation_beats(target_basis)
 		BeatUtils.spawn_text_line(state.state_machine.unit, "Beats: " + str(potential_rot_beats))
@@ -34,7 +34,7 @@ func end_rotation() -> void:
 	if !unit:
 		return
 	unit.is_rotating = false
-	activated = false
+	active = false
 	unit.set_desired_rot_basis(unit.global_basis)
 	unit.global_basis = target_basis
 	unit.angular_velocity = Vector3.ZERO

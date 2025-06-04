@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://d27utdss0bp12"]
+
+[ext_resource type="Script" uid="uid://box1vuuiavkjg" path="res://Hero_Game/Yomi/Scripts/UI/DynamicSliderContainer.gd" id="1_6voav"]
+[ext_resource type="StyleBox" uid="uid://n31yek6n5pbc" path="res://Hero_Game/Prefabs/UI_Prefabs/UnitStatsBarFlatStyleBox.tres" id="2_5wa7y"]
+[ext_resource type="PackedScene" uid="uid://cviwyaraadqaa" path="res://Hero_Game/Yomi/Prefabs/UI/DynamicSlider.tscn" id="3_x8r56"]
+
+[node name="DynamicSliderContainer" type="PanelContainer" node_paths=PackedStringArray("_title_label", "_sliders_vbox")]
+anchors_preset = -1
+anchor_right = 0.135
+anchor_bottom = 0.127
+offset_right = 0.479996
+offset_bottom = -0.296005
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("1_6voav")
+dynamic_slider_scene = ExtResource("3_x8r56")
+_title_label = NodePath("MarginContainer/VBoxContainer/TitleLabel")
+_sliders_vbox = NodePath("MarginContainer/VBoxContainer/SlidersVBoxContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "State Name"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = ExtResource("2_5wa7y")
+
+[node name="SlidersVBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DynamicSlider" parent="MarginContainer/VBoxContainer/SlidersVBoxContainer" instance=ExtResource("3_x8r56")]
+layout_mode = 2

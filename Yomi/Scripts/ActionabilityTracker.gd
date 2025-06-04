@@ -13,7 +13,14 @@ var locked_in_pool: Array[BaseChar]
 
 var is_paused: bool = false
 
+static var instance: ActionabilityTracker = null
+
 func _ready() -> void:
+	if instance != null:
+		push_error("There's more than one ActionabilityTracker! - " + str(instance))
+		queue_free()
+		return
+	instance = self
 	EventBus.unit_actionable.connect(on_unit_actionable)
 	action_system.locked_in.connect(on_unit_locked_in)
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://cuiovtqwnhmel"]
+[gd_scene load_steps=47 format=3 uid="uid://cuiovtqwnhmel"]
 
 [ext_resource type="Script" uid="uid://cr7c6ncxu7b5l" path="res://Hero_Game/Yomi/Scripts/BaseChar.gd" id="1_adj2e"]
 [ext_resource type="Material" uid="uid://d18flcxrogort" path="res://Hero_Game/Art/Materials/CelShadedMats/GrayscaleCelShadedMat.tres" id="2_rhs33"]
@@ -22,6 +22,9 @@
 [ext_resource type="PackedScene" uid="uid://bputpfvj74kol" path="res://Hero_Game/Prefabs/Grid/GridCellVisual.tscn" id="17_hwsgs"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_adj2e"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_w4tje"]
+size = Vector3(0.725, 0.2, 0.325)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_878n1"]
 radius = 0.555733
@@ -49,17 +52,17 @@ metadata/_custom_type_script = "uid://7nr116ys1yk7"
 
 [sub_resource type="Resource" id="Resource_cs1vv"]
 script = ExtResource("8_043wo")
-force = 30.0
-event_start_beat = 4
-event_end_beat = 4
+force = 25.0
+event_start_beat = 1
+event_end_beat = 1
 is_per_beat = false
 metadata/_custom_type_script = "uid://didgvq07ul868"
 
 [sub_resource type="Resource" id="Resource_62lnb"]
 script = ExtResource("8_043wo")
 force = 15.0
-event_start_beat = 4
-event_end_beat = 4
+event_start_beat = 1
+event_end_beat = 1
 is_per_beat = false
 metadata/_custom_type_script = "uid://didgvq07ul868"
 
@@ -116,7 +119,15 @@ metadata/_custom_type_script = "uid://du4c5fwhstb0u"
 script = ExtResource("11_62ao5")
 force = 50.0
 event_start_beat = 1
-event_end_beat = 200
+event_end_beat = 100
+is_per_beat = false
+metadata/_custom_type_script = "uid://fvpmisrk8ylx"
+
+[sub_resource type="Resource" id="Resource_4spni"]
+script = ExtResource("11_62ao5")
+force = 70.0
+event_start_beat = 1
+event_end_beat = 100
 is_per_beat = false
 metadata/_custom_type_script = "uid://fvpmisrk8ylx"
 
@@ -229,6 +240,11 @@ rotation_edit_mode = 1
 mesh = SubResource("CapsuleMesh_adj2e")
 surface_material_override/0 = ExtResource("2_rhs33")
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rig/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.423313, 0.411077)
+mesh = SubResource("BoxMesh_w4tje")
+surface_material_override/0 = ExtResource("2_rhs33")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.873152, 0)
 shape = SubResource("CapsuleShape3D_878n1")
@@ -281,7 +297,6 @@ state_name = "Dash Forward"
 is_loop = true
 actionable_at = 1
 startup_animation = ExtResource("6_878n1")
-startup_beats = 20
 active_animation = ExtResource("5_efpvj")
 recovery_animation = ExtResource("6_878n1")
 beat_events = Array[ExtResource("8_4cc3n")]([SubResource("Resource_cs1vv")])
@@ -356,8 +371,18 @@ state_name = "Long Move"
 is_loop = true
 actionable_at = 1
 startup_animation = ExtResource("6_878n1")
-startup_beats = 200
+startup_beats = 100
 beat_events = Array[ExtResource("8_4cc3n")]([SubResource("Resource_yvjat")])
+
+[node name="RunForwardState" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_machine")]
+script = ExtResource("4_rifwl")
+state_machine = NodePath("..")
+state_name = "Run Move"
+is_loop = true
+actionable_at = 1
+startup_animation = ExtResource("6_878n1")
+startup_beats = 100
+beat_events = Array[ExtResource("8_4cc3n")]([SubResource("Resource_4spni")])
 
 [node name="LongMoveForwardState" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_machine")]
 script = ExtResource("4_rifwl")

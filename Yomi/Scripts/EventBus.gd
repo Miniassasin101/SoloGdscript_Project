@@ -21,3 +21,6 @@ signal selection_locked_in(action: State)
 
 @warning_ignore("unused_signal")
 signal unit_actionable(unit: BaseChar)
+
+@warning_ignore("unused_signal")
+signal unit_changed(unit: BaseChar)

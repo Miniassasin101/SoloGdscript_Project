@@ -10,6 +10,7 @@ signal continue_turn
 
 @export var action_button_container: HBoxContainer
 
+@export var dynamic_slider_container: DynamicSliderContainer
 
 @export var dynamic_button_picker: DynamicButtonPicker
 @export var dynamic_button_container: BoxContainer
@@ -25,8 +26,15 @@ var slot_list: Array[MouseEventDroppableSlot] = []
 
 var selected_action: State = null
 
+static var instance: ActionSystemUI = null
+
 func _ready() -> void:
 
+	if instance != null:
+		push_error("There's more than one ActionSystemUI! - " + str(instance))
+		queue_free()
+		return
+	instance = self
 
 	#create_unit_action_buttons()
 	
@@ -98,5 +106,10 @@ func get_dynamic_button_picker() -> DynamicButtonPicker:
 
 func _on_lock_in_button_pressed() -> void:
 	if selected_action:
-		EventBus.selection_locked_in.emit(selected_action)
-		#toggle_containers_visibility_off_except()
+		if !ActionabilityTracker.instance.is_unit_actionable(selected_unit):
+			return
+		if selected_action.state_machine.unit == selected_unit:
+			EventBus.selection_locked_in.emit(selected_action)
+			#toggle_containers_visibility_off_except()
+		else:
+			push_error("action unit isnt selected unit")

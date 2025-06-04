@@ -49,6 +49,9 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("left_mouse"):
 		if try_handle_unit_selection():
 			return
+	
+	if Input.is_action_just_pressed("space_key"):
+		action_system_ui._on_lock_in_button_pressed()
 
 
 

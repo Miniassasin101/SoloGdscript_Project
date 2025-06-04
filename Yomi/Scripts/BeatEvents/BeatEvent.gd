@@ -6,8 +6,15 @@ extends Resource
 
 @export var is_per_beat: bool = false
 
+var unit: BaseChar = null
+
+var is_activated: bool = false
+
 func on_beat_event(state: State) -> void:
-	pass
+	
+	unit = state.state_machine.unit
+	#	is_activated = true
+
 
 func is_beat_in_range(beat: int) -> bool:
 	if beat in range(event_start_beat, event_end_beat + 1):
