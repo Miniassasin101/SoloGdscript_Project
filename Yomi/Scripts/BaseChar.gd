@@ -38,6 +38,8 @@ var meshes: Array[MeshInstance3D]
 
 var mat_setup: bool = false
 
+var physics_are_paused: bool = false
+
 var saved_linear_velocity: Vector3
 
 var saved_angular_velocity: Vector3
@@ -47,51 +49,54 @@ func _ready() -> void:
 	super._ready()
 	meshes = get_meshes()
 	setup_mesh_mats_unique()
-	setup_self()
-
-	# optional: reduce spinning when no torque
-	#set_angular_damp_mode(RigidBody3D.DAMP_MODE_REPLACE)
-	#set_angular_damp(0.0)
 
 	state_machine.state_changed.connect(_on_state_changed)
 	desired_rotation_basis = Basis.from_euler(test_euler)
 
-
 	pass
 
 
-func setup_self() -> void:
-	#await get_tree().process_frame
-	#state_machine.start_machine()
-	pass
 
+
+
+
+
+
+func _physics_process(delta: float) -> void:
+	if physics_are_paused:
+		return
+	
+	super._physics_process(delta)
+	
+	if is_rotating:
+		process_rotation(delta)
+
+
+func beat_physics_process(delta: float) -> void:
+	if !state_machine or state_machine.is_paused:
+		if !physics_are_paused:
+			pause_physics()
+		return
+	
+	if physics_are_paused:
+		resume_physics()
+	
+	state_machine.beat_physics_process(delta)
 
 
 func pause_physics() -> void:
 	saved_linear_velocity = linear_velocity
 	saved_angular_velocity = angular_velocity
+	physics_are_paused = true
 	freeze = true
+
 
 func resume_physics() -> void:
 	linear_velocity = saved_linear_velocity
 	angular_velocity = saved_angular_velocity
+	physics_are_paused = false
 	freeze = false
 
-
-
-func _physics_process(delta: float) -> void:
-	if !state_machine or state_machine.is_paused:
-		if freeze == false:
-			pause_physics()
-		
-		return
-	if freeze:
-		resume_physics()
-	super._physics_process(delta)
-	#process_movement(delta)
-	if is_rotating:
-		_apply_rotation(delta)
-		#process_rotation(delta)
 
 
 func _apply_rotation(delta: float) -> void:
@@ -119,6 +124,9 @@ func move_in_direction(dir: Vector3, in_force: float = walk_force) -> void:
 	# a continuous force you could call each frame
 	apply_central_force(dir.normalized() * in_force)
 
+func dash_in_direction(dir: Vector3, in_force: float = walk_force) -> void:
+	# a continuous force you could call each frame
+	apply_central_impulse(dir.normalized() * in_force)
 
 func backstep(force: float = 15.0) -> void:
 	# a one-time impulse backwards
@@ -139,13 +147,13 @@ func fall(force: float = 15.0) -> void:
 	var down_dir := -global_transform.basis.y
 	apply_central_impulse(down_dir * force)
 
+
 func process_movement(delta: float) -> void:
 
 	var forward := basis.z
 
 	#velocity = velocity.move_toward(forward * move_speed, acceleration * delta)
 	#move_and_slide()
-
 
 
 func process_rotation(delta: float) -> void:
@@ -188,6 +196,7 @@ func get_meshes() -> Array[MeshInstance3D]:
 	array.assign(rig.get_children())
 	return array
 
+
 func setup_mesh_mats_unique() -> void:
 	for mesh in meshes:
 		var mat: ShaderMaterial = mesh.get_surface_override_material(0) as ShaderMaterial
@@ -195,28 +204,10 @@ func setup_mesh_mats_unique() -> void:
 
 
 
-func get_rotation_beats_dep() -> int:
-	var delta: float = get_parent().get_physics_process_delta_time()
-	# 1. current vs target quaternion
-	var current_q: Quaternion = global_transform.basis.get_rotation_quaternion()
-	var target_b: Basis    = desired_rotation_basis.orthonormalized()
-	var target_q: Quaternion = target_b.get_rotation_quaternion()
 
-	# 2. how many radians left to turn
-	var angle_diff: float = current_q.angle_to(target_q)
-
-	# 3. how many radians we turn per physics frame
-	var turn_per_frame: float = rot_speed * delta
-	if turn_per_frame <= 0.0:
-		return INF   # or 0, or however you want to signal “never”
-
-
-	# 4. beats = ceil( total_angle / angle_per_beat )
-	return int(ceil(angle_diff / turn_per_frame))
 
 func get_rotation_beats() -> int:
 	# 1) fixed physics step so it works even when frozen
-
 	var delta      := get_parent().get_physics_process_delta_time()
 
 	# 2) how many radians remain
@@ -224,11 +215,8 @@ func get_rotation_beats() -> int:
 	var target_q   = desired_rotation_basis.orthonormalized().get_rotation_quaternion()
 	var angle_diff = current_q.angle_to(target_q)
 
-	# 3a) if you disabled damp: use your full rot_speed
 	var turn_rate = rot_speed
 
-	# 3b) if you want to account for damp: uncomment
-	#turn_rate = abs(angular_velocity.y)
 
 	var turn_per_tick = turn_rate * delta
 	if turn_per_tick <= 0.0:
@@ -237,24 +225,7 @@ func get_rotation_beats() -> int:
 	# 4) always ceil so you never undercount
 	return int(ceil(angle_diff / turn_per_tick))
 
-func get_potential_rotation_beats_dep(rotation_basis: Basis) -> int:
-	var delta: float = get_parent().get_physics_process_delta_time()
-	# 1. current vs target quaternion
-	var current_q: Quaternion = global_transform.basis.get_rotation_quaternion()
-	var target_b: Basis    = rotation_basis.orthonormalized()
-	var target_q: Quaternion = target_b.get_rotation_quaternion()
 
-	# 2. how many radians left to turn
-	var angle_diff: float = current_q.angle_to(target_q)
-
-	# 3. how many radians we turn per physics frame
-	var turn_per_frame: float = rot_speed * delta
-	if turn_per_frame <= 0.0:
-		return INF   # or 0, or however you want to signal “never”
-
-
-	# 4. beats = ceil( total_angle / angle_per_beat )
-	return int(ceil(angle_diff / turn_per_frame))
 
 func get_potential_rotation_beats(rotation_basis: Basis) -> int:
 	print_debug("Angular Damp: " + str(angular_damp))
@@ -266,11 +237,10 @@ func get_potential_rotation_beats(rotation_basis: Basis) -> int:
 	var target_q   = rotation_basis.orthonormalized().get_rotation_quaternion()
 	var angle_diff = current_q.angle_to(target_q)
 
-	# 3a) if you disabled damp: use your full rot_speed
-	var turn_rate = rot_speed# * 0.925
 
-	# 3b) if you want to account for damp: uncomment
-	#turn_rate = abs(angular_velocity.y)
+	var turn_rate = rot_speed
+
+
 
 	var turn_per_tick = turn_rate * delta
 	if turn_per_tick <= 0.0:

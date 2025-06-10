@@ -240,6 +240,19 @@ collision_mask = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
 shape = SubResource("BoxShape3D_rj6qj")
 
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="ObjectManager/TerrainManager"]
+transform = Transform3D(0.977497, -0.32201, -0.766404, 0.359516, 0.946565, -0.249451, 1.41709, -0.0180229, 0.591946, 8.19521, 0.922712, 36.7307)
+mesh = SubResource("BoxMesh_0mg2m")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="ObjectManager/TerrainManager/MeshInstance3D9"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ObjectManager/TerrainManager/MeshInstance3D9/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
+shape = SubResource("BoxShape3D_rj6qj")
+
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="ObjectManager/TerrainManager"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.4964, 3.79927, 11.8287)
 mesh = SubResource("BoxMesh_0mg2m")

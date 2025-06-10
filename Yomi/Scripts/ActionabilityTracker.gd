@@ -27,19 +27,37 @@ func _ready() -> void:
 	#units_pool.append_array(char_manager.units)
 
 
+func begin_frame() -> void:
+	# Clear any “freeze requests” from last frame
+	# (we use actionable_pool itself as the signal)
+	pass
+
+# Called by CharManager after registration phase
+func end_frame() -> void:
+	# If any units registered this frame and we're not already paused:
+	if actionable_pool.size() > 0 and not is_paused:
+		# pick the first actionable, lock it in
+		action_system.set_selected_unit(actionable_pool.front())
+		is_paused = true
+		EventBus.pause.emit()
+
+
+
+
+
+
+
 func on_unit_actionable(unit: BaseChar) -> void:
-	for u in units_pool:
-		if u.state_machine.current_state.beats_left == 1:
-			u.state_machine.current_state.play_beats(1)
-	if unit in units_pool:
-		if unit in actionable_pool:
-			return
+#	for u in units_pool:
+#		if u.state_machine.current_state.beats_left == 1:
+#			u.state_machine.current_state.play_beats(1)
+	if unit in units_pool and unit not in actionable_pool:
 		actionable_pool.append(unit)
-		if !is_paused:
-			action_system.set_selected_unit(unit)
-			is_paused = true
-			
-			EventBus.pause.emit()
+		#if !is_paused:
+		#	action_system.set_selected_unit(unit)
+		#	is_paused = true
+		#	
+		#	EventBus.pause.emit()
 
 
 func is_unit_actionable(unit: BaseChar) -> bool:
@@ -54,7 +72,8 @@ func on_unit_locked_in(unit: BaseChar) -> void:
 		unit.state_machine.is_actionable = false
 	
 	if actionable_pool.is_empty():
-		EventBus.resume.emit()
 		is_paused = false
-		return
-	action_system.set_selected_unit(actionable_pool[0])
+		EventBus.resume.emit()
+	else:
+		#pass
+		action_system.set_selected_unit(actionable_pool.front())

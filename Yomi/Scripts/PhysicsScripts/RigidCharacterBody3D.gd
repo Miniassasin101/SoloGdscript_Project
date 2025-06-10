@@ -147,11 +147,14 @@ func apply_gravity(delta: float) -> void:
 		# Project the gravity vector onto the floor normal—this
 		# is the component of gravity pushing *into* the slope.
 		var g = gravity  # e.g. (0, -9.8, 0)
-		var into_floor = floor_normal * g.dot(floor_normal)
+		var into_floor: Vector3 = (floor_normal * g.dot(floor_normal)).normalized()
 		var grav_scale = gravity_scale
 		#if gravity_scale == default_gravity_scale:
 		#	set_gravity_scale(0.0)
-		apply_central_impulse(into_floor * delta)
+		if linear_velocity.y >= 1.0:
+			into_floor = into_floor * 2
+			pass
+		apply_central_force(into_floor * weight_scale)
 	else:
 		#if gravity_scale != default_gravity_scale:
 		#	set_gravity_scale(default_gravity_scale)

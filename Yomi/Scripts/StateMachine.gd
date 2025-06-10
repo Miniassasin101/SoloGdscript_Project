@@ -57,11 +57,10 @@ func _ready() -> void:
 	
 
 func _physics_process(_delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
-	if !is_paused:
-		current_state.play_beats(1)
-		beats_until_actionable = current_state.beats_left
+	pass
+	#if !is_paused:
+	#	current_state.play_beats(1)
+	#	beats_until_actionable = current_state.beats_left
 
 func start_machine() -> void:
 	state_stack.clear()
@@ -79,7 +78,12 @@ func _advance_state() -> void:
 	state_changed.emit(current_state)
 	current_state.play_beats(0)
 	
-	
+
+func beat_physics_process(_delta: float) -> void:
+	if !is_paused:
+		current_state.play_beats(1)
+		beats_until_actionable = current_state.beats_left
+
 
 func queue_state(state: State) -> void:
 	state_stack.append(state)

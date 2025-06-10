@@ -90,6 +90,11 @@ func reset_state() -> void:
 	beat_counter = 0
 	beats_left = 0
 
+func reset_beat_events() -> void:
+	for b_event in beat_events:
+		if b_event.is_activated:
+			b_event.is_activated = false
+
 func play_beats(num_beats: int = 1) -> void:
 	if not is_running:
 		# first beat → enter STARTUP
@@ -171,8 +176,14 @@ func _enter_recovery(overflow: int) -> void:
 func activate_beat_events() -> void:
 	for beat_event: BeatEvent in beat_events:
 		if beat_event.is_beat_in_range(beat_counter):
+			#if beat_event.is_activated and !beat_event.is_per_beat:
+			#	continue
 			beat_event.on_beat_event(self)
+			#beat_event.is_activated = true
 
+func force_early_actionable() -> void:
+	if state_machine:
+		state_machine.on_state_actionable()
 
 func get_beats_until_actionable() -> int:
 	if not is_running:

@@ -10,18 +10,22 @@ var unit: BaseChar = null
 
 var is_activated: bool = false
 
-
+var is_unique: bool = false
 	
 
 func on_beat_event(state: State) -> void:
-	
-	unit = state.state_machine.unit
-	#	is_activated = true
+
+	if !unit:
+		unit = state.state_machine.unit
+
 
 
 func is_beat_in_range(beat: int) -> bool:
 	if beat in range(event_start_beat, event_end_beat + 1):
 		return true
+	
+
+	
 	return false
 
 

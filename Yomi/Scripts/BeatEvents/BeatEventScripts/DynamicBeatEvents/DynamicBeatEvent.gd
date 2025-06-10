@@ -12,7 +12,7 @@ extends BeatEvent
 
 
 func make_unique() -> void:
-	if is_activated:
+	if is_unique:
 		return
 	var old_beat_values: Array[BeatValue] = [] 
 	old_beat_values.append_array(beat_values)
@@ -21,7 +21,7 @@ func make_unique() -> void:
 		beat_values.append(b_val.duplicate())
 
 	#beat_values = beat_values.duplicate(true)
-	is_activated = true
+	is_unique = true
 
 
 # Retrieve a BeatValue Resource by its “value_name” property.

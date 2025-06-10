@@ -1,4 +1,3 @@
-@tool
 
 class_name SpinState
 extends State
@@ -111,14 +110,25 @@ func on_action_locked_in() -> void:
 	super.on_action_locked_in()
 	var original_event: BeatEvent = beat_events.front()
 	
-
-	var new_event: RotateBeatEvent = original_event.duplicate(true) as RotateBeatEvent
-	beat_events.clear()
-	beat_events.append(new_event)
+	
+	#var new_event: DynamicRotateBeatEvent = original_event.duplicate(true) as DynamicRotateBeatEvent
+	#beat_events.clear()
+	#beat_events.append(new_event)
+	var new_event: DynamicRotateBeatEvent = original_event as DynamicRotateBeatEvent
 	new_event.set_target_rotation(target_rotation)
 	new_event.target_basis = target_basis
+	var rot_speed: float = new_event.get_beat_value_by_name("rot_speed").value
+	if rot_speed == 0.0:
+		rot_speed = 1.0
+	state_machine.unit.rot_speed = rot_speed
 	var potential_beats: int = state_machine.unit.get_potential_rotation_beats(target_basis)#Basis.from_euler(target_rotation))
+	
+	#potential_beats += 2
+	
 	print_debug("Potential Beats: " + str(potential_beats))
-	startup_beats = potential_beats
-	new_event.set_end_beat(startup_beats)
+	if beat_events.size() >= 2:
+		startup_beats = maxi(potential_beats, startup_beats)
+	else:
+		startup_beats = potential_beats
+	new_event.set_end_beat(potential_beats)
 	

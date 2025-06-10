@@ -9,3 +9,4 @@ func on_beat_event(state: State) -> void:
 	
 	var for_dir := unit.floor_normal.cross(-unit.global_basis.x)
 	unit.move_in_direction(for_dir, move_force)
+	
