@@ -45,22 +45,22 @@ signal value_changed(new_value: float)
 # Whether the CurrentSliderValueLabel should show zero‐decimals or one‐decimal (e.g. “42” vs “42.5”)
 @export var decimals: int = 0
 
-
+var beat_value: BeatValue = null
 
 func _ready() -> void:
 
 	# 2) Configure the HSlider based on exported variables
-	_hslider.min_value = min_value
-	_hslider.max_value = max_value
-	_hslider.step = step
-	_hslider.value = initial_value
+	#_hslider.min_value = min_value
+	#_hslider.max_value = max_value
+	#_hslider.step = step
+	#_hslider.value = initial_value
 
 	# 3) Set labels (name + current value)
 	_update_name_label()
 	_update_current_value_label(_hslider.value)
 
 	# 4) Connect the HSlider’s “value_changed” signal
-	_hslider.connect("value_changed", Callable(self, "_on_HSlider_value_changed"))
+	#_hslider.connect("value_changed", Callable(self, "_on_HSlider_value_changed"))
 
 
 func _on_HSlider_value_changed(value: float) -> void:
@@ -81,7 +81,7 @@ func _update_current_value_label(value: float) -> void:
 			# Show as integer (rounded)
 			var int_val = int(round(value))
 			# Format with a single "{_}" placeholder:
-			_current_value_label.text = "{_}".format([int_val])
+			_current_value_label.text = str(int_val)
 		else:
 			# Show with exactly `decimals` decimal places.
 			# Using String.pad_decimals() is simpler than trying to force
@@ -118,17 +118,28 @@ func set_range(new_min: float = 0.0, new_max: float = 100.0, new_step: float = 1
 # Programmatically set the slider’s value, updating the label and emitting the signal.
 func set_value(new_value: float) -> void:
 	var clamped = clamp(new_value, min_value, max_value)
-	if !is_equal_approx(clamped, _hslider.value):
-		_hslider.value = clamped
-		_update_current_value_label(clamped)
-		emit_signal("value_changed", clamped)
+	#if !is_equal_approx(clamped, _hslider.value):
+	_hslider.value = clamped
+	_update_current_value_label(clamped)
+	value_changed.emit(clamped)
 
 # Retrieve the current slider value
 func get_value() -> float:
 	return _hslider.value
 
 # Change how many decimal places to show in CurrentSliderValueLabel
-func set_decimals(new_decimals: int) -> void:
+func set_decimals(new_decimals: int = 0) -> void:
 	decimals = max(new_decimals, 0)
 	# Refresh the text immediately
 	_update_current_value_label(_hslider.value)
+
+
+func disconnect_all() -> void:
+	if beat_value:
+		if value_changed.has_connections():
+			value_changed.disconnect(beat_value.apply_slider_value)
+		#var connections := value_changed.get_connections()
+		
+		#for connection in connections:
+		#	for key in connection:
+				

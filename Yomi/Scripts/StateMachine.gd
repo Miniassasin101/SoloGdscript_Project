@@ -1,4 +1,4 @@
-@tool
+
 class_name StateMachine
 extends Node
 
@@ -35,6 +35,7 @@ var current_state: State = null
 var beats_until_actionable: int = 1
 
 func _ready() -> void:
+
 	EventBus.pause.connect(pause_animation)
 	EventBus.resume.connect(unpause_animation)
 	
@@ -60,6 +61,7 @@ func _physics_process(_delta: float) -> void:
 		return
 	if !is_paused:
 		current_state.play_beats(1)
+		beats_until_actionable = current_state.beats_left
 
 func start_machine() -> void:
 	state_stack.clear()

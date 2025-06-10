@@ -13,8 +13,14 @@ extends RigidBody3D
 	get:
 		if not orientation_node: return self
 		return orientation_node
+
+@export var weight_scale: float = 1.0
 ## World space gravity vector.
 @export var gravity: Vector3 = Vector3(0, -9.8, 0)
+## default gravity scale:
+@export var default_gravity_scale: float = 3.054
+## the angle degrees that qualify as a slope
+@export var max_slope_angle: float = 5.0
 ## The force used to jump with.
 @export var jump_force: float = 5.0
 ## The force used to walk with.
@@ -52,6 +58,8 @@ func _ready():
 	max_contacts_reported = 16
 	continuous_cd = true
 	
+	default_gravity_scale = gravity_scale
+	
 	# Capture mouse
 	#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -64,7 +72,8 @@ func _physics_process(delta):
 	apply_movement(delta)
 	
 	# Add gravity
-	apply_central_impulse(gravity * delta)
+	apply_gravity(delta)
+	
 	
 	apply_drag(delta)
 	
@@ -105,6 +114,9 @@ func apply_drag(delta: float):
 	var fd = 1.0/2.0 * fluid_density * v2 * cd
 	var drag = -linear_velocity.normalized() * fd
 	drag = drag.limit_length(linear_velocity.length())
+	#if !is_on_floor and linear_velocity.y < 0:
+		#drag = drag/2
+
 	apply_central_impulse(drag * delta)
 
 
@@ -128,9 +140,34 @@ func apply_movement(delta: float):
 	elif is_running:
 		is_running = false
 
+func apply_gravity(delta: float) -> void:
+
+	if is_on_floor and is_on_slope():
+
+		# Project the gravity vector onto the floor normal—this
+		# is the component of gravity pushing *into* the slope.
+		var g = gravity  # e.g. (0, -9.8, 0)
+		var into_floor = floor_normal * g.dot(floor_normal)
+		var grav_scale = gravity_scale
+		#if gravity_scale == default_gravity_scale:
+		#	set_gravity_scale(0.0)
+		apply_central_impulse(into_floor * delta)
+	else:
+		#if gravity_scale != default_gravity_scale:
+		#	set_gravity_scale(default_gravity_scale)
+		# In the air: apply full gravity
+		apply_central_force(gravity * weight_scale)# * delta)
+		pass
+
 
 func process_character_input():
 	pass
+
+func is_on_slope(threshold_degrees: float = max_slope_angle) -> bool:
+	if not is_on_floor:
+		return false
+	var angle = rad_to_deg(acos(floor_normal.dot(Vector3.UP)))
+	return angle > 0.01 and angle <= threshold_degrees
 
 
 func reset_input():

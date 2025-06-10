@@ -9,4 +9,5 @@ extends Resource
 # When we instantiate the slider in UI, we’ll call this to prime
 # the `value` from whatever the slider shows, or vice versa.
 func apply_slider_value(new_value: float) -> void:
+
 	value = new_value

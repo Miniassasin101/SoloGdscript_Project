@@ -109,7 +109,9 @@ func on_action_unfocused() -> void:
 
 func on_action_locked_in() -> void:
 	super.on_action_locked_in()
-	var original_event: BeatEvent = beat_events[0]
+	var original_event: BeatEvent = beat_events.front()
+	
+
 	var new_event: RotateBeatEvent = original_event.duplicate(true) as RotateBeatEvent
 	beat_events.clear()
 	beat_events.append(new_event)

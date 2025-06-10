@@ -24,3 +24,9 @@ signal unit_actionable(unit: BaseChar)
 
 @warning_ignore("unused_signal")
 signal unit_changed(unit: BaseChar)
+
+
+signal update_stat_bars
+
+signal on_unit_added
+signal on_unit_removed

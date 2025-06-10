@@ -1,4 +1,3 @@
-@tool
 
 class_name State
 extends Node
@@ -11,8 +10,7 @@ signal startup_complete
 signal active_complete
 signal recovery_complete
 
-#@export_tool_button("UpdateMarkers") var update_markers_action: Callable = update_markers
-@export_tool_button("UpdateTimeVal") var update_time_action: Callable = update_time_vals
+
 
 
 @export var state_machine: StateMachine
@@ -44,7 +42,7 @@ var is_running: bool = false
 var beat_counter: int = 0
 var beats_left: int = 0
 
-
+var focused_this_combat: bool = false
 
 
 """
@@ -66,6 +64,20 @@ func update_markers() -> void:
 func _ready() -> void:
 	if state_machine == null:
 		state_machine = get_parent()
+	make_beat_events_unique()
+
+func make_beat_events_unique() -> void:
+	var old_events: Array[BeatEvent] = []
+	old_events.append_array(beat_events)
+	beat_events.clear()
+	for b_event in old_events:
+		if b_event is DynamicBeatEvent:
+			var new_b_event: DynamicBeatEvent = b_event.duplicate()
+			new_b_event.make_unique()
+			beat_events.append(new_b_event)
+		else:
+			var new_b_event: BeatEvent = b_event.duplicate()
+			beat_events.append(new_b_event)
 
 func update_time_vals() -> void:
 	print_debug("Time_Vals Working")
@@ -100,13 +112,13 @@ func play_beats(num_beats: int = 1) -> void:
 	match _phase:
 		StatePhase.STARTUP:
 			emit_signal("startup_complete")
-			_maybe_notify_parent(StatePhase.STARTUP)
-			_enter_active(overflow)
+			if !_maybe_notify_parent(StatePhase.STARTUP):
+				_enter_active(overflow)
 
 		StatePhase.ACTIVE:
 			emit_signal("active_complete")
-			_maybe_notify_parent(StatePhase.ACTIVE)
-			_enter_recovery(overflow)
+			if !_maybe_notify_parent(StatePhase.ACTIVE):
+				_enter_recovery(overflow)
 
 		StatePhase.RECOVERY:
 			emit_signal("recovery_complete")
@@ -133,11 +145,13 @@ func play_animation() -> void:
 	
 	state_machine.play_animation(anim_name)
 
-func _maybe_notify_parent(phase_done: StatePhase) -> void:
+func _maybe_notify_parent(phase_done: StatePhase) -> bool:
 	if phase_done == actionable_at:
 		var sm := state_machine
 		if sm:
 			sm.on_state_actionable()
+			return true
+	return false
 
 func _enter_active(overflow: int) -> void:
 	_phase = StatePhase.ACTIVE
@@ -159,14 +173,76 @@ func activate_beat_events() -> void:
 		if beat_event.is_beat_in_range(beat_counter):
 			beat_event.on_beat_event(self)
 
+
+func get_beats_until_actionable() -> int:
+	if not is_running:
+		match actionable_at:
+			StatePhase.STARTUP:
+				return startup_beats
+			StatePhase.ACTIVE:
+				return startup_beats
+			StatePhase.RECOVERY:
+				var active_beats = int(ceil(active_animation.length * 60.0 * get_parent().anim_scale)) if active_animation else 0
+				return startup_beats + active_beats
+
+	match _phase:
+		StatePhase.STARTUP:
+			if actionable_at == StatePhase.STARTUP:
+				return beats_left
+			elif actionable_at == StatePhase.ACTIVE:
+				return beats_left
+			elif actionable_at == StatePhase.RECOVERY:
+				var active_beats = int(ceil(active_animation.length * 60.0 * get_parent().anim_scale)) if active_animation else 0
+				return beats_left + active_beats
+
+		StatePhase.ACTIVE:
+			if actionable_at in [StatePhase.STARTUP, StatePhase.ACTIVE]:
+				return -1
+			elif actionable_at == StatePhase.RECOVERY:
+				return beats_left
+
+		StatePhase.RECOVERY:
+			return -1
+
+	return -1
+
+func get_dynamic_beat_events() -> Array[DynamicBeatEvent]:
+	var ret_events: Array[DynamicBeatEvent]
+	for event in beat_events:
+		if event is DynamicBeatEvent:
+			ret_events.append(event)
+	return ret_events
+
+func has_any_dynamic_beat_events() -> bool:
+	for event in beat_events:
+		if event is DynamicBeatEvent:
+			return true
+	return false
+
+func create_dynamic_beat_sliders() -> void:
+	
+	if !self.has_any_dynamic_beat_events():
+		return
+	
+	ActionSystemUI.instance.setup_dynamic_container(self)
+	
+	print_debug("test_end")
+
 # Prompts things like sliders or input while action is focused to change things like target.
 func on_action_focused() -> void:
+	pass
 	print_debug("focused")
+	create_dynamic_beat_sliders()
+	if !focused_this_combat:
+		focused_this_combat = true
 	pass
 
 
 func on_action_unfocused() -> void:
 	print_debug("unfocused")
+	
+	ActionSystemUI.instance.hide_dynamic_slider_container()
+	
 	pass
 
 

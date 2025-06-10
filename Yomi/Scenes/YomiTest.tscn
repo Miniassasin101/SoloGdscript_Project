@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://dj6owrpn8qlp6"]
+[gd_scene load_steps=38 format=3 uid="uid://dj6owrpn8qlp6"]
 
 [ext_resource type="Script" uid="uid://dt7eq2klp1kwn" path="res://Hero_Game/Yomi/Scripts/TestDebug.gd" id="2_5o2a6"]
 [ext_resource type="Environment" uid="uid://c7cx2thxig2w6" path="res://Hero_Game/Scenes/TestEnvironment1.tres" id="2_cy1d2"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://i32kitwib4ny" path="res://ColoredMarker.tscn" id="4_0mg2m"]
 [ext_resource type="Script" uid="uid://coi4aca8gjgdn" path="res://Hero_Game/Yomi/Scripts/ActionabilityTracker.gd" id="6_v8a8r"]
 [ext_resource type="Script" uid="uid://b2m2f17hntuq2" path="res://Hero_Game/Yomi/Scripts/ActionSystem.gd" id="7_fk20m"]
+[ext_resource type="Script" uid="uid://ceajhw2drquoo" path="res://Hero_Game/Yomi/Scenes/GravArea.gd" id="9_nyim1"]
 [ext_resource type="Script" uid="uid://de4ptjehl5lt1" path="res://Hero_Game/Yomi/ActionSystemUI.gd" id="17_xn552"]
 [ext_resource type="PackedScene" uid="uid://psdfsrnutgxe" path="res://Hero_Game/Prefabs/UI_Prefabs/ActionButtonUI.tscn" id="18_0mg2m"]
 [ext_resource type="PackedScene" uid="uid://cvuecvfamgpwe" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonUI.tscn" id="19_rj6qj"]
@@ -15,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://4uwpx7r25fdg" path="res://Hero_Game/Prefabs/UI_Prefabs/SpecialEffectsDragContainer.tscn" id="21_nyim1"]
 [ext_resource type="PackedScene" uid="uid://d27utdss0bp12" path="res://Hero_Game/Yomi/Prefabs/UI/DynamicSliderContainer.tscn" id="21_rj6qj"]
 [ext_resource type="PackedScene" uid="uid://bghfrh6vddvmj" path="res://Hero_Game/Prefabs/UI_Prefabs/DynamicButtonPicker.tscn" id="22_avtag"]
+[ext_resource type="Script" uid="uid://b0r0xhqghqwyt" path="res://Hero_Game/Yomi/Scenes/UnitStatsBarsUI.gd" id="25_881sg"]
 [ext_resource type="Shader" uid="uid://bsom40l4vw4gh" path="res://Hero_Game/Art/Shaders/Grid.gdshader" id="42_a3h6g"]
 [ext_resource type="Texture2D" uid="uid://dykgabt8alq1k" path="res://Hero_Game/Art/PolyProtoAssets/textures/PolygonPrototype_Texture_Grid_08.png" id="43_tc454"]
 [ext_resource type="Script" uid="uid://d272os1ql1suo" path="res://Hero_Game/Scripts/Core/player.gd" id="44_tri2a"]
@@ -25,14 +27,14 @@
 [ext_resource type="PackedScene" uid="uid://8oord2o1icck" path="res://Hero_Game/Prefabs/UI_Prefabs/CharacterLogQueue.tscn" id="51_hoq5t"]
 [ext_resource type="Script" uid="uid://bd0s3lywx8lk3" path="res://Hero_Game/Scripts/DebugMenu/label.gd" id="62_qneip"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_881sg"]
+size = Vector3(5.60791, 5.58582, 7.36621)
+
 [sub_resource type="BoxMesh" id="BoxMesh_0mg2m"]
 size = Vector3(10, 1.235, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rj6qj"]
 size = Vector3(9.97693, 1.21387, 9.99719)
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0mg2m"]
-friction = 0.58
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pcwnq"]
 render_priority = 0
@@ -77,6 +79,19 @@ shadow_offset = Vector2(1, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_k0msr"]
 font_size = 25
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nyim1"]
+bg_color = Color(0.15, 0.15, 0.15, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_size = 2
+shadow_offset = Vector2(1, 1)
+
 [node name="Level" type="Node3D"]
 
 [node name="Lighting" type="Node3D" parent="."]
@@ -115,7 +130,7 @@ script = ExtResource("3_img6i")
 actionability_tracker = NodePath("../ActionabilityTracker")
 
 [node name="BaseChar2" parent="CharManager" instance=ExtResource("3_nvpyg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 5, 17)
+transform = Transform3D(1, 0, -1.74845e-07, 0, 1, 0, 1.74845e-07, 0, 1, 5.86877, 5.12616, 26.8846)
 ui_name = "Sapphire"
 
 [node name="ActionabilityTracker" type="Node" parent="." node_paths=PackedStringArray("action_system", "char_manager")]
@@ -128,90 +143,128 @@ script = ExtResource("7_fk20m")
 action_system_ui = NodePath("../UILayer/ActionSystemUI")
 actionability_tracker = NodePath("../ActionabilityTracker")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.4964, 3.79927, 11.8287)
-mesh = SubResource("BoxMesh_0mg2m")
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.231384, -0.0414581, 2.23442)
+collision_layer = 0
+collision_mask = 8
+monitoring = false
+gravity_space_override = 3
+gravity_point_center = Vector3(0, 1, 0)
+gravity_direction = Vector3(0, 1, 0)
+script = ExtResource("9_nyim1")
+gravity_scale = 50.0
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2"]
-collision_layer = 2
-collision_mask = 2
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.1366, 2.29291, 25.0898)
+shape = SubResource("BoxShape3D_881sg")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
-shape = SubResource("BoxShape3D_rj6qj")
+[node name="ObjectManager" type="Node" parent="."]
 
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+[node name="TerrainManager" type="Node" parent="ObjectManager"]
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="ObjectManager/TerrainManager"]
 transform = Transform3D(1, 0, 0, 0, 3.19368, 0, 0, 0, 0.372195, 38.4964, 5.13659, 18.4818)
 mesh = SubResource("BoxMesh_0mg2m")
+skeleton = NodePath("../../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D4"]
+[node name="StaticBody3D" type="StaticBody3D" parent="ObjectManager/TerrainManager/MeshInstance3D4"]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D4/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ObjectManager/TerrainManager/MeshInstance3D4/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
 shape = SubResource("BoxShape3D_rj6qj")
 
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="ObjectManager/TerrainManager"]
 transform = Transform3D(1, 0, 0, 0, 3.19368, 0, 0, 0, 0.372195, 38.4964, 8.93659, 22.041)
 mesh = SubResource("BoxMesh_0mg2m")
+skeleton = NodePath("../../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D5"]
+[node name="StaticBody3D" type="StaticBody3D" parent="ObjectManager/TerrainManager/MeshInstance3D5"]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D5/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ObjectManager/TerrainManager/MeshInstance3D5/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
 shape = SubResource("BoxShape3D_rj6qj")
 
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="ObjectManager/TerrainManager"]
 transform = Transform3D(1, 0, 0, 0, 3.19368, 0, 0, 0, 0.85773, 38.4964, 8.93659, 28.1046)
 mesh = SubResource("BoxMesh_0mg2m")
+skeleton = NodePath("../../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D6"]
+[node name="StaticBody3D" type="StaticBody3D" parent="ObjectManager/TerrainManager/MeshInstance3D6"]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D6/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ObjectManager/TerrainManager/MeshInstance3D6/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
 shape = SubResource("BoxShape3D_rj6qj")
 
-[node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="ObjectManager/TerrainManager"]
 transform = Transform3D(1, 0, 0, 0, 10.5315, 0, 0, 0, 0.85773, 38.4964, 8.93659, 35.1046)
 mesh = SubResource("BoxMesh_0mg2m")
+skeleton = NodePath("../../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D7"]
+[node name="StaticBody3D" type="StaticBody3D" parent="ObjectManager/TerrainManager/MeshInstance3D7"]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D7/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ObjectManager/TerrainManager/MeshInstance3D7/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
 shape = SubResource("BoxShape3D_rj6qj")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="ObjectManager/TerrainManager"]
 transform = Transform3D(0.888569, -0.458743, 0, 0.458743, 0.888569, 0, 0, 0, 1, 29.3427, 1.59897, 11.8196)
 mesh = SubResource("BoxMesh_0mg2m")
+skeleton = NodePath("../../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D3"]
+[node name="StaticBody3D" type="StaticBody3D" parent="ObjectManager/TerrainManager/MeshInstance3D3"]
 collision_layer = 2
 collision_mask = 2
-physics_material_override = SubResource("PhysicsMaterial_0mg2m")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D3/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ObjectManager/TerrainManager/MeshInstance3D3/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
 shape = SubResource("BoxShape3D_rj6qj")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="ObjectManager/TerrainManager"]
+transform = Transform3D(1.24573, -0.705871, 0, 1.24139, 0.70834, 0, 0, 0, 1, 27.7445, 4.51567, 25.5679)
+mesh = SubResource("BoxMesh_0mg2m")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="ObjectManager/TerrainManager/MeshInstance3D8"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ObjectManager/TerrainManager/MeshInstance3D8/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
+shape = SubResource("BoxShape3D_rj6qj")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="ObjectManager/TerrainManager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.4964, 3.79927, 11.8287)
+mesh = SubResource("BoxMesh_0mg2m")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="ObjectManager/TerrainManager/MeshInstance3D2"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ObjectManager/TerrainManager/MeshInstance3D2/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00628662, 0.0141602, -0.0287476)
+shape = SubResource("BoxShape3D_rj6qj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ObjectManager/TerrainManager"]
 transform = Transform3D(32.7711, -2.64261e-05, 0.046329, 2.63892e-05, 32.7711, 2.57785e-05, -0.046329, -2.57406e-05, 32.7711, 24.867, 0, 26.089)
 cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("PlaneMesh_fnkdd")
+skeleton = NodePath("../../..")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+[node name="StaticBody3D" type="StaticBody3D" parent="ObjectManager/TerrainManager/MeshInstance3D"]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ObjectManager/TerrainManager/MeshInstance3D/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_vv6bh")
 
 [node name="Player" type="CharacterBody3D" parent="."]
@@ -256,7 +309,7 @@ grow_horizontal = 0
 script = ExtResource("62_qneip")
 metadata/_edit_use_anchors_ = true
 
-[node name="ActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("action_button_container", "dynamic_button_picker", "dynamic_button_container", "mouse_event_droppable_controller")]
+[node name="ActionSystemUI" type="Control" parent="UILayer" node_paths=PackedStringArray("containers", "action_button_container", "dynamic_slider_container", "dynamic_button_picker", "dynamic_button_container", "mouse_event_droppable_controller")]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -271,8 +324,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("17_xn552")
+containers = [NodePath("ActionButtonsContainer"), NodePath("DynamicSliderContainer"), NodePath("DynamicButtonsContainer"), NodePath("MouseEventDroppableSlotController")]
 action_button_prefab = ExtResource("18_0mg2m")
 action_button_container = NodePath("ActionButtonsContainer")
+dynamic_slider_container = NodePath("DynamicSliderContainer")
 dynamic_button_picker = NodePath("DynamicButtonPicker")
 dynamic_button_container = NodePath("DynamicButtonsContainer")
 mouse_event_droppable_controller = NodePath("MouseEventDroppableSlotController")
@@ -447,8 +502,44 @@ borderless = true
 transparent = true
 max_size = Vector2i(450, 100)
 
-[node name="Marker3D" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.14893, 1.10281, 3.8827)
+[node name="UnitStatsBarsUI" type="Control" parent="UILayer" node_paths=PackedStringArray("unit_stats_container")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("25_881sg")
+unit_stats_container = NodePath("UnitStatsContainer/MarginContainer/UnitStatsContainer")
+show_stats_for_all_units = true
+metadata/_edit_use_anchors_ = true
 
+[node name="UnitStatsContainer" type="PanelContainer" parent="UILayer/UnitStatsBarsUI"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 21.0
+offset_top = 104.0
+offset_right = 92.0
+offset_bottom = 140.0
+grow_vertical = 2
+scale = Vector2(0.631519, 0.631519)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_nyim1")
+
+[node name="MarginContainer" type="MarginContainer" parent="UILayer/UnitStatsBarsUI/UnitStatsContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="UnitStatsContainer" type="VBoxContainer" parent="UILayer/UnitStatsBarsUI/UnitStatsContainer/MarginContainer"]
+layout_mode = 2
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="apply_gravity"]
 [connection signal="pressed" from="UILayer/ActionSystemUI/LockInButton" to="UILayer/ActionSystemUI" method="_on_lock_in_button_pressed"]
 [connection signal="pressed" from="UILayer/ActionSystemUI/MouseEventDroppableSlotController/ConfirmEffectButton" to="UILayer/ActionSystemUI/MouseEventDroppableSlotController" method="_on_confirm_effect_button_pressed"]

@@ -11,7 +11,17 @@ extends BeatEvent
 @export var beat_values: Array[BeatValue] = []
 
 
+func make_unique() -> void:
+	if is_activated:
+		return
+	var old_beat_values: Array[BeatValue] = [] 
+	old_beat_values.append_array(beat_values)
+	beat_values.clear()
+	for b_val in old_beat_values:
+		beat_values.append(b_val.duplicate())
 
+	#beat_values = beat_values.duplicate(true)
+	is_activated = true
 
 
 # Retrieve a BeatValue Resource by its “value_name” property.
@@ -20,6 +30,8 @@ func get_beat_value_by_name(val_name: String) -> BeatValue:
 	for bv in beat_values:
 		if bv.value_name == val_name:
 			return bv
+	if beat_values[0]:
+		return beat_values[0]
 	return null
 
 func setup_slider_ui() -> void:
@@ -28,13 +40,8 @@ func setup_slider_ui() -> void:
 	for beat_val in beat_values:
 		var sd: SliderData = beat_val.slider_data
 		
-		slider_container.add_slider(
-			sd.slider_name,           # Label above the slider
-			sd.min_value,             # min
-			sd.max_value,             # max
-			sd.step,                  # step
-			beat_val.value,           # initial (current)
-		)
+		slider_container.add_slider(sd, self)   # initial data (current)
+		
 		
    # 4) Connect the container’s aggregate signal so we can update each BeatValue:
 	slider_container.slider_value_changed.connect(_on_any_slider_changed)

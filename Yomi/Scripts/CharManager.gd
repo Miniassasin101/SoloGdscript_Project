@@ -51,3 +51,7 @@ func get_unit_by_index(index: int = 0) -> BaseChar:
 		return null
 	
 	return units[index]
+
+
+func get_all_units() -> Array[BaseChar]:
+	return units

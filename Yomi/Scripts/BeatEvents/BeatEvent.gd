@@ -10,6 +10,9 @@ var unit: BaseChar = null
 
 var is_activated: bool = false
 
+
+	
+
 func on_beat_event(state: State) -> void:
 	
 	unit = state.state_machine.unit

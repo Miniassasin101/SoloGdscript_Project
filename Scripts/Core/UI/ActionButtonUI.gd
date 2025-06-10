@@ -3,6 +3,11 @@ extends Button
 
 @export var button_text: Label
 @export var button: Button
+@export var panel: Panel
+
+@export var button_up_style_box: StyleBoxFlat
+@export var button_down_style_box: StyleBoxFlat
+
 var move: Move
 var action: State
 var is_gait: bool = false
@@ -58,9 +63,16 @@ func set_no_ap() -> void:
 	special_case = SpecialCase.NO_AP
 	button_text.set_text("Next Phase")
 
+func toggle_button_selected(is_selected: bool) -> void:
+	if is_selected:
+		panel.set("theme_override_styles/panel", button_up_style_box)
+		return
+	panel.set("theme_override_styles/panel", button_down_style_box)
+	
 
 func _pressed() -> void:
 	handle_special_case()
+
 
 
 func handle_special_case() -> void:

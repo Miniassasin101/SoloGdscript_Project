@@ -1,7 +1,7 @@
 class_name SliderData
 extends Resource
 
-@export var slider_name: String = "Slider"
+@export var slider_name: String = "Unnamed Slider"
 @export var min_value: float = 0.0
 @export var max_value: float = 50.0
 @export var step: float = 1.0
