@@ -13,6 +13,9 @@ var locked_in_pool: Array[BaseChar]
 
 var is_paused: bool = false
 
+
+
+
 static var instance: ActionabilityTracker = null
 
 func _ready() -> void:
@@ -28,8 +31,11 @@ func _ready() -> void:
 
 
 func begin_frame() -> void:
-	# Clear any “freeze requests” from last frame
-	# (we use actionable_pool itself as the signal)
+	
+	if is_paused and !PredictionController.instance.is_running:
+		PredictionController.instance.begin_prediction_setup()
+		pass
+	
 	pass
 
 # Called by CharManager after registration phase
@@ -72,6 +78,9 @@ func on_unit_locked_in(unit: BaseChar) -> void:
 		unit.state_machine.is_actionable = false
 	
 	if actionable_pool.is_empty():
+		
+		PredictionController.instance.clear_prediction()
+		
 		is_paused = false
 		EventBus.resume.emit()
 	else:

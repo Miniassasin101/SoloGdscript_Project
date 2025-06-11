@@ -96,6 +96,9 @@ func on_selected_action_changed(action: State) -> void:
 
 	if selected_unit:
 		units_previous_state[selected_unit] = action
+		
+		PredictionController.instance.update_template_for_unit(selected_unit, action)
+		EventBus.prediction_reset.emit()
 	
 	change_selected_button(selected_action)
 

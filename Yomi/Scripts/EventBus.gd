@@ -30,3 +30,18 @@ signal update_stat_bars
 
 signal on_unit_added
 signal on_unit_removed
+
+
+# Prediciton Signals:
+
+signal prediction_started
+
+signal prediction_paused
+
+signal prediction_resumed
+
+signal prediction_reset
+
+signal prediction_iteration_end   # one 3s pass done
+
+signal prediction_finished

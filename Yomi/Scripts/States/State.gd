@@ -236,7 +236,7 @@ func create_dynamic_beat_sliders() -> void:
 		return
 	
 	ActionSystemUI.instance.setup_dynamic_container(self)
-	
+
 	print_debug("test_end")
 
 # Prompts things like sliders or input while action is focused to change things like target.

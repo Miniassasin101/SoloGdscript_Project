@@ -4,6 +4,7 @@ extends Node
 
 @export var actionability_tracker: ActionabilityTracker = null
 
+@export var prediction_controller: PredictionController = null
 
 
 var is_started: bool = false
@@ -45,6 +46,11 @@ func _physics_process(delta: float) -> void:
 	# --- Registration Phase ---
 	for unit in units:
 		unit.beat_physics_process(delta)
+	
+	prediction_controller.ghost_beat_process()
+	
+	
+	PredictionController.instance
 
 	# --- Freeze Phase ---
 	actionability_tracker.end_frame()
@@ -60,6 +66,7 @@ func initialize_units() -> void:
 			units.append(child)
 			actionability_tracker.units_pool.append(child)
 			child.state_machine.start_machine()
+			child.resume_physics()
 			
 			BeatUtils.spawn_text_line(child, "Added")
 

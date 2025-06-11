@@ -22,7 +22,7 @@ enum StatePhase {
 
 @export var anim_scale: float = 1.0
 
-var granted_states: Array[Node] = []
+var granted_states: Array[State] = []
 
 var is_paused: bool = true
 
@@ -35,9 +35,11 @@ var current_state: State = null
 var beats_until_actionable: int = 1
 
 func _ready() -> void:
-
-	EventBus.pause.connect(pause_animation)
-	EventBus.resume.connect(unpause_animation)
+	
+	if unit and !unit.is_ghost:
+	
+		EventBus.pause.connect(pause_animation)
+		EventBus.resume.connect(unpause_animation)
 	
 	var old_children: Array = get_children()
 	
@@ -55,6 +57,8 @@ func _ready() -> void:
 	for state in granted_states:
 		add_child(state)
 	
+	if !idle_state:
+		idle_state = get_state_by_name("Idle")
 
 func _physics_process(_delta: float) -> void:
 	pass
@@ -90,6 +94,9 @@ func queue_state(state: State) -> void:
 
 # called by State when it’s actionable
 func on_state_actionable() -> void:
+	if unit.is_ghost:
+		unit.set_self_color(Color.YELLOW)
+		return
 	is_actionable = true
 	EventBus.unit_actionable.emit(unit)
 	print_debug("StateMachine: state is now actionable")
@@ -109,6 +116,15 @@ func unpause_animation() -> void:
 		animation_manager.anim_unpause()
 		is_paused = false
 
+
+func get_state_by_name(state_name: String = "Idle") -> State:
+	var pasc_name: String = state_name.to_snake_case()
+	
+	for state: State in granted_states:
+		if state.state_name.to_snake_case() == pasc_name:
+			return state
+	
+	return null
 
 
 func get_actions() -> Array[State]:

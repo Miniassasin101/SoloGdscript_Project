@@ -44,6 +44,10 @@ var saved_linear_velocity: Vector3
 
 var saved_angular_velocity: Vector3
 
+## Incredibly important bool that separates ghosts from real characters.
+
+var is_ghost: bool = false
+
 
 func _ready() -> void:
 	super._ready()
@@ -52,7 +56,9 @@ func _ready() -> void:
 
 	state_machine.state_changed.connect(_on_state_changed)
 	desired_rotation_basis = Basis.from_euler(test_euler)
-
+	
+	pause_physics()
+	
 	pass
 
 
@@ -72,7 +78,7 @@ func _physics_process(delta: float) -> void:
 		process_rotation(delta)
 
 
-func beat_physics_process(delta: float) -> void:
+func beat_physics_process(delta: float = 0.0) -> void:
 	if !state_machine or state_machine.is_paused:
 		if !physics_are_paused:
 			pause_physics()
@@ -99,6 +105,7 @@ func resume_physics() -> void:
 
 
 
+#region Physics Functions
 func _apply_rotation(delta: float) -> void:
 	# compute yaw angles
 	var current_yaw = global_transform.basis.get_euler().y
@@ -157,6 +164,7 @@ func process_movement(delta: float) -> void:
 
 
 func process_rotation(delta: float) -> void:
+#endregion
 
 	# 1. Fetch current & target quaternions
 	var current_quat: Quaternion = global_transform.basis.get_rotation_quaternion()
@@ -182,6 +190,54 @@ func process_rotation(delta: float) -> void:
 	# 5. Slerp and apply
 	var new_quat: Quaternion = current_quat.slerp(target_quat, turn_step)
 	global_transform.basis = Basis(new_quat).orthonormalized()
+
+
+
+# Ghost Functions:
+func setup_from_ghost_template(ghost_t: GhostTemplate) -> void:
+	# Important setting of is_ghost happens here
+	is_ghost = true
+	toggle_unit_collision(false)
+	global_transform = ghost_t.global_transform
+	saved_linear_velocity = ghost_t.saved_linear_velocity
+	ui_name = ghost_t.template_name
+	print_debug(ui_name)
+	set_self_color(Color.PURPLE)
+	
+	var original_state: State = ghost_t.original_current_state
+	var s_name: String = ghost_t.action_override.state_name if ghost_t.action_override else ghost_t.current_state_name
+	var initial_state: State = state_machine.get_state_by_name(s_name)
+	if initial_state:
+		state_machine.queue_state(initial_state)
+		state_machine._advance_state()
+		state_machine.current_state.beats_left = initial_state.beats_left
+		state_machine.current_state.beat_counter = initial_state.beat_counter
+		if ghost_t.action_override:
+			initial_state.beat_events = ghost_t.action_override.beat_events
+			if initial_state is SpinState:# and ghost_t.action_override is SpinState:
+				var dy_rot_e: DynamicRotateBeatEvent = initial_state.beat_events.front() as DynamicRotateBeatEvent
+				dy_rot_e.target_basis = ghost_t.action_override.target_basis
+				dy_rot_e.target_rotation = ghost_t.action_override.target_rotation
+				#initial_state
+			#	initial_state.target_basis = ghost_t.action_override.target_basis
+			#	initial_state.target_rotation = ghost_t.action_override.target_rotation
+		pass
+		#state_machine.current_state.
+		
+
+	
+	
+
+
+func toggle_unit_collision(unit_collision_on: bool = true) -> void:
+	set_collision_layer_value(4, unit_collision_on)
+	set_collision_mask_value(4, unit_collision_on)
+	set_collision_layer_value(2, unit_collision_on)
+	set_collision_mask_value(2, unit_collision_on)
+	set_collision_layer_value(3, !unit_collision_on)
+	set_collision_mask_value(3, !unit_collision_on)
+	
+
 
 
 func get_world_position_above_marker() -> Vector3:
@@ -273,6 +329,8 @@ func set_self_color(color: Color = Color.WHITE) -> void:
 
 # whenever the StateMachine switches to a new State…
 func _on_state_changed(new_state: State) -> void:
+	if is_ghost:
+		return
 	# disconnect old signals
 	if _connected_state:
 		_connected_state.startup_begin.disconnect(_on_startup_begin)
@@ -283,6 +341,7 @@ func _on_state_changed(new_state: State) -> void:
 	_connected_state = new_state
 
 	# reset to “inactive” color when a new state begins
+
 	set_self_color(Color.WHITE)
 
 	# listen for each phase finishing
