@@ -135,6 +135,9 @@ prediction_controller = NodePath("../PredictionController")
 transform = Transform3D(1, 0, -1.74845e-07, 0, 1, 0, 1.74845e-07, 0, 1, 5.86877, 5.81245, 26.8846)
 ui_name = "Sapphire"
 
+[node name="WorldRotationRoot" parent="CharManager/BaseChar2" index="9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.86877, 5.81745, 26.8846)
+
 [node name="PredictionController" type="Node" parent="."]
 script = ExtResource("7_avtag")
 simulation_duration_in_beats = 380
@@ -549,3 +552,5 @@ layout_mode = 2
 [connection signal="body_entered" from="Area3D" to="Area3D" method="apply_gravity"]
 [connection signal="pressed" from="UILayer/ActionSystemUI/LockInButton" to="UILayer/ActionSystemUI" method="_on_lock_in_button_pressed"]
 [connection signal="pressed" from="UILayer/ActionSystemUI/MouseEventDroppableSlotController/ConfirmEffectButton" to="UILayer/ActionSystemUI/MouseEventDroppableSlotController" method="_on_confirm_effect_button_pressed"]
+
+[editable path="CharManager/BaseChar2"]

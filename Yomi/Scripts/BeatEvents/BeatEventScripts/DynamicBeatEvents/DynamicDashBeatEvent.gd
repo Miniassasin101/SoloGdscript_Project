@@ -7,5 +7,5 @@ func on_beat_event(state: State) -> void:
 	
 	var dash_force: float = get_beat_value_by_name("dash_force").value
 	
-	
-	unit.backstep(dash_force)
+	var char: BaseChar = ghost if ghost else unit
+	char.backstep(dash_force)

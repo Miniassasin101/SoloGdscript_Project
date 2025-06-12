@@ -85,6 +85,10 @@ func _advance_state() -> void:
 
 func beat_physics_process(_delta: float) -> void:
 	if !is_paused:
+		if !unit.is_ghost:
+			pass
+		else:
+			pass
 		current_state.play_beats(1)
 		beats_until_actionable = current_state.beats_left
 
@@ -96,6 +100,8 @@ func queue_state(state: State) -> void:
 func on_state_actionable() -> void:
 	if unit.is_ghost:
 		unit.set_self_color(Color.YELLOW)
+		queue_state(idle_state)
+		_advance_state()
 		return
 	is_actionable = true
 	EventBus.unit_actionable.emit(unit)
@@ -115,6 +121,14 @@ func unpause_animation() -> void:
 	if is_paused:
 		animation_manager.anim_unpause()
 		is_paused = false
+
+
+func clear_beat_event_ghosts() -> void:
+	for state in granted_states:
+		for b_event in state.beat_events:
+			b_event.ghost = null
+			
+
 
 
 func get_state_by_name(state_name: String = "Idle") -> State:

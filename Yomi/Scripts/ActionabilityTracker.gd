@@ -46,6 +46,8 @@ func end_frame() -> void:
 		action_system.set_selected_unit(actionable_pool.front())
 		is_paused = true
 		EventBus.pause.emit()
+	
+	#EventBus.frame_ended.emit()
 
 
 
@@ -80,6 +82,9 @@ func on_unit_locked_in(unit: BaseChar) -> void:
 	if actionable_pool.is_empty():
 		
 		PredictionController.instance.clear_prediction()
+		
+		for u in locked_in_pool:
+			u.state_machine.clear_beat_event_ghosts()
 		
 		is_paused = false
 		EventBus.resume.emit()

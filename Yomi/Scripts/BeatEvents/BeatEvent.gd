@@ -8,6 +8,8 @@ extends Resource
 
 var unit: BaseChar = null
 
+var ghost: BaseChar = null
+
 var is_activated: bool = false
 
 var is_unique: bool = false

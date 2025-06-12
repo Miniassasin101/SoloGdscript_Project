@@ -31,6 +31,7 @@ signal update_stat_bars
 signal on_unit_added
 signal on_unit_removed
 
+signal frame_ended
 
 # Prediciton Signals:
 

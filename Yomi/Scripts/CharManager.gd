@@ -50,7 +50,7 @@ func _physics_process(delta: float) -> void:
 	prediction_controller.ghost_beat_process()
 	
 	
-	PredictionController.instance
+	#PredictionController.instance
 
 	# --- Freeze Phase ---
 	actionability_tracker.end_frame()

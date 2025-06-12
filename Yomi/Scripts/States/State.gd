@@ -181,6 +181,12 @@ func activate_beat_events() -> void:
 			beat_event.on_beat_event(self)
 			#beat_event.is_activated = true
 
+
+func set_beat_events_ghost(ghost: BaseChar) -> void:
+	for b_event in beat_events:
+		b_event.ghost = ghost
+
+
 func force_early_actionable() -> void:
 	if state_machine:
 		state_machine.on_state_actionable()

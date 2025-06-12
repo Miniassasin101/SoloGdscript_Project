@@ -11,6 +11,7 @@ extends BeatEvent
 @export var beat_values: Array[BeatValue] = []
 
 
+
 func make_unique() -> void:
 	if is_unique:
 		return

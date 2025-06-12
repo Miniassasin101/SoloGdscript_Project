@@ -13,6 +13,7 @@ signal rotation_completed
 @export var rig: Node3D
 @export var world_rotation_root: Node3D
 @export var selection_visual: GridSystemVisualSingle
+@export var ghost_mat: StandardMaterial3D
 
 @export_group("Markers")
 @export var above_marker: Marker3D
@@ -59,7 +60,9 @@ func _ready() -> void:
 	
 	pause_physics()
 	
-	pass
+	if !is_ghost:
+		EventBus.pause.connect(pause_physics)
+		EventBus.resume.connect(resume_physics)
 
 
 
@@ -98,10 +101,14 @@ func pause_physics() -> void:
 
 
 func resume_physics() -> void:
-	linear_velocity = saved_linear_velocity
-	angular_velocity = saved_angular_velocity
+	
+	
 	physics_are_paused = false
 	freeze = false
+	linear_velocity = saved_linear_velocity
+	if freeze:
+		pass
+	angular_velocity = saved_angular_velocity
 
 
 
@@ -139,6 +146,8 @@ func backstep(force: float = 15.0) -> void:
 	# a one-time impulse backwards
 	var back_dir := global_transform.basis.z
 	apply_central_impulse(back_dir * force)
+	if freeze:
+		pass
 
 func move_back(force: float = 15.0) -> void:
 	# a one-time impulse backwards
@@ -195,11 +204,15 @@ func process_rotation(delta: float) -> void:
 
 # Ghost Functions:
 func setup_from_ghost_template(ghost_t: GhostTemplate) -> void:
+	var o_un: BaseChar = ghost_t.original_unit
+	var g_un: BaseChar = self
 	# Important setting of is_ghost happens here
 	is_ghost = true
 	toggle_unit_collision(false)
 	global_transform = ghost_t.global_transform
+	is_on_floor = g_un.is_on_floor
 	saved_linear_velocity = ghost_t.saved_linear_velocity
+	#qlinear_velocity = saved_linear_velocity
 	ui_name = ghost_t.template_name
 	print_debug(ui_name)
 	set_self_color(Color.PURPLE)
@@ -214,13 +227,17 @@ func setup_from_ghost_template(ghost_t: GhostTemplate) -> void:
 		state_machine.current_state.beat_counter = initial_state.beat_counter
 		if ghost_t.action_override:
 			initial_state.beat_events = ghost_t.action_override.beat_events
+			initial_state.set_beat_events_ghost(self)
 			if initial_state is SpinState:# and ghost_t.action_override is SpinState:
-				var dy_rot_e: DynamicRotateBeatEvent = initial_state.beat_events.front() as DynamicRotateBeatEvent
-				dy_rot_e.target_basis = ghost_t.action_override.target_basis
-				dy_rot_e.target_rotation = ghost_t.action_override.target_rotation
+				initial_state.ghost_spin_setup(ghost_t.action_override.target_rotation, ghost_t.action_override.target_basis)
+				#var dy_rot_e: DynamicRotateBeatEvent = initial_state.beat_events.front() as DynamicRotateBeatEvent
+				#dy_rot_e.target_basis = ghost_t.action_override.target_basis
+				#dy_rot_e.target_rotation = ghost_t.action_override.target_rotation
 				#initial_state
 			#	initial_state.target_basis = ghost_t.action_override.target_basis
 			#	initial_state.target_rotation = ghost_t.action_override.target_rotation
+		else:
+			pass
 		pass
 		#state_machine.current_state.
 		
@@ -255,6 +272,8 @@ func get_meshes() -> Array[MeshInstance3D]:
 
 func setup_mesh_mats_unique() -> void:
 	for mesh in meshes:
+		if is_ghost:
+			return
 		var mat: ShaderMaterial = mesh.get_surface_override_material(0) as ShaderMaterial
 		mesh.set_surface_override_material(0, mat.duplicate(true))
 
@@ -318,6 +337,15 @@ func set_self_color(color: Color = Color.WHITE) -> void:
 		meshes = get_meshes()
 
 	for mesh in meshes:
+		if is_ghost:
+			var g_mat: StandardMaterial3D = ghost_mat.duplicate(true)
+			var alpha := g_mat.albedo_color.a
+			
+			g_mat.albedo_color = color
+			
+			g_mat.albedo_color.a = alpha
+			mesh.set_surface_override_material(0, g_mat)
+			continue
 		var mat: ShaderMaterial = mesh.get_surface_override_material(0)
 		var gradtext: GradientTexture1D = GradientTexture1D.new()
 		var gradient: Gradient = Gradient.new()

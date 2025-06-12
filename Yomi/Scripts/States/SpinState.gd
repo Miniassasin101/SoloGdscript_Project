@@ -13,6 +13,7 @@ var target_basis: Basis
 @export var rotation_arrow_scene: PackedScene = null
 
 @export var ghost_arrow_mat: StandardMaterial3D
+@export var yellow_ghost_arrow_mat: StandardMaterial3D
 
 var rotation_arrow: Node3D = null
 
@@ -37,7 +38,9 @@ func on_action_focused() -> void:
 func setup_arrow() -> void:
 	var arrow: Node3D = rotation_arrow_scene.instantiate() as Node3D
 	
-	arrow.get_child(0).set_surface_override_material(0, ghost_arrow_mat)
+	var arr_mat: StandardMaterial3D = ghost_arrow_mat if !state_machine.unit.is_ghost else yellow_ghost_arrow_mat
+	
+	arrow.get_child(0).set_surface_override_material(0, arr_mat)
 	
 	state_machine.unit.world_rotation_root.add_child(arrow)
 	
@@ -48,7 +51,7 @@ func setup_arrow() -> void:
 	arrow.global_basis = target_basis
 	
 	is_stopped = true
-	ghost_arrow_mat.albedo_color.a = 1.0
+	arr_mat.albedo_color.a = 1.0
 
 func clear_arrow() -> void:
 	for child in state_machine.unit.world_rotation_root.get_children():
@@ -131,4 +134,28 @@ func on_action_locked_in() -> void:
 	else:
 		startup_beats = potential_beats
 	new_event.set_end_beat(potential_beats)
+
+func ghost_spin_setup(t_rot: Vector3, t_bas: Basis) -> void:
+	var original_event: BeatEvent = beat_events.front()
 	
+	
+	#var new_event: DynamicRotateBeatEvent = original_event.duplicate(true) as DynamicRotateBeatEvent
+	#beat_events.clear()
+	#beat_events.append(new_event)
+	var new_event: DynamicRotateBeatEvent = original_event as DynamicRotateBeatEvent
+	new_event.set_target_rotation(t_rot)
+	new_event.target_basis = t_bas
+	var rot_speed: float = new_event.get_beat_value_by_name("rot_speed").value
+	if rot_speed == 0.0:
+		rot_speed = 1.0
+	state_machine.unit.rot_speed = rot_speed
+	var potential_beats: int = state_machine.unit.get_potential_rotation_beats(t_bas)#Basis.from_euler(target_rotation))
+	
+	#potential_beats += 2
+	
+	print_debug("Potential Beats: " + str(potential_beats))
+	if beat_events.size() >= 2:
+		startup_beats = maxi(potential_beats, startup_beats)
+	else:
+		startup_beats = potential_beats
+	new_event.set_end_beat(potential_beats)

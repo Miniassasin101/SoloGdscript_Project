@@ -100,8 +100,10 @@ func create_ghosts_from_templates() -> void:
 	
 	for template in ghost_templates:
 		var original_unit: BaseChar = template.original_unit
-		var new_ghost: BaseChar = template.original_unit.duplicate()
-		add_child(new_ghost)
+		if !original_unit:
+			pass
+		var new_ghost: BaseChar = template.original_unit.duplicate() as BaseChar if original_unit else null
+		self.add_child(new_ghost)
 		var original_sm: StateMachine = original_unit.state_machine
 		var ghost_sm: StateMachine = new_ghost.state_machine
 		new_ghost.setup_from_ghost_template(template)
@@ -118,6 +120,8 @@ func start_first_prediction() -> void:
 	is_running = true
 	is_paused = false
 	beats_elapsed_in_loop = 0
+	
+
 	
 	for unit in ghost_units:
 		unit.state_machine.unpause_animation()
@@ -170,8 +174,7 @@ func restart_prediction_loop() -> void:
 
 
 func update_template_for_unit(unit: BaseChar, new_action: State) -> void:
-	for i in ghost_templates.size():
-		var tmpl: GhostTemplate = ghost_templates[i]
+	for tmpl in ghost_templates:
 		if tmpl.original_unit == unit:
 			tmpl.action_override = new_action
 			## Also immediately update the spawned ghost, if it already exists:

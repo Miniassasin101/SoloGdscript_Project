@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://cuiovtqwnhmel"]
+[gd_scene load_steps=56 format=3 uid="uid://cuiovtqwnhmel"]
 
 [ext_resource type="Script" uid="uid://cr7c6ncxu7b5l" path="res://Hero_Game/Yomi/Scripts/BaseChar.gd" id="1_adj2e"]
 [ext_resource type="Material" uid="uid://d18flcxrogort" path="res://Hero_Game/Art/Materials/CelShadedMats/GrayscaleCelShadedMat.tres" id="2_rhs33"]
@@ -19,7 +19,12 @@
 [ext_resource type="Script" uid="uid://bx6lt0y0xltb7" path="res://Hero_Game/Yomi/Scripts/BeatEvents/BeatEventScripts/DynamicBeatEvents/DynamicDashBeatEvent.gd" id="12_62lnb"]
 [ext_resource type="Script" uid="uid://b4a5kner2i2lr" path="res://Hero_Game/Yomi/Scripts/BeatEvents/BeatEventScripts/FastFallBeatEvent.gd" id="14_w4tje"]
 [ext_resource type="PackedScene" uid="uid://bputpfvj74kol" path="res://Hero_Game/Prefabs/Grid/GridCellVisual.tscn" id="17_hwsgs"]
+[ext_resource type="Material" uid="uid://bop1pcaxnlppi" path="res://Hero_Game/Art/Materials/FacingArrowMaterials/BaseChar.tres" id="18_5toxx"]
 [ext_resource type="Script" uid="uid://cfma0arouw8l3" path="res://Hero_Game/Yomi/Scripts/BeatEvents/BeatEventScripts/DynamicBeatEvents/DynamicRotateBeatEvent.gd" id="18_w4tje"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5toxx"]
+transparency = 1
+albedo_color = Color(0.23, 0.743333, 1, 0.341176)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_adj2e"]
 
@@ -49,8 +54,8 @@ metadata/_custom_type_script = "uid://bsm4px80nk3sd"
 [sub_resource type="Resource" id="Resource_hwsgs"]
 script = ExtResource("12_62lnb")
 beat_values = Array[ExtResource("10_62lnb")]([SubResource("Resource_62ao5")])
-event_start_beat = 1
-event_end_beat = 1
+event_start_beat = 2
+event_end_beat = 2
 is_per_beat = false
 metadata/_custom_type_script = "uid://bx6lt0y0xltb7"
 
@@ -74,7 +79,7 @@ metadata/_custom_type_script = "uid://bsm4px80nk3sd"
 script = ExtResource("11_5toxx")
 beat_values = Array[ExtResource("10_62lnb")]([SubResource("Resource_mr6ae")])
 event_start_beat = 1
-event_end_beat = 60
+event_end_beat = 59
 is_per_beat = true
 metadata/_custom_type_script = "uid://dtvxxf5j8uhq4"
 
@@ -97,8 +102,8 @@ metadata/_custom_type_script = "uid://bsm4px80nk3sd"
 [sub_resource type="Resource" id="Resource_4spni"]
 script = ExtResource("11_w4tje")
 beat_values = Array[ExtResource("10_62lnb")]([SubResource("Resource_62lnb")])
-event_start_beat = 1
-event_end_beat = 1
+event_start_beat = 2
+event_end_beat = 2
 is_per_beat = false
 metadata/_custom_type_script = "uid://bmrjhetbdg1a1"
 
@@ -162,8 +167,8 @@ metadata/_custom_type_script = "uid://bsm4px80nk3sd"
 script = ExtResource("18_w4tje")
 target_rotation = Vector3(0, 0, 0)
 beat_values = Array[ExtResource("10_62lnb")]([SubResource("Resource_46kgj")])
-event_start_beat = 1
-event_end_beat = 1
+event_start_beat = 2
+event_end_beat = 2
 is_per_beat = false
 metadata/_custom_type_script = "uid://cfma0arouw8l3"
 
@@ -187,7 +192,7 @@ metadata/_custom_type_script = "uid://bsm4px80nk3sd"
 script = ExtResource("11_5toxx")
 beat_values = Array[ExtResource("10_62lnb")]([SubResource("Resource_imu4l")])
 event_start_beat = 1
-event_end_beat = 200
+event_end_beat = 199
 is_per_beat = false
 metadata/_custom_type_script = "uid://dtvxxf5j8uhq4"
 
@@ -278,6 +283,7 @@ animation_manager = NodePath("AnimationManager")
 rig = NodePath("Rig")
 world_rotation_root = NodePath("WorldRotationRoot")
 selection_visual = NodePath("WorldRotationRoot/GridSystemVisual")
+ghost_mat = SubResource("StandardMaterial3D_5toxx")
 above_marker = NodePath("AboveMarker")
 rot_speed = 5.0
 move_speed = 100.0
@@ -315,63 +321,42 @@ idle_state = NodePath("IdleState3")
 script = ExtResource("4_rifwl")
 state_machine = NodePath("..")
 state_name = "Idle"
-is_action = null
 is_loop = true
 actionable_at = 1
 startup_animation = ExtResource("5_efpvj")
 startup_beats = 40
 active_animation = ExtResource("5_efpvj")
 recovery_animation = ExtResource("5_efpvj")
-beat_events = null
 
 [node name="IdleState4" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_machine")]
 script = ExtResource("4_rifwl")
 state_machine = NodePath("..")
 state_name = "Long Idle"
-is_action = null
 is_loop = true
 actionable_at = 3
 startup_animation = ExtResource("5_efpvj")
 startup_beats = 60
 active_animation = ExtResource("5_efpvj")
 recovery_animation = ExtResource("5_efpvj")
-beat_events = null
 
 [node name="IdleState5" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_machine")]
 script = ExtResource("4_rifwl")
 state_machine = NodePath("..")
 state_name = "Idle Spin"
-is_action = null
 is_loop = true
 actionable_at = 3
 startup_animation = ExtResource("6_878n1")
 startup_beats = 60
 active_animation = ExtResource("6_878n1")
 recovery_animation = ExtResource("6_878n1")
-beat_events = null
-
-[node name="DashForwardState" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_machine")]
-script = ExtResource("4_rifwl")
-state_machine = NodePath("..")
-state_name = "Dash Forward"
-is_action = null
-is_loop = true
-actionable_at = 1
-startup_animation = ExtResource("6_878n1")
-startup_beats = null
-active_animation = ExtResource("5_efpvj")
-recovery_animation = ExtResource("6_878n1")
-beat_events = null
 
 [node name="DynamicDashForwardState" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_machine")]
 script = ExtResource("4_rifwl")
 state_machine = NodePath("..")
 state_name = "Dynamic Dash"
-is_action = null
-is_loop = null
 actionable_at = 1
 startup_animation = ExtResource("6_878n1")
-startup_beats = 60
+startup_beats = 20
 active_animation = ExtResource("5_efpvj")
 recovery_animation = ExtResource("6_878n1")
 beat_events = Array[ExtResource("8_4cc3n")]([SubResource("Resource_hwsgs")])
@@ -380,8 +365,6 @@ beat_events = Array[ExtResource("8_4cc3n")]([SubResource("Resource_hwsgs")])
 script = ExtResource("4_rifwl")
 state_machine = NodePath("..")
 state_name = "Dynamic Move"
-is_action = null
-is_loop = null
 actionable_at = 1
 startup_animation = ExtResource("6_878n1")
 startup_beats = 60
@@ -393,8 +376,6 @@ beat_events = Array[ExtResource("8_4cc3n")]([SubResource("Resource_ltyny")])
 script = ExtResource("4_rifwl")
 state_machine = NodePath("..")
 state_name = "Jump Forward"
-is_action = null
-is_loop = null
 actionable_at = 1
 startup_animation = ExtResource("6_878n1")
 startup_beats = 60
@@ -406,7 +387,6 @@ beat_events = Array[ExtResource("8_4cc3n")]([SubResource("Resource_hwsgs"), SubR
 script = ExtResource("4_rifwl")
 state_machine = NodePath("..")
 state_name = "Halt"
-is_action = null
 is_loop = true
 actionable_at = 1
 startup_animation = ExtResource("6_878n1")
@@ -419,7 +399,6 @@ beat_events = Array[ExtResource("8_4cc3n")]([SubResource("Resource_w4tje")])
 script = ExtResource("4_rifwl")
 state_machine = NodePath("..")
 state_name = "Fall"
-is_action = null
 is_loop = true
 actionable_at = 1
 startup_animation = ExtResource("6_878n1")
@@ -430,6 +409,7 @@ beat_events = Array[ExtResource("8_4cc3n")]([SubResource("Resource_5toxx")])
 script = ExtResource("7_878n1")
 rotation_arrow_scene = ExtResource("8_efpvj")
 ghost_arrow_mat = ExtResource("11_b5hwp")
+yellow_ghost_arrow_mat = ExtResource("18_5toxx")
 state_machine = NodePath("..")
 state_name = "Spin"
 actionable_at = 1
