@@ -42,6 +42,7 @@ func on_action_locked_in(action: State) -> void:
 	action.on_action_locked_in()
 	unit.state_machine.queue_state(action)
 	unit.state_machine._advance_state()
+	unit.beat_physics_process()
 	locked_in.emit(unit)
 	#EventBus.resume.emit()
 
@@ -60,7 +61,13 @@ func try_handle_unit_selection() -> bool:
 	var collider: CollisionObject3D = MouseController.instance.get_mouse_raycast_result("collider")
 	if !collider:
 		return false
-	var in_unit: BaseChar = collider
+	var in_unit: BaseChar = collider as BaseChar
+	
+	if !in_unit:
+		return false
+		
+	if in_unit.is_ghost:
+		return false
 	
 	if !actionability_tracker.is_unit_actionable(in_unit):
 		return false

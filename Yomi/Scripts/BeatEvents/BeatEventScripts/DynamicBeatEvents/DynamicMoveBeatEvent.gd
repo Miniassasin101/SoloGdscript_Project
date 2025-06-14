@@ -7,11 +7,10 @@ func on_beat_event(state: State) -> void:
 	
 	var move_force: float = get_beat_value_by_name("move_force").value
 	
-	var char: BaseChar = ghost if ghost else unit
+	var cha: BaseChar = state.unit
 	
-	var for_dir := char.floor_normal.cross(-char.global_basis.x)
+	var for_dir := cha.floor_normal.cross(-cha.global_basis.x)
 	
+	var m_request: GeneralForcePhysicsRequest = GeneralForcePhysicsRequest.new(for_dir, move_force)
 	
-	
-	char.move_in_direction(for_dir, move_force)
-	
+	cha.queue_physics_request(m_request)

@@ -20,7 +20,7 @@ func on_beat_event(state: State) -> void:
 	
 	if !active:
 		active = true
-		char = ghost if ghost else unit
+		char = state.unit
 		BeatUtils.spawn_text_line(state.state_machine.unit, "Rotating: " + str(target_rotation))
 		var potential_rot_beats: int = char.get_potential_rotation_beats(target_basis)
 		BeatUtils.spawn_text_line(state.state_machine.unit, "Beats: " + str(potential_rot_beats))

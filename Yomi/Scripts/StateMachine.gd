@@ -12,15 +12,17 @@ enum StatePhase {
 	RECOVERY
 }
 
-@export var unit: BaseChar
+@export var unit: BaseChar = null
 
-@export var animation_player: AnimationPlayer
+@export var animation_player: AnimationPlayer = null
 
-@export var animation_manager: AnimationManager
+@export var animation_manager: AnimationManager = null
 
 @export var idle_state: State
 
 @export var anim_scale: float = 1.0
+
+
 
 var granted_states: Array[State] = []
 
@@ -28,7 +30,7 @@ var is_paused: bool = true
 
 var is_actionable: bool = false
 
-var state_stack: Array[State]
+var state_stack: Array[State] = []
 
 var current_state: State = null
 
@@ -75,7 +77,7 @@ func start_machine() -> void:
 func _advance_state() -> void:
 	if state_stack.is_empty():
 		return
-	current_state = state_stack.pop_front()
+	current_state = state_stack.pop_front() as State
 	# reset and kick things off at frame 0
 	current_state.reset_state()
 	# notify listeners that we’ve started a fresh state
@@ -91,6 +93,7 @@ func beat_physics_process(_delta: float) -> void:
 			pass
 		current_state.play_beats(1)
 		beats_until_actionable = current_state.beats_left
+		
 
 
 func queue_state(state: State) -> void:
@@ -100,6 +103,9 @@ func queue_state(state: State) -> void:
 func on_state_actionable() -> void:
 	if unit.is_ghost:
 		unit.set_self_color(Color.YELLOW)
+		if current_state.state_name != "Idle":
+			EventBus.prediction_pause_for_beats.emit()
+
 		queue_state(idle_state)
 		_advance_state()
 		return

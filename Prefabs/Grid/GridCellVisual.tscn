@@ -25,6 +25,7 @@ fall_duration = 0.3
 
 [node name="GridSystemVisual" type="MeshInstance3D" parent="."]
 transform = Transform3D(2.01085, 0, 0, 0, -8.78969e-08, 2.01085, 0, -2.01085, -8.78969e-08, 0, 0.03, 0)
+visible = false
 cast_shadow = 0
 mesh = SubResource("QuadMesh_u230j")
 

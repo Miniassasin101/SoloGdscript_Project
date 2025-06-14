@@ -5,13 +5,14 @@ extends Node
 
 @export var char_manager: CharManager = null
 
-var units_pool: Array[BaseChar]
+var units_pool: Array[BaseChar] = []
 
-var actionable_pool: Array[BaseChar]
+var actionable_pool: Array[BaseChar] = []
 
-var locked_in_pool: Array[BaseChar]
+var locked_in_pool: Array[BaseChar] = []
 
 var is_paused: bool = false
+
 
 
 
@@ -36,10 +37,12 @@ func begin_frame() -> void:
 		PredictionController.instance.begin_prediction_setup()
 		pass
 	
+	
 	pass
 
 # Called by CharManager after registration phase
 func end_frame() -> void:
+	
 	# If any units registered this frame and we're not already paused:
 	if actionable_pool.size() > 0 and not is_paused:
 		# pick the first actionable, lock it in
@@ -47,6 +50,8 @@ func end_frame() -> void:
 		is_paused = true
 		EventBus.pause.emit()
 	
+
+	EventBus.apply_physics_requests.emit()
 	#EventBus.frame_ended.emit()
 
 

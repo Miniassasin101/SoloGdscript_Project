@@ -23,7 +23,7 @@ static func create_from_unit(real_unit: BaseChar) -> GhostTemplate:
 	new_template.saved_linear_velocity = real_unit.saved_linear_velocity
 	#new_template.state_name = real_unit.
 	new_template.template_name = real_unit.ui_name
-	new_template.current_state_name = "Dynamic Dash"#real_unit.state_machine.current_state.state_name
+	new_template.current_state_name = real_unit.state_machine.current_state.state_name
 	new_template.original_unit = real_unit
 	new_template.original_current_state = real_unit.state_machine.current_state
 	

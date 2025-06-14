@@ -5,6 +5,9 @@ signal rotation_completed
 
 @export var ui_name: String = "null"
 
+@export_category("Stats")
+@export var health: int = 10
+@export var max_health: int = 10
 
 @export_category("References")
 @export var move_target: Node3D
@@ -45,6 +48,8 @@ var saved_linear_velocity: Vector3
 
 var saved_angular_velocity: Vector3
 
+var physics_request_queue: Array[PhysicsRequest] = []
+
 ## Incredibly important bool that separates ghosts from real characters.
 
 var is_ghost: bool = false
@@ -63,6 +68,10 @@ func _ready() -> void:
 	if !is_ghost:
 		EventBus.pause.connect(pause_physics)
 		EventBus.resume.connect(resume_physics)
+	
+	EventBus.hide_all_selection_visuals.connect(hide_selection_visuals)
+	
+	EventBus.apply_physics_requests.connect(_on_apply_physics_requests)
 
 
 
@@ -134,35 +143,34 @@ func _apply_rotation(delta: float) -> void:
 	angular_velocity.y = rot_speed * sign(diff)
 
 
-func move_in_direction(dir: Vector3, in_force: float = walk_force) -> void:
-	# a continuous force you could call each frame
-	apply_central_force(dir.normalized() * in_force)
 
-func dash_in_direction(dir: Vector3, in_force: float = walk_force) -> void:
-	# a continuous force you could call each frame
-	apply_central_impulse(dir.normalized() * in_force)
 
-func backstep(force: float = 15.0) -> void:
-	# a one-time impulse backwards
-	var back_dir := global_transform.basis.z
-	apply_central_impulse(back_dir * force)
-	if freeze:
-		pass
-
-func move_back(force: float = 15.0) -> void:
-	# a one-time impulse backwards
-	var back_dir := -global_transform.basis.z
-	apply_central_impulse(back_dir * force)
-
-func jump(force: float = 15.0) -> void:
-	# a one-time impulse backwards
-	var up_dir := global_transform.basis.y
-	apply_central_impulse(up_dir * force)
 
 func fall(force: float = 15.0) -> void:
 	var down_dir := -global_transform.basis.y
 	apply_central_impulse(down_dir * force)
 
+
+func queue_physics_request(request: PhysicsRequest) -> void:
+	physics_request_queue.append(request)
+
+func queue_physics_requests(requests: Array[PhysicsRequest]) -> void:
+	physics_request_queue.append_array(requests)
+
+func _on_apply_physics_requests() -> void:
+	if physics_request_queue.is_empty():
+		if !is_ghost:
+			pass
+		return
+	
+	if !is_ghost:
+		pass
+	
+	for req in physics_request_queue:
+		req.apply(self)
+	print_debug("Frame: " + str(state_machine.current_state.beat_counter))
+	physics_request_queue.clear()
+	
 
 func process_movement(delta: float) -> void:
 
@@ -225,25 +233,14 @@ func setup_from_ghost_template(ghost_t: GhostTemplate) -> void:
 		state_machine._advance_state()
 		state_machine.current_state.beats_left = initial_state.beats_left
 		state_machine.current_state.beat_counter = initial_state.beat_counter
+		state_machine.current_state._phase = initial_state._phase
 		if ghost_t.action_override:
 			initial_state.beat_events = ghost_t.action_override.beat_events
 			initial_state.set_beat_events_ghost(self)
-			if initial_state is SpinState:# and ghost_t.action_override is SpinState:
+			if initial_state is SpinState:
 				initial_state.ghost_spin_setup(ghost_t.action_override.target_rotation, ghost_t.action_override.target_basis)
-				#var dy_rot_e: DynamicRotateBeatEvent = initial_state.beat_events.front() as DynamicRotateBeatEvent
-				#dy_rot_e.target_basis = ghost_t.action_override.target_basis
-				#dy_rot_e.target_rotation = ghost_t.action_override.target_rotation
-				#initial_state
-			#	initial_state.target_basis = ghost_t.action_override.target_basis
-			#	initial_state.target_rotation = ghost_t.action_override.target_rotation
-		else:
-			pass
-		pass
-		#state_machine.current_state.
-		
 
-	
-	
+
 
 
 func toggle_unit_collision(unit_collision_on: bool = true) -> void:
@@ -331,6 +328,11 @@ func set_desired_rot_basis(in_basis: Basis) -> void:
 func clear_rotation() -> void:
 	is_rotating = false
 	set_desired_rot_basis(global_basis)
+
+
+func hide_selection_visuals() -> void:
+	selection_visual.hide_self()
+
 
 func set_self_color(color: Color = Color.WHITE) -> void:
 	if meshes.is_empty():

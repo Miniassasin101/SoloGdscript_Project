@@ -20,10 +20,10 @@ func console_hello() -> void:
 
 
 func console_get_unit_by_index(index: String = "") -> void:
-	var char: BaseChar = CharManager.instance.get_unit_by_index(index.to_int())
-	if char:
-		current_character = char
-		Console.print_line("New Character: " + char.ui_name)
+	var cha: BaseChar = CharManager.instance.get_unit_by_index(index.to_int())
+	if cha:
+		current_character = cha
+		Console.print_line("New Character: " + cha.ui_name)
 
 
 func console_set_color(color_name: String = "") -> void:

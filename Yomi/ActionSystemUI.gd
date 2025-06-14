@@ -104,6 +104,9 @@ func on_selected_action_changed(action: State) -> void:
 
 
 func on_selected_unit_changed(unit: BaseChar) -> void:
+	if unit.is_ghost:
+		return
+	EventBus.hide_all_selection_visuals.emit()
 	if selected_unit and selected_unit.selection_visual:
 		selected_unit.selection_visual.hide_self()
 	if selected_action:

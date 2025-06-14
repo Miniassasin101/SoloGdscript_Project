@@ -6,6 +6,7 @@ extends Node
 @export var simulation_duration_in_beats: int = 180
 @export var pause_between_actions_in_beats: int = 15
 
+@export var actionable_ghost_prediction_pause_beats: int = 10
 
 
 var ghost_templates: Array[GhostTemplate] = []
@@ -16,7 +17,13 @@ var is_paused: bool = true
 
 var beats_elapsed_in_loop: int = 0
 
+
+var pause_counter: int = 0
+
+
 var reset_requested: bool = false
+
+var pause_for_beats_requested: bool = false
 
 static var instance: PredictionController = null
 
@@ -30,11 +37,31 @@ func _ready() -> void:
 	
 	EventBus.prediction_reset.connect(restart_prediction_loop)
 	
+	EventBus.prediction_pause_for_beats.connect(request_pause_for_beats)
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("testkey_p"):
+		if !is_running:
+			return
+		
+		if is_paused:
+			resume_prediction()
+		else:
+			stop_prediction()
 
 
 func ghost_beat_process() -> void:
+	
+	if pause_counter > 0:
+		pause_counter -= 1
+		if pause_counter == 0:
+			resume_prediction()
+		return
+	
+	
 	if is_paused or !is_running:
 		return
+	
 	
 	
 	ghost_begin_beat()
@@ -49,7 +76,8 @@ func ghost_beat_process() -> void:
 	
 
 func ghost_begin_beat() -> void:
-	if beats_elapsed_in_loop > simulation_duration_in_beats or reset_requested:
+	
+	if beats_elapsed_in_loop >= simulation_duration_in_beats or reset_requested:
 		if reset_requested:
 			reset_requested = false
 		stop_prediction()
@@ -61,6 +89,13 @@ func ghost_begin_beat() -> void:
 
 func ghost_end_beat() -> void:
 	beats_elapsed_in_loop += 1
+	
+	if pause_for_beats_requested:
+		pause_for_beats()
+		pause_for_beats_requested = false
+	
+	
+	
 	pass
 	
 
@@ -144,6 +179,16 @@ func stop_prediction() -> void:
 		unit.state_machine.pause_animation()
 		unit.pause_physics()
 	pass
+
+func request_pause_for_beats() -> void:
+	pause_for_beats_requested = true
+
+func pause_for_beats(beats: int = actionable_ghost_prediction_pause_beats) -> void:
+	if is_paused:
+		return
+	pause_counter = beats
+	print_debug(beats_elapsed_in_loop)
+	stop_prediction()
 
 
 func reset_ghosts() -> void:

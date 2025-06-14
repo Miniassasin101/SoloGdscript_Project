@@ -7,5 +7,10 @@ func on_beat_event(state: State) -> void:
 	
 	var jump_force: float = get_beat_value_by_name("jump_force").value
 	
-	var char: BaseChar = ghost if ghost else unit
-	char.jump(jump_force)
+	var cha: BaseChar = state.unit
+	
+	var up_dir := cha.global_transform.basis.y
+	
+	var j_request: GeneralImpulsePhysicsRequest = GeneralImpulsePhysicsRequest.new(up_dir, jump_force)
+	
+	cha.queue_physics_request(j_request)

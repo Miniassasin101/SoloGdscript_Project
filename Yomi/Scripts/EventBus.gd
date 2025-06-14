@@ -25,6 +25,7 @@ signal unit_actionable(unit: BaseChar)
 @warning_ignore("unused_signal")
 signal unit_changed(unit: BaseChar)
 
+signal hide_all_selection_visuals
 
 signal update_stat_bars
 
@@ -33,11 +34,15 @@ signal on_unit_removed
 
 signal frame_ended
 
-# Prediciton Signals:
+signal apply_physics_requests
+
+# Prediction Signals:
 
 signal prediction_started
 
 signal prediction_paused
+
+signal prediction_pause_for_beats
 
 signal prediction_resumed
 

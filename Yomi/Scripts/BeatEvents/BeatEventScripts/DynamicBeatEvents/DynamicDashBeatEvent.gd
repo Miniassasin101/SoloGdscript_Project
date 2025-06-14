@@ -7,5 +7,7 @@ func on_beat_event(state: State) -> void:
 	
 	var dash_force: float = get_beat_value_by_name("dash_force").value
 	
-	var char: BaseChar = ghost if ghost else unit
-	char.backstep(dash_force)
+	var cha: BaseChar = state.unit
+	var d_request: DashPhysicsRequest = DashPhysicsRequest.new(dash_force)
+
+	cha.queue_physics_requests([d_request])

@@ -133,11 +133,7 @@ prediction_controller = NodePath("../PredictionController")
 
 [node name="BaseChar2" parent="CharManager" instance=ExtResource("3_nvpyg")]
 transform = Transform3D(1, 0, -1.74845e-07, 0, 1, 0, 1.74845e-07, 0, 1, 5.86877, 5.81245, 23.8846)
-weight_scale = 4.0
-
-[node name="BaseChar" parent="CharManager" instance=ExtResource("3_nvpyg")]
-transform = Transform3D(-1, 0, -8.9407e-08, 0, 1, 0, 8.9407e-08, 0, -1, 6, 6.92408, 30)
-weight_scale = 4.0
+ui_name = "Sapphire"
 
 [node name="PredictionController" type="Node" parent="."]
 script = ExtResource("7_avtag")
@@ -552,8 +548,8 @@ theme_override_constants/margin_bottom = 2
 [node name="UnitStatsContainer" type="VBoxContainer" parent="UILayer/UnitStatsBarsUI/UnitStatsContainer/MarginContainer"]
 layout_mode = 2
 
-[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
 [connection signal="body_entered" from="Area3D" to="Area3D" method="apply_gravity"]
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
 [connection signal="body_exited" from="Area3D" to="Area3D" method="_on_body_exited"]
 [connection signal="pressed" from="UILayer/ActionSystemUI/LockInButton" to="UILayer/ActionSystemUI" method="_on_lock_in_button_pressed"]
 [connection signal="pressed" from="UILayer/ActionSystemUI/MouseEventDroppableSlotController/ConfirmEffectButton" to="UILayer/ActionSystemUI/MouseEventDroppableSlotController" method="_on_confirm_effect_button_pressed"]

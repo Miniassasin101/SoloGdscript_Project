@@ -14,7 +14,7 @@ signal recovery_complete
 
 
 @export var state_machine: StateMachine
-
+var unit: BaseChar = null
 
 @export var state_name: String
 @export var is_action: bool = true
@@ -64,6 +64,8 @@ func update_markers() -> void:
 func _ready() -> void:
 	if state_machine == null:
 		state_machine = get_parent()
+	if state_machine:
+		unit = state_machine.unit
 	make_beat_events_unique()
 
 func make_beat_events_unique() -> void:
@@ -107,7 +109,9 @@ func play_beats(num_beats: int = 1) -> void:
 	else:
 		beats_left -= num_beats
 		beat_counter += num_beats
+	
 		activate_beat_events()
+	
 	# still waiting?
 	if beats_left > 0:
 		return
@@ -145,7 +149,7 @@ func play_animation() -> void:
 			anim_name = recovery_animation.resource_name if recovery_animation else ""
 	
 	if anim_name == "" or state_machine.animation_manager.active_anim_name == anim_name:
-		print_debug("Animation continuing: " + anim_name)
+		#print_debug("Animation continuing: " + anim_name)
 		return
 	
 	state_machine.play_animation(anim_name)
@@ -175,9 +179,13 @@ func _enter_recovery(overflow: int) -> void:
 
 func activate_beat_events() -> void:
 	for beat_event: BeatEvent in beat_events:
+
 		if beat_event.is_beat_in_range(beat_counter):
+
 			#if beat_event.is_activated and !beat_event.is_per_beat:
 			#	continue
+			if beat_counter == 1 and !unit.is_ghost:
+				pass
 			beat_event.on_beat_event(self)
 			#beat_event.is_activated = true
 
@@ -185,6 +193,10 @@ func activate_beat_events() -> void:
 func set_beat_events_ghost(ghost: BaseChar) -> void:
 	for b_event in beat_events:
 		b_event.ghost = ghost
+
+func clear_beat_events_ghosts() -> void:
+	for b_event in beat_events:
+		b_event.ghost = null
 
 
 func force_early_actionable() -> void:
