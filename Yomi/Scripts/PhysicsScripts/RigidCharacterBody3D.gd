@@ -21,20 +21,17 @@ extends RigidBody3D
 @export var default_gravity_scale: float = 3.054
 ## the angle degrees that qualify as a slope
 @export var max_slope_angle: float = 5.0
-## The force used to jump with.
-@export var jump_force: float = 5.0
-## The force used to walk with.
-@export var walk_force: float = 15
-## The force used to run with.
-@export var run_force: float = 20
-## The force used for moving around when in the air.
-@export var air_force: float = 5
+
 ## The amount of uniform drag this body experiences. This scales with the velocity
 @export var drag_force: float = 0.1
 ## The amount of air drag this body experiences. This scales with the velocity
 @export var air_drag_force: float = 0.1
+@export var air_friction_multiplier: float = 1.0
 ## The density of the fluid the body is moving in. By default it's set to the density of air.
 @export var fluid_density: float = 1.293
+
+@export var static_friction_coefficient: float = 0.6
+@export var kinetic_friction_coefficient: float = 0.4
 
 
 var is_on_floor: bool
@@ -75,7 +72,9 @@ func _physics_process(delta):
 	apply_gravity(delta)
 	
 	
-	apply_drag(delta)
+	#apply_drag(delta)
+	
+	apply_friction(delta)
 	
 	reset_input()
 
@@ -106,43 +105,56 @@ func _process_state():
 			ceiling_normal = n
 
 
-func apply_drag(delta: float):
-	var v = linear_velocity.length()
-	var v2 = linear_velocity.length_squared()
-	var effective_drag = air_drag_force if !is_on_floor else drag_force
-	var cd = 2.0 * effective_drag * fluid_density * v
-	var fd = 1.0/2.0 * fluid_density * v2 * cd
-	var drag = -linear_velocity.normalized() * fd
-	drag = drag.limit_length(linear_velocity.length())
-	#if !is_on_floor and linear_velocity.y < 0:
-		#drag = drag/2
 
-	apply_central_impulse(drag * delta)
+
+func apply_friction(delta: float) -> void:
+	if is_on_floor:
+		# 1) Compute the tangential velocity relative to the floor.
+		var v_tan = linear_velocity - floor_normal * linear_velocity.dot(floor_normal)
+		var speed = v_tan.length()
+		if speed < 0.001:
+			# No meaningful sliding → nothing to do.
+			return
+
+		# 2) Compute the magnitude of the normal force (≈ weight).
+		#    gravity.dot(floor_normal) is negative (e.g. -9.8 on a flat floor),
+		#    so we invert it to get a positive weight.
+		var normal_force = mass * -gravity.dot(floor_normal) * weight_scale
+
+		# 3) Decide static vs. kinetic friction:
+		#    If the impulse needed to stop in this frame is less
+		#    than μ_static·N, we “grab” and cancel sliding entirely.
+		var stop_impulse_mag = mass * speed
+		var max_static_impulse = static_friction_coefficient * normal_force * delta
+		if stop_impulse_mag <= max_static_impulse:
+			# static friction wins → zero out tangential velocity
+			apply_central_force(-v_tan * mass)
+		else:
+			# kinetic friction → constant opposing force μ_k·N
+			var friction_dir = -v_tan.normalized()
+			var friction_force = friction_dir * (kinetic_friction_coefficient * normal_force)
+			apply_central_force(friction_force)
+
+	else:
+		# Air‐drag fallback (speed² drag)
+		var v = linear_velocity.length()
+		if v < 0.001:
+			return
+		var v2 = v * v
+		var cd = 2.0 * air_drag_force * air_friction_multiplier * fluid_density * v
+		var fd = 0.5 * fluid_density * v2 * cd
+		var drag = -linear_velocity.normalized() * fd
+		# prevent over‐impulse from reversing velocity
+		drag = drag.limit_length(v)
+		apply_central_force(drag)
 
 
 func apply_movement(delta: float):
-	"""
-	if Input.is_action_just_pressed("jump"):
-		if is_on_floor:
-			apply_central_impulse(floor_normal * jump_force)
-		elif is_on_wall:
-			var new_norma = (wall_normal + global_basis.y).normalized()
-			apply_central_impulse(new_norma * jump_force)
-	if Input.is_action_just_pressed("run") and is_on_floor:
-		is_running = true
-	"""
-	var forward = floor_normal.cross(orientation_node.global_basis.x)
-	var right = forward.cross(floor_normal)
-	var dir = ((forward * input_direction.y) + (right * input_direction.x)).normalized()
-	if dir:
-		var move_forc = air_force if not is_on_floor else run_force if is_running else walk_force
-		apply_central_impulse(dir * move_forc * delta)
-	elif is_running:
-		is_running = false
+	pass
 
 func apply_gravity(delta: float) -> void:
 
-	if is_on_floor and is_on_slope():
+	if is_on_floor or is_on_slope():
 
 		# Project the gravity vector onto the floor normal—this
 		# is the component of gravity pushing *into* the slope.
@@ -151,9 +163,9 @@ func apply_gravity(delta: float) -> void:
 		var grav_scale = gravity_scale
 		#if gravity_scale == default_gravity_scale:
 		#	set_gravity_scale(0.0)
-		if linear_velocity.y >= 1.0:
-			into_floor = into_floor * 2
-			pass
+		#if linear_velocity.y >= 1.0:
+			#into_floor = into_floor * 2
+		#	pass
 		apply_central_force(into_floor * weight_scale)
 	else:
 		#if gravity_scale != default_gravity_scale:

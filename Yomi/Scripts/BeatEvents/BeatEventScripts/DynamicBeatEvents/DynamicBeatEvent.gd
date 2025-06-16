@@ -31,9 +31,8 @@ func get_beat_value_by_name(val_name: String) -> BeatValue:
 	for bv in beat_values:
 		if bv.value_name == val_name:
 			return bv
-	if beat_values[0]:
-		return beat_values[0]
-	return null
+
+	return beat_values.front()
 
 func setup_slider_ui() -> void:
 	var slider_container: DynamicSliderContainer = ActionSystemUI.instance.dynamic_slider_container

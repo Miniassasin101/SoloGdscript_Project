@@ -14,6 +14,7 @@ var original_unit: BaseChar
 var original_current_state: State
 
 var action_override : State = null
+var is_overridden: bool = false
 
 
 static func create_from_unit(real_unit: BaseChar) -> GhostTemplate:

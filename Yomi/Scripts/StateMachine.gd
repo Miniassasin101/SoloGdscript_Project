@@ -77,6 +77,7 @@ func start_machine() -> void:
 func _advance_state() -> void:
 	if state_stack.is_empty():
 		return
+	
 	current_state = state_stack.pop_front() as State
 	# reset and kick things off at frame 0
 	current_state.reset_state()

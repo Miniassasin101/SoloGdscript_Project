@@ -226,19 +226,26 @@ func setup_from_ghost_template(ghost_t: GhostTemplate) -> void:
 	set_self_color(Color.PURPLE)
 	
 	var original_state: State = ghost_t.original_current_state
-	var s_name: String = ghost_t.action_override.state_name if ghost_t.action_override else ghost_t.current_state_name
+	var s_name: String = ghost_t.action_override.state_name if ghost_t.is_overridden else ghost_t.current_state_name
 	var initial_state: State = state_machine.get_state_by_name(s_name)
 	if initial_state:
 		state_machine.queue_state(initial_state)
 		state_machine._advance_state()
-		state_machine.current_state.beats_left = initial_state.beats_left
-		state_machine.current_state.beat_counter = initial_state.beat_counter
-		state_machine.current_state._phase = initial_state._phase
-		if ghost_t.action_override:
+		state_machine.current_state.beats_left = original_state.beats_left if !ghost_t.is_overridden else initial_state.beats_left
+		state_machine.current_state.beat_counter = original_state.beat_counter if !ghost_t.is_overridden else initial_state.beat_counter
+		state_machine.current_state._phase = original_state._phase if !ghost_t.is_overridden else initial_state._phase
+		if ghost_t.is_overridden:
 			initial_state.beat_events = ghost_t.action_override.beat_events
 			initial_state.set_beat_events_ghost(self)
 			if initial_state is SpinState:
 				initial_state.ghost_spin_setup(ghost_t.action_override.target_rotation, ghost_t.action_override.target_basis)
+		
+		else:
+			#Setup Animation
+			var pb_time: float = o_un.animation_manager.get_playback_time()
+			animation_manager.set_seek_playback(o_un.animation_manager.get_playback_time())
+			pass
+	pass
 
 
 

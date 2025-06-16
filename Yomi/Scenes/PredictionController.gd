@@ -193,11 +193,17 @@ func pause_for_beats(beats: int = actionable_ghost_prediction_pause_beats) -> vo
 
 func reset_ghosts() -> void:
 	var iter_num: int = 0
+
 	for unit in ghost_units:
 		unit.setup_from_ghost_template(ghost_templates[iter_num])
 		iter_num += 1
 	pass
 
+func clear_ghosts() -> void:
+	for unit in ghost_units:
+		unit.queue_free()
+	ghost_units.clear()
+	ghost_templates.clear()
 
 func clear_prediction() -> void:
 	is_running = false
@@ -222,6 +228,7 @@ func update_template_for_unit(unit: BaseChar, new_action: State) -> void:
 	for tmpl in ghost_templates:
 		if tmpl.original_unit == unit:
 			tmpl.action_override = new_action
+			tmpl.is_overridden = true
 			## Also immediately update the spawned ghost, if it already exists:
 			#var ghost: BaseChar = ghost_units[i] as BaseChar
 			## clear their future queue and insert the override action first

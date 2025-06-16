@@ -50,6 +50,7 @@ func end_frame() -> void:
 		is_paused = true
 		EventBus.pause.emit()
 	
+	
 
 	EventBus.apply_physics_requests.emit()
 	#EventBus.frame_ended.emit()

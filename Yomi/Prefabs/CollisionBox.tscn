@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2o707bnogtuc"]
+
+[ext_resource type="Script" uid="uid://bqokphdubhocl" path="res://Hero_Game/Yomi/Scripts/Boxes/CollisionBox.gd" id="1_d542a"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d542a"]
+
+[node name="CollisionBox" type="Area3D" node_paths=PackedStringArray("collision_shape")]
+collision_layer = 32
+collision_mask = 32
+script = ExtResource("1_d542a")
+collision_shape = NodePath("CollisionShape3D")
+box_shape = SubResource("BoxShape3D_d542a")
+metadata/_custom_type_script = "uid://bqokphdubhocl"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13623, 0)
+shape = SubResource("BoxShape3D_d542a")
+debug_color = Color(0.997485, 0, 0.164898, 0.42)

@@ -30,6 +30,7 @@ var unit: BaseChar = null
 
 @export var beat_events: Array[BeatEvent] = []
 
+@export var hitboxes: Array[CollisionBox] = []
 
 
 # Real time until the various phases end.
@@ -61,12 +62,16 @@ func update_markers() -> void:
 	pass
 """
 
+
+
 func _ready() -> void:
 	if state_machine == null:
 		state_machine = get_parent()
 	if state_machine:
 		unit = state_machine.unit
 	make_beat_events_unique()
+	await EventBus.combat_started
+	reparent_hitboxes()
 
 func make_beat_events_unique() -> void:
 	var old_events: Array[BeatEvent] = []
@@ -80,6 +85,10 @@ func make_beat_events_unique() -> void:
 		else:
 			var new_b_event: BeatEvent = b_event.duplicate()
 			beat_events.append(new_b_event)
+
+func reparent_hitboxes() -> void:
+	for box in hitboxes:
+		box.reparent(unit, false)
 
 func update_time_vals() -> void:
 	print_debug("Time_Vals Working")
@@ -114,6 +123,10 @@ func play_beats(num_beats: int = 1) -> void:
 	
 	# still waiting?
 	if beats_left > 0:
+		if unit.is_ghost and unit.ui_name != "Ruby":
+			pass
+		if state_name == "Front Attack" and (beat_counter == 94 or beat_counter == 93):
+			pass
 		return
 
 	# handle phase completion (allowing small overflow)
@@ -150,7 +163,13 @@ func play_animation() -> void:
 	
 	if anim_name == "" or state_machine.animation_manager.active_anim_name == anim_name:
 		#print_debug("Animation continuing: " + anim_name)
-		return
+		if anim_name != "IdleAnimation" and anim_name != "SpinAnimation":
+			if unit.is_ghost:
+				pass
+		else:
+			return
+			
+		#return
 	
 	state_machine.play_animation(anim_name)
 
@@ -256,6 +275,11 @@ func create_dynamic_beat_sliders() -> void:
 	ActionSystemUI.instance.setup_dynamic_container(self)
 
 	print_debug("test_end")
+
+
+func get_hitboxes() -> Array[CollisionBox]:
+	return hitboxes
+
 
 # Prompts things like sliders or input while action is focused to change things like target.
 func on_action_focused() -> void:
