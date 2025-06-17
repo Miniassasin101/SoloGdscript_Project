@@ -36,6 +36,10 @@ var current_state: State = null
 
 var beats_until_actionable: int = 1
 
+
+var is_ghost_first_anim: bool = false
+
+
 func _ready() -> void:
 	
 	if unit and !unit.is_ghost:
@@ -116,8 +120,10 @@ func on_state_actionable() -> void:
 	pause_animation()
 
 
-func play_animation(anim: String) -> void:
-	animation_manager.play_animation(anim)
+func play_animation(anim: String, _is_ghost_first_anim: bool = false) -> void:
+	animation_manager.play_animation(anim, 0.2, _is_ghost_first_anim)
+	if _is_ghost_first_anim:
+		is_ghost_first_anim = false
 
 func pause_animation() -> void:
 	if !is_paused:

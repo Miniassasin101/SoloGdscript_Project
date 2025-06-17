@@ -223,6 +223,7 @@ func setup_from_ghost_template(ghost_t: GhostTemplate) -> void:
 	#qlinear_velocity = saved_linear_velocity
 	ui_name = ghost_t.template_name
 	print_debug(ui_name)
+	state_machine.is_ghost_first_anim = true
 	set_self_color(Color.PURPLE)
 	
 	var original_state: State = ghost_t.original_current_state

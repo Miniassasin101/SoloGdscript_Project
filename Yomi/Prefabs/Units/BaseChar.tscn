@@ -107,8 +107,8 @@ metadata/_custom_type_script = "uid://bsm4px80nk3sd"
 [sub_resource type="Resource" id="Resource_4spni"]
 script = ExtResource("11_w4tje")
 beat_values = Array[ExtResource("10_62lnb")]([SubResource("Resource_62lnb")])
-event_start_beat = 1
-event_end_beat = 1
+event_start_beat = 2
+event_end_beat = 2
 is_per_beat = false
 metadata/_custom_type_script = "uid://bmrjhetbdg1a1"
 
@@ -131,8 +131,8 @@ metadata/_custom_type_script = "uid://bsm4px80nk3sd"
 [sub_resource type="Resource" id="Resource_ltyny"]
 script = ExtResource("12_62lnb")
 beat_values = Array[ExtResource("10_62lnb")]([SubResource("Resource_mr6ae")])
-event_start_beat = 1
-event_end_beat = 1
+event_start_beat = 2
+event_end_beat = 2
 is_per_beat = false
 metadata/_custom_type_script = "uid://bx6lt0y0xltb7"
 
@@ -236,6 +236,7 @@ metadata/_custom_type_script = "uid://bsm4px80nk3sd"
 [sub_resource type="Resource" id="Resource_md1ui"]
 script = ExtResource("21_4spni")
 hitbox_index = 0
+trigger_once = true
 beat_values = Array[ExtResource("10_62lnb")]([SubResource("Resource_bmb82")])
 event_start_beat = 94
 event_end_beat = 102

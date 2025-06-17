@@ -114,7 +114,12 @@ func play_beats(num_beats: int = 1) -> void:
 		beats_left = startup_beats
 		beat_counter = 0
 		startup_begin.emit()
-		play_animation()
+		if num_beats == 0 and unit.is_ghost:
+			pass
+		if unit.is_ghost and state_machine.is_ghost_first_anim:
+			play_animation(true)
+		else:
+			play_animation()
 	else:
 		beats_left -= num_beats
 		beat_counter += num_beats
@@ -149,7 +154,7 @@ func play_beats(num_beats: int = 1) -> void:
 			is_running = false
 
 
-func play_animation() -> void:
+func play_animation(is_ghost_first_anim: bool = false) -> void:
 	var anim_name: String = ""
 	match _phase:
 		StatePhase.STARTUP:
@@ -171,7 +176,7 @@ func play_animation() -> void:
 			
 		#return
 	
-	state_machine.play_animation(anim_name)
+	state_machine.play_animation(anim_name, is_ghost_first_anim)
 
 func _maybe_notify_parent(phase_done: StatePhase) -> bool:
 	if phase_done == actionable_at:

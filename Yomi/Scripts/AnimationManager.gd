@@ -88,7 +88,9 @@ func get_character_mesh() -> Array[MeshInstance3D]:
 # ------------------------------------------------------------
 # Cross-fade from “A” → “B” whenever you call play_animation()
 # ------------------------------------------------------------
-func play_animation(anim_name: String, fade_time: float = 0.2) -> void:
+func play_animation(anim_name: String, fade_time: float = 0.2, is_ghost_first_anim: bool = false) -> void:
+	if is_ghost_first_anim:
+		fade_time = 0.0
 	# decide which port to write the new clip into
 	var target_port = "AnimationB" if active_port == "AnimationA" else "AnimationA"
 

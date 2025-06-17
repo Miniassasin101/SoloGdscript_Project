@@ -132,12 +132,13 @@ actionability_tracker = NodePath("../ActionabilityTracker")
 prediction_controller = NodePath("../PredictionController")
 
 [node name="BaseChar2" parent="CharManager" instance=ExtResource("3_nvpyg")]
-transform = Transform3D(1, 0, -1.74845e-07, 0, 1, 0, 1.74845e-07, 0, 1, 2, 6, 20)
+transform = Transform3D(1, 0, -1.74845e-07, 0, 1, 0, 1.74845e-07, 0, 1, 4, 26.301, 20)
 linear_damp = 0.415
 ui_name = "Sapphire"
+weight_scale = 8.0
 
 [node name="BaseChar" parent="CharManager" instance=ExtResource("3_nvpyg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 6, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 26, 20)
 ui_name = "Ruby"
 
 [node name="PredictionController" type="Node" parent="."]
